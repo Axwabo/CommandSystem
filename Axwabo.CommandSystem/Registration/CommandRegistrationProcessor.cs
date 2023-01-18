@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection;
+using Axwabo.CommandSystem.Attributes.Listeners;
+using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Registration {
 
@@ -25,7 +27,25 @@ namespace Axwabo.CommandSystem.Registration {
         private CommandRegistrationProcessor(Assembly assembly) => TargetAssembly = assembly;
 
         public void Execute() {
-            // TODO: Implement
+            foreach (var type in TargetAssembly.GetTypes())
+                if (!type.IsAbstract && typeof(CommandBase).IsAssignableFrom(type))
+                    RegisterCommand(type);
+        }
+
+        private static void RegisterCommand(Type type) {
+            var targets = CommandTarget.None;
+            foreach (var attr in type.GetCustomAttributes())
+                if (attr is CommandListenerAttribute ctx)
+                    targets = CommandListenerAttribute.Combine(targets, ctx);
+            if (targets is CommandTarget.None)
+                return;
+            var wrapper = new CommandWrapper((CommandBase) Activator.CreateInstance(type));
+            if (targets.HasFlagFast(CommandTarget.RemoteAdmin))
+                CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(wrapper);
+            if (targets.HasFlagFast(CommandTarget.ServerConsole))
+                GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(wrapper);
+            if (targets.HasFlagFast(CommandTarget.Client))
+                QueryProcessor.DotCommandHandler.RegisterCommand(wrapper);
         }
 
     }

@@ -2,6 +2,7 @@
 using HarmonyLib;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
+using PluginAPI.Enums;
 
 namespace Axwabo.CommandSystem {
 
@@ -12,6 +13,7 @@ namespace Axwabo.CommandSystem {
         private Harmony _harmony;
 
         [PluginEntryPoint("Axwabo.CommandSystem", "1.0.0", "Adds a sophisticated command system to the game.", "Axwabo")]
+        [PluginPriority(LoadPriority.Highest)]
         private void OnEnable() {
             Instance = this;
             _harmony = new Harmony("Axwabo.CommandSystem");

@@ -106,9 +106,9 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Attributes\HandlerType\CommandExecutionContextAttribute.cs" />
-        <Compile Include="Attributes\HandlerType\CommandHandlerTarget.cs" />
-        <Compile Include="Attributes\HandlerType\PresetCommandHandlers.cs" />
+        <Compile Include="Attributes\Listeners\CommandListenerAttribute.cs" />
+        <Compile Include="Attributes\Listeners\CommandTarget.cs" />
+        <Compile Include="Attributes\Listeners\PresetCommandListeners.cs" />
         <Compile Include="CommandBase.cs" />
         <Compile Include="CommandWrapper.cs" />
         <Compile Include="Patches\CommandImplementationPatch.cs" />
