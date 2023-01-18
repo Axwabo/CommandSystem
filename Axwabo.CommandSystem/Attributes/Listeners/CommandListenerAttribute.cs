@@ -2,7 +2,7 @@
 
 namespace Axwabo.CommandSystem.Attributes.Listeners {
 
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class CommandListenerAttribute : Attribute {
 
         public readonly CommandTarget Target;

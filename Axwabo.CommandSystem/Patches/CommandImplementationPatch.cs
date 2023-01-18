@@ -17,7 +17,7 @@ namespace Axwabo.CommandSystem.Patches {
         public static string GetImplementationLocation(ICommand command)
             => GetTypeInfo(command is CommandWrapper wrapper ? wrapper.BackingCommand.GetType() : command.GetType());
 
-        private static string GetTypeInfo(Type type) => type.Assembly.GetName().Name + ":" + type.FullName;
+        public static string GetTypeInfo(Type type) => type.Assembly.GetName().Name + ":" + type.FullName;
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
             var list = ListPool<CodeInstruction>.Shared.Rent(instructions);

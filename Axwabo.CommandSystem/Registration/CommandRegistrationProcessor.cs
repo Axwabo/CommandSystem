@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes.Listeners;
+using Axwabo.CommandSystem.PropertyManager;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Registration {
@@ -26,10 +28,17 @@ namespace Axwabo.CommandSystem.Registration {
 
         private CommandRegistrationProcessor(Assembly assembly) => TargetAssembly = assembly;
 
+        internal readonly Dictionary<Type, CommandNameResolver<Attribute>> NameResolvers = new();
+
         public void Execute() {
-            foreach (var type in TargetAssembly.GetTypes())
-                if (!type.IsAbstract && typeof(CommandBase).IsAssignableFrom(type))
-                    RegisterCommand(type);
+            CommandPropertiesManager.CurrentProcessor = this;
+            try {
+                foreach (var type in TargetAssembly.GetTypes())
+                    if (!type.IsAbstract && typeof(CommandBase).IsAssignableFrom(type))
+                        RegisterCommand(type);
+            } finally {
+                CommandPropertiesManager.CurrentProcessor = null;
+            }
         }
 
         private static void RegisterCommand(Type type) {

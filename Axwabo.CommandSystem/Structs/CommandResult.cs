@@ -12,7 +12,7 @@
             Success = success;
         }
 
-        public CommandResult(string response, bool success) {
+        public CommandResult(bool success, string response) {
             Response = response;
             Success = success;
         }
@@ -21,7 +21,7 @@
 
         public static implicit operator CommandResult(string s) => new(s);
 
-        public static implicit operator CommandResult(bool s) => new(null, s);
+        public static implicit operator CommandResult(bool s) => new(s, null);
 
         public static implicit operator bool(CommandResult r) => r.Success;
 
