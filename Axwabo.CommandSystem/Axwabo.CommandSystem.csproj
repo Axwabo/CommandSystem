@@ -114,6 +114,8 @@
         <Compile Include="Patches\CommandImplementationPatch.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Registration\CommandRegistrationProcessor.cs" />
+        <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Structs\CommandResult.cs" />
         <Compile Include="Structs\TargetingCommandResult.cs" />
     </ItemGroup>
@@ -123,6 +125,9 @@
     <ItemGroup>
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Registration\AttributeResolvers" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
