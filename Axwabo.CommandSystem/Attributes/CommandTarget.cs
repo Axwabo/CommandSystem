@@ -9,6 +9,8 @@ namespace Axwabo.CommandSystem.Attributes {
         RemoteAdmin = 1,
         ServerConsole = 2,
         Client = 4,
+        RaAndConsole = RemoteAdmin | ServerConsole,
+        RaAndClient = RemoteAdmin | Client,
         All = RemoteAdmin | ServerConsole | Client
 
     }

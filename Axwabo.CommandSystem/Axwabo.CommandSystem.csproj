@@ -117,6 +117,7 @@
         <Compile Include="Attributes\PresetCommandListeners.cs" />
         <Compile Include="CommandBase.cs" />
         <Compile Include="CommandWrapper.cs" />
+        <Compile Include="Exceptions\TypeMismatchException.cs" />
         <Compile Include="Exceptions\NameNotSetException.cs" />
         <Compile Include="Exceptions\AttributeResolverException.cs" />
         <Compile Include="Patches\CommandImplementationPatch.cs" />
@@ -125,7 +126,8 @@
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="PropertyManager\CommandPropertiesManager.cs" />
-        <Compile Include="PropertyManager\Delegates.cs" />
+        <Compile Include="PropertyManager\ICommandDescriptionResolver.cs" />
+        <Compile Include="PropertyManager\ICommandNameResolver.cs" />
         <Compile Include="Registration\CommandRegistrationProcessor.cs" />
         <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Structs\CommandResult.cs" />
@@ -139,6 +141,7 @@
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="PropertyManager\Resolvers" />
       <Folder Include="Registration\AttributeResolvers" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

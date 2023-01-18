@@ -28,7 +28,9 @@ namespace Axwabo.CommandSystem.Registration {
 
         private CommandRegistrationProcessor(Assembly assembly) => TargetAssembly = assembly;
 
-        internal readonly Dictionary<Type, CommandNameResolver<Attribute>> NameResolvers = new();
+        internal readonly Dictionary<Type, ICommandNameResolver<Attribute>> NameResolvers = new();
+        
+        internal readonly Dictionary<Type, ICommandDescriptionResolver<Attribute>> DescriptionResolvers = new();
 
         public void Execute() {
             CommandPropertiesManager.CurrentProcessor = this;

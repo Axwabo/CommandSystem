@@ -23,6 +23,7 @@ namespace Axwabo.CommandSystem.PropertyManager {
                     continue;
                 var type = attribute.GetType();
                 ResolveName(ref name, type, attribute);
+                ResolveDescription(ref description, type, attribute);
             }
 
             return !string.IsNullOrEmpty(name);
@@ -45,7 +46,12 @@ namespace Axwabo.CommandSystem.PropertyManager {
 
         private static void ResolveName(ref string name, Type type, Attribute attribute) {
             if (CurrentProcessor.NameResolvers.TryGetValue(type, out var nameResolver))
-                name = nameResolver(attribute);
+                name = nameResolver.ResolveName(attribute);
+        }
+        
+        private static void ResolveDescription(ref string description, Type type, Attribute attribute) {
+            if (CurrentProcessor.DescriptionResolvers.TryGetValue(type, out var descriptionResolver))
+                description = descriptionResolver.ResolveDescription(attribute);
         }
 
     }
