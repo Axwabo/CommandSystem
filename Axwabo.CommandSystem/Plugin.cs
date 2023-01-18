@@ -20,12 +20,15 @@ namespace Axwabo.CommandSystem {
             } catch (Exception e) {
                 Log.Error("Patching failed! Some features will not work properly.\n" + e);
             }
+
+            Log.Info("Axwabo.CommandSystem has been enabled!");
         }
 
         [PluginUnload]
         private void OnDisable() {
             Instance = null;
             _harmony.UnpatchAll();
+            Log.Info("Axwabo.CommandSystem has been disabled!");
         }
 
     }
