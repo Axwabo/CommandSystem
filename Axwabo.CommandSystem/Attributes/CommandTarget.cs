@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Attributes.Listeners {
+namespace Axwabo.CommandSystem.Attributes {
 
     [Flags]
     public enum CommandTarget : byte {

@@ -107,13 +107,18 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Attributes\CommandDescriptionAttribute.cs" />
+        <Compile Include="Attributes\CommandListenerAttribute.cs" />
         <Compile Include="Attributes\CommandNameAttribute.cs" />
+        <Compile Include="Attributes\CommandTarget.cs" />
+        <Compile Include="Attributes\EnumCommandNameAttribute.cs" />
+        <Compile Include="Attributes\Interfaces\ICommandDescription.cs" />
         <Compile Include="Attributes\Interfaces\ICommandName.cs" />
-        <Compile Include="Attributes\Listeners\CommandListenerAttribute.cs" />
-        <Compile Include="Attributes\Listeners\CommandTarget.cs" />
-        <Compile Include="Attributes\Listeners\PresetCommandListeners.cs" />
+        <Compile Include="Attributes\PresetCommandListeners.cs" />
         <Compile Include="CommandBase.cs" />
         <Compile Include="CommandWrapper.cs" />
+        <Compile Include="Exceptions\NameNotSetException.cs" />
+        <Compile Include="Exceptions\AttributeResolverException.cs" />
         <Compile Include="Patches\CommandImplementationPatch.cs" />
         <Compile Include="Permissions\IPermissionChecker.cs" />
         <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs" />

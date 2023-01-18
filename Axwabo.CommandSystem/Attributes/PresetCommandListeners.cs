@@ -1,4 +1,4 @@
-﻿namespace Axwabo.CommandSystem.Attributes.Listeners {
+﻿namespace Axwabo.CommandSystem.Attributes {
 
     public sealed class RemoteAdminCommand : CommandListenerAttribute {
 

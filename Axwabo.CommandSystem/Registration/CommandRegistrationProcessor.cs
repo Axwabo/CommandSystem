@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Axwabo.CommandSystem.Attributes.Listeners;
+using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.PropertyManager;
 using RemoteAdmin;
 

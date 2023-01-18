@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Attributes.Listeners {
+namespace Axwabo.CommandSystem.Attributes {
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class CommandListenerAttribute : Attribute {

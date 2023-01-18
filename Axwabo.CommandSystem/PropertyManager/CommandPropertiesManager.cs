@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes.Interfaces;
+using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Registration;
 
 namespace Axwabo.CommandSystem.PropertyManager {
@@ -9,27 +10,33 @@ namespace Axwabo.CommandSystem.PropertyManager {
 
         public static CommandRegistrationProcessor CurrentProcessor { get; internal set; }
 
-        public static bool TryResolveBasicProperties(CommandBase command, out string name) {
+        public static bool TryResolveProperties(CommandBase command, out string name, out string description) {
             if (CurrentProcessor == null)
-                throw new InvalidOperationException("Attempted to resolve command properties outside of a registration process.");
+                throw new AttributeResolverException("Attempted to resolve command properties outside of a registration process.");
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             name = null;
+            description = null;
             foreach (var attribute in command.GetType().GetCustomAttributes()) {
-                if (ResolveBaseAttribute(attribute, ref name))
+                if (ResolveBaseAttribute(attribute, ref name, ref description))
                     continue;
                 var type = attribute.GetType();
                 ResolveName(ref name, type, attribute);
             }
 
-            return name != null;
+            return !string.IsNullOrEmpty(name);
         }
 
-        private static bool ResolveBaseAttribute(Attribute attribute, ref string name) {
+        private static bool ResolveBaseAttribute(Attribute attribute, ref string name, ref string description) {
             var success = false;
             if (attribute is ICommandName n) {
-                name = n.Name;
+                name = n.Name.ToLower();
+                success = true;
+            }
+
+            if (attribute is ICommandDescription d) {
+                description = d.Description;
                 success = true;
             }
 

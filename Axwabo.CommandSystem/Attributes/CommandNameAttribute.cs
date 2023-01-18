@@ -8,7 +8,7 @@ namespace Axwabo.CommandSystem.Attributes {
 
         public string Name { get; }
 
-        public CommandNameAttribute(string name) => Name = name;
+        public CommandNameAttribute(string name) => Name = !string.IsNullOrEmpty(name) ? name : throw new ArgumentNullException(name);
 
     }
 
