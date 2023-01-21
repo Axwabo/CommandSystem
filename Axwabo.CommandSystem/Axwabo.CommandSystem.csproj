@@ -65,6 +65,9 @@
           <HintPath>..\..\assemblies\Mirror.Components.dll</HintPath>
         </Reference>
         <Reference Include="mscorlib" />
+        <Reference Include="NWAPIPermissionSystem">
+          <HintPath>..\..\assemblies\NWAPIPermissionSystem.dll</HintPath>
+        </Reference>
         <Reference Include="NwPluginAPI.Analyzers, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
           <HintPath>..\packages\Northwood.PluginAPI.Analyzers.12.0.0\lib\netstandard2.0\NwPluginAPI.Analyzers.dll</HintPath>
         </Reference>
@@ -122,6 +125,7 @@
         <Compile Include="Exceptions\NameNotSetException.cs" />
         <Compile Include="Exceptions\AttributeResolverException.cs" />
         <Compile Include="Patches\CommandImplementationPatch.cs" />
+        <Compile Include="Permissions\CedModPermissionChecker.cs" />
         <Compile Include="Permissions\IPermissionChecker.cs" />
         <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs" />
         <Compile Include="Permissions\VanillaPermissionsAttribute.cs" />
@@ -130,9 +134,12 @@
         <Compile Include="PropertyManager\CommandPropertyManager.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs" />
-        <Compile Include="PropertyManager\Resolvers\IPermissionCreator.cs" />
+        <Compile Include="PropertyManager\Resolvers\ICommandPermissionCreator.cs" />
+        <Compile Include="PropertyManager\SimpleCommandPermissionCreator.cs" />
+        <Compile Include="Registration\AttributeResolvers\IPermissionResolverMarker.cs" />
         <Compile Include="Registration\CommandRegistrationProcessor.cs" />
         <Compile Include="Registration\RegistrationExtensions.cs" />
+        <Compile Include="Registration\UsesCedModPermissions.cs" />
         <Compile Include="Structs\CommandResult.cs" />
         <Compile Include="Structs\TargetingCommandResult.cs" />
     </ItemGroup>
@@ -142,9 +149,6 @@
     <ItemGroup>
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Registration\AttributeResolvers" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

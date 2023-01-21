@@ -33,7 +33,7 @@ namespace Axwabo.CommandSystem.Registration {
 
         internal readonly Dictionary<Type, ICommandDescriptionResolver<Attribute>> DescriptionResolvers = new();
 
-        internal readonly Dictionary<Type, IPermissionCreator<Attribute>> PermissionResolvers = new();
+        internal readonly Dictionary<Type, ICommandPermissionCreator<Attribute>> PermissionCreators = new();
 
         public void Execute() {
             CommandPropertyManager.CurrentProcessor = this;

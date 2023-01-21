@@ -1,7 +1,6 @@
 ﻿using System;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Exceptions;
-using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 namespace Axwabo.CommandSystem.Registration {
@@ -21,8 +20,7 @@ namespace Axwabo.CommandSystem.Registration {
             => WithNameResolver(processor, typeof(T), (ICommandNameResolver<Attribute>) nameResolver);
 
         public static CommandRegistrationProcessor WithNameResolver(this CommandRegistrationProcessor processor, Type type, ICommandNameResolver<Attribute> nameResolver) {
-            if (!TryValidateArguments(type, nameResolver, out var exception, "name"))
-                throw exception;
+            ValidateArguments(type, nameResolver, "name resolver");
             processor.NameResolvers[type] = nameResolver;
             return processor;
         }
@@ -31,30 +29,29 @@ namespace Axwabo.CommandSystem.Registration {
             => WithDescriptionResolver(processor, typeof(T), (ICommandDescriptionResolver<Attribute>) descriptionResolver);
 
         public static CommandRegistrationProcessor WithDescriptionResolver(this CommandRegistrationProcessor processor, Type type, ICommandDescriptionResolver<Attribute> descriptionResolver) {
-            if (!TryValidateArguments(type, descriptionResolver, out var exception, "description"))
-                throw exception;
+            ValidateArguments(type, descriptionResolver, "description resolver");
             processor.DescriptionResolvers[type] = descriptionResolver;
             return processor;
         }
+        
+        public static CommandRegistrationProcessor WithPermissionCreator<T>(this CommandRegistrationProcessor processor, ICommandPermissionCreator<T> permissionCreator) where T : Attribute
+            => WithPermissionCreator(processor, typeof(T), (ICommandPermissionCreator<Attribute>) permissionCreator);
+        
+        public static CommandRegistrationProcessor WithPermissionCreator(this CommandRegistrationProcessor processor, Type type, ICommandPermissionCreator<Attribute> permissionCreator) {
+            ValidateArguments(type, permissionCreator, "permission creator");
+            processor.PermissionCreators[type] = permissionCreator;
+            return processor;
+        }
 
-        private static bool TryValidateArguments(Type type, object resolver, out Exception exception, string resolverType) {
-            if (type == null) {
-                exception = new ArgumentNullException(nameof(type));
-                return false;
-            }
+        private static void ValidateArguments(Type type, object o, string typeName) {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
 
-            if (resolver == null) {
-                exception = new ArgumentNullException(nameof(resolver));
-                return false;
-            }
+            if (o == null)
+                throw new ArgumentNullException(nameof(o));
 
-            if (!type.IsInstanceOfType(resolver)) {
-                exception = new TypeMismatchException(GenericType(resolver), type, $"the {resolverType} resolver");
-                return false;
-            }
-
-            exception = null;
-            return true;
+            if (!type.IsInstanceOfType(o))
+                throw new TypeMismatchException(GenericType(o), type, $"the {typeName}");
         }
 
     }

@@ -36,7 +36,7 @@ namespace Axwabo.CommandSystem.PropertyManager {
             foreach (var attribute in command.GetType().GetCustomAttributes()) {
                 if (attribute is VanillaPermissionsAttribute vanilla)
                     return new SimpleVanillaPlayerPermissionChecker(vanilla.Permissions);
-                if (CurrentProcessor.PermissionResolvers.TryGetValue(attribute.GetType(), out var creator))
+                if (CurrentProcessor.PermissionCreators.TryGetValue(attribute.GetType(), out var creator))
                     return creator.CreatePermissionCheckerInstance(attribute);
             }
 
