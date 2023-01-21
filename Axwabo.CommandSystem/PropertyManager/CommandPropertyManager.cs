@@ -2,11 +2,12 @@
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes.Interfaces;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.Registration;
 
 namespace Axwabo.CommandSystem.PropertyManager {
 
-    public static class CommandPropertiesManager {
+    public static class CommandPropertyManager {
 
         public static CommandRegistrationProcessor CurrentProcessor { get; internal set; }
 
@@ -29,6 +30,19 @@ namespace Axwabo.CommandSystem.PropertyManager {
             return !string.IsNullOrEmpty(name);
         }
 
+        public static IPermissionChecker ResolvePermissionChecker(CommandBase command) {
+            if (CurrentProcessor == null)
+                return null;
+            foreach (var attribute in command.GetType().GetCustomAttributes()) {
+                if (attribute is VanillaPermissionsAttribute vanilla)
+                    return new SimpleVanillaPlayerPermissionChecker(vanilla.Permissions);
+                if (CurrentProcessor.PermissionResolvers.TryGetValue(attribute.GetType(), out var creator))
+                    return creator.CreatePermissionCheckerInstance(attribute);
+            }
+
+            return null;
+        }
+
         private static bool ResolveBaseAttribute(Attribute attribute, ref string name, ref string description) {
             var success = false;
             if (attribute is ICommandName n) {
@@ -48,7 +62,7 @@ namespace Axwabo.CommandSystem.PropertyManager {
             if (CurrentProcessor.NameResolvers.TryGetValue(type, out var nameResolver))
                 name = nameResolver.ResolveName(attribute);
         }
-        
+
         private static void ResolveDescription(ref string description, Type type, Attribute attribute) {
             if (CurrentProcessor.DescriptionResolvers.TryGetValue(type, out var descriptionResolver))
                 description = descriptionResolver.ResolveDescription(attribute);

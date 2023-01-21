@@ -2,6 +2,7 @@
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.PropertyManager;
+using Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 namespace Axwabo.CommandSystem.Registration {
 

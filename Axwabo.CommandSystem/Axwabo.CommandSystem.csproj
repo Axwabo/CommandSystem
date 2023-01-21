@@ -110,6 +110,7 @@
         <Compile Include="Attributes\CommandDescriptionAttribute.cs" />
         <Compile Include="Attributes\CommandListenerAttribute.cs" />
         <Compile Include="Attributes\CommandNameAttribute.cs" />
+        <Compile Include="Attributes\CommandPropertiesAttribute.cs" />
         <Compile Include="Attributes\CommandTarget.cs" />
         <Compile Include="Attributes\EnumCommandNameAttribute.cs" />
         <Compile Include="Attributes\Interfaces\ICommandDescription.cs" />
@@ -123,11 +124,13 @@
         <Compile Include="Patches\CommandImplementationPatch.cs" />
         <Compile Include="Permissions\IPermissionChecker.cs" />
         <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs" />
+        <Compile Include="Permissions\VanillaPermissionsAttribute.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="PropertyManager\CommandPropertiesManager.cs" />
-        <Compile Include="PropertyManager\ICommandDescriptionResolver.cs" />
-        <Compile Include="PropertyManager\ICommandNameResolver.cs" />
+        <Compile Include="PropertyManager\CommandPropertyManager.cs" />
+        <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs" />
+        <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs" />
+        <Compile Include="PropertyManager\Resolvers\IPermissionCreator.cs" />
         <Compile Include="Registration\CommandRegistrationProcessor.cs" />
         <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Structs\CommandResult.cs" />
@@ -141,7 +144,6 @@
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="PropertyManager\Resolvers" />
       <Folder Include="Registration\AttributeResolvers" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
