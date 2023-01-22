@@ -2,7 +2,7 @@
 
 namespace Axwabo.CommandSystem.Permissions {
 
-    public class SimpleVanillaPlayerPermissionChecker : IPermissionChecker {
+    public sealed class SimpleVanillaPlayerPermissionChecker : IPermissionChecker {
 
         public readonly PlayerPermissions Permissions;
 

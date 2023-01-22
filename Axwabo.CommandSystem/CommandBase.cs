@@ -3,6 +3,7 @@ using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.Structs;
+using PluginAPI.Core;
 
 namespace Axwabo.CommandSystem {
 
@@ -43,7 +44,7 @@ namespace Axwabo.CommandSystem {
             if (arguments.Count < minArguments)
                 return $"!Need at least {minArguments} argument{(minArguments == 1 ? "" : "s")}! {CombinedUsage}";
             var permissions = Permissions;
-            var permissionCheck = !sender.FullPermissions && permissions != null ? permissions.CheckPermission(sender) : (CommandResult) true;
+            var permissionCheck = sender.FullPermissions || permissions == null ? (CommandResult) true : permissions.CheckPermission(sender);
             return !permissionCheck ? permissionCheck : Execute(arguments, sender);
         }
 

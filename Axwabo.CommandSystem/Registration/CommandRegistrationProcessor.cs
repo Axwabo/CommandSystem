@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.PropertyManager;
-using Axwabo.CommandSystem.PropertyManager.Resolvers;
+using Axwabo.CommandSystem.Registration.AttributeResolvers;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Registration {
@@ -29,11 +29,11 @@ namespace Axwabo.CommandSystem.Registration {
 
         private CommandRegistrationProcessor(Assembly assembly) => TargetAssembly = assembly;
 
-        internal readonly Dictionary<Type, ICommandNameResolver<Attribute>> NameResolvers = new();
+        internal readonly List<CommandNameResolverContainer> NameResolvers = new();
 
-        internal readonly Dictionary<Type, ICommandDescriptionResolver<Attribute>> DescriptionResolvers = new();
+        internal readonly List<CommandDescriptionResolverContainer> DescriptionResolvers = new();
 
-        internal readonly Dictionary<Type, ICommandPermissionCreator<Attribute>> PermissionCreators = new();
+        internal readonly List<CommandPermissionCreatorContainer> PermissionCreators = new();
 
         public void Execute() {
             CommandPropertyManager.CurrentProcessor = this;

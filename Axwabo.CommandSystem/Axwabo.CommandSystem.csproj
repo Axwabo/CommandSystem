@@ -126,6 +126,7 @@
         <Compile Include="Exceptions\AttributeResolverException.cs" />
         <Compile Include="Patches\CommandImplementationPatch.cs" />
         <Compile Include="Permissions\CedModPermissionChecker.cs" />
+        <Compile Include="Permissions\CedModPermissionsAttribute.cs" />
         <Compile Include="Permissions\IPermissionChecker.cs" />
         <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs" />
         <Compile Include="Permissions\VanillaPermissionsAttribute.cs" />
@@ -135,8 +136,10 @@
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandPermissionCreator.cs" />
-        <Compile Include="PropertyManager\SimpleCommandPermissionCreator.cs" />
-        <Compile Include="Registration\AttributeResolvers\IPermissionResolverMarker.cs" />
+        <Compile Include="Registration\AttributeResolvers\CommandDescriptionResolverContainer.cs" />
+        <Compile Include="Registration\AttributeResolvers\CommandNameResolverContainer.cs" />
+        <Compile Include="Registration\AttributeResolvers\CommandPermissionCreatorContainer.cs" />
+        <Compile Include="Registration\AttributeResolvers\IResolverContainer.cs" />
         <Compile Include="Registration\CommandRegistrationProcessor.cs" />
         <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Registration\UsesCedModPermissions.cs" />

@@ -36,8 +36,9 @@ namespace Axwabo.CommandSystem.PropertyManager {
             foreach (var attribute in command.GetType().GetCustomAttributes()) {
                 if (attribute is VanillaPermissionsAttribute vanilla)
                     return new SimpleVanillaPlayerPermissionChecker(vanilla.Permissions);
-                if (CurrentProcessor.PermissionCreators.TryGetValue(attribute.GetType(), out var creator))
-                    return creator.CreatePermissionCheckerInstance(attribute);
+                foreach (var creator in CurrentProcessor.PermissionCreators)
+                    if (creator.Takes(attribute.GetType()))
+                        return creator.Invoke(attribute);
             }
 
             return null;
@@ -59,13 +60,15 @@ namespace Axwabo.CommandSystem.PropertyManager {
         }
 
         private static void ResolveName(ref string name, Type type, Attribute attribute) {
-            if (CurrentProcessor.NameResolvers.TryGetValue(type, out var nameResolver))
-                name = nameResolver.ResolveName(attribute);
+            foreach (var resolver in CurrentProcessor.NameResolvers)
+                if (resolver.Takes(type))
+                    name = resolver.Invoke(attribute);
         }
 
         private static void ResolveDescription(ref string description, Type type, Attribute attribute) {
-            if (CurrentProcessor.DescriptionResolvers.TryGetValue(type, out var descriptionResolver))
-                description = descriptionResolver.ResolveDescription(attribute);
+            foreach (var resolver in CurrentProcessor.DescriptionResolvers)
+                if (resolver.Takes(type))
+                    description = resolver.Invoke(attribute);
         }
 
     }
