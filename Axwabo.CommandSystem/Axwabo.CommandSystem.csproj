@@ -129,6 +129,10 @@
         <Compile Include="Exceptions\AttributeResolverException.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="Patches\CommandImplementationPatch.cs" />
+        <Compile Include="Patches\CommandProcessorPatch.cs" />
+        <Compile Include="Patches\ConsolePatch.cs" />
+        <Compile Include="Patches\ProcessPlayersListPatch.cs" />
+        <Compile Include="Patches\QueryProcessorPatch.cs" />
         <Compile Include="Permissions\CedModPermissionChecker.cs" />
         <Compile Include="Permissions\CedModPermissionsAttribute.cs" />
         <Compile Include="Permissions\IPermissionChecker.cs" />
@@ -148,6 +152,7 @@
         <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Registration\UsesCedModPermissions.cs" />
         <Compile Include="Selectors\HubCollection.cs" />
+        <Compile Include="Selectors\PlayerSelectionManager.cs" />
         <Compile Include="Selectors\PlayerSelectionStack.cs" />
         <Compile Include="Selectors\StackCommands\StackPop.cs" />
         <Compile Include="Selectors\StackCommands\StackPush.cs" />

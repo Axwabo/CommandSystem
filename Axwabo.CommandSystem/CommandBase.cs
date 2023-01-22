@@ -2,7 +2,6 @@
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
-using PluginAPI.Core;
 
 namespace Axwabo.CommandSystem {
 
@@ -32,8 +31,9 @@ namespace Axwabo.CommandSystem {
 
         private int _minArgs;
 
+        // ReSharper disable VirtualMemberCallInConstructor
         protected CommandBase() {
-            if (string.IsNullOrEmpty(Name) && !CommandPropertyManager.TryResolveProperties(this, out _name, out _desc))
+            if (string.IsNullOrWhiteSpace(Name) && !CommandPropertyManager.TryResolveProperties(this, out _name, out _desc))
                 throw new NameNotSetException($"Command name on type {GetType().FullName} is not set. Are you missing an attribute or custom name resolver?");
             Permissions ??= CommandPropertyManager.ResolvePermissionChecker(this);
         }

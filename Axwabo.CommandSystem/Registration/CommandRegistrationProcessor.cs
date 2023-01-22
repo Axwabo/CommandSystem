@@ -69,7 +69,7 @@ namespace Axwabo.CommandSystem.Registration {
 
         #endregion
 
-        #region Execute
+        #region Exec
 
         public void Execute() {
             CommandPropertyManager.CurrentProcessor = this;

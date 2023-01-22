@@ -4,6 +4,8 @@ namespace Axwabo.CommandSystem.Selectors {
 
     public sealed class HubCollection : List<ReferenceHub> {
 
+        public static HubCollection Empty => new();
+
         public HubCollection() {
         }
 

@@ -13,7 +13,7 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands {
             if (selection == null)
                 return $"!Cannot get a selection stack object from {sender.GetType().FullName}.";
             selection.Push(targets);
-            return $"!Pushed {"player".Pluralize(targets.Count)} onto the selection stack:\n{targets.CombineNicknames()}";
+            return $"Pushed {"player".Pluralize(targets.Count)} onto the selection stack:\n{targets.CombineNicknames()}";
         }
 
     }
