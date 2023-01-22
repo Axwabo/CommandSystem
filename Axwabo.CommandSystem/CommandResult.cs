@@ -1,4 +1,4 @@
-﻿namespace Axwabo.CommandSystem.Structs {
+﻿namespace Axwabo.CommandSystem {
 
     public readonly ref struct CommandResult {
 

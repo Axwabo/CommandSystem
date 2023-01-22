@@ -2,7 +2,6 @@
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
-using Axwabo.CommandSystem.Structs;
 using PluginAPI.Core;
 
 namespace Axwabo.CommandSystem {

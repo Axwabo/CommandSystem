@@ -1,5 +1,4 @@
-﻿using Axwabo.CommandSystem.Structs;
-using NWAPIPermissionSystem;
+﻿using NWAPIPermissionSystem;
 
 namespace Axwabo.CommandSystem.Permissions {
 

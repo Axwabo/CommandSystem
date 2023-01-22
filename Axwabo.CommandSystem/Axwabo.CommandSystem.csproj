@@ -120,6 +120,7 @@
         <Compile Include="Attributes\Interfaces\ICommandName.cs" />
         <Compile Include="Attributes\PresetCommandListeners.cs" />
         <Compile Include="CommandBase.cs" />
+        <Compile Include="CommandResult.cs" />
         <Compile Include="CommandWrapper.cs" />
         <Compile Include="Exceptions\TypeMismatchException.cs" />
         <Compile Include="Exceptions\NameNotSetException.cs" />
@@ -143,8 +144,9 @@
         <Compile Include="Registration\CommandRegistrationProcessor.cs" />
         <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Registration\UsesCedModPermissions.cs" />
-        <Compile Include="Structs\CommandResult.cs" />
-        <Compile Include="Structs\TargetingCommandResult.cs" />
+        <Compile Include="Selectors\HubCollection.cs" />
+        <Compile Include="Selectors\PlayerSelection.cs" />
+        <Compile Include="TargetingCommandResult.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
