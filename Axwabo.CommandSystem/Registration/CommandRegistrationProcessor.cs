@@ -4,11 +4,15 @@ using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.Registration.AttributeResolvers;
+using CommandSystem;
 using RemoteAdmin;
+using Console = GameCore.Console;
 
 namespace Axwabo.CommandSystem.Registration {
 
     public sealed class CommandRegistrationProcessor {
+
+        #region Auto-Register
 
         public static void RegisterAll(object assemblyMemberInstance) => RegisterAll(assemblyMemberInstance.GetType());
 
@@ -19,11 +23,39 @@ namespace Axwabo.CommandSystem.Registration {
 
         public static void RegisterAll(Assembly assembly) => new CommandRegistrationProcessor(assembly).Execute();
 
+        #endregion
+
+        #region Unregister
+
+        public static void UnregisterAll(object assemblyMemberInstance) => UnregisterAll(assemblyMemberInstance.GetType());
+
+        public static void UnregisterAll(Type typeInAssembly) => UnregisterAll(typeInAssembly.Assembly);
+
+        public static void UnregisterAll(Assembly assembly) {
+            UnregisterFromHandler(assembly, CommandProcessor.RemoteAdminCommandHandler);
+            UnregisterFromHandler(assembly, Console.singleton.ConsoleCommandHandler);
+            UnregisterFromHandler(assembly, QueryProcessor.DotCommandHandler);
+        }
+
+        private static void UnregisterFromHandler(Assembly assembly, ICommandHandler handler) {
+            foreach (var cmd in handler.AllCommands)
+                if (cmd is CommandWrapper wrapper && wrapper.BackingCommand.GetType().Assembly == assembly)
+                    handler.UnregisterCommand(cmd);
+        }
+
+        #endregion
+
+        #region Create
+
         public static CommandRegistrationProcessor Create(object assemblyMemberInstance) => Create(assemblyMemberInstance.GetType().Assembly);
 
         public static CommandRegistrationProcessor Create(Type typeInAssembly) => Create(typeInAssembly.Assembly);
 
         public static CommandRegistrationProcessor Create(Assembly assembly) => new(assembly);
+
+        #endregion
+
+        #region Fields
 
         public Assembly TargetAssembly { get; }
 
@@ -34,6 +66,10 @@ namespace Axwabo.CommandSystem.Registration {
         internal readonly List<CommandDescriptionResolverContainer> DescriptionResolvers = new();
 
         internal readonly List<CommandPermissionCreatorContainer> PermissionCreators = new();
+
+        #endregion
+
+        #region Execute
 
         public void Execute() {
             CommandPropertyManager.CurrentProcessor = this;
@@ -57,10 +93,12 @@ namespace Axwabo.CommandSystem.Registration {
             if (targets.HasFlagFast(CommandTarget.RemoteAdmin))
                 CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(wrapper);
             if (targets.HasFlagFast(CommandTarget.ServerConsole))
-                GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(wrapper);
+                Console.singleton.ConsoleCommandHandler.RegisterCommand(wrapper);
             if (targets.HasFlagFast(CommandTarget.Client))
                 QueryProcessor.DotCommandHandler.RegisterCommand(wrapper);
         }
+
+        #endregion
 
     }
 

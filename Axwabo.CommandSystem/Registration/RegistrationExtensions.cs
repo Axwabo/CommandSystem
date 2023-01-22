@@ -10,6 +10,10 @@ namespace Axwabo.CommandSystem.Registration {
 
     public static class RegistrationExtensions {
 
+        public static bool HasFlagFast(this CommandTarget target, CommandTarget flag) => (target & flag) == flag;
+
+        #region Helpers
+
         private static Type GenericType(object o) {
             var type = o as Type ?? o.GetType();
             var args = type.GenericTypeArguments;
@@ -24,7 +28,33 @@ namespace Axwabo.CommandSystem.Registration {
                 ?? throw new AttributeResolverException($"Interface does not implement the generic {interfaceType.Name}")
             );
 
-        public static bool HasFlagFast(this CommandTarget target, CommandTarget flag) => (target & flag) == flag;
+        private static MethodInfo GetGenericResolverMethod(Type parameterType, Type interfaceType, object resolver, out Type param) {
+            if (parameterType == null)
+                throw new ArgumentNullException(nameof(parameterType));
+            if (interfaceType == null)
+                throw new ArgumentNullException(nameof(interfaceType));
+            if (resolver == null)
+                throw new ArgumentNullException(nameof(resolver));
+            var implementedInterface = GetInterface(resolver.GetType(), interfaceType);
+            if (implementedInterface == null)
+                throw new AttributeResolverException($"Expected an implementation of {interfaceType.Name} with generic type {parameterType.FullName}, got: {resolver.GetType().FullName}");
+            var method = implementedInterface.GetMethods()[0];
+            var parameters = method.GetParameters();
+            if (parameters is not {Length: 1})
+                throw new AttributeResolverException($"Expected an implementation {interfaceType.Name} with a single parameter of type {parameterType.FullName}");
+            param = parameters[0].ParameterType;
+            if (!param.IsAssignableFrom(parameterType))
+                throw new TypeMismatchException($"Expected an implementation {interfaceType.Name} with a single parameter of type {parameterType.FullName}, got: {param.FullName}");
+            var returnType = method.ReturnType;
+            var expectedReturnType = interfaceType.GetMethods()[0].ReturnType;
+            if (!returnType.IsAssignableFrom(expectedReturnType))
+                throw new TypeMismatchException($"Expected an implementation {interfaceType.Name} with a return type of {expectedReturnType.FullName}, got: {returnType.FullName}");
+            return method;
+        }
+
+        #endregion
+
+        #region Auto-Register
 
         public static CommandRegistrationProcessor WithRegistrationAttributesFrom(this CommandRegistrationProcessor processor, Type type) {
             if (type == null)
@@ -43,6 +73,10 @@ namespace Axwabo.CommandSystem.Registration {
             if (attribute is ICommandPermissionCreator permissionCreator)
                 processor.WithPermissionCreator(ImplementedGenericType(permissionCreator, typeof(ICommandPermissionCreator<>)), permissionCreator);
         }
+
+        #endregion
+
+        #region With Specific
 
         public static CommandRegistrationProcessor WithNameResolver<T>(this CommandRegistrationProcessor processor, ICommandNameResolver<T> nameResolver) where T : Attribute
             => WithNameResolver(processor, typeof(T), nameResolver);
@@ -71,29 +105,7 @@ namespace Axwabo.CommandSystem.Registration {
             return processor;
         }
 
-        private static MethodInfo GetGenericResolverMethod(Type parameterType, Type interfaceType, object resolver, out Type param) {
-            if (parameterType == null)
-                throw new ArgumentNullException(nameof(parameterType));
-            if (interfaceType == null)
-                throw new ArgumentNullException(nameof(interfaceType));
-            if (resolver == null)
-                throw new ArgumentNullException(nameof(resolver));
-            var implementedInterface = GetInterface(resolver.GetType(), interfaceType);
-            if (implementedInterface == null)
-                throw new AttributeResolverException($"Expected an implementation of {interfaceType.Name} with generic type {parameterType.FullName}, got: {resolver.GetType().FullName}");
-            var method = implementedInterface.GetMethods()[0];
-            var parameters = method.GetParameters();
-            if (parameters is not {Length: 1})
-                throw new AttributeResolverException($"Expected an implementation {interfaceType.Name} with a single parameter of type {parameterType.FullName}");
-            param = parameters[0].ParameterType;
-            if (!param.IsAssignableFrom(parameterType))
-                throw new TypeMismatchException($"Expected an implementation {interfaceType.Name} with a single parameter of type {parameterType.FullName}, got: {param.FullName}");
-            var returnType = method.ReturnType;
-            var expectedReturnType = interfaceType.GetMethods()[0].ReturnType;
-            if (!returnType.IsAssignableFrom(expectedReturnType))
-                throw new TypeMismatchException($"Expected an implementation {interfaceType.Name} with a return type of {expectedReturnType.FullName}, got: {returnType.FullName}");
-            return method;
-        }
+        #endregion
 
     }
 
