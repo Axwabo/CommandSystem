@@ -20,7 +20,7 @@ namespace Axwabo.CommandSystem.Registration.AttributeResolvers {
 
         public bool Takes(Type type) => _parameter.IsAssignableFrom(type);
 
-        public string Invoke(Attribute attribute) => (string) _method.Invoke(_instance, new object[] {attribute});
+        public string Resolve(Attribute attribute) => (string) _method.Invoke(_instance, new object[] {attribute});
 
     }
 

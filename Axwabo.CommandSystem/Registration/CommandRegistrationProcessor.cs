@@ -65,6 +65,10 @@ namespace Axwabo.CommandSystem.Registration {
 
         internal readonly List<CommandDescriptionResolverContainer> DescriptionResolvers = new();
 
+        internal readonly List<CommandAliasResolverContainer> AliasResolvers = new();
+        
+        internal readonly List<CommandUsageResolverContainer> UsageResolvers = new();
+
         internal readonly List<CommandPermissionCreatorContainer> PermissionCreators = new();
 
         #endregion
@@ -83,18 +87,18 @@ namespace Axwabo.CommandSystem.Registration {
         }
 
         private static void RegisterCommand(Type type) {
-            var targets = CommandTarget.None;
+            var targets = CommandHandlerType.None;
             foreach (var attr in type.GetCustomAttributes())
-                if (attr is CommandListenerAttribute ctx)
-                    targets = CommandListenerAttribute.Combine(targets, ctx);
-            if (targets is CommandTarget.None)
+                if (attr is CommandTargetAttribute targetAttribute)
+                    targets = CommandTargetAttribute.Combine(targets, targetAttribute);
+            if (targets is CommandHandlerType.None)
                 return;
             var wrapper = new CommandWrapper((CommandBase) Activator.CreateInstance(type));
-            if (targets.HasFlagFast(CommandTarget.RemoteAdmin))
+            if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
                 CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(wrapper);
-            if (targets.HasFlagFast(CommandTarget.ServerConsole))
+            if (targets.HasFlagFast(CommandHandlerType.ServerConsole))
                 Console.singleton.ConsoleCommandHandler.RegisterCommand(wrapper);
-            if (targets.HasFlagFast(CommandTarget.Client))
+            if (targets.HasFlagFast(CommandHandlerType.Client))
                 QueryProcessor.DotCommandHandler.RegisterCommand(wrapper);
         }
 

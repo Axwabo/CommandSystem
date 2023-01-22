@@ -4,11 +4,11 @@ using Axwabo.CommandSystem.Attributes.Interfaces;
 namespace Axwabo.CommandSystem.Attributes {
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public sealed class CommandDescriptionAttribute : Attribute, ICommandDescription {
+    public sealed class DescriptionAttribute : Attribute, IDescription {
 
         public string Description { get; }
 
-        public CommandDescriptionAttribute(string description) => Description = description;
+        public DescriptionAttribute(string description) => Description = description;
 
     }
 

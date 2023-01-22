@@ -5,7 +5,7 @@ using Axwabo.CommandSystem.Commands;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands {
 
-    [CommandProperties(CommandTarget.RaAndConsole, "stackpush", "Pushes the given players onto the selection stack.")]
+    [CommandProperties(CommandHandlerType.RaAndServer, "stackpush", "Pushes the given players onto the selection stack.")]
     public sealed class StackPush : UnifiedTargetingCommand {
 
         protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender) {

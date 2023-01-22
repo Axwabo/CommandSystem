@@ -6,7 +6,7 @@ namespace Axwabo.CommandSystem.Registration.AttributeResolvers {
         
         bool Takes(Type type);
 
-        TReturn Invoke(Attribute attribute);
+        TReturn Resolve(Attribute attribute);
 
     }
 

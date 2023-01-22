@@ -10,7 +10,7 @@ namespace Axwabo.CommandSystem.Registration {
 
     public static class RegistrationExtensions {
 
-        public static bool HasFlagFast(this CommandTarget target, CommandTarget flag) => (target & flag) == flag;
+        public static bool HasFlagFast(this CommandHandlerType target, CommandHandlerType flag) => (target & flag) == flag;
 
         #region Helpers
 
@@ -70,6 +70,10 @@ namespace Axwabo.CommandSystem.Registration {
                 processor.WithNameResolver(ImplementedGenericType(nameResolver, typeof(ICommandNameResolver<>)), nameResolver);
             if (attribute is ICommandDescriptionResolver descriptionResolver)
                 processor.WithDescriptionResolver(ImplementedGenericType(descriptionResolver, typeof(ICommandDescriptionResolver<>)), descriptionResolver);
+            if (attribute is ICommandAliasResolver aliasResolver)
+                processor.WithAliasResolver(ImplementedGenericType(aliasResolver, typeof(ICommandAliasResolver<>)), aliasResolver);
+            if (attribute is ICommandUsageResolver usageResolver)
+                processor.WithUsageResolver(ImplementedGenericType(usageResolver, typeof(ICommandUsageResolver<>)), usageResolver);
             if (attribute is ICommandPermissionCreator permissionCreator)
                 processor.WithPermissionCreator(ImplementedGenericType(permissionCreator, typeof(ICommandPermissionCreator<>)), permissionCreator);
         }
@@ -93,6 +97,24 @@ namespace Axwabo.CommandSystem.Registration {
         public static CommandRegistrationProcessor WithDescriptionResolver(this CommandRegistrationProcessor processor, Type type, ICommandDescriptionResolver descriptionResolver) {
             var method = GetGenericResolverMethod(type, typeof(ICommandDescriptionResolver<>), descriptionResolver, out var param);
             processor.DescriptionResolvers.Add(new CommandDescriptionResolverContainer(method, param, descriptionResolver));
+            return processor;
+        }
+
+        public static CommandRegistrationProcessor WithAliasResolver<T>(this CommandRegistrationProcessor processor, ICommandAliasResolver<T> aliasResolver) where T : Attribute
+            => WithAliasResolver(processor, typeof(T), aliasResolver);
+
+        public static CommandRegistrationProcessor WithAliasResolver(this CommandRegistrationProcessor processor, Type type, ICommandAliasResolver aliasResolver) {
+            var method = GetGenericResolverMethod(type, typeof(ICommandAliasResolver<>), aliasResolver, out var param);
+            processor.AliasResolvers.Add(new CommandAliasResolverContainer(method, param, aliasResolver));
+            return processor;
+        }
+
+        public static CommandRegistrationProcessor WithUsageResolver<T>(this CommandRegistrationProcessor processor, ICommandUsageResolver<T> usageResolver) where T : Attribute
+            => WithUsageResolver(processor, typeof(T), usageResolver);
+
+        public static CommandRegistrationProcessor WithUsageResolver(this CommandRegistrationProcessor processor, Type type, ICommandUsageResolver usageResolver) {
+            var method = GetGenericResolverMethod(type, typeof(ICommandUsageResolver<>), usageResolver, out var param);
+            processor.UsageResolvers.Add(new CommandUsageResolverContainer(method, param, usageResolver));
             return processor;
         }
 

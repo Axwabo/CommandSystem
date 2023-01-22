@@ -21,7 +21,7 @@ namespace Axwabo.CommandSystem.Registration.AttributeResolvers {
 
         public bool Takes(Type type) => _parameter.IsAssignableFrom(type);
 
-        public IPermissionChecker Invoke(Attribute attribute) => (IPermissionChecker) _method.Invoke(_instance, new object[] {attribute});
+        public IPermissionChecker Resolve(Attribute attribute) => (IPermissionChecker) _method.Invoke(_instance, new object[] {attribute});
 
     }
 

@@ -1,22 +1,22 @@
 ﻿namespace Axwabo.CommandSystem.Attributes {
 
-    public sealed class RemoteAdminCommand : CommandListenerAttribute {
+    public sealed class RemoteAdminCommand : CommandTargetAttribute {
 
-        public RemoteAdminCommand() : base(CommandTarget.RemoteAdmin) {
+        public RemoteAdminCommand() : base(CommandHandlerType.RemoteAdmin) {
         }
 
     }
 
-    public sealed class ServerConsoleCommand : CommandListenerAttribute {
+    public sealed class ServerCommand : CommandTargetAttribute {
 
-        public ServerConsoleCommand() : base(CommandTarget.ServerConsole) {
+        public ServerCommand() : base(CommandHandlerType.ServerConsole) {
         }
 
     }
 
-    public sealed class ClientCommand : CommandListenerAttribute {
+    public sealed class ClientCommand : CommandTargetAttribute {
 
-        public ClientCommand() : base(CommandTarget.Client) {
+        public ClientCommand() : base(CommandHandlerType.Client) {
         }
 
     }

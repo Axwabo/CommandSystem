@@ -1,6 +1,6 @@
 namespace Axwabo.CommandSystem.Attributes.Interfaces {
 
-    public interface ICommandDescription {
+    public interface IDescription {
 
         string Description { get; }
 
