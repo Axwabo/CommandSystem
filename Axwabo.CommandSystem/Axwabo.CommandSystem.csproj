@@ -121,10 +121,13 @@
         <Compile Include="Attributes\PresetCommandListeners.cs" />
         <Compile Include="CommandBase.cs" />
         <Compile Include="CommandResult.cs" />
+        <Compile Include="Commands\PlayerOnlyCommand.cs" />
+        <Compile Include="Commands\UnifiedTargetingCommand.cs" />
         <Compile Include="CommandWrapper.cs" />
         <Compile Include="Exceptions\TypeMismatchException.cs" />
         <Compile Include="Exceptions\NameNotSetException.cs" />
         <Compile Include="Exceptions\AttributeResolverException.cs" />
+        <Compile Include="Extensions.cs" />
         <Compile Include="Patches\CommandImplementationPatch.cs" />
         <Compile Include="Permissions\CedModPermissionChecker.cs" />
         <Compile Include="Permissions\CedModPermissionsAttribute.cs" />
@@ -145,7 +148,9 @@
         <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Registration\UsesCedModPermissions.cs" />
         <Compile Include="Selectors\HubCollection.cs" />
-        <Compile Include="Selectors\PlayerSelection.cs" />
+        <Compile Include="Selectors\PlayerSelectionStack.cs" />
+        <Compile Include="Selectors\StackCommands\StackPop.cs" />
+        <Compile Include="Selectors\StackCommands\StackPush.cs" />
         <Compile Include="TargetingCommandResult.cs" />
     </ItemGroup>
     <ItemGroup>

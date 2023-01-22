@@ -1,4 +1,5 @@
 ﻿using System;
+using Axwabo.CommandSystem.Registration;
 using HarmonyLib;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
@@ -16,6 +17,7 @@ namespace Axwabo.CommandSystem {
         [PluginPriority(LoadPriority.Highest)]
         private void OnEnable() {
             Instance = this;
+            CommandRegistrationProcessor.RegisterAll(this);
             _harmony = new Harmony("Axwabo.CommandSystem");
             try {
                 _harmony.PatchAll();
@@ -29,6 +31,7 @@ namespace Axwabo.CommandSystem {
         [PluginUnload]
         private void OnDisable() {
             Instance = null;
+            CommandRegistrationProcessor.UnregisterAll(this);
             _harmony.UnpatchAll();
             Log.Info("Axwabo.CommandSystem has been disabled!");
         }
