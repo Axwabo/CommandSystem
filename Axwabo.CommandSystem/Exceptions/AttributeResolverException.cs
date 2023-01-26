@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Exceptions {
+namespace Axwabo.CommandSystem.Exceptions;
 
-    public sealed class AttributeResolverException : Exception {
+public sealed class AttributeResolverException : Exception {
 
-        public AttributeResolverException(string message) : base(message) {
-        }
-
+    public AttributeResolverException(string message) : base(message) {
     }
 
 }

@@ -1,15 +1,13 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.PropertyManager.Resolvers {
+namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
-    public interface ICommandAliasResolver {
+public interface ICommandAliasResolver {
 
-    }
+}
 
-    public interface ICommandAliasResolver<in TAttribute> : ICommandAliasResolver where TAttribute : Attribute {
+public interface ICommandAliasResolver<in TAttribute> : ICommandAliasResolver where TAttribute : Attribute {
 
-        string[] ResolveAliases(TAttribute attribute);
-
-    }
+    string[] ResolveAliases(TAttribute attribute);
 
 }

@@ -1,14 +1,12 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Permissions {
+namespace Axwabo.CommandSystem.Permissions;
 
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public sealed class CedModPermissionsAttribute : Attribute {
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+public sealed class CedModPermissionsAttribute : Attribute {
 
-        public readonly string Permission;
+    public readonly string Permission;
 
-        public CedModPermissionsAttribute(string permission) => Permission = permission;
-
-    }
+    public CedModPermissionsAttribute(string permission) => Permission = permission;
 
 }

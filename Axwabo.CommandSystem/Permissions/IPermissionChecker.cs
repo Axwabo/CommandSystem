@@ -1,9 +1,7 @@
-﻿namespace Axwabo.CommandSystem.Permissions {
+﻿namespace Axwabo.CommandSystem.Permissions;
 
-    public interface IPermissionChecker {
+public interface IPermissionChecker {
 
-        CommandResult CheckPermission(CommandSender sender);
-
-    }
+    CommandResult CheckPermission(CommandSender sender);
 
 }

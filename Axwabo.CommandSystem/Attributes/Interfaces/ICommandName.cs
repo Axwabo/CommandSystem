@@ -1,9 +1,7 @@
-﻿namespace Axwabo.CommandSystem.Attributes.Interfaces {
+﻿namespace Axwabo.CommandSystem.Attributes.Interfaces;
 
-    public interface ICommandName {
+public interface ICommandName {
 
-        string Name { get; }
-
-    }
+    string Name { get; }
 
 }

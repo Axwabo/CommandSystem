@@ -1,15 +1,13 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.PropertyManager.Resolvers {
+namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
-    public interface ICommandUsageResolver {
+public interface ICommandUsageResolver {
 
-    }
+}
 
-    public interface ICommandUsageResolver<in TAttribute> : ICommandUsageResolver where TAttribute : Attribute {
+public interface ICommandUsageResolver<in TAttribute> : ICommandUsageResolver where TAttribute : Attribute {
 
-        string[] ResolveUsage(TAttribute attribute);
-
-    }
+    string[] ResolveUsage(TAttribute attribute);
 
 }

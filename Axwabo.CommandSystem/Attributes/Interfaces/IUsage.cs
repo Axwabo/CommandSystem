@@ -1,9 +1,7 @@
-﻿namespace Axwabo.CommandSystem.Attributes.Interfaces {
+﻿namespace Axwabo.CommandSystem.Attributes.Interfaces;
 
-    public interface IUsage {
+public interface IUsage {
 
-        string[] Usage { get; }
-
-    }
+    string[] Usage { get; }
 
 }

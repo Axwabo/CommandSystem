@@ -1,13 +1,11 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Registration.AttributeResolvers {
+namespace Axwabo.CommandSystem.Registration.AttributeResolvers;
 
-    internal interface IResolverContainer<out TReturn> {
-        
-        bool Takes(Type type);
+internal interface IResolverContainer<out TReturn> {
 
-        TReturn Resolve(Attribute attribute);
+    bool Takes(Type type);
 
-    }
+    TReturn Resolve(Attribute attribute);
 
 }

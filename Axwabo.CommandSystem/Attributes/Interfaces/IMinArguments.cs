@@ -1,9 +1,7 @@
-﻿namespace Axwabo.CommandSystem.Attributes.Interfaces {
+﻿namespace Axwabo.CommandSystem.Attributes.Interfaces;
 
-    public interface IMinArguments {
+public interface IMinArguments {
 
-        int MinArguments { get; }
-
-    }
+    int MinArguments { get; }
 
 }

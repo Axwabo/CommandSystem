@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Exceptions {
+namespace Axwabo.CommandSystem.Exceptions;
 
-    public sealed class TypeMismatchException : Exception {
+public sealed class TypeMismatchException : Exception {
 
-        public TypeMismatchException(string message) : base(message) {
-        }
-
+    public TypeMismatchException(string message) : base(message) {
     }
 
 }

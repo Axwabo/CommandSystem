@@ -1,9 +1,7 @@
-﻿namespace Axwabo.CommandSystem.Attributes.Interfaces {
+﻿namespace Axwabo.CommandSystem.Attributes.Interfaces;
 
-    public interface IAliases {
+public interface IAliases {
 
-        string[] Aliases { get; }
-
-    }
+    string[] Aliases { get; }
 
 }

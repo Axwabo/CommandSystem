@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Exceptions {
+namespace Axwabo.CommandSystem.Exceptions;
 
-    public sealed class NameNotSetException : Exception {
+public sealed class NameNotSetException : Exception {
 
-        public NameNotSetException(string message) : base(message) {
-        }
-
+    public NameNotSetException(string message) : base(message) {
     }
 
 }

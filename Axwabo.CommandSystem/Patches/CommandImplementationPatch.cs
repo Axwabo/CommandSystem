@@ -9,37 +9,43 @@ using CommandSystem.Commands.Shared;
 using HarmonyLib;
 using static Axwabo.Helpers.Harmony.InstructionHelper;
 
-namespace Axwabo.CommandSystem.Patches {
+namespace Axwabo.CommandSystem.Patches;
 
-    [HarmonyPatch(typeof(HelpCommand), nameof(HelpCommand.Execute))]
-    public static class CommandImplementationPatch {
+[HarmonyPatch(typeof(HelpCommand), nameof(HelpCommand.Execute))]
+public static class CommandImplementationPatch {
 
-        public static string GetImplementationLocation(ICommand command)
-            => GetTypeInfo(command is CommandWrapper wrapper ? wrapper.BackingCommand.GetType() : command.GetType());
+    public static string GetImplementationLocation(ICommand command)
+        => GetTypeInfo(command is CommandWrapper wrapper ? wrapper.BackingCommand.GetType() : command.GetType());
 
-        public static string GetTypeInfo(Type type) => type.Assembly.GetName().Name + ":" + type.FullName;
+    public static string GetTypeInfo(Type type) => type.Assembly.GetName().Name + ":" + type.FullName;
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
-            var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            var index = list.FindIndex(i => i.operand is MethodInfo {Name: "GetType"}) - 1;
-            var leave = list.FindCode(OpCodes.Leave_S, start: index);
-            var blocks = list[index].ExtractBlocks();
-            list.RemoveRange(index, leave - index);
-            list.InsertRange(index, new[] {
-                Ldarg(3).WithBlocks(blocks),
-                Ldarg(3),
-                LdindRef,
-                String("\nImplemented in "),
-                Ldloc(0),
-                Call(typeof(CommandImplementationPatch), nameof(GetImplementationLocation)),
-                Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
-                StindRef
-            });
-            foreach (var codeInstruction in list)
-                yield return codeInstruction;
-            ListPool<CodeInstruction>.Shared.Return(list);
-        }
+    public static string GetUsage(ICommand command)
+        => command is not IUsageProvider {Usage: {Length: not 0} usage}
+            ? ""
+            : $"\nUsage:\n{string.Join("\n", usage)}";
 
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+        var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
+        var index = list.FindIndex(i => i.operand is MethodInfo {Name: "GetType"}) - 1;
+        var leave = list.FindCode(OpCodes.Leave_S, start: index);
+        var blocks = list[index].ExtractBlocks();
+        list.RemoveRange(index, leave - index);
+        list.InsertRange(index, new[] {
+            Ldarg(3).WithBlocks(blocks),
+            Ldarg(3),
+            LdindRef,
+            Ldloc(0),
+            Call(typeof(CommandImplementationPatch), nameof(GetUsage)),
+            Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string)}),
+            String("\nImplemented in "),
+            Ldloc(0),
+            Call(typeof(CommandImplementationPatch), nameof(GetImplementationLocation)),
+            Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
+            StindRef
+        });
+        foreach (var codeInstruction in list)
+            yield return codeInstruction;
+        ListPool<CodeInstruction>.Shared.Return(list);
     }
 
 }

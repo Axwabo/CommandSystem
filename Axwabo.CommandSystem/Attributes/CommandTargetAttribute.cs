@@ -1,17 +1,15 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Attributes {
+namespace Axwabo.CommandSystem.Attributes;
 
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public class CommandTargetAttribute : Attribute {
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+public class CommandTargetAttribute : Attribute {
 
-        public readonly CommandHandlerType Target;
+    public readonly CommandHandlerType Target;
 
-        public CommandTargetAttribute(CommandHandlerType target) => Target = target;
+    public CommandTargetAttribute(CommandHandlerType target) => Target = target;
 
-        public static CommandHandlerType Combine(CommandHandlerType current, CommandTargetAttribute attribute)
-            => attribute == null ? current : current | attribute.Target;
-
-    }
+    public static CommandHandlerType Combine(CommandHandlerType current, CommandTargetAttribute attribute)
+        => attribute == null ? current : current | attribute.Target;
 
 }
