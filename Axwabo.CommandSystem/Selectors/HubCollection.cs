@@ -14,5 +14,7 @@ public sealed class HubCollection : List<ReferenceHub> {
 
     public HubCollection(IEnumerable<ReferenceHub> collection) : base(collection) {
     }
+    
+    public HubCollection(ReferenceHub hub) : base(1) => Add(hub);
 
 }

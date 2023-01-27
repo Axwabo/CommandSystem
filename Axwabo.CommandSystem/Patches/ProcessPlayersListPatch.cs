@@ -15,9 +15,9 @@ internal static class ProcessPlayersListPatch {
         var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
         var targets = generator.DeclareLocal(typeof(List<ReferenceHub>));
         var label = generator.DefineLabel();
-        var entryPoint = list[0].WithLabels(label);
+        list[0].labels.Add(label);
         list.InsertRange(0, new[] {
-            Ldarg(0).MoveBlocksFrom(entryPoint),
+            Ldarg(0),
             Ldarg(1),
             Ldarg(3),
             targets.LoadAddress(),
@@ -25,8 +25,7 @@ internal static class ProcessPlayersListPatch {
             Call(typeof(PlayerSelectionManager), nameof(PlayerSelectionManager.TryProcessPlayersCustom)),
             label.False(),
             targets.Load(),
-            Stloc(7),
-            ((Label) list[list.FindCode(OpCodes.Leave)].operand).Jump()
+            Return
         });
         foreach (var codeInstruction in list)
             yield return codeInstruction;

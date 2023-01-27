@@ -8,8 +8,8 @@ public abstract class PlayerOnlyCommand : CommandBase {
     protected sealed override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
         => sender is not PlayerCommandSender player
             ? "!Only a player can execute this command."
-            : ExecuteAsPlayer(arguments, player);
+            : ExecuteAsPlayer(arguments, player.ReferenceHub);
 
-    protected abstract CommandResult ExecuteAsPlayer(ArraySegment<string> arguments, PlayerCommandSender sender);
+    protected abstract CommandResult ExecuteAsPlayer(ArraySegment<string> arguments, ReferenceHub sender);
 
 }
