@@ -140,6 +140,7 @@
         <Compile Include="Patches\ConsolePatch.cs" />
         <Compile Include="Patches\ProcessPlayersListPatch.cs" />
         <Compile Include="Patches\QueryProcessorPatch.cs" />
+        <Compile Include="Patches\RemoveStackTraceZeroesPatch.cs" />
         <Compile Include="Permissions\CedModPermissionChecker.cs" />
         <Compile Include="Permissions\CedModPermissionsAttribute.cs" />
         <Compile Include="Permissions\IPermissionChecker.cs" />

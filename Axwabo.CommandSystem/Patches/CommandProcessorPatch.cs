@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Selectors;
 using Axwabo.Helpers.Pools;
@@ -24,9 +25,24 @@ internal static class CommandProcessorPatch {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
         });
-        list.InsertRange(list.FindIndex(i => i.operand is CommandExecutionFailedError), new[] {
+        var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
+        list.InsertRange(failedIndex, new[] {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
+        });
+        var send = list.FindIndex(failedIndex, i => i.operand is MethodInfo {Name: "ToUpperInvariant"}) - 6;
+        list.RemoveRange(send, 10);
+        list.InsertRange(send, new[] {
+            Ldloc(1),
+            Int0,
+            LdelemRef,
+            Call<string>(nameof(string.ToUpperInvariant)),
+            String("#"),
+            Ldloc(12),
+            Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
+            Int0,
+            Int1,
+            String("")
         });
         foreach (var codeInstruction in list)
             yield return codeInstruction;
