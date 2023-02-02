@@ -69,9 +69,6 @@
         <Reference Include="NWAPIPermissionSystem">
             <HintPath>..\..\assemblies\NWAPIPermissionSystem.dll</HintPath>
         </Reference>
-        <Reference Include="NwPluginAPI.Analyzers, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\Northwood.PluginAPI.Analyzers.12.0.0\lib\netstandard2.0\NwPluginAPI.Analyzers.dll</HintPath>
-        </Reference>
         <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
             <HintPath>..\packages\Northwood.PluginAPI.12.0.0\lib\net48\PluginAPI.dll</HintPath>
         </Reference>
@@ -162,8 +159,9 @@
         <Compile Include="Registration\CommandRegistrationProcessor.cs" />
         <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Registration\UsesCedModPermissions.cs" />
-        <Compile Include="Selectors\CharSelectorProcessor.cs" />
+        <Compile Include="Selectors\AtSelectorProcessor.cs" />
         <Compile Include="Selectors\HubCollection.cs" />
+        <Compile Include="Selectors\HubFilter.cs" />
         <Compile Include="Selectors\PlayerSelectionManager.cs" />
         <Compile Include="Selectors\PlayerSelectionStack.cs" />
         <Compile Include="Selectors\StackCommands\StackClear.cs" />
@@ -175,6 +173,7 @@
         <Compile Include="TargetingCommandResult.cs" />
     </ItemGroup>
     <ItemGroup>
+        <None Include="App.config" />
         <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>

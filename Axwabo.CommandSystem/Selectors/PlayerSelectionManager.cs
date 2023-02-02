@@ -31,7 +31,7 @@ public static class PlayerSelectionManager {
         }
 
         if (formatted.StartsWith("@"))
-            return CharSelectorProcessor.ProcessString(formatted, keepEmptyEntries, out targets, out newArgs);
+            return AtSelectorProcessor.ProcessString(formatted.Substring(1).TrimEnd(), keepEmptyEntries, out targets, out newArgs);
         targets = HubCollection.Empty;
         newArgs = arguments.ToArray();
         return false;
