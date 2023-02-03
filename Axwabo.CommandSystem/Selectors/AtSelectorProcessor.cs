@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -15,16 +16,52 @@ public static class AtSelectorProcessor {
             return false;
         }
 
-        if (formatted.Length < 2) {
+        if (formatted.Length < 3) {
             targets = ExecuteSelector(selectorChar, null, -1);
             newArgs = Array.Empty<string>();
             return true;
         }
 
-        throw new NotImplementedException("Advanced @selector parsing");
+        if (formatted[1] != '[') {
+            targets = ExecuteSelector(selectorChar, null, -1);
+            newArgs = PlayerSelectionManager.Split(formatted.Substring(1), keepEmptyEntries, true);
+            return true;
+        }
+
+        var state = new ParserState {
+            FullString = formatted,
+            EndIndex = 3
+        };
+
+        for (var i = 2; i < formatted.Length; i++)
+            if (ProcessChar(i, state))
+                break;
+
+        targets = ExecuteSelector(selectorChar, state.Filters, state.Limit);
+        newArgs = state.EndIndex >= formatted.Length
+            ? Array.Empty<string>()
+            : PlayerSelectionManager.Split(formatted.Substring(state.EndIndex + 1), keepEmptyEntries, true);
+        return true;
     }
 
-    private static List<ReferenceHub> ExecuteSelector(char selectorChar, List<HubFilter> filters, int limit) => GetDefaultTargets(
+    private static HubFilter GetFilter(string name, string value, ref int limit) {
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value))
+            return null;
+        switch (name.ToLower()) {
+            case "limit":
+                return ParseLimit(value, ref limit);
+            default:
+                return null;
+        }
+    }
+
+    private static HubFilter ParseLimit(string value, ref int limit) {
+        if (int.TryParse(value, out var x))
+            limit = x;
+        return null;
+    }
+
+    public static List<ReferenceHub> ExecuteSelector(char selectorChar, List<HubFilter> filters, int limit) => GetDefaultTargets(
         GetAllFiltered(filters),
         selectorChar,
         limit
@@ -35,9 +72,7 @@ public static class AtSelectorProcessor {
         if (filters == null)
             return all;
         for (var i = 0; i < all.Count; i++) {
-            var hub = all[i];
-            var failed = MatchesAllFilters(hub, filters);
-            if (!failed)
+            if (MatchesAllFilters(all[i], filters))
                 continue;
             all.RemoveAt(i);
             i--;
@@ -47,14 +82,12 @@ public static class AtSelectorProcessor {
     }
 
     private static bool MatchesAllFilters(ReferenceHub hub, List<HubFilter> filters) {
-        var failed = false;
+        if (filters.Count == 0)
+            return true;
         foreach (var f in filters)
-            if (!f(hub)) {
-                failed = true;
-                break;
-            }
-
-        return failed;
+            if (f != null && !f(hub))
+                return false;
+        return true;
     }
 
     private static List<ReferenceHub> GetDefaultTargets(List<ReferenceHub> candidates, char selector, int limit) => selector switch {
@@ -65,6 +98,8 @@ public static class AtSelectorProcessor {
     };
 
     private static List<ReferenceHub> GetRandom(List<ReferenceHub> all, int limit) {
+        if (all.Count == 0)
+            return HubCollection.Empty;
         if (limit < 0)
             return new HubCollection(all.RandomItem());
         var list = new HubCollection(limit);
@@ -83,5 +118,67 @@ public static class AtSelectorProcessor {
     private static List<ReferenceHub> Self => HubCollection.From(PlayerSelectionManager.CurrentSender);
 
     public static bool IsValidChar(char c) => ValidChars.Contains(c);
+
+    private static bool ProcessChar(int index, ParserState state) {
+        var escaped = state.EscapeNext;
+        var c = state.FullString[index];
+        if (escaped) {
+            state.EscapeNext = false;
+            state.Builder.Append(c);
+            return false;
+        }
+
+        switch (c) {
+            case ']':
+                state.BuilderToString().IsReadingValue = false;
+                state.Filters.Add(GetFilter(state.FilterName, state.FilterValue, ref state.Limit));
+                state.EndIndex = index;
+                return true;
+            case '\\':
+                state.EscapeNext = true;
+                return false;
+            case '=':
+                state.BuilderToString().IsReadingValue = true;
+                return false;
+            case ',':
+                state.BuilderToString().IsReadingValue = false;
+                state.Filters.Add(GetFilter(state.FilterName, state.FilterValue, ref state.Limit));
+                return false;
+            default:
+                state.Builder.Append(c);
+                return false;
+        }
+    }
+
+    private sealed class ParserState {
+
+        public int Limit = -1;
+
+        public string FullString;
+
+        public readonly StringBuilder Builder = new();
+
+        public readonly List<HubFilter> Filters = new();
+
+        public int EndIndex;
+
+        public string FilterName;
+
+        public string FilterValue;
+
+        public bool IsReadingValue;
+
+        public bool EscapeNext;
+
+        public ParserState BuilderToString() {
+            if (IsReadingValue)
+                FilterValue = Builder.ToString();
+            else
+                FilterName = Builder.ToString();
+            Builder.Clear();
+            return this;
+        }
+
+    }
 
 }

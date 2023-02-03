@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayerRoles.Spectating;
 using RemoteAdmin;
-using Utils;
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -20,7 +19,7 @@ public static class PlayerSelectionManager {
     public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer).ToList();
 
     public static bool TryProcessPlayersCustom(ArraySegment<string> arguments, int startIndex, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
-        var formatted = RAUtils.FormatArguments(arguments, startIndex);
+        var formatted = string.Join(" ", arguments.Segment(startIndex));
         arguments = arguments.Segment(startIndex);
         if (TryDeterminePrefix(formatted, keepEmptyEntries, out targets, out newArgs))
             return true;
@@ -31,7 +30,7 @@ public static class PlayerSelectionManager {
         }
 
         if (formatted.StartsWith("@"))
-            return AtSelectorProcessor.ProcessString(formatted.Substring(1).TrimEnd(), keepEmptyEntries, out targets, out newArgs);
+            return AtSelectorProcessor.ProcessString(formatted.Substring(1), keepEmptyEntries, out targets, out newArgs);
         targets = HubCollection.Empty;
         newArgs = arguments.ToArray();
         return false;
@@ -61,7 +60,7 @@ public static class PlayerSelectionManager {
     private static void GetSpectated(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         if (CurrentSender is not PlayerCommandSender {ReferenceHub: {roleManager.CurrentRole: SpectatorRole} hub}) {
             targets = HubCollection.Empty;
-            newArgs = Split(formatted, keepEmptyEntries);
+            newArgs = Split(formatted, keepEmptyEntries, true);
             return;
         }
 
@@ -123,6 +122,10 @@ public static class PlayerSelectionManager {
             ? HubCollection.Empty
             : stack.PopAt(index);
 
-    private static string[] Split(string s, bool keepEmptyEntries) => s.Split(new[] {' '}, keepEmptyEntries ? StringSplitOptions.None : StringSplitOptions.RemoveEmptyEntries);
+    public static string[] Split(string s, bool keepEmptyEntries, bool preTrimStart = false) {
+        if (preTrimStart && s.Length > 0 && char.IsWhiteSpace(s[0]))
+            s = s.Substring(1);
+        return s.Split(new[] {' '}, keepEmptyEntries ? StringSplitOptions.None : StringSplitOptions.RemoveEmptyEntries);
+    }
 
 }
