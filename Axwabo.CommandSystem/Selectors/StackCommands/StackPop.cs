@@ -21,6 +21,7 @@ public sealed class StackPop : CommandBase {
             indexSet = true;
         } else
             popped = selection.Pop();
+
         return $"Popped {"player".Pluralize(popped.Count)} from the selection stack{(indexSet ? $" at index {index}" : "")}:\n{popped.CombineNicknames()}";
     }
 

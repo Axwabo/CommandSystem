@@ -16,7 +16,9 @@ public static class Extensions {
     }
 
     public static string Substring(this string s, params char[] separators) => s.Substring(0, separators);
-    
+
     public static bool ContainsIgnoreCase(this string s, string value) => s.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
+    
+    public static bool TryParseIgnoreCase<T>(string value, out T result) where T : struct => Enum.TryParse(value, true, out result);
 
 }

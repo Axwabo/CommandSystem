@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.Selectors.Filtering;
 using PlayerRoles;
 using PluginAPI.Core;
 using RemoteAdmin;
@@ -52,7 +53,8 @@ public static class AtSelectorProcessor {
     public static HubFilter GetFilter(string name, string value, ref int limit, bool inverted = false) {
         if (string.IsNullOrEmpty(name))
             return null;
-        var filter = name.ToLower() switch {
+        var alias = name.ToLower();
+        var filter = alias switch {
             "limit" => ParseLimit(value, out limit),
             "role" or "class" or "r" or "c" => PresetHubFilters.Role(value),
             "playerid" or "pid" => PresetHubFilters.Id(value),
@@ -60,7 +62,7 @@ public static class AtSelectorProcessor {
             "alive" => PlayerRolesUtils.IsAlive,
             "remoteadmin" or "ra" => PresetHubFilters.RemoteAdmin,
             "onstack" or "stack" => PresetHubFilters.Stack,
-            _ => throw new PlayerListProcessorException($"Unknown player filter: {name}")
+            _ => CustomHubFilterRegistry.Get(alias) ?? throw new PlayerListProcessorException($"Unknown player filter: {name}")
         };
         return inverted ? filter.Invert() : filter;
     }
@@ -161,18 +163,17 @@ public static class AtSelectorProcessor {
             return false;
         }
 
+        if (index == state.FullString.Length - 1)
+            return CloseSelector(index, state);
+
         switch (c) {
             case ']':
-                state.BuilderToString().IsReadingValue = false;
-                state.Filters.Add(GetFilter(state.FilterName?.Trim(), state.FilterValue, ref state.Limit, state.Invert));
-                state.Invert = false;
-                state.EndIndex = index;
-                return true;
+                return CloseSelector(index, state);
             case '\\':
                 state.EscapeNext = true;
                 return false;
             case '=':
-                state.BuilderToString().IsReadingValue = true;
+                state.SetValueFromBuilder().IsReadingValue = true;
                 return false;
             case '!':
                 if (state.Builder.Length == 0 || state.CharAt(index + 1) == '=')
@@ -181,8 +182,8 @@ public static class AtSelectorProcessor {
                     state.Builder.Append(c);
                 return false;
             case ',':
-                state.BuilderToString().IsReadingValue = false;
-                state.Filters.Add(GetFilter(state.FilterName?.Trim(), state.FilterValue, ref state.Limit, state.Invert));
+                state.SetValueFromBuilder().IsReadingValue = false;
+                state.AddFilter();
                 state.Invert = false;
                 state.FilterName = state.FilterValue = "";
                 return false;
@@ -190,6 +191,14 @@ public static class AtSelectorProcessor {
                 state.Builder.Append(c);
                 return false;
         }
+    }
+
+    private static bool CloseSelector(int index, ParserState state) {
+        state.SetValueFromBuilder().IsReadingValue = false;
+        state.AddFilter();
+        state.Invert = false;
+        state.EndIndex = index;
+        return true;
     }
 
     private sealed class ParserState {
@@ -206,15 +215,15 @@ public static class AtSelectorProcessor {
 
         public string FilterName;
 
-        public bool Invert;
-
         public string FilterValue;
+
+        public bool Invert;
 
         public bool IsReadingValue;
 
         public bool EscapeNext;
 
-        public ParserState BuilderToString() {
+        public ParserState SetValueFromBuilder() {
             if (IsReadingValue)
                 FilterValue = Builder.ToString();
             else
@@ -224,6 +233,8 @@ public static class AtSelectorProcessor {
         }
 
         public int CharAt(int index) => index >= FullString.Length ? -1 : FullString[index];
+
+        public void AddFilter() => Filters.Add(GetFilter(FilterName?.Trim(), FilterValue, ref Limit, Invert));
 
     }
 

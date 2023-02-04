@@ -1,15 +1,6 @@
-﻿using System;
-using PlayerRoles;
+﻿using PlayerRoles;
 
-namespace Axwabo.CommandSystem.Selectors;
-
-#region Delegates
-
-public delegate bool HubFilter(ReferenceHub hub);
-
-public delegate bool ParameterizedHubFilter<in T>(ReferenceHub hub, T parameter);
-
-#endregion
+namespace Axwabo.CommandSystem.Selectors.Filtering;
 
 public static class PresetHubFilters {
 
@@ -19,11 +10,14 @@ public static class PresetHubFilters {
 
     #region Instantiators
 
-    public static HubFilter Role(string role) => FromParameterized(Role, ValueRange<RoleTypeId>.Parse(role.EnsureNotEmpty("Role type must not be empty"), Enum.TryParse));
+    public static HubFilter Role(string role)
+        => FromParameterized(Role, ValueRange<RoleTypeId>.Parse(role.EnsureNotEmpty("Role type must not be empty"), Extensions.TryParseIgnoreCase));
 
-    public static HubFilter Id(string id) => FromParameterized(Id, ValueRange<int>.Parse(id.EnsureNotEmpty("Player id must not be empty"), int.TryParse));
+    public static HubFilter Id(string id)
+        => FromParameterized(Id, ValueRange<int>.Parse(id.EnsureNotEmpty("Player id must not be empty"), int.TryParse));
 
-    public static HubFilter Nickname(string nickname) => FromParameterized(Nickname, nickname.EnsureNotEmpty("Nickname must not be empty"));
+    public static HubFilter Nickname(string nickname)
+        => FromParameterized(Nickname, nickname.EnsureNotEmpty("Nickname must not be empty"));
 
     public static bool RemoteAdmin(ReferenceHub hub) => hub.serverRoles.RemoteAdmin;
 

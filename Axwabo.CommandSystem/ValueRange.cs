@@ -4,9 +4,11 @@ namespace Axwabo.CommandSystem;
 
 public struct ValueRange<T> where T : IComparable {
 
+    #region Parse
+
     private const string Separator = "..";
 
-    public static bool TryParse(string value, TryParse<T> valueParser, out ValueRange<T> range) {
+    public static bool TryParse(string value, TryParseDelegate<T> valueParser, out ValueRange<T> range) {
         if (value.Contains(Separator))
             return TryParseWithRange(value, valueParser, out range);
         if (!valueParser(value, out var parsed)) {
@@ -23,12 +25,12 @@ public struct ValueRange<T> where T : IComparable {
         return true;
     }
 
-    public static ValueRange<T> Parse(string value, TryParse<T> valueParser)
+    public static ValueRange<T> Parse(string value, TryParseDelegate<T> valueParser)
         => TryParse(value, valueParser, out var range)
             ? range
             : throw new FormatException($"Invalid range: {value}");
 
-    private static bool TryParseWithRange(string value, TryParse<T> valueParser, out ValueRange<T> range) {
+    private static bool TryParseWithRange(string value, TryParseDelegate<T> valueParser, out ValueRange<T> range) {
         T start = default;
         T end = default;
         var startSet = false;
@@ -57,6 +59,10 @@ public struct ValueRange<T> where T : IComparable {
         return true;
     }
 
+    #endregion
+
+    #region Members
+
     public T Start;
 
     public T End;
@@ -66,5 +72,7 @@ public struct ValueRange<T> where T : IComparable {
     public bool EndSpecified;
 
     public bool IsWithinRange(T item) => (!StartSpecified || item.CompareTo(Start) >= 0) && (!EndSpecified || item.CompareTo(End) <= 0);
+
+    #endregion
 
 }

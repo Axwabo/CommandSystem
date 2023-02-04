@@ -152,6 +152,10 @@
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandPermissionCreator.cs" />
+        <Compile Include="Selectors\Filtering\CustomHubFilterRegistry.cs" />
+        <Compile Include="Selectors\Filtering\Delegates.cs" />
+        <Compile Include="Selectors\Filtering\FilterEntry.cs" />
+        <Compile Include="Selectors\Filtering\PresetHubFilters.cs" />
         <Compile Include="ValueRange.cs" />
         <Compile Include="Registration\AttributeResolvers\CommandAliasResolverContainer.cs" />
         <Compile Include="Registration\AttributeResolvers\CommandDescriptionResolverContainer.cs" />
@@ -164,7 +168,6 @@
         <Compile Include="Registration\UsesCedModPermissions.cs" />
         <Compile Include="Selectors\AtSelectorProcessor.cs" />
         <Compile Include="Selectors\HubCollection.cs" />
-        <Compile Include="Selectors\HubFilter.cs" />
         <Compile Include="Selectors\PlayerSelectionManager.cs" />
         <Compile Include="Selectors\PlayerSelectionStack.cs" />
         <Compile Include="Selectors\StackCommands\StackClear.cs" />
@@ -174,7 +177,7 @@
         <Compile Include="Selectors\StackCommands\StackPush.cs" />
         <Compile Include="Selectors\StackCommands\StackReverse.cs" />
         <Compile Include="TargetingCommandResult.cs" />
-        <Compile Include="TryParse.cs" />
+        <Compile Include="TryParseDelegate.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
