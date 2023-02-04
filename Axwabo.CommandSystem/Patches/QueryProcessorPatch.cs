@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Selectors;
+using Axwabo.CommandSystem.Exceptions;
 using Axwabo.Helpers.Harmony;
 using Axwabo.Helpers.Pools;
 using HarmonyLib;
@@ -25,9 +26,14 @@ internal static class QueryProcessorPatch {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
         });
-        list.InsertRange(list.FindIndex(i => i.operand is CommandExecutionFailedError), new[] {
+        var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
+        list.RemoveRange(failedIndex, 4);
+        list.InsertRange(failedIndex, new[] {
             Null,
-            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
+            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
+            Ldloc(4),
+            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.ExceptionToString)),
+            Stloc(5)
         });
         foreach (var codeInstruction in list)
             yield return codeInstruction;

@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Axwabo.CommandSystem.Exceptions;
+using PlayerRoles;
+using PluginAPI.Core;
+using UnityEngine;
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -45,20 +49,36 @@ public static class AtSelectorProcessor {
     }
 
     private static HubFilter GetFilter(string name, string value, ref int limit) {
-        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value))
+        if (string.IsNullOrEmpty(name))
             return null;
-        switch (name.ToLower()) {
-            case "limit":
-                return ParseLimit(value, ref limit);
-            default:
-                return null;
-        }
+        return name.ToLower() switch {
+            "limit" => ParseLimit(value, out limit),
+            "role" or "class" or "r" or "c" => PresetHubFilters.Role(value),
+            "nickname" or "nick" or "name" => PresetHubFilters.Nickname(value),
+            "alive" => PlayerRolesUtils.IsAlive,
+            "dead" => PresetHubFilters.Dead,
+            "remoteadmin" or "ra" => PresetHubFilters.RemoteAdmin,
+            _ => throw new PlayerListProcessorException($"Unknown player filter: {name}")
+        };
     }
 
-    private static HubFilter ParseLimit(string value, ref int limit) {
-        if (int.TryParse(value, out var x))
-            limit = x;
+    private static HubFilter ParseLimit(string value, out int limit) {
+        limit = value switch {
+            "all" => Player.Count,
+            "half" => Mathf.CeilToInt(Player.Count / 2f),
+            "quarter" => Mathf.CeilToInt(Player.Count / 4f),
+            _ => int.TryParse(value, out var x) ? x : ParseFractionLimit(value)
+        };
         return null;
+    }
+
+    private static int ParseFractionLimit(string value) {
+        if (!value.Contains("/"))
+            return int.TryParse(value, out var limit) ? limit : -1;
+        var split = value.Split('/');
+        return split.Length < 2 || !int.TryParse(split[0], out var numerator) || !int.TryParse(split[1], out var denominator)
+            ? -1
+            : Mathf.CeilToInt(Player.Count * (numerator / (float) denominator));
     }
 
     public static List<ReferenceHub> ExecuteSelector(char selectorChar, List<HubFilter> filters, int limit) => GetDefaultTargets(
@@ -143,6 +163,7 @@ public static class AtSelectorProcessor {
             case ',':
                 state.BuilderToString().IsReadingValue = false;
                 state.Filters.Add(GetFilter(state.FilterName, state.FilterValue, ref state.Limit));
+                state.FilterName = state.FilterValue = "";
                 return false;
             default:
                 state.Builder.Append(c);

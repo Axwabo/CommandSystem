@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Axwabo.CommandSystem.Exceptions;
 using PlayerRoles.Spectating;
+using PluginAPI.Core;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Selectors;
@@ -9,31 +11,42 @@ namespace Axwabo.CommandSystem.Selectors;
 public static class PlayerSelectionManager {
 
     public static CommandSender CurrentSender;
-    public const string CommandExecutionFailedError = "Command execution failed! Error: ";
 
     private static readonly char[] StackSeparators = {':', '>', '.', '_', '-', ' '};
     private const string StackPrefix = "@stack";
     private const string SpectatedPrefix = "@spectated";
     private const string SpectatedPrefixShort = "@spec";
 
+    public const string CommandExecutionFailedError = "Command execution failed! Error: ";
+    public const string FailedToParsePlayerList = "Failed to parse player list: ";
+
+    public static string EnsureNotEmpty(this string s, string message = null) => string.IsNullOrEmpty(s) ? throw new PlayerListProcessorException(message) : s;
+
     public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer).ToList();
 
     public static bool TryProcessPlayersCustom(ArraySegment<string> arguments, int startIndex, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
-        var formatted = string.Join(" ", arguments.Segment(startIndex));
         arguments = arguments.Segment(startIndex);
-        if (TryDeterminePrefix(formatted, keepEmptyEntries, out targets, out newArgs))
-            return true;
-        if (arguments.Count > 0 && arguments.At(0) == "*") {
-            targets = AllPlayers;
-            newArgs = arguments.Segment(1).ToArray();
-            return true;
-        }
+        var formatted = string.Join(" ", arguments);
+        try {
+            if (TryDeterminePrefix(formatted, keepEmptyEntries, out targets, out newArgs))
+                return true;
+            if (arguments.Count > 0 && arguments.At(0) == "*") {
+                targets = AllPlayers;
+                newArgs = arguments.Segment(1).ToArray();
+                return true;
+            }
 
-        if (formatted.StartsWith("@"))
-            return AtSelectorProcessor.ProcessString(formatted.Substring(1), keepEmptyEntries, out targets, out newArgs);
-        targets = HubCollection.Empty;
-        newArgs = arguments.ToArray();
-        return false;
+            if (formatted.StartsWith("@"))
+                return AtSelectorProcessor.ProcessString(formatted.Substring(1), keepEmptyEntries, out targets, out newArgs);
+            targets = HubCollection.Empty;
+            newArgs = arguments.ToArray();
+            return false;
+        } catch (Exception e) {
+            Log.Error($"Failed parsing player list! Content:\n{formatted}\nError:\n{Misc.RemoveStacktraceZeroes(e.ToString())}");
+            if (e is PlayerListProcessorException)
+                throw;
+            throw new PlayerListProcessorException($"{e.GetType().FullName}: {e.Message}", e);
+        }
     }
 
     private static bool TryDeterminePrefix(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {

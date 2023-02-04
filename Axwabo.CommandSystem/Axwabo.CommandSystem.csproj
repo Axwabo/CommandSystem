@@ -128,6 +128,7 @@
         <Compile Include="Commands\PlayerOnlyCommand.cs" />
         <Compile Include="Commands\UnifiedTargetingCommand.cs" />
         <Compile Include="CommandWrapper.cs" />
+        <Compile Include="Exceptions\PlayerListProcessorException.cs" />
         <Compile Include="Exceptions\TypeMismatchException.cs" />
         <Compile Include="Exceptions\NameNotSetException.cs" />
         <Compile Include="Exceptions\AttributeResolverException.cs" />

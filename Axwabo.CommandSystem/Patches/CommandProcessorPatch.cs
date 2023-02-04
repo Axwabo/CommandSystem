@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Selectors;
 using Axwabo.Helpers.Pools;
 using HarmonyLib;
@@ -26,9 +27,13 @@ internal static class CommandProcessorPatch {
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
         });
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
+        list.RemoveRange(failedIndex, 6);
         list.InsertRange(failedIndex, new[] {
             Null,
-            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
+            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
+            Ldloc(11),
+            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.ExceptionToString)),
+            Stloc(12)
         });
         var send = list.FindIndex(failedIndex, i => i.operand is MethodInfo {Name: "ToUpperInvariant"}) - 6;
         list.RemoveRange(send, 10);
