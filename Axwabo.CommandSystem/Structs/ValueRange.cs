@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem;
+namespace Axwabo.CommandSystem.Structs;
 
 public struct ValueRange<T> where T : IComparable {
 

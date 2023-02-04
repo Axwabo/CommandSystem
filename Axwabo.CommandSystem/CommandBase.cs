@@ -2,6 +2,7 @@
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
+using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem;
 
@@ -15,7 +16,7 @@ public abstract class CommandBase {
 
     public virtual string[] Usage => _usage;
 
-    protected string CombinedUsage => Usage == null ? "" : $"Usage:\n{string.Join("\n", Usage)}";
+    protected string CombinedUsage => Usage is not {Length: not 0} ? "" : $"Usage:\n{string.Join("\n", Usage)}";
 
     protected virtual int MinArguments => _minArgs;
 
@@ -39,14 +40,18 @@ public abstract class CommandBase {
     }
 
     public CommandResult ExecuteBase(ArraySegment<string> arguments, CommandSender sender) {
-        var minArguments = MinArguments;
-        if (arguments.Count < minArguments)
-            return $"!Need at least {minArguments} argument{(minArguments == 1 ? "" : "s")}! {CombinedUsage}";
+        if (arguments.Count < MinArguments)
+            return GetMinArgumentsError(arguments.Count);
         var permissions = Permissions;
         var permissionCheck = sender.FullPermissions || permissions == null ? (CommandResult) true : permissions.CheckPermission(sender);
         return !permissionCheck ? permissionCheck : Execute(arguments, sender);
     }
 
     protected abstract CommandResult Execute(ArraySegment<string> arguments, CommandSender sender);
+
+    protected virtual string GetMinArgumentsError(int providedCount) {
+        var minArguments = MinArguments;
+        return $"Need at least {"argument".Pluralize(minArguments)}! {CombinedUsage}";
+    }
 
 }

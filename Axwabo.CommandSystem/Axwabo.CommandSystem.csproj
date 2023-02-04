@@ -125,8 +125,8 @@
         <Compile Include="Attributes\PresetCommandListeners.cs" />
         <Compile Include="Attributes\UsageAttribute.cs" />
         <Compile Include="CommandBase.cs" />
-        <Compile Include="CommandResult.cs" />
         <Compile Include="Commands\PlayerOnlyCommand.cs" />
+        <Compile Include="Commands\SeparatedTargetingCommand.cs" />
         <Compile Include="Commands\UnifiedTargetingCommand.cs" />
         <Compile Include="CommandWrapper.cs" />
         <Compile Include="Exceptions\PlayerListProcessorException.cs" />
@@ -156,7 +156,10 @@
         <Compile Include="Selectors\Filtering\Delegates.cs" />
         <Compile Include="Selectors\Filtering\FilterEntry.cs" />
         <Compile Include="Selectors\Filtering\PresetHubFilters.cs" />
-        <Compile Include="ValueRange.cs" />
+        <Compile Include="Structs\CommandResult.cs" />
+        <Compile Include="Structs\CombinedTargetingCommandResult.cs" />
+        <Compile Include="Structs\CommandResultOnTarget.cs" />
+        <Compile Include="Structs\TryParseDelegate.cs" />
         <Compile Include="Registration\AttributeResolvers\CommandAliasResolverContainer.cs" />
         <Compile Include="Registration\AttributeResolvers\CommandDescriptionResolverContainer.cs" />
         <Compile Include="Registration\AttributeResolvers\CommandNameResolverContainer.cs" />
@@ -176,8 +179,7 @@
         <Compile Include="Selectors\StackCommands\StackPop.cs" />
         <Compile Include="Selectors\StackCommands\StackPush.cs" />
         <Compile Include="Selectors\StackCommands\StackReverse.cs" />
-        <Compile Include="TargetingCommandResult.cs" />
-        <Compile Include="TryParseDelegate.cs" />
+        <Compile Include="Structs\ValueRange.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />

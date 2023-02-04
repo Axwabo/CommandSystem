@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Exceptions;
+using PlayerRoles;
 using PlayerRoles.Spectating;
 using PluginAPI.Core;
 using RemoteAdmin;
@@ -23,6 +24,8 @@ public static class PlayerSelectionManager {
     public static string EnsureNotEmpty(this string s, string message = null) => string.IsNullOrEmpty(s) ? throw new PlayerListProcessorException(message) : s;
 
     public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer).ToList();
+
+    public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer && h.IsAlive()).ToList();
 
     public static bool TryProcessPlayersCustom(ArraySegment<string> arguments, int startIndex, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         arguments = arguments.Segment(startIndex);

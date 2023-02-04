@@ -1,4 +1,6 @@
-﻿namespace Axwabo.CommandSystem.Permissions;
+﻿using Axwabo.CommandSystem.Structs;
+
+namespace Axwabo.CommandSystem.Permissions;
 
 public sealed class SimpleVanillaPlayerPermissionChecker : IPermissionChecker {
 

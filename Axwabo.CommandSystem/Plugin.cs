@@ -17,7 +17,6 @@ public sealed class Plugin {
     [PluginPriority(LoadPriority.Lowest)]
     private void OnEnable() {
         Instance = this;
-        CommandRegistrationProcessor.RegisterAll(this);
         _harmony = new Harmony("Axwabo.CommandSystem");
         try {
             _harmony.PatchAll();
@@ -25,6 +24,7 @@ public sealed class Plugin {
             Log.Error("Patching failed! Some features will not work properly.\n" + e);
         }
 
+        CommandRegistrationProcessor.RegisterAll(this);
         Log.Info("Axwabo.CommandSystem has been enabled!");
     }
 

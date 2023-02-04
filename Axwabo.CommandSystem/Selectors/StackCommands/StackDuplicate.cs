@@ -1,5 +1,6 @@
 ﻿using System;
 using Axwabo.CommandSystem.Attributes;
+using Axwabo.CommandSystem.Structs;
 using Axwabo.Helpers.Pools;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;

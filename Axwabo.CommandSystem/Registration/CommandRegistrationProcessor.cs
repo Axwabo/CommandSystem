@@ -82,6 +82,10 @@ public sealed class CommandRegistrationProcessor {
             foreach (var type in TargetAssembly.GetTypes())
                 if (!type.IsAbstract && typeof(CommandBase).IsAssignableFrom(type))
                     RegisterCommand(type);
+        } catch (ReflectionTypeLoadException ex) {
+            Log.Error("Failed to load types from assembly: \"" + TargetAssembly.FullName + "\"\nList of all exceptions:");
+            foreach (var loaderException in ex.LoaderExceptions)
+                Log.Error(loaderException.ToString());
         } finally {
             CommandPropertyManager.CurrentProcessor = null;
         }
