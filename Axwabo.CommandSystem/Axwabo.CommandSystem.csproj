@@ -15,6 +15,7 @@
         <LangVersion>10</LangVersion>
         <Nullable>disable</Nullable>
         <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+        <NoWarn>MSB3277</NoWarn>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>x64</PlatformTarget>
@@ -151,6 +152,7 @@
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandPermissionCreator.cs" />
+        <Compile Include="ValueRange.cs" />
         <Compile Include="Registration\AttributeResolvers\CommandAliasResolverContainer.cs" />
         <Compile Include="Registration\AttributeResolvers\CommandDescriptionResolverContainer.cs" />
         <Compile Include="Registration\AttributeResolvers\CommandNameResolverContainer.cs" />
@@ -172,6 +174,7 @@
         <Compile Include="Selectors\StackCommands\StackPush.cs" />
         <Compile Include="Selectors\StackCommands\StackReverse.cs" />
         <Compile Include="TargetingCommandResult.cs" />
+        <Compile Include="TryParse.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />

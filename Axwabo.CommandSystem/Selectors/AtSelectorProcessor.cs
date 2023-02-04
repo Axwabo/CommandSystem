@@ -4,13 +4,14 @@ using System.Text;
 using Axwabo.CommandSystem.Exceptions;
 using PlayerRoles;
 using PluginAPI.Core;
+using RemoteAdmin;
 using UnityEngine;
 
 namespace Axwabo.CommandSystem.Selectors;
 
 public static class AtSelectorProcessor {
 
-    private static readonly char[] ValidChars = "arsARS".ToCharArray();
+    private static readonly char[] ValidChars = {'a', 'r', 's', 'o', 'A', 'R', 'S', 'O'};
 
     public static bool ProcessString(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         char selectorChar;
@@ -54,9 +55,11 @@ public static class AtSelectorProcessor {
         var filter = name.ToLower() switch {
             "limit" => ParseLimit(value, out limit),
             "role" or "class" or "r" or "c" => PresetHubFilters.Role(value),
+            "playerid" or "pid" => PresetHubFilters.Id(value),
             "nickname" or "nick" or "name" => PresetHubFilters.Nickname(value),
             "alive" => PlayerRolesUtils.IsAlive,
             "remoteadmin" or "ra" => PresetHubFilters.RemoteAdmin,
+            "onstack" or "stack" => PresetHubFilters.Stack,
             _ => throw new PlayerListProcessorException($"Unknown player filter: {name}")
         };
         return inverted ? filter.Invert() : filter;
@@ -114,6 +117,7 @@ public static class AtSelectorProcessor {
         'a' or 'A' => candidates,
         'r' or 'R' => GetRandom(candidates, limit),
         's' or 'S' => Self,
+        'o' or 'O' => Others,
         _ => throw new ArgumentOutOfRangeException(nameof(selector), selector, null)
     };
 
@@ -127,15 +131,24 @@ public static class AtSelectorProcessor {
             var count = all.Count;
             if (count == 0)
                 break;
-            var x = UnityEngine.Random.Range(0, count);
-            list.Add(all[x]);
-            all.RemoveAt(x);
+            var index = UnityEngine.Random.Range(0, count);
+            list.Add(all[index]);
+            all.RemoveAt(index);
         }
 
         return list;
     }
 
     private static List<ReferenceHub> Self => HubCollection.From(PlayerSelectionManager.CurrentSender);
+
+    private static List<ReferenceHub> Others {
+        get {
+            var list = PlayerSelectionManager.AllPlayers;
+            if (PlayerSelectionManager.CurrentSender is PlayerCommandSender {ReferenceHub: var hub})
+                list.Remove(hub);
+            return list;
+        }
+    }
 
     public static bool IsValidChar(char c) => ValidChars.Contains(c);
 

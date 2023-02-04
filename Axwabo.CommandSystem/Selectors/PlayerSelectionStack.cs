@@ -50,6 +50,16 @@ public sealed class PlayerSelectionStack : MonoBehaviour {
         Stack.AddRange(dup);
     }
 
+    public bool Contains(ReferenceHub hub) {
+        lock (Stack) {
+            foreach (var hubs in Stack)
+                if (hubs.Contains(hub))
+                    return true;
+        }
+
+        return false;
+    }
+
     public bool IsEmpty => Stack.Count == 0;
 
     public int Count => Stack.Count;
