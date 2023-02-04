@@ -32,7 +32,7 @@ internal static class CommandProcessorPatch {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
             Ldloc(11),
-            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.ExceptionToString)),
+            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
             Stloc(12)
         });
         var send = list.FindIndex(failedIndex, i => i.operand is MethodInfo {Name: "ToUpperInvariant"}) - 6;

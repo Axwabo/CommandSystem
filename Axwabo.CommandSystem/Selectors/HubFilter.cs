@@ -14,6 +14,8 @@ public delegate bool ParameterizedHubFilter<in T>(ReferenceHub hub, T parameter)
 
 public static class PresetHubFilters {
 
+    public static HubFilter Invert(this HubFilter filter) => hub => !filter(hub);
+
     public static HubFilter FromParameterized<T>(ParameterizedHubFilter<T> filter, T parameter) => hub => filter(hub, parameter);
 
     #region Instantiators
@@ -24,8 +26,6 @@ public static class PresetHubFilters {
 
     public static HubFilter Nickname(string nickname) => FromParameterized(Nickname, nickname.EnsureNotEmpty("Nickname must not be empty"));
 
-    public static bool Dead(ReferenceHub hub) => !hub.IsAlive();
-
     public static bool RemoteAdmin(ReferenceHub hub) => hub.serverRoles.RemoteAdmin;
 
     #endregion
@@ -34,7 +34,7 @@ public static class PresetHubFilters {
 
     public static bool Role(ReferenceHub hub, RoleTypeId id) => hub.roleManager.CurrentRole.RoleTypeId == id;
 
-    public static bool Nickname(ReferenceHub hub, string parameter) => hub.nicknameSync.Network_myNickSync.IndexOf(parameter, StringComparison.OrdinalIgnoreCase) >= 0;
+    public static bool Nickname(ReferenceHub hub, string parameter) => hub.nicknameSync.Network_myNickSync.ContainsIgnoreCase(parameter);
 
     #endregion
 

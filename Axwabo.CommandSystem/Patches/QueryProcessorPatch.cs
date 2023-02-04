@@ -32,7 +32,7 @@ internal static class QueryProcessorPatch {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
             Ldloc(4),
-            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.ExceptionToString)),
+            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
             Stloc(5)
         });
         foreach (var codeInstruction in list)

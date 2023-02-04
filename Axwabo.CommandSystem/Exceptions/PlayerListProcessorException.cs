@@ -14,7 +14,7 @@ public sealed class PlayerListProcessorException : Exception {
     public PlayerListProcessorException(string message, Exception inner) : base(message, inner) {
     }
 
-    public static string ExceptionToString(Exception e)
+    public static string CreateMessage(Exception e)
         => e is PlayerListProcessorException
             ? FailedToParsePlayerList + e.Message
             : CommandExecutionFailedError + Misc.RemoveStacktraceZeroes(e.ToString());

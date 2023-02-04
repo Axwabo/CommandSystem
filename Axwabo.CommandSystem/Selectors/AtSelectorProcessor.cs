@@ -48,18 +48,18 @@ public static class AtSelectorProcessor {
         return true;
     }
 
-    private static HubFilter GetFilter(string name, string value, ref int limit) {
+    public static HubFilter GetFilter(string name, string value, ref int limit, bool inverted = false) {
         if (string.IsNullOrEmpty(name))
             return null;
-        return name.ToLower() switch {
+        var filter = name.ToLower() switch {
             "limit" => ParseLimit(value, out limit),
             "role" or "class" or "r" or "c" => PresetHubFilters.Role(value),
             "nickname" or "nick" or "name" => PresetHubFilters.Nickname(value),
             "alive" => PlayerRolesUtils.IsAlive,
-            "dead" => PresetHubFilters.Dead,
             "remoteadmin" or "ra" => PresetHubFilters.RemoteAdmin,
             _ => throw new PlayerListProcessorException($"Unknown player filter: {name}")
         };
+        return inverted ? filter.Invert() : filter;
     }
 
     private static HubFilter ParseLimit(string value, out int limit) {
@@ -151,7 +151,8 @@ public static class AtSelectorProcessor {
         switch (c) {
             case ']':
                 state.BuilderToString().IsReadingValue = false;
-                state.Filters.Add(GetFilter(state.FilterName, state.FilterValue, ref state.Limit));
+                state.Filters.Add(GetFilter(state.FilterName?.Trim(), state.FilterValue, ref state.Limit, state.Invert));
+                state.Invert = false;
                 state.EndIndex = index;
                 return true;
             case '\\':
@@ -160,9 +161,16 @@ public static class AtSelectorProcessor {
             case '=':
                 state.BuilderToString().IsReadingValue = true;
                 return false;
+            case '!':
+                if (state.Builder.Length == 0 || state.CharAt(index + 1) == '=')
+                    state.Invert = true;
+                else
+                    state.Builder.Append(c);
+                return false;
             case ',':
                 state.BuilderToString().IsReadingValue = false;
-                state.Filters.Add(GetFilter(state.FilterName, state.FilterValue, ref state.Limit));
+                state.Filters.Add(GetFilter(state.FilterName?.Trim(), state.FilterValue, ref state.Limit, state.Invert));
+                state.Invert = false;
                 state.FilterName = state.FilterValue = "";
                 return false;
             default:
@@ -185,6 +193,8 @@ public static class AtSelectorProcessor {
 
         public string FilterName;
 
+        public bool Invert;
+
         public string FilterValue;
 
         public bool IsReadingValue;
@@ -199,6 +209,8 @@ public static class AtSelectorProcessor {
             Builder.Clear();
             return this;
         }
+
+        public int CharAt(int index) => index >= FullString.Length ? -1 : FullString[index];
 
     }
 

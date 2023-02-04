@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Axwabo.CommandSystem;
@@ -15,5 +16,7 @@ public static class Extensions {
     }
 
     public static string Substring(this string s, params char[] separators) => s.Substring(0, separators);
+    
+    public static bool ContainsIgnoreCase(this string s, string value) => s.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
 
 }

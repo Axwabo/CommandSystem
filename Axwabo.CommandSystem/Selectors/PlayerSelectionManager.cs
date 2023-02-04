@@ -26,28 +26,52 @@ public static class PlayerSelectionManager {
 
     public static bool TryProcessPlayersCustom(ArraySegment<string> arguments, int startIndex, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         arguments = arguments.Segment(startIndex);
+        if (arguments.Count == 0) {
+            targets = HubCollection.Empty;
+            newArgs = Array.Empty<string>();
+            return false;
+        }
+
         var formatted = string.Join(" ", arguments);
         try {
             if (TryDeterminePrefix(formatted, keepEmptyEntries, out targets, out newArgs))
                 return true;
-            if (arguments.Count > 0 && arguments.At(0) == "*") {
-                targets = AllPlayers;
-                newArgs = arguments.Segment(1).ToArray();
-                return true;
-            }
-
-            if (formatted.StartsWith("@"))
-                return AtSelectorProcessor.ProcessString(formatted.Substring(1), keepEmptyEntries, out targets, out newArgs);
-            targets = HubCollection.Empty;
-            newArgs = arguments.ToArray();
-            return false;
+            if (arguments.At(0) != "*")
+                return formatted.StartsWith("@")
+                    ? AtSelectorProcessor.ProcessString(formatted.Substring(1), keepEmptyEntries, out targets, out newArgs)
+                    : TryFindPlayerByName(arguments, out targets, out newArgs);
+            targets = AllPlayers;
+            newArgs = arguments.Segment(1).ToArray();
+            return true;
         } catch (Exception e) {
-            Log.Error($"Failed parsing player list! Content:\n{formatted}\nError:\n{Misc.RemoveStacktraceZeroes(e.ToString())}");
+            Log.Error($"Failed to parse player list! Content:\n{formatted}\nError:\n{Misc.RemoveStacktraceZeroes(e.ToString())}");
             if (e is PlayerListProcessorException)
                 throw;
             throw new PlayerListProcessorException($"{e.GetType().FullName}: {e.Message}", e);
         }
     }
+
+    private static bool TryFindPlayerByName(ArraySegment<string> arguments, out List<ReferenceHub> targets, out string[] args) {
+        if (arguments.At(0).All(IsIdOrDot)) {
+            targets = HubCollection.Empty;
+            args = arguments.ToArray();
+            return false;
+        }
+
+        var name = arguments.At(0);
+        var player = AllPlayers.FirstOrDefault(p => p.nicknameSync.MyNick.ContainsIgnoreCase(name));
+        if (player == null) {
+            targets = HubCollection.Empty;
+            args = arguments.ToArray();
+            return false;
+        }
+
+        targets = new HubCollection(player);
+        args = arguments.Segment(1).ToArray();
+        return true;
+    }
+
+    private static bool IsIdOrDot(char character) => character == '.' || char.IsDigit(character) || char.IsWhiteSpace(character);
 
     private static bool TryDeterminePrefix(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         if (formatted.StartsWith(StackPrefix, StringComparison.OrdinalIgnoreCase)) {

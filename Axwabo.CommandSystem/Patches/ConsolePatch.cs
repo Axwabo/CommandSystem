@@ -31,7 +31,7 @@ internal static class ConsolePatch {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
             Ldloc(9),
-            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.ExceptionToString)),
+            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
             Stloc(10)
         });
         foreach (var codeInstruction in list)
