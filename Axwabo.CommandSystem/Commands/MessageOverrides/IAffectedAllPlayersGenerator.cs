@@ -1,6 +1,6 @@
 ﻿namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 
-public interface IAffectedAllPlayers {
+public interface IAffectedAllPlayersGenerator {
 
     string OnEveryoneAffected(int players);
 

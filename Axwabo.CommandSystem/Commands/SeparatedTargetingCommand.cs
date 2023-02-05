@@ -7,7 +7,7 @@ namespace Axwabo.CommandSystem.Commands;
 
 public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand {
 
-    protected sealed override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender) {
+    protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender) {
         var succeeded = new List<CommandResultOnTarget>();
         var failed = new List<CommandResultOnTarget>();
         foreach (var target in targets) {

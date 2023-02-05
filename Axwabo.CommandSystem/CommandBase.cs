@@ -16,9 +16,9 @@ public abstract class CommandBase {
 
     public virtual string[] Usage => _usage;
 
-    protected string CombinedUsage => Usage is not {Length: not 0} ? "" : $"Usage:\n{string.Join("\n", Usage)}";
-
     protected virtual int MinArguments => _minArgs;
+
+    protected string CombinedUsage => Usage is not {Length: not 0} ? "" : $"Usage:\n{string.Join("\n", Usage)}";
 
     protected virtual IPermissionChecker Permissions { get; }
 
@@ -36,12 +36,12 @@ public abstract class CommandBase {
     protected CommandBase() {
         if (string.IsNullOrWhiteSpace(Name) && !BaseCommandPropertyManager.TryResolveProperties(this, out _name, out _desc, out _aliases, out _usage, out _minArgs))
             throw new NameNotSetException($"Command name on type {GetType().FullName} is not set. Are you missing an attribute or custom name resolver?");
-        Permissions ??= BaseCommandPropertyManager.ResolvePermissionChecker(this);
+        Permissions ??= this as IPermissionChecker ?? BaseCommandPropertyManager.ResolvePermissionChecker(this);
     }
 
     public CommandResult ExecuteBase(ArraySegment<string> arguments, CommandSender sender) {
         if (arguments.Count < MinArguments)
-            return GetMinArgumentsError(arguments.Count);
+            return OnNotEnoughArgumentsProvided(arguments);
         var permissions = Permissions;
         var permissionCheck = sender.FullPermissions || permissions == null ? (CommandResult) true : permissions.CheckPermission(sender);
         return !permissionCheck ? permissionCheck : Execute(arguments, sender);
@@ -49,7 +49,7 @@ public abstract class CommandBase {
 
     protected abstract CommandResult Execute(ArraySegment<string> arguments, CommandSender sender);
 
-    protected virtual string GetMinArgumentsError(int providedCount) {
+    protected virtual string OnNotEnoughArgumentsProvided(ArraySegment<string> arguments) {
         var minArguments = MinArguments;
         return $"Need at least {"argument".Pluralize(minArguments)}! {CombinedUsage}";
     }

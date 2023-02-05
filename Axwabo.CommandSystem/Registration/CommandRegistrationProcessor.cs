@@ -72,6 +72,8 @@ public sealed class CommandRegistrationProcessor {
 
     internal readonly List<CommandPermissionCreatorContainer> PermissionCreators = new();
 
+    internal readonly List<TargetingMultipleMessageResolverContainer> TargetingMultipleMessageResolvers = new();
+
     #endregion
 
     #region Exec

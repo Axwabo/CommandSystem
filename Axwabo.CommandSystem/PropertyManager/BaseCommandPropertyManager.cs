@@ -12,11 +12,14 @@ public static class BaseCommandPropertyManager {
 
     public static CommandRegistrationProcessor CurrentProcessor { get; internal set; }
 
-    public static void ValidateRegistration(CommandBase command) {
+    public static bool ValidateRegistration(CommandBase command, bool throwIfProcessorIsNull = true) {
         if (command is null)
             throw new ArgumentNullException(nameof(command));
-        if (CurrentProcessor == null)
-            throw new AttributeResolverException("Attempted to resolve command properties outside of a registration process.");
+        if (CurrentProcessor != null)
+            return true;
+        return throwIfProcessorIsNull
+            ? throw new AttributeResolverException("Attempted to resolve command properties outside of a registration process.")
+            : false;
     }
 
     public static bool TryResolveProperties(CommandBase command, out string name, out string description, out string[] aliases, out string[] usage, out int minArguments) {
@@ -42,11 +45,11 @@ public static class BaseCommandPropertyManager {
     }
 
     public static IPermissionChecker ResolvePermissionChecker(CommandBase command) {
-        if (CurrentProcessor == null)
+        if (!ValidateRegistration(command, false))
             return null;
         foreach (var attribute in command.GetType().GetCustomAttributes()) {
-            if (attribute is VanillaPermissionsAttribute vanilla)
-                return new SimpleVanillaPlayerPermissionChecker(vanilla.Permissions);
+            if (ResolveBasePermissionChecker(attribute) is { } checker)
+                return checker;
             foreach (var creator in CurrentProcessor.PermissionCreators)
                 if (creator.Takes(attribute.GetType()))
                     return creator.Resolve(attribute);
@@ -54,6 +57,12 @@ public static class BaseCommandPropertyManager {
 
         return null;
     }
+
+    private static IPermissionChecker ResolveBasePermissionChecker(Attribute attribute) => attribute switch {
+        SingleVanillaPermissionsAttribute single => new SimpleVanillaPlayerPermissionChecker(single.Permissions),
+        OneOfVanillaPermissionsAttribute oneOf => new AtLeastOneVanillaPlayerPermissionChecker(oneOf.Permissions),
+        _ => null
+    };
 
     private static bool ResolveBaseAttribute(Attribute attribute, ref string name, ref string description, List<string> aliases, List<string> usage, ref int minArguments) {
         var completed = false;

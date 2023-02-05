@@ -3,10 +3,10 @@
 namespace Axwabo.CommandSystem.Permissions;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class VanillaPermissionsAttribute : Attribute {
+public sealed class SingleVanillaPermissionsAttribute : Attribute {
 
     public readonly PlayerPermissions Permissions;
 
-    public VanillaPermissionsAttribute(PlayerPermissions permissions) => Permissions = permissions;
+    public SingleVanillaPermissionsAttribute(PlayerPermissions permissions) => Permissions = permissions;
 
 }
