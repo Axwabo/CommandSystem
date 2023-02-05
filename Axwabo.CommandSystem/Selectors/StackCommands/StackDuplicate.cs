@@ -13,11 +13,8 @@ public sealed class StackDuplicate : CommandBase {
     private const string Separators = " .,;_+-";
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
-        var selection = PlayerSelectionStack.Get(sender);
-        if (selection == null)
-            return $"!Cannot get a selection stack object from {sender.GetType().FullName}.";
-        if (selection.IsEmpty)
-            return "!The selection stack is empty.";
+        if (PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))
+            return result;
         if (arguments.Count < 1)
             return DuplicateFirst(selection);
         return arguments.At(0).ToLower() switch {

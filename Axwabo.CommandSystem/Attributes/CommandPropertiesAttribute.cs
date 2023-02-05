@@ -8,11 +8,11 @@ public sealed class CommandPropertiesAttribute : CommandTargetAttribute, IComman
 
     public string Name { get; }
 
-    public string Description { get; }
+    public string Description { get; init; }
 
-    public string[] Aliases { get; }
+    public string[] Aliases { get; init; }
 
-    public int MinArguments { get; }
+    public int MinArguments { get; init; }
 
     public CommandPropertiesAttribute(CommandHandlerType target, string name, string description = null, params string[] aliases) : base(target) {
         Name = name;

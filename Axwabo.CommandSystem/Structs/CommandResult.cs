@@ -3,11 +3,11 @@
 public readonly ref struct CommandResult {
 
     #region Static
-    
+
     public static CommandResult Succeeded(string response) => new(true, response);
 
     public static CommandResult Failed(string response) => new(false, response);
-    
+
     #endregion
 
     #region Members

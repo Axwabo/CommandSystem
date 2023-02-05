@@ -1,19 +1,18 @@
 ﻿using System;
 using Axwabo.CommandSystem.Attributes;
+using Axwabo.CommandSystem.Attributes.Advanced;
 using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
 [CommandProperties(CommandHandlerType.RaAndServer, "stackpop", "Pops the topmost players from the selection stack.", "spop")]
 [Usage("spop", "spop <index>")]
+[ShouldAffectSpectators]
 public sealed class StackPop : CommandBase {
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
-        var selection = PlayerSelectionStack.Get(sender);
-        if (selection == null)
-            return $"!Cannot get a selection stack object from {sender.GetType().FullName}.";
-        if (selection.IsEmpty)
-            return "!The selection stack is empty.";
+        if (PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))
+            return result;
         var indexSet = false;
         HubCollection popped;
         var index = 0;

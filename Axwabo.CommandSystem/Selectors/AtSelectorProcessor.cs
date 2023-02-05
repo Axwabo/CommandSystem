@@ -7,6 +7,7 @@ using PlayerRoles;
 using PluginAPI.Core;
 using RemoteAdmin;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -133,7 +134,7 @@ public static class AtSelectorProcessor {
             var count = all.Count;
             if (count == 0)
                 break;
-            var index = UnityEngine.Random.Range(0, count);
+            var index = Random.Range(0, count);
             list.Add(all[index]);
             all.RemoveAt(index);
         }

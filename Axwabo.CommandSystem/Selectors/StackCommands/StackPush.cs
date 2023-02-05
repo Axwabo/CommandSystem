@@ -12,9 +12,8 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 public sealed class StackPush : UnifiedTargetingCommand {
 
     protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender) {
-        var selection = PlayerSelectionStack.Get(sender);
-        if (selection == null)
-            return $"!Cannot get a selection stack object from {sender.GetType().FullName}.";
+        if (PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))
+            return result;
         selection.Push(targets);
         return $"Pushed {"player".Pluralize(targets.Count)} onto the selection stack:\n{targets.CombineNicknames()}";
     }

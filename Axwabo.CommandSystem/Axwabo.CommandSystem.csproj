@@ -109,6 +109,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Attributes\Advanced\ShouldAffectSpectators.cs" />
         <Compile Include="Attributes\AliasesAttribute.cs" />
         <Compile Include="Attributes\DescriptionAttribute.cs" />
         <Compile Include="Attributes\CommandTargetAttribute.cs" />
@@ -116,6 +117,7 @@
         <Compile Include="Attributes\CommandPropertiesAttribute.cs" />
         <Compile Include="Attributes\CommandHandlerType.cs" />
         <Compile Include="Attributes\EnumCommandNameAttribute.cs" />
+        <Compile Include="Attributes\Interfaces\IAffectSpectators.cs" />
         <Compile Include="Attributes\Interfaces\IAliases.cs" />
         <Compile Include="Attributes\Interfaces\IDescription.cs" />
         <Compile Include="Attributes\Interfaces\ICommandName.cs" />
@@ -126,10 +128,16 @@
         <Compile Include="Attributes\UsageAttribute.cs" />
         <Compile Include="CommandBase.cs" />
         <Compile Include="CommandHelpers.cs" />
+        <Compile Include="Commands\MessageOverrides\IAffectedMessage.cs" />
+        <Compile Include="Commands\MessageOverrides\IAffectedOnePlayer.cs" />
+        <Compile Include="Commands\MessageOverrides\IAffectedAllPlayers.cs" />
+        <Compile Include="Commands\MessageOverrides\INoPlayersAffected.cs" />
+        <Compile Include="Commands\MessageOverrides\ITargetSelectionManager.cs" />
         <Compile Include="Commands\PlayerOnlyCommand.cs" />
         <Compile Include="Commands\SeparatedTargetingCommand.cs" />
         <Compile Include="Commands\UnifiedTargetingCommand.cs" />
         <Compile Include="CommandWrapper.cs" />
+        <Compile Include="CompilerHacks.cs" />
         <Compile Include="Exceptions\PlayerListProcessorException.cs" />
         <Compile Include="Exceptions\TypeMismatchException.cs" />
         <Compile Include="Exceptions\NameNotSetException.cs" />

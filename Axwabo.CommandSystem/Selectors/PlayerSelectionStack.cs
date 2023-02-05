@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Axwabo.CommandSystem.Structs;
 using Axwabo.Helpers;
 using Axwabo.Helpers.Pools;
+using GameCore;
 using RemoteAdmin;
 using UnityEngine;
 
@@ -87,8 +89,24 @@ public sealed class PlayerSelectionStack : MonoBehaviour {
 
     public static PlayerSelectionStack Get(CommandSender sender) => sender switch {
         PlayerCommandSender player => Get(player.ReferenceHub),
-        ServerConsoleSender => Get(GameCore.Console.singleton),
+        ServerConsoleSender => Get(Console.singleton),
         _ => null
     };
+
+    public static bool PreprocessCommand(CommandSender sender, out PlayerSelectionStack selection, out CommandResult result, bool canBeEmpty = false) {
+        selection = Get(sender);
+        if (selection == null) {
+            result = $"!Cannot get a selection stack object from {sender.GetType().FullName}.";
+            return false;
+        }
+
+        if (selection.IsEmpty && !canBeEmpty) {
+            result = "!The selection stack is empty.";
+            return false;
+        }
+
+        result = true;
+        return true;
+    }
 
 }
