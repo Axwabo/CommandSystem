@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.PropertyManager;
-using Axwabo.CommandSystem.Registration.AttributeResolvers;
+using Axwabo.CommandSystem.Registration.Containers;
 using CommandSystem;
 using PluginAPI.Core;
 using RemoteAdmin;
@@ -77,7 +77,7 @@ public sealed class CommandRegistrationProcessor {
     #region Exec
 
     public void Execute() {
-        CommandPropertyManager.CurrentProcessor = this;
+        BaseCommandPropertyManager.CurrentProcessor = this;
         try {
             foreach (var type in TargetAssembly.GetTypes())
                 if (!type.IsAbstract && typeof(CommandBase).IsAssignableFrom(type))
@@ -87,7 +87,7 @@ public sealed class CommandRegistrationProcessor {
             foreach (var loaderException in ex.LoaderExceptions)
                 Log.Error(loaderException.ToString());
         } finally {
-            CommandPropertyManager.CurrentProcessor = null;
+            BaseCommandPropertyManager.CurrentProcessor = null;
         }
     }
 

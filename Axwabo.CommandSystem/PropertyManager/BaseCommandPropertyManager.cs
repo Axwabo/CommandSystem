@@ -8,16 +8,19 @@ using Axwabo.CommandSystem.Registration;
 
 namespace Axwabo.CommandSystem.PropertyManager;
 
-public static class CommandPropertyManager {
+public static class BaseCommandPropertyManager {
 
     public static CommandRegistrationProcessor CurrentProcessor { get; internal set; }
 
-    public static bool TryResolveProperties(CommandBase command, out string name, out string description, out string[] aliases, out string[] usage, out int minArguments) {
+    public static void ValidateRegistration(CommandBase command) {
+        if (command is null)
+            throw new ArgumentNullException(nameof(command));
         if (CurrentProcessor == null)
             throw new AttributeResolverException("Attempted to resolve command properties outside of a registration process.");
-        if (command == null)
-            throw new ArgumentNullException(nameof(command));
+    }
 
+    public static bool TryResolveProperties(CommandBase command, out string name, out string description, out string[] aliases, out string[] usage, out int minArguments) {
+        ValidateRegistration(command);
         name = null;
         description = null;
         var aliasList = new List<string>();

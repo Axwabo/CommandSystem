@@ -34,9 +34,9 @@ public abstract class CommandBase {
 
     // ReSharper disable VirtualMemberCallInConstructor
     protected CommandBase() {
-        if (string.IsNullOrWhiteSpace(Name) && !CommandPropertyManager.TryResolveProperties(this, out _name, out _desc, out _aliases, out _usage, out _minArgs))
+        if (string.IsNullOrWhiteSpace(Name) && !BaseCommandPropertyManager.TryResolveProperties(this, out _name, out _desc, out _aliases, out _usage, out _minArgs))
             throw new NameNotSetException($"Command name on type {GetType().FullName} is not set. Are you missing an attribute or custom name resolver?");
-        Permissions ??= CommandPropertyManager.ResolvePermissionChecker(this);
+        Permissions ??= BaseCommandPropertyManager.ResolvePermissionChecker(this);
     }
 
     public CommandResult ExecuteBase(ArraySegment<string> arguments, CommandSender sender) {

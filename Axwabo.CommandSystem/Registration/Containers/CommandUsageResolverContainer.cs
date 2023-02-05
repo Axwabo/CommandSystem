@@ -2,17 +2,17 @@
 using System.Reflection;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
 
-namespace Axwabo.CommandSystem.Registration.AttributeResolvers;
+namespace Axwabo.CommandSystem.Registration.Containers;
 
-internal readonly struct CommandAliasResolverContainer : IResolverContainer<string[]> {
+internal readonly struct CommandUsageResolverContainer : IResolverContainer<string[]> {
 
     private readonly MethodInfo _method;
 
     private readonly Type _parameter;
 
-    private readonly ICommandAliasResolver _instance;
+    private readonly ICommandUsageResolver _instance;
 
-    public CommandAliasResolverContainer(MethodInfo method, Type type, ICommandAliasResolver instance) {
+    public CommandUsageResolverContainer(MethodInfo method, Type type, ICommandUsageResolver instance) {
         _method = method;
         _parameter = type;
         _instance = instance;

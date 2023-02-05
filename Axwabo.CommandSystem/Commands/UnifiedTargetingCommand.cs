@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
+using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.Selectors;
 using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Commands;
 
+// ReSharper disable SuspiciousTypeConversion.Global
 public abstract class UnifiedTargetingCommand : CommandBase {
 
+    private readonly string _noTargetsFound = "No targets were found.";
     private readonly string _affected = "Done! The request affected {0}.";
     private readonly string _noPlayersAffected = "No players were affected.";
-    private readonly string _noTargetsFound = "No targets were found.";
     private readonly bool _shouldAffectSpectators = true;
 
-    protected UnifiedTargetingCommand() {
-    }
+    protected UnifiedTargetingCommand()
+        => TargetingCommandPropertyManager.ResolveProperties(this, ref _noTargetsFound, ref _affected, ref _noPlayersAffected, ref _shouldAffectSpectators);
 
     protected override int MinArguments => base.MinArguments + 1;
 

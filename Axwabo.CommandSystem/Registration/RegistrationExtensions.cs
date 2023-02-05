@@ -4,7 +4,7 @@ using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
-using Axwabo.CommandSystem.Registration.AttributeResolvers;
+using Axwabo.CommandSystem.Registration.Containers;
 
 namespace Axwabo.CommandSystem.Registration;
 

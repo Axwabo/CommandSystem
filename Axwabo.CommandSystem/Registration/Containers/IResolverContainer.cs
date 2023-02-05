@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Registration.AttributeResolvers;
+namespace Axwabo.CommandSystem.Registration.Containers;
 
 internal interface IResolverContainer<out TReturn> {
 

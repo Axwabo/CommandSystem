@@ -26,4 +26,9 @@ public static class Extensions {
     public static List<ReferenceHub> GetTargets(this ArraySegment<string> arguments, out string[] newArgs, int startIndex = 0)
         => RAUtils.ProcessPlayerIdOrNamesList(arguments, startIndex, out newArgs);
 
+    public static void SetFieldIfNotNull<T>(this T value, ref T field) where T : class {
+        if (value != null)
+            field = value;
+    }
+
 }

@@ -109,7 +109,10 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Attributes\Advanced\ShouldAffectSpectators.cs" />
+        <Compile Include="Attributes\Advanced\Interfaces\IShouldAffectSpectators.cs" />
+        <Compile Include="Attributes\Advanced\Interfaces\IStaticNoTargetsFoundMessage.cs" />
+        <Compile Include="Attributes\Advanced\NoTargetsMessageAttribute.cs" />
+        <Compile Include="Attributes\Advanced\ShouldAffectSpectatorsAttribute.cs" />
         <Compile Include="Attributes\AliasesAttribute.cs" />
         <Compile Include="Attributes\DescriptionAttribute.cs" />
         <Compile Include="Attributes\CommandTargetAttribute.cs" />
@@ -117,7 +120,6 @@
         <Compile Include="Attributes\CommandPropertiesAttribute.cs" />
         <Compile Include="Attributes\CommandHandlerType.cs" />
         <Compile Include="Attributes\EnumCommandNameAttribute.cs" />
-        <Compile Include="Attributes\Interfaces\IAffectSpectators.cs" />
         <Compile Include="Attributes\Interfaces\IAliases.cs" />
         <Compile Include="Attributes\Interfaces\IDescription.cs" />
         <Compile Include="Attributes\Interfaces\ICommandName.cs" />
@@ -159,11 +161,12 @@
         <Compile Include="Permissions\VanillaPermissionsAttribute.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="PropertyManager\CommandPropertyManager.cs" />
+        <Compile Include="PropertyManager\BaseCommandPropertyManager.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandAliasResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs" />
         <Compile Include="PropertyManager\Resolvers\ICommandPermissionCreator.cs" />
+        <Compile Include="PropertyManager\TargetingCommandPropertyManager.cs" />
         <Compile Include="Selectors\Filtering\CustomHubFilterRegistry.cs" />
         <Compile Include="Selectors\Filtering\Delegates.cs" />
         <Compile Include="Selectors\Filtering\FilterEntry.cs" />
@@ -172,12 +175,12 @@
         <Compile Include="Structs\CombinedTargetingCommandResult.cs" />
         <Compile Include="Structs\CommandResultOnTarget.cs" />
         <Compile Include="Structs\TryParseDelegate.cs" />
-        <Compile Include="Registration\AttributeResolvers\CommandAliasResolverContainer.cs" />
-        <Compile Include="Registration\AttributeResolvers\CommandDescriptionResolverContainer.cs" />
-        <Compile Include="Registration\AttributeResolvers\CommandNameResolverContainer.cs" />
-        <Compile Include="Registration\AttributeResolvers\CommandPermissionCreatorContainer.cs" />
-        <Compile Include="Registration\AttributeResolvers\CommandUsageResolverContainer.cs" />
-        <Compile Include="Registration\AttributeResolvers\IResolverContainer.cs" />
+        <Compile Include="Registration\Containers\CommandAliasResolverContainer.cs" />
+        <Compile Include="Registration\Containers\CommandDescriptionResolverContainer.cs" />
+        <Compile Include="Registration\Containers\CommandNameResolverContainer.cs" />
+        <Compile Include="Registration\Containers\CommandPermissionCreatorContainer.cs" />
+        <Compile Include="Registration\Containers\CommandUsageResolverContainer.cs" />
+        <Compile Include="Registration\Containers\IResolverContainer.cs" />
         <Compile Include="Registration\CommandRegistrationProcessor.cs" />
         <Compile Include="Registration\RegistrationExtensions.cs" />
         <Compile Include="Registration\UsesCedModPermissions.cs" />

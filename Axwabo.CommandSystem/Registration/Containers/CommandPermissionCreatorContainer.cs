@@ -3,7 +3,7 @@ using System.Reflection;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
 
-namespace Axwabo.CommandSystem.Registration.AttributeResolvers;
+namespace Axwabo.CommandSystem.Registration.Containers;
 
 internal readonly struct CommandPermissionCreatorContainer : IResolverContainer<IPermissionChecker> {
 
