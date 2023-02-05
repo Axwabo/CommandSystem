@@ -1,5 +1,4 @@
 ﻿using System;
-using Axwabo.CommandSystem.Patches;
 using CommandSystem;
 using PluginAPI.Core;
 
@@ -21,7 +20,7 @@ internal sealed class CommandWrapper : ICommand, IUsageProvider {
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
         if (sender is not CommandSender s) {
-            response = $"FATAL ERROR: sender is not a CommandSender, are you implementing the interface yourself?\n{CommandImplementationPatch.GetTypeInfo(GetType())}";
+            response = $"FATAL ERROR: sender is not a CommandSender, are you implementing the interface yourself?\n{CommandHelpers.GetTypeInfo(GetType())}";
             Log.Error($"Could not execute command {Command}:\n{response}");
             return false;
         }

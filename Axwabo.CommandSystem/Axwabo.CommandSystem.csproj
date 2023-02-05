@@ -125,6 +125,7 @@
         <Compile Include="Attributes\PresetCommandListeners.cs" />
         <Compile Include="Attributes\UsageAttribute.cs" />
         <Compile Include="CommandBase.cs" />
+        <Compile Include="CommandHelpers.cs" />
         <Compile Include="Commands\PlayerOnlyCommand.cs" />
         <Compile Include="Commands\SeparatedTargetingCommand.cs" />
         <Compile Include="Commands\UnifiedTargetingCommand.cs" />
@@ -134,9 +135,12 @@
         <Compile Include="Exceptions\NameNotSetException.cs" />
         <Compile Include="Exceptions\AttributeResolverException.cs" />
         <Compile Include="Extensions.cs" />
+        <Compile Include="IHiddenCommand.cs" />
         <Compile Include="Patches\CommandImplementationPatch.cs" />
         <Compile Include="Patches\CommandProcessorPatch.cs" />
         <Compile Include="Patches\ConsolePatch.cs" />
+        <Compile Include="Patches\GetCommandListPatch.cs" />
+        <Compile Include="Patches\ParseCommandsPatch.cs" />
         <Compile Include="Patches\ProcessPlayersListPatch.cs" />
         <Compile Include="Patches\QueryProcessorPatch.cs" />
         <Compile Include="Patches\RemoveStackTraceZeroesPatch.cs" />
