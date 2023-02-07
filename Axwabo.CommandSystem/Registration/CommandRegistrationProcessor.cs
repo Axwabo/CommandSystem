@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
+using Axwabo.CommandSystem.Commands.MessageOverrides;
+using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
-using Axwabo.CommandSystem.Registration.Containers;
+using Axwabo.CommandSystem.PropertyManager.Resolvers;
 using CommandSystem;
 using PluginAPI.Core;
 using RemoteAdmin;
-using Console = GameCore.Console;
 
 namespace Axwabo.CommandSystem.Registration;
 
@@ -34,7 +35,7 @@ public sealed class CommandRegistrationProcessor {
 
     public static void UnregisterAll(Assembly assembly) {
         UnregisterFromHandler(assembly, CommandProcessor.RemoteAdminCommandHandler);
-        UnregisterFromHandler(assembly, Console.singleton.ConsoleCommandHandler);
+        UnregisterFromHandler(assembly, GameCore.Console.singleton.ConsoleCommandHandler);
         UnregisterFromHandler(assembly, QueryProcessor.DotCommandHandler);
     }
 
@@ -62,17 +63,23 @@ public sealed class CommandRegistrationProcessor {
 
     private CommandRegistrationProcessor(Assembly assembly) => TargetAssembly = assembly;
 
-    internal readonly List<CommandNameResolverContainer> NameResolvers = new();
+    internal readonly List<ResolverContainer<ICommandNameResolver, string>> NameResolvers = new();
 
-    internal readonly List<CommandDescriptionResolverContainer> DescriptionResolvers = new();
+    internal readonly List<ResolverContainer<ICommandDescriptionResolver, string>> DescriptionResolvers = new();
 
-    internal readonly List<CommandAliasResolverContainer> AliasResolvers = new();
+    internal readonly List<ResolverContainer<ICommandAliasResolver, string[]>> AliasResolvers = new();
 
-    internal readonly List<CommandUsageResolverContainer> UsageResolvers = new();
+    internal readonly List<ResolverContainer<ICommandUsageResolver, string[]>> UsageResolvers = new();
 
-    internal readonly List<CommandPermissionCreatorContainer> PermissionCreators = new();
+    internal readonly List<ResolverContainer<ICommandPermissionCreator, IPermissionChecker>> PermissionCreators = new();
 
-    internal readonly List<TargetingMultipleMessageResolverContainer> TargetingMultipleMessageResolvers = new();
+    internal readonly List<ResolverContainer<IAffectedMultiplePlayersResolver, IAffectedMultiplePlayersMessageGenerator>> TargetingMultipleMessageResolvers = new();
+
+    internal readonly List<ResolverContainer<IAffectedOnePlayerResolver, IAffectedOnePlayerMessageGenerator>> TargetingSingleMessageResolvers = new();
+
+    internal readonly List<ResolverContainer<IAffectedAllPlayersResolver, IAffectedAllPlayersGenerator>> TargetingAllMessageResolvers = new();
+
+    internal readonly List<ResolverContainer<ITargetSelectionResolver, ITargetSelectionManager>> TargetSelectionManagerResolvers = new();
 
     #endregion
 
@@ -107,7 +114,7 @@ public sealed class CommandRegistrationProcessor {
         if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
             CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(wrapper);
         if (targets.HasFlagFast(CommandHandlerType.ServerConsole))
-            Console.singleton.ConsoleCommandHandler.RegisterCommand(wrapper);
+            GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(wrapper);
         if (targets.HasFlagFast(CommandHandlerType.Client))
             QueryProcessor.DotCommandHandler.RegisterCommand(wrapper);
     }

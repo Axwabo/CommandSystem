@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
-using Axwabo.CommandSystem.Registration.Containers;
 
 namespace Axwabo.CommandSystem.Registration;
 
@@ -65,28 +65,34 @@ public static class RegistrationExtensions {
     }
 
     private static void AddRegistrationAttribute(CommandRegistrationProcessor processor, Attribute attribute) {
-        if (attribute is ICommandNameResolver nameResolver)
-            processor.WithNameResolver(ImplementedGenericType(nameResolver, typeof(ICommandNameResolver<>)), nameResolver);
-        if (attribute is ICommandDescriptionResolver descriptionResolver)
-            processor.WithDescriptionResolver(ImplementedGenericType(descriptionResolver, typeof(ICommandDescriptionResolver<>)), descriptionResolver);
-        if (attribute is ICommandAliasResolver aliasResolver)
-            processor.WithAliasResolver(ImplementedGenericType(aliasResolver, typeof(ICommandAliasResolver<>)), aliasResolver);
-        if (attribute is ICommandUsageResolver usageResolver)
-            processor.WithUsageResolver(ImplementedGenericType(usageResolver, typeof(ICommandUsageResolver<>)), usageResolver);
-        if (attribute is ICommandPermissionCreator permissionCreator)
-            processor.WithPermissionCreator(ImplementedGenericType(permissionCreator, typeof(ICommandPermissionCreator<>)), permissionCreator);
+        processor.AddRegistrationAttribute<ICommandNameResolver>(attribute, typeof(ICommandNameResolver<>), WithNameResolver);
+        processor.AddRegistrationAttribute<ICommandDescriptionResolver>(attribute, typeof(ICommandDescriptionResolver<>), WithDescriptionResolver);
+        processor.AddRegistrationAttribute<ICommandAliasResolver>(attribute, typeof(ICommandAliasResolver<>), WithAliasResolver);
+        processor.AddRegistrationAttribute<ICommandUsageResolver>(attribute, typeof(ICommandUsageResolver<>), WithUsageResolver);
+        processor.AddRegistrationAttribute<ICommandPermissionCreator>(attribute, typeof(ICommandPermissionCreator<>), WithPermissionCreator);
+    }
+
+    private static void AddRegistrationAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod) {
+        if (attribute is TBaseResolver resolver)
+            addMethod(processor, ImplementedGenericType(resolver, genericType), resolver);
+    }
+
+    private static void Add<TResolver, TResult>(this List<ResolverContainer<TResolver, TResult>> list, Type suppliedGenericType, Type requiredGenericType, TResolver resolver) {
+        var method = GetGenericResolverMethod(suppliedGenericType, requiredGenericType, resolver, out var param);
+        list.Add(new ResolverContainer<TResolver, TResult>(method, param, resolver));
     }
 
     #endregion
 
     #region With Specific
 
+    #region Base Properties
+
     public static CommandRegistrationProcessor WithNameResolver<T>(this CommandRegistrationProcessor processor, ICommandNameResolver<T> nameResolver) where T : Attribute
         => WithNameResolver(processor, typeof(T), nameResolver);
 
     public static CommandRegistrationProcessor WithNameResolver(this CommandRegistrationProcessor processor, Type type, ICommandNameResolver nameResolver) {
-        var method = GetGenericResolverMethod(type, typeof(ICommandNameResolver<>), nameResolver, out var param);
-        processor.NameResolvers.Add(new CommandNameResolverContainer(method, param, nameResolver));
+        processor.NameResolvers.Add(type, typeof(ICommandNameResolver<>), nameResolver);
         return processor;
     }
 
@@ -94,8 +100,7 @@ public static class RegistrationExtensions {
         => WithDescriptionResolver(processor, typeof(T), descriptionResolver);
 
     public static CommandRegistrationProcessor WithDescriptionResolver(this CommandRegistrationProcessor processor, Type type, ICommandDescriptionResolver descriptionResolver) {
-        var method = GetGenericResolverMethod(type, typeof(ICommandDescriptionResolver<>), descriptionResolver, out var param);
-        processor.DescriptionResolvers.Add(new CommandDescriptionResolverContainer(method, param, descriptionResolver));
+        processor.DescriptionResolvers.Add(type, typeof(ICommandDescriptionResolver<>), descriptionResolver);
         return processor;
     }
 
@@ -103,8 +108,7 @@ public static class RegistrationExtensions {
         => WithAliasResolver(processor, typeof(T), aliasResolver);
 
     public static CommandRegistrationProcessor WithAliasResolver(this CommandRegistrationProcessor processor, Type type, ICommandAliasResolver aliasResolver) {
-        var method = GetGenericResolverMethod(type, typeof(ICommandAliasResolver<>), aliasResolver, out var param);
-        processor.AliasResolvers.Add(new CommandAliasResolverContainer(method, param, aliasResolver));
+        processor.AliasResolvers.Add(type, typeof(ICommandAliasResolver<>), aliasResolver);
         return processor;
     }
 
@@ -112,8 +116,7 @@ public static class RegistrationExtensions {
         => WithUsageResolver(processor, typeof(T), usageResolver);
 
     public static CommandRegistrationProcessor WithUsageResolver(this CommandRegistrationProcessor processor, Type type, ICommandUsageResolver usageResolver) {
-        var method = GetGenericResolverMethod(type, typeof(ICommandUsageResolver<>), usageResolver, out var param);
-        processor.UsageResolvers.Add(new CommandUsageResolverContainer(method, param, usageResolver));
+        processor.UsageResolvers.Add(type, typeof(ICommandUsageResolver<>), usageResolver);
         return processor;
     }
 
@@ -121,10 +124,47 @@ public static class RegistrationExtensions {
         => WithPermissionCreator(processor, typeof(T), permissionCreator);
 
     public static CommandRegistrationProcessor WithPermissionCreator(this CommandRegistrationProcessor processor, Type type, ICommandPermissionCreator permissionCreator) {
-        var method = GetGenericResolverMethod(type, typeof(ICommandPermissionCreator<>), permissionCreator, out var param);
-        processor.PermissionCreators.Add(new CommandPermissionCreatorContainer(method, param, permissionCreator));
+        processor.PermissionCreators.Add(type, typeof(ICommandPermissionCreator<>), permissionCreator);
         return processor;
     }
+
+    #endregion
+
+    #region Targeting Properties
+
+    public static CommandRegistrationProcessor WithTargetingAffectedMultipleResolver<T>(this CommandRegistrationProcessor processor, IAffectedMultiplePlayersResolver<T> generatorResolver) where T : Attribute
+        => WithTargetingAffectedMultipleResolver(processor, typeof(T), generatorResolver);
+
+    public static CommandRegistrationProcessor WithTargetingAffectedMultipleResolver(this CommandRegistrationProcessor processor, Type type, IAffectedMultiplePlayersResolver generatorResolver) {
+        processor.TargetingMultipleMessageResolvers.Add(type, typeof(IAffectedMultiplePlayersResolver<>), generatorResolver);
+        return processor;
+    }
+
+    public static CommandRegistrationProcessor WithTargetingAffectedOneResolver<T>(this CommandRegistrationProcessor processor, IAffectedOnePlayerResolver<T> generatorResolver) where T : Attribute
+        => WithTargetingAffectedOneResolver(processor, typeof(T), generatorResolver);
+
+    public static CommandRegistrationProcessor WithTargetingAffectedOneResolver(this CommandRegistrationProcessor processor, Type type, IAffectedOnePlayerResolver generatorResolver) {
+        processor.TargetingSingleMessageResolvers.Add(type, typeof(IAffectedOnePlayerResolver<>), generatorResolver);
+        return processor;
+    }
+
+    public static CommandRegistrationProcessor WithTargetingAffectedAllResolver<T>(this CommandRegistrationProcessor processor, IAffectedAllPlayersResolver<T> generatorResolver) where T : Attribute
+        => WithTargetingAffectedAllResolver(processor, typeof(T), generatorResolver);
+
+    public static CommandRegistrationProcessor WithTargetingAffectedAllResolver(this CommandRegistrationProcessor processor, Type type, IAffectedAllPlayersResolver generatorResolver) {
+        processor.TargetingAllMessageResolvers.Add(type, typeof(IAffectedAllPlayersResolver<>), generatorResolver);
+        return processor;
+    }
+
+    public static CommandRegistrationProcessor WithTargetingSelectionResolver<T>(this CommandRegistrationProcessor processor, ITargetSelectionResolver<T> selectionResolver) where T : Attribute
+        => WithTargetingSelectionResolver(processor, typeof(T), selectionResolver);
+
+    public static CommandRegistrationProcessor WithTargetingSelectionResolver(this CommandRegistrationProcessor processor, Type type, ITargetSelectionResolver selectionResolver) {
+        processor.TargetSelectionManagerResolvers.Add(type, typeof(ITargetSelectionResolver<>), selectionResolver);
+        return processor;
+    }
+
+    #endregion
 
     #endregion
 

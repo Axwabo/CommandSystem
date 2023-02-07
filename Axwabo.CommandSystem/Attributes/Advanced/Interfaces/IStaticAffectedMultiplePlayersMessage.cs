@@ -2,6 +2,6 @@
 
 public interface IStaticAffectedMultiplePlayersMessage {
 
-    string Message { get; }
+    string AffectedMultiple { get; }
 
 }

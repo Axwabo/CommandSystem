@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Axwabo.CommandSystem.Structs;
-using PlayerRoles;
 
 namespace Axwabo.CommandSystem.Commands;
 
@@ -11,8 +10,6 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand {
         var succeeded = new List<CommandResultOnTarget>();
         var failed = new List<CommandResultOnTarget>();
         foreach (var target in targets) {
-            if (!AffectSpectators && !target.IsAlive())
-                continue;
             var result = ExecuteOn(target, arguments, sender);
             if (result)
                 succeeded.Add(new CommandResultOnTarget(target, result.Response));

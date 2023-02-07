@@ -6,8 +6,8 @@ namespace Axwabo.CommandSystem.Attributes.Advanced;
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class AffectedMultiplePlayersMessageAttribute : Attribute, IStaticAffectedMultiplePlayersMessage {
 
-    public string Message { get; }
+    public string AffectedMultiple { get; }
 
-    public AffectedMultiplePlayersMessageAttribute(string message) => Message = message;
+    public AffectedMultiplePlayersMessageAttribute(string message) => AffectedMultiple = message;
 
 }

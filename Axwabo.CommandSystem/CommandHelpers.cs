@@ -16,7 +16,7 @@ public static class CommandHelpers {
             : $"\nUsage:\n{string.Join("\n", usage)}";
 
     public static bool IsHidden(ICommand command) => command is CommandWrapper wrapper
-        ? wrapper.BackingCommand is IHiddenCommand
-        : command is global::CommandSystem.IHiddenCommand;
+        ? wrapper.BackingCommand is Commands.IHiddenCommand
+        : command is IHiddenCommand;
 
 }

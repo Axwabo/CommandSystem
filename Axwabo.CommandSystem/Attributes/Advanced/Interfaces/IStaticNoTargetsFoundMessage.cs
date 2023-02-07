@@ -2,6 +2,6 @@
 
 public interface IStaticNoTargetsFoundMessage {
 
-    string Message { get; }
-    
+    string NoTargets { get; }
+
 }

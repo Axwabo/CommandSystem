@@ -31,4 +31,9 @@ public static class Extensions {
             field = value;
     }
 
+    public static void SafeCastAndSetIfNotNull<T>(this object value, ref T field) where T : class {
+        if (field != null && value is T t)
+            field = t;
+    }
+
 }

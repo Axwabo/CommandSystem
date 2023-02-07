@@ -1,6 +1,6 @@
 ﻿namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 
-public interface IAffectedOnePlayerGenerator {
+public interface IAffectedOnePlayerMessageGenerator {
 
     string OnAffected(ReferenceHub target);
 

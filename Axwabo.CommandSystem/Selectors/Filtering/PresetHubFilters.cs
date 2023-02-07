@@ -14,6 +14,9 @@ public static class PresetHubFilters {
     public static HubFilter Role(string role)
         => FromParameterized(Role, ValueRange<RoleTypeId>.Parse(role.EnsureNotEmpty("Role type must not be empty"), Extensions.TryParseIgnoreCase));
 
+    public static HubFilter Team(string team)
+        => FromParameterized(Team, ValueRange<Team>.Parse(team.EnsureNotEmpty("Team must not be empty"), Extensions.TryParseIgnoreCase));
+
     public static HubFilter Id(string id)
         => FromParameterized(Id, ValueRange<int>.Parse(id.EnsureNotEmpty("Player id must not be empty"), int.TryParse));
 
@@ -34,6 +37,8 @@ public static class PresetHubFilters {
     #region Parameterized
 
     public static bool Role(ReferenceHub hub, ValueRange<RoleTypeId> range) => range.IsWithinRange(hub.roleManager.CurrentRole.RoleTypeId);
+
+    public static bool Team(ReferenceHub hub, ValueRange<Team> range) => range.IsWithinRange(hub.roleManager.CurrentRole.Team);
 
     public static bool Nickname(ReferenceHub hub, string parameter) => hub.nicknameSync.Network_myNickSync.ContainsIgnoreCase(parameter);
 

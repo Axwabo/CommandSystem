@@ -6,8 +6,8 @@ namespace Axwabo.CommandSystem.Attributes.Advanced;
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class NoPlayersAffectedMessageAttribute : Attribute, IStaticNoPlayersAffectedMessage {
 
-    public string Message { get; }
+    public string NoPlayersAffected { get; }
 
-    public NoPlayersAffectedMessageAttribute(string message) => Message = message;
+    public NoPlayersAffectedMessageAttribute(string message) => NoPlayersAffected = message;
 
 }

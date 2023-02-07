@@ -9,42 +9,43 @@ using PlayerRoles;
 
 namespace Axwabo.CommandSystem.Commands;
 
-// ReSharper disable SuspiciousTypeConversion.Global
 public abstract class UnifiedTargetingCommand : CommandBase {
 
-    private readonly string _noTargetsFound = "No targets were found.";
-    private readonly string _affectedMultiple = "Done! The request affected {0}.";
-    private readonly string _affectedSingle = "Done! The request affected {0}.";
+    private readonly string _noTargetsFoundMessage = "No targets were found.";
     private readonly string _noPlayersAffected = "No players were affected.";
     private readonly bool _shouldAffectSpectators = true;
 
-    private readonly IAffectedMultiplePlayersMessageGenerator _affectedMultiplePlayersGenerator;
+    private readonly IAffectedMultiplePlayersMessageGenerator _affectedMultipleGenerator;
     private readonly IAffectedAllPlayersGenerator _allAffectedGenerator;
-    private readonly IAffectedOnePlayerGenerator _affectedOneGenerator;
+    private readonly IAffectedOnePlayerMessageGenerator _affectedOneGenerator;
     private readonly ITargetSelectionManager _selectionManager;
-    private readonly INoPlayersAffectedGenerator _noPlayersAffectedGenerator;
 
     protected UnifiedTargetingCommand() {
-        TargetingCommandPropertyManager.ResolveProperties(this, ref _noTargetsFound, ref _affectedMultiple, ref _affectedSingle, ref _noPlayersAffected, ref _shouldAffectSpectators);
-        _affectedMultiplePlayersGenerator = this as IAffectedMultiplePlayersMessageGenerator;
-        _allAffectedGenerator = this as IAffectedAllPlayersGenerator;
-        _affectedOneGenerator = this as IAffectedOnePlayerGenerator;
-        _selectionManager = this as ITargetSelectionManager;
-        _noPlayersAffectedGenerator = this as INoPlayersAffectedGenerator;
+        var affectedMultiple = "Done! The request affected {0}.";
+        var affectedOne = "Done! The request affected {0}.";
+        TargetingCommandPropertyManager.ResolveProperties(this, ref _noTargetsFoundMessage, ref affectedMultiple, ref affectedOne, ref _noPlayersAffected, ref _shouldAffectSpectators);
+        TargetingCommandPropertyManager.ResolveGenerators(this, out _affectedMultipleGenerator, out _allAffectedGenerator, out _affectedOneGenerator, out _selectionManager);
+        if (_affectedMultipleGenerator is not null || _allAffectedGenerator is not null || _affectedOneGenerator is not null)
+            return;
+        var generator = new DefaultTargetingMessageGenerator {
+            AffectedMultipleMessage = affectedMultiple,
+            AffectedOneMessage = affectedOne
+        };
+        _affectedMultipleGenerator ??= generator;
+        _allAffectedGenerator ??= generator;
+        _affectedOneGenerator ??= generator;
     }
 
     protected override int MinArguments => base.MinArguments + 1;
 
+    private bool ShouldBeAffected(ReferenceHub hub) => ShouldAffectSpectators || hub.IsAlive();
+
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
-        var targets = arguments.GetTargets(out var newArgs);
+        var targets = arguments.GetTargets(out var newArgs)?.Where(ShouldBeAffected).ToList();
         if (targets is not {Count: not 0})
-            return CommandResult.Failed(NoTargetsFound);
-        var args = (newArgs ?? Array.Empty<string>()).Segment(0);
-        if (targets.Count != 1)
-            return ExecuteOnTargets(targets.Where(PlayerRolesUtils.IsAlive).ToList(), args, sender);
-        return targets[0].IsAlive()
-            ? ExecuteOnSingleTarget(targets[0], arguments, sender)
-            : CommandResult.Failed(NoTargetsFound);
+            return OnNoTargetsFound();
+        var args = new ArraySegment<string>(newArgs ?? Array.Empty<string>());
+        return targets.Count == 1 ? ExecuteOnSingleTarget(targets[0], arguments, sender) : ExecuteOnTargets(targets, args, sender);
     }
 
     protected abstract CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender);
@@ -52,29 +53,22 @@ public abstract class UnifiedTargetingCommand : CommandBase {
     protected virtual CommandResult ExecuteOnSingleTarget(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender)
         => ExecuteOnTargets(new List<ReferenceHub> {target}, arguments, sender);
 
-    protected virtual string NoTargetsFound => _noTargetsFound;
+    protected virtual CommandResult OnNoTargetsFound() => CommandResult.Failed(NoTargetsFoundMessage);
 
-    protected string NoPlayersAffected => _noPlayersAffectedGenerator?.NoPlayersAffected ?? _noPlayersAffected;
+    protected virtual string NoTargetsFoundMessage => _noTargetsFoundMessage;
 
-    protected bool AffectSpectators => _selectionManager?.AffectSpectators ?? _shouldAffectSpectators;
+    protected virtual string NoPlayersAffected => _noPlayersAffected;
+
+    protected bool ShouldAffectSpectators => _selectionManager?.AffectSpectators ?? _shouldAffectSpectators;
 
     protected bool IsEveryoneAffected(int affected)
         => _selectionManager?.IsEveryoneAffected(affected)
-           ?? (AffectSpectators ? PlayerSelectionManager.AllPlayers : PlayerSelectionManager.NonSpectators).Count == affected;
+           ?? (ShouldAffectSpectators ? PlayerSelectionManager.AllPlayers : PlayerSelectionManager.NonSpectators).Count == affected;
 
-    protected string GetAffectedMessage(int players)
-        => _affectedMultiplePlayersGenerator != null
-            ? _affectedMultiplePlayersGenerator.OnAffected(players)
-            : string.Format(_affectedMultiple, "player".Pluralize(players));
+    protected string GetAffectedMessage(int players) => _affectedMultipleGenerator.OnAffected(players);
 
-    protected string GetAffectedMessageSingle(ReferenceHub target)
-        => _affectedOneGenerator != null
-            ? _affectedOneGenerator.OnAffected(target)
-            : string.Format(_affectedSingle, target.nicknameSync.MyNick);
+    protected string GetAffectedMessageSingle(ReferenceHub target) => _affectedOneGenerator.OnAffected(target);
 
-    protected string GetAffectedMessageAll(int players)
-        => _allAffectedGenerator != null
-            ? _allAffectedGenerator.OnEveryoneAffected(players)
-            : GetAffectedMessage(players);
+    protected string GetAffectedMessageAll(int players) => _allAffectedGenerator.OnEveryoneAffected(players);
 
 }

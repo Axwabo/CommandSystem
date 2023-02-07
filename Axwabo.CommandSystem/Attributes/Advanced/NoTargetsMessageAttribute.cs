@@ -6,8 +6,8 @@ namespace Axwabo.CommandSystem.Attributes.Advanced;
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class NoTargetsMessageAttribute : Attribute, IStaticNoTargetsFoundMessage {
 
-    public string Message { get; }
+    public string NoTargets { get; }
 
-    public NoTargetsMessageAttribute(string message) => Message = message;
+    public NoTargetsMessageAttribute(string message) => NoTargets = message;
 
 }

@@ -58,6 +58,7 @@ public static class AtSelectorProcessor {
         var filter = alias switch {
             "limit" => ParseLimit(value, out limit),
             "role" or "class" or "r" or "c" => PresetHubFilters.Role(value),
+            "team" => PresetHubFilters.Team(value),
             "playerid" or "pid" => PresetHubFilters.Id(value),
             "nickname" or "nick" or "name" => PresetHubFilters.Nickname(value),
             "alive" => PlayerRolesUtils.IsAlive,
