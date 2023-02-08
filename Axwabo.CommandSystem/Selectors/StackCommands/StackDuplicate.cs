@@ -5,24 +5,24 @@ using Axwabo.Helpers.Pools;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
-[CommandProperties(CommandHandlerType.RaAndServer, "stackduplicate", "Duplicates the specified selections on the player stack.")]
+[CommandProperties(CommandHandlerType.RaAndServer, "stackduplicate", 1, "Duplicates the specified selections on the player stack.")]
 [Aliases("stackdup", "sdup")]
 [Usage("sdup", "sdup all/*", "sdup first/f/top/t", $"sdup [indexes separated by spaces or one of{Separators}]")]
 public sealed class StackDuplicate : CommandBase {
 
     private const string Separators = " .,;_+-";
 
-    protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
-        if (PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))
-            return result;
-        if (arguments.Count < 1)
-            return DuplicateFirst(selection);
-        return arguments.At(0).ToLower() switch {
-            "all" or "*" => DuplicateAll(selection),
-            "first" or "f" or "top" or "t" => DuplicateFirst(selection),
-            _ => DuplicateSpecific(selection, arguments)
-        };
-    }
+    protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
+        => !PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result)
+            ? result
+            : arguments.At(0).ToLower() switch {
+                "all" or "*" => DuplicateAll(selection),
+                "first" or "f" or "top" or "t" => DuplicateFirst(selection),
+                _ => DuplicateSpecific(selection, arguments)
+            };
+
+    protected override CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender)
+        => !PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result) ? result : DuplicateFirst(selection);
 
     private static CommandResult DuplicateFirst(PlayerSelectionStack selection) {
         var dup = selection.Peek();

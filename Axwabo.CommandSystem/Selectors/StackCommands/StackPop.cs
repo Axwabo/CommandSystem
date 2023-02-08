@@ -11,7 +11,7 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 public sealed class StackPop : CommandBase {
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
-        if (PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))
+        if (!PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))
             return result;
         var indexSet = false;
         HubCollection popped;

@@ -41,7 +41,7 @@ public abstract class CommandBase {
 
     public CommandResult ExecuteBase(ArraySegment<string> arguments, CommandSender sender) {
         if (arguments.Count < MinArguments)
-            return OnNotEnoughArgumentsProvided(arguments);
+            return OnNotEnoughArgumentsProvided(arguments, sender);
         var permissions = Permissions;
         var permissionCheck = sender.FullPermissions || permissions == null ? (CommandResult) true : permissions.CheckPermission(sender);
         return !permissionCheck ? permissionCheck : Execute(arguments, sender);
@@ -49,7 +49,7 @@ public abstract class CommandBase {
 
     protected abstract CommandResult Execute(ArraySegment<string> arguments, CommandSender sender);
 
-    protected virtual string OnNotEnoughArgumentsProvided(ArraySegment<string> arguments) {
+    protected virtual CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender) {
         var minArguments = MinArguments;
         return $"Need at least {"argument".Pluralize(minArguments)}! {CombinedUsage}";
     }

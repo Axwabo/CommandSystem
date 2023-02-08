@@ -9,7 +9,7 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 public sealed class StackClear : CommandBase {
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
-        if (PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result, true))
+        if (!PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result, true))
             return result;
         if (selection.IsEmpty)
             return "The selection stack is already empty.";

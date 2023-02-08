@@ -151,7 +151,6 @@
         <Compile Include="Exceptions\PlayerListProcessorException.cs"/>
         <Compile Include="Exceptions\TypeMismatchException.cs"/>
         <Compile Include="Exceptions\NameNotSetException.cs"/>
-        <Compile Include="Exceptions\AttributeResolverException.cs"/>
         <Compile Include="Extensions.cs"/>
         <Compile Include="Patches\CommandImplementationPatch.cs"/>
         <Compile Include="Patches\CommandProcessorPatch.cs"/>

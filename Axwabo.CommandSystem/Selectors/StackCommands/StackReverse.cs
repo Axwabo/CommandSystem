@@ -9,7 +9,7 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 public sealed class StackReverse : CommandBase {
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
-        if (PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))
+        if (!PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))
             return result;
         selection.Reverse();
         return "The selection stack has been reversed.";

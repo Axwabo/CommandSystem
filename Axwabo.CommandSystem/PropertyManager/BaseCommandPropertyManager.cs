@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes.Interfaces;
-using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.Registration;
 
@@ -18,7 +17,7 @@ public static class BaseCommandPropertyManager {
         if (CurrentProcessor != null)
             return true;
         return throwIfProcessorIsNull
-            ? throw new AttributeResolverException("Attempted to resolve command properties outside of a registration process.")
+            ? throw new InvalidOperationException("Attempted to resolve command properties outside of a registration process.")
             : false;
     }
 

@@ -10,9 +10,9 @@ namespace Axwabo.CommandSystem.Registration;
 
 public static class RegistrationExtensions {
 
-    public static bool HasFlagFast(this CommandHandlerType target, CommandHandlerType flag) => (target & flag) == flag;
-
     #region Helpers
+
+    public static bool HasFlagFast(this CommandHandlerType target, CommandHandlerType flag) => (target & flag) == flag;
 
     private static Type GenericType(object o) {
         var type = o as Type ?? o.GetType();
@@ -25,7 +25,7 @@ public static class RegistrationExtensions {
     private static Type ImplementedGenericType(object resolver, Type interfaceType)
         => GenericType(
             GetInterface(resolver.GetType(), interfaceType)
-            ?? throw new AttributeResolverException($"Interface does not implement the generic {interfaceType.Name}")
+            ?? throw new TypeMismatchException($"Interface does not implement the generic {interfaceType.Name}")
         );
 
     private static MethodInfo GetGenericResolverMethod(Type parameterType, Type interfaceType, object resolver, out Type param) {
@@ -37,11 +37,11 @@ public static class RegistrationExtensions {
             throw new ArgumentNullException(nameof(resolver));
         var implementedInterface = GetInterface(resolver.GetType(), interfaceType);
         if (implementedInterface == null)
-            throw new AttributeResolverException($"Expected an implementation of {interfaceType.Name} with generic type {parameterType.FullName}, got: {resolver.GetType().FullName}");
+            throw new TypeMismatchException($"Expected an implementation of {interfaceType.Name} with generic type {parameterType.FullName}, got: {resolver.GetType().FullName}");
         var method = implementedInterface.GetMethods()[0];
         var parameters = method.GetParameters();
         if (parameters is not {Length: 1})
-            throw new AttributeResolverException($"Expected an implementation {interfaceType.Name} with a single parameter of type {parameterType.FullName}");
+            throw new TypeMismatchException($"Expected an implementation {interfaceType.Name} with a single parameter of type {parameterType.FullName}");
         param = parameters[0].ParameterType;
         if (!param.IsAssignableFrom(parameterType))
             throw new TypeMismatchException($"Expected an implementation {interfaceType.Name} with a single parameter of type {parameterType.FullName}, got: {param.FullName}");
@@ -65,14 +65,14 @@ public static class RegistrationExtensions {
     }
 
     private static void AddRegistrationAttribute(CommandRegistrationProcessor processor, Attribute attribute) {
-        processor.AddRegistrationAttribute<ICommandNameResolver>(attribute, typeof(ICommandNameResolver<>), WithNameResolver);
-        processor.AddRegistrationAttribute<ICommandDescriptionResolver>(attribute, typeof(ICommandDescriptionResolver<>), WithDescriptionResolver);
-        processor.AddRegistrationAttribute<ICommandAliasResolver>(attribute, typeof(ICommandAliasResolver<>), WithAliasResolver);
-        processor.AddRegistrationAttribute<ICommandUsageResolver>(attribute, typeof(ICommandUsageResolver<>), WithUsageResolver);
-        processor.AddRegistrationAttribute<ICommandPermissionCreator>(attribute, typeof(ICommandPermissionCreator<>), WithPermissionCreator);
+        processor.ConsumeAttribute<ICommandNameResolver>(attribute, typeof(ICommandNameResolver<>), WithNameResolver);
+        processor.ConsumeAttribute<ICommandDescriptionResolver>(attribute, typeof(ICommandDescriptionResolver<>), WithDescriptionResolver);
+        processor.ConsumeAttribute<ICommandAliasResolver>(attribute, typeof(ICommandAliasResolver<>), WithAliasResolver);
+        processor.ConsumeAttribute<ICommandUsageResolver>(attribute, typeof(ICommandUsageResolver<>), WithUsageResolver);
+        processor.ConsumeAttribute<ICommandPermissionCreator>(attribute, typeof(ICommandPermissionCreator<>), WithPermissionCreator);
     }
 
-    private static void AddRegistrationAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod) {
+    private static void ConsumeAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod) {
         if (attribute is TBaseResolver resolver)
             addMethod(processor, ImplementedGenericType(resolver, genericType), resolver);
     }
