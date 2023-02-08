@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Exceptions;
@@ -14,20 +13,6 @@ public static class RegistrationExtensions {
 
     public static bool HasFlagFast(this CommandHandlerType target, CommandHandlerType flag) => (target & flag) == flag;
 
-    private static Type GenericType(object o) {
-        var type = o as Type ?? o.GetType();
-        var args = type.GenericTypeArguments;
-        return args is not {Length: not 0} ? null : args[0];
-    }
-
-    private static Type GetInterface(Type targetType, Type genericInterfaceType) => targetType.GetInterfaces().FirstOrDefault(e => e.IsGenericType && e.GetGenericTypeDefinition() == genericInterfaceType);
-
-    private static Type ImplementedGenericType(object resolver, Type interfaceType)
-        => GenericType(
-            GetInterface(resolver.GetType(), interfaceType)
-            ?? throw new TypeMismatchException($"Interface does not implement the generic {interfaceType.Name}")
-        );
-
     private static MethodInfo GetGenericResolverMethod(Type parameterType, Type interfaceType, object resolver, out Type param) {
         if (parameterType == null)
             throw new ArgumentNullException(nameof(parameterType));
@@ -35,7 +20,7 @@ public static class RegistrationExtensions {
             throw new ArgumentNullException(nameof(interfaceType));
         if (resolver == null)
             throw new ArgumentNullException(nameof(resolver));
-        var implementedInterface = GetInterface(resolver.GetType(), interfaceType);
+        var implementedInterface = resolver.GetType().GetGenericInterface(interfaceType);
         if (implementedInterface == null)
             throw new TypeMismatchException($"Expected an implementation of {interfaceType.Name} with generic type {parameterType.FullName}, got: {resolver.GetType().FullName}");
         var method = implementedInterface.GetMethods()[0];
@@ -74,7 +59,7 @@ public static class RegistrationExtensions {
 
     private static void ConsumeAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod) {
         if (attribute is TBaseResolver resolver)
-            addMethod(processor, ImplementedGenericType(resolver, genericType), resolver);
+            addMethod(processor, resolver.ImplementedGenericType(genericType), resolver);
     }
 
     private static void Add<TResolver, TResult>(this List<ResolverContainer<TResolver, TResult>> list, Type suppliedGenericType, Type requiredGenericType, TResolver resolver) {

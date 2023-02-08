@@ -46,22 +46,49 @@ public static class BaseCommandPropertyManager {
     public static IPermissionChecker ResolvePermissionChecker(CommandBase command) {
         if (!ValidateRegistration(command, false))
             return null;
+        var list = new List<IPermissionChecker>();
+        list.AddIfNotNull(command as IPermissionChecker);
         foreach (var attribute in command.GetType().GetCustomAttributes()) {
-            if (ResolveBasePermissionChecker(attribute) is { } checker)
-                return checker;
-            foreach (var creator in CurrentProcessor.PermissionCreators)
-                if (creator.Takes(attribute.GetType()))
-                    return creator.Resolve(attribute);
+            if (list.AddIfNotNull(ResolveBasePermissionChecker(attribute)))
+                continue;
+            if (!list.AddIfNotNull(ResolveInstanceBasedPermissionChecker(attribute, command)))
+                list.AddIfNotNull(ResolveCustomPermissionChecker(attribute));
         }
 
-        return null;
+        return list.Count switch {
+            0 => null,
+            1 => list[0],
+            _ => new CombinedPermissionChecker(list.ToArray())
+        };
     }
 
     private static IPermissionChecker ResolveBasePermissionChecker(Attribute attribute) => attribute switch {
         SingleVanillaPermissionsAttribute single => new SimpleVanillaPlayerPermissionChecker(single.Permissions),
         OneOfVanillaPermissionsAttribute oneOf => new AtLeastOneVanillaPlayerPermissionChecker(oneOf.Permissions),
+        CedModPermissionsAttribute cedMod => new CedModPermissionChecker(cedMod.Permission),
         _ => null
     };
+
+    private static IPermissionChecker ResolveInstanceBasedPermissionChecker(Attribute attribute, CommandBase command) {
+        if (attribute is IInstanceBasedPermissionCreator creator)
+            return creator.Create(command);
+        if (!attribute.GetType().TryGetGenericInterface(typeof(IGenericInstanceBasedPermissionCreator<>), out var type))
+            return null;
+        var method = type.GetMethod("Create");
+        if (method == null)
+            return null;
+        var parameters = method.GetParameters();
+        return parameters is not {Length: 1} || !parameters[0].ParameterType.IsInstanceOfType(command)
+            ? null
+            : (IPermissionChecker) method.Invoke(attribute, new object[] {command});
+    }
+
+    private static IPermissionChecker ResolveCustomPermissionChecker(Attribute attribute) {
+        foreach (var creator in CurrentProcessor.PermissionCreators)
+            if (creator.Takes(attribute.GetType()))
+                return creator.Resolve(attribute);
+        return null;
+    }
 
     private static bool ResolveBaseAttribute(Attribute attribute, ref string name, ref string description, List<string> aliases, List<string> usage, ref int minArguments) {
         var completed = false;

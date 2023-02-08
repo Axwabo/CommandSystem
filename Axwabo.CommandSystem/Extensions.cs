@@ -36,4 +36,10 @@ public static class Extensions {
             field = t;
     }
 
+    public static bool AddIfNotNull<T>(this List<T> list, T value) where T : class {
+        if (value == null) return false;
+        list.Add(value);
+        return true;
+    }
+
 }

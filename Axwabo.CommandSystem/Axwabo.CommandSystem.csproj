@@ -130,6 +130,8 @@
         <Compile Include="Attributes\Interfaces\IAliases.cs"/>
         <Compile Include="Attributes\Interfaces\IDescription.cs"/>
         <Compile Include="Attributes\Interfaces\ICommandName.cs"/>
+        <Compile Include="Attributes\Interfaces\IGenericInstanceBasedPermissionCreator.cs"/>
+        <Compile Include="Attributes\Interfaces\IInstanceBasedPermissionCreator.cs"/>
         <Compile Include="Attributes\Interfaces\IMinArguments.cs"/>
         <Compile Include="Attributes\Interfaces\IUsage.cs"/>
         <Compile Include="Attributes\MinArgumentsAttribute.cs"/>
@@ -152,6 +154,7 @@
         <Compile Include="Exceptions\TypeMismatchException.cs"/>
         <Compile Include="Exceptions\NameNotSetException.cs"/>
         <Compile Include="Extensions.cs"/>
+        <Compile Include="GenericTypeExtensions.cs"/>
         <Compile Include="Patches\CommandImplementationPatch.cs"/>
         <Compile Include="Patches\CommandProcessorPatch.cs"/>
         <Compile Include="Patches\ConsolePatch.cs"/>
@@ -163,6 +166,7 @@
         <Compile Include="Permissions\AtLeastOneVanillaPlayerPermissionChecker.cs"/>
         <Compile Include="Permissions\CedModPermissionChecker.cs"/>
         <Compile Include="Permissions\CedModPermissionsAttribute.cs"/>
+        <Compile Include="Permissions\CombinedPermissionChecker.cs"/>
         <Compile Include="Permissions\IPermissionChecker.cs"/>
         <Compile Include="Permissions\OneOfVanillaPermissionsAttribute.cs"/>
         <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs"/>
@@ -190,7 +194,6 @@
         <Compile Include="Structs\TryParseDelegate.cs"/>
         <Compile Include="Registration\CommandRegistrationProcessor.cs"/>
         <Compile Include="Registration\RegistrationExtensions.cs"/>
-        <Compile Include="Registration\UsesCedModPermissions.cs"/>
         <Compile Include="Selectors\AtSelectorProcessor.cs"/>
         <Compile Include="Selectors\HubCollection.cs"/>
         <Compile Include="Selectors\PlayerSelectionManager.cs"/>
