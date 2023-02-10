@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Axwabo.CommandSystem.Structs;
 using Utils;
 
 namespace Axwabo.CommandSystem;
@@ -10,7 +11,12 @@ public static class Extensions {
     public static string CombineNicknames(this IEnumerable<ReferenceHub> hubs, string separator = ", ")
         => string.Join(separator, hubs.Select(p => p.nicknameSync.MyNick));
 
-    public static string Pluralize(this string word, int count) => $"{count} {(count == 1 ? word : word + "s")}";
+    public static string CombineNicknames(this IEnumerable<CommandResultOnTarget> hubs, string separator = ", ")
+        => string.Join(separator, hubs.Select(p => p.Target.nicknameSync.MyNick));
+
+    public static string PluralizeWithCount(this string phrase, int count) => $"{count} {phrase.Pluralize(count)}";
+
+    public static string Pluralize(this string phrase, int count) => count == 1 ? phrase : phrase + "s";
 
     public static string Substring(this string s, int start, params char[] separators) {
         var index = s.IndexOfAny(separators, start);
@@ -37,7 +43,8 @@ public static class Extensions {
     }
 
     public static bool AddIfNotNull<T>(this List<T> list, T value) where T : class {
-        if (value == null) return false;
+        if (value == null)
+            return false;
         list.Add(value);
         return true;
     }

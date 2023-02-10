@@ -139,7 +139,8 @@
         <Compile Include="Attributes\UsageAttribute.cs"/>
         <Compile Include="CommandBase.cs"/>
         <Compile Include="CommandHelpers.cs"/>
-        <Compile Include="Commands\IHiddenCommand.cs"/>
+        <Compile Include="Commands\Interfaces\IHiddenCommand.cs"/>
+        <Compile Include="Commands\Interfaces\IPreExecutionFilter.cs"/>
         <Compile Include="Commands\MessageOverrides\DefaultTargetingMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\IAffectedMultiplePlayersMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\IAffectedOnePlayerMessageGenerator.cs"/>

@@ -5,8 +5,8 @@ using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
-[CommandProperties(CommandHandlerType.RaAndServer, "stackpop", "Pops the topmost players from the selection stack.", "spop")]
-[Usage("spop", "spop <index>")]
+[CommandProperties(CommandHandlerType.RaAndServer, "stackPop", "Pops the topmost players from the selection stack.", "spop")]
+[Usage("", "<index>")]
 [ShouldAffectSpectators]
 public sealed class StackPop : CommandBase {
 
@@ -22,7 +22,7 @@ public sealed class StackPop : CommandBase {
         } else
             popped = selection.Pop();
 
-        return $"Popped {"player".Pluralize(popped.Count)} from the selection stack{(indexSet ? $" at index {index}" : "")}:\n{popped.CombineNicknames()}";
+        return $"Popped {"player".PluralizeWithCount(popped.Count)} from the selection stack{(indexSet ? $" at index {index}" : "")}:\n{popped.CombineNicknames()}";
     }
 
 }

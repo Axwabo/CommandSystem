@@ -66,20 +66,31 @@ public sealed class PlayerSelectionStack : MonoBehaviour {
 
     public int Count => Stack.Count;
 
-    public override string ToString() {
+    public override string ToString() => ToString(true);
+
+    public string ToString(bool inverted) {
         var sb = StringBuilderPool.Shared.Rent();
         lock (Stack) {
             var count = Stack.Count;
-            for (var i = count - 1; i >= 0; i--) {
-                var hubs = Stack[i];
+
+            void Append(int index) {
+                var hubs = Stack[index];
+                var visualIndex = count - index - 1;
                 if (hubs.Count == 0) {
-                    sb.AppendLine($"#{count - i - 1} [EMPTY]");
-                    continue;
+                    sb.AppendLine($"#{visualIndex} [EMPTY]");
+                    return;
                 }
 
-                sb.AppendLine($"#{count - i - 1} ({"player".Pluralize(hubs.Count)}):");
-                sb.AppendLine("> " + Stack[i].CombineNicknames("\n> "));
+                sb.AppendLine($"#{visualIndex} ({"player".PluralizeWithCount(hubs.Count)}):");
+                sb.AppendLine("> " + Stack[index].CombineNicknames("\n> "));
             }
+
+            if (inverted)
+                for (var i = 0; i < count; i++)
+                    Append(i);
+            else
+                for (var i = count - 1; i >= 0; i--)
+                    Append(i);
         }
 
         return StringBuilderPool.Shared.ToStringReturn(sb).TrimEnd();

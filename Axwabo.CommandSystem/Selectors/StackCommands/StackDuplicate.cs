@@ -7,7 +7,7 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
 [CommandProperties(CommandHandlerType.RaAndServer, "stackduplicate", 1, "Duplicates the specified selections on the player stack.")]
 [Aliases("stackdup", "sdup")]
-[Usage("sdup", "sdup all/*", "sdup first/f/top/t", $"sdup [indexes separated by spaces or one of{Separators}]")]
+[Usage("", "all/*", "first/f/top/t", $"[indexes separated by spaces or one of{Separators}]")]
 public sealed class StackDuplicate : CommandBase {
 
     private const string Separators = " .,;_+-";
@@ -47,7 +47,7 @@ public sealed class StackDuplicate : CommandBase {
             foreach (var collection in push)
                 selection.Push(collection);
 
-            return $"Duplicated {"selection".Pluralize(push.Count)} on the selection stack.";
+            return $"Duplicated {"selection".PluralizeWithCount(push.Count)} on the selection stack.";
         } finally {
             ListPool<HubCollection>.Shared.Return(push);
         }

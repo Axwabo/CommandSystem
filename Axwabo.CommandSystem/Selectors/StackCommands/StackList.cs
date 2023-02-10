@@ -4,7 +4,7 @@ using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
-[CommandProperties(CommandHandlerType.RaAndServer, "stacklist", "Lists the players on the selection stack.", "slist")]
+[CommandProperties(CommandHandlerType.RaAndServer, "stackList", "Lists the players on the selection stack.", "slist")]
 public sealed class StackList : CommandBase {
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {

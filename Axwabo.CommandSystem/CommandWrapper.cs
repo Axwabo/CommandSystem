@@ -6,6 +6,8 @@ namespace Axwabo.CommandSystem;
 
 internal sealed class CommandWrapper : ICommand, IUsageProvider {
 
+    private static readonly string[] MultipleChoices = {"...multiple choices"};
+
     internal readonly CommandBase BackingCommand;
 
     public CommandWrapper(CommandBase backingCommand) => BackingCommand = backingCommand;
@@ -16,7 +18,17 @@ internal sealed class CommandWrapper : ICommand, IUsageProvider {
 
     public string Description => BackingCommand.Description;
 
-    public string[] Usage => BackingCommand.Usage;
+    public string[] Usage {
+        get {
+            var array = BackingCommand.Usage;
+            return array is null or {Length: 0}
+                ? Array.Empty<string>()
+                : array.Length switch {
+                    1 => array[0].Split(),
+                    _ => MultipleChoices
+                };
+        }
+    }
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
         if (sender is not CommandSender s) {

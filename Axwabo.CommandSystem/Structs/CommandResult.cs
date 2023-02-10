@@ -1,6 +1,6 @@
 ﻿namespace Axwabo.CommandSystem.Structs;
 
-public readonly ref struct CommandResult {
+public readonly struct CommandResult {
 
     #region Static
 

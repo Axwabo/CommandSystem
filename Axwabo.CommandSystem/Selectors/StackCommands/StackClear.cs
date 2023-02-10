@@ -4,7 +4,7 @@ using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
-[CommandProperties(CommandHandlerType.RaAndServer, "stackclear", "Clears the player selection stack.")]
+[CommandProperties(CommandHandlerType.RaAndServer, "stackClear", "Clears the player selection stack.")]
 [Aliases("sclear", "sclr", "scl")]
 public sealed class StackClear : CommandBase {
 
@@ -15,7 +15,7 @@ public sealed class StackClear : CommandBase {
             return "The selection stack is already empty.";
         var count = selection.Count;
         selection.Clear();
-        return $"Cleared the selection stack of {"selection".Pluralize(count)}.";
+        return $"Cleared the selection stack of {"selection".PluralizeWithCount(count)}.";
     }
 
 }

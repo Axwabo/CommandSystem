@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes.Interfaces;
+using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.Registration;
 
@@ -29,7 +30,7 @@ public static class BaseCommandPropertyManager {
         var usageList = new List<string>();
         minArguments = 0;
         foreach (var attribute in command.GetType().GetCustomAttributes()) {
-            if (ResolveBaseAttribute(attribute, ref name, ref description, aliasList, usageList, ref minArguments))
+            if (ResolveBaseAttribute(command, attribute, ref name, ref description, aliasList, usageList, ref minArguments))
                 continue;
             var type = attribute.GetType();
             ResolveName(ref name, type, attribute);
@@ -90,10 +91,10 @@ public static class BaseCommandPropertyManager {
         return null;
     }
 
-    private static bool ResolveBaseAttribute(Attribute attribute, ref string name, ref string description, List<string> aliases, List<string> usage, ref int minArguments) {
+    private static bool ResolveBaseAttribute(CommandBase command, Attribute attribute, ref string name, ref string description, List<string> aliases, List<string> usage, ref int minArguments) {
         var completed = false;
         if (attribute is ICommandName n) {
-            name = n.Name.ToLower();
+            name = n.Name ?? throw new NameNotSetException($"Null command name provided by attribute {attribute.GetType().FullName} on type {command.GetType().FullName}.");
             completed = true;
         }
 
