@@ -3,11 +3,11 @@ using NWAPIPermissionSystem;
 
 namespace Axwabo.CommandSystem.Permissions;
 
-public sealed class CedModPermissionChecker : IPermissionChecker {
+public sealed class StringPermissionChecker : IPermissionChecker {
 
     public readonly string Permission;
 
-    public CedModPermissionChecker(string permission) => Permission = permission;
+    public StringPermissionChecker(string permission) => Permission = permission;
 
     public CommandResult CheckPermission(CommandSender sender) {
         var hasPermission = sender.CheckPermission(Permission);

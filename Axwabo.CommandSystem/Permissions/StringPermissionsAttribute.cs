@@ -3,10 +3,10 @@
 namespace Axwabo.CommandSystem.Permissions;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class CedModPermissionsAttribute : Attribute {
+public sealed class StringPermissionsAttribute : Attribute {
 
     public readonly string Permission;
 
-    public CedModPermissionsAttribute(string permission) => Permission = permission;
+    public StringPermissionsAttribute(string permission) => Permission = permission;
 
 }

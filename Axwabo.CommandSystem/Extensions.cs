@@ -27,7 +27,11 @@ public static class Extensions {
 
     public static bool ContainsIgnoreCase(this string s, string value) => s.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
 
-    public static bool TryParseIgnoreCase<T>(string value, out T result) where T : struct => Enum.TryParse(value, true, out result);
+    public static bool TryParseIgnoreCase<T>(string value, out T result) where T : struct => Enum.TryParse(value.Trim(), true, out result);
+
+    public static bool TryParseInt(string value, out int result) => int.TryParse(value.Trim(), out result);
+
+    public static bool TryParseFloat(string value, out float result) => float.TryParse(value.Trim(), out result);
 
     public static List<ReferenceHub> GetTargets(this ArraySegment<string> arguments, out string[] newArgs, int startIndex = 0)
         => RAUtils.ProcessPlayerIdOrNamesList(arguments, startIndex, out newArgs);

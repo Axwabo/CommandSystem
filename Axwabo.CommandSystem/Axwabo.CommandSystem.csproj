@@ -43,16 +43,16 @@
             <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net48\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-            <HintPath>..\..\assemblies\Assembly-CSharp.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
-            <HintPath>..\..\assemblies\Assembly-CSharp-firstpass.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="Axwabo.Helpers.NWAPI">
-            <HintPath>..\..\assemblies\Axwabo.Helpers.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
         </Reference>
         <Reference Include="CommandSystem.Core">
-            <HintPath>..\..\assemblies\CommandSystem.Core.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\CommandSystem.Core.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis, Version=3.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
             <HintPath>..\packages\Microsoft.CodeAnalysis.Common.3.3.1\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
@@ -61,14 +61,14 @@
             <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.3.3.1\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
         </Reference>
         <Reference Include="Mirror">
-            <HintPath>..\..\assemblies\Mirror.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\Mirror.dll</HintPath>
         </Reference>
         <Reference Include="Mirror.Components">
-            <HintPath>..\..\assemblies\Mirror.Components.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
         </Reference>
         <Reference Include="mscorlib"/>
         <Reference Include="NWAPIPermissionSystem">
-            <HintPath>..\..\assemblies\NWAPIPermissionSystem.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\NWAPIPermissionSystem.dll</HintPath>
         </Reference>
         <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
             <HintPath>..\packages\Northwood.PluginAPI.12.0.0\lib\net48\PluginAPI.dll</HintPath>
@@ -99,10 +99,10 @@
             <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
-            <HintPath>..\..\assemblies\UnityEngine.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-            <HintPath>..\..\assemblies\UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
             <HintPath>..\packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
@@ -165,8 +165,8 @@
         <Compile Include="Patches\QueryProcessorPatch.cs"/>
         <Compile Include="Patches\RemoveStackTraceZeroesPatch.cs"/>
         <Compile Include="Permissions\AtLeastOneVanillaPlayerPermissionChecker.cs"/>
-        <Compile Include="Permissions\CedModPermissionChecker.cs"/>
-        <Compile Include="Permissions\CedModPermissionsAttribute.cs"/>
+        <Compile Include="Permissions\StringPermissionChecker.cs"/>
+        <Compile Include="Permissions\StringPermissionsAttribute.cs"/>
         <Compile Include="Permissions\CombinedPermissionChecker.cs"/>
         <Compile Include="Permissions\IPermissionChecker.cs"/>
         <Compile Include="Permissions\OneOfVanillaPermissionsAttribute.cs"/>

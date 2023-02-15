@@ -64,6 +64,12 @@ public static class AtSelectorProcessor {
             "alive" => PlayerRolesUtils.IsAlive,
             "remoteadmin" or "ra" => PresetHubFilters.RemoteAdmin,
             "onstack" or "stack" => PresetHubFilters.Stack,
+            "currentitem" or "curi" => PresetHubFilters.CurrentItem(value),
+            "godmode" or "god" => PresetHubFilters.GodMode,
+            "noclip" or "nc" => PresetHubFilters.Noclip,
+            "health" or "hp" => PresetHubFilters.Health(value),
+            "artificalhealth" or "ahp" => PresetHubFilters.ArtificialHealth(value),
+            "humeshield" or "hs" => PresetHubFilters.HumeShield(value),
             _ => CustomHubFilterRegistry.Get(alias) ?? throw new PlayerListProcessorException($"Unknown player filter: {name}")
         };
         return inverted ? filter.Invert() : filter;

@@ -66,7 +66,7 @@ public static class BaseCommandPropertyManager {
     private static IPermissionChecker ResolveBasePermissionChecker(Attribute attribute) => attribute switch {
         SingleVanillaPermissionsAttribute single => new SimpleVanillaPlayerPermissionChecker(single.Permissions),
         OneOfVanillaPermissionsAttribute oneOf => new AtLeastOneVanillaPlayerPermissionChecker(oneOf.Permissions),
-        CedModPermissionsAttribute cedMod => new CedModPermissionChecker(cedMod.Permission),
+        StringPermissionsAttribute cedMod => new StringPermissionChecker(cedMod.Permission),
         _ => null
     };
 
