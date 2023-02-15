@@ -1,5 +1,10 @@
 ﻿using Axwabo.CommandSystem.Structs;
+#if EXILED
+using Exiled.Permissions.Extensions;
+
+#else
 using NWAPIPermissionSystem;
+#endif
 
 namespace Axwabo.CommandSystem.Permissions;
 

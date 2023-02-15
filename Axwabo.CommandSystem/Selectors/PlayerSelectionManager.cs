@@ -1,10 +1,14 @@
-﻿using System;
+﻿#if !EXILED
+using PluginAPI.Core;
+#else
+using Exiled.API.Features;
+#endif
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Exceptions;
 using PlayerRoles;
 using PlayerRoles.Spectating;
-using PluginAPI.Core;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Selectors;

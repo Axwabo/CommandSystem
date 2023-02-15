@@ -1,22 +1,17 @@
-﻿using System;
+﻿#if EXILED
+using System;
 using Axwabo.CommandSystem.Registration;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using HarmonyLib;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
 
 namespace Axwabo.CommandSystem;
 
-public sealed class Plugin {
-
-    public static Plugin Instance { get; private set; }
+public sealed class Plugin : Plugin<Config> {
 
     private Harmony _harmony;
 
-    [PluginEntryPoint("Axwabo.CommandSystem", "1.0.0", "Adds a sophisticated command system to the game.", "Axwabo")]
-    [PluginPriority(LoadPriority.Lowest)]
-    private void OnEnable() {
-        Instance = this;
+    public override void OnEnabled() {
         _harmony = new Harmony("Axwabo.CommandSystem");
         try {
             _harmony.PatchAll();
@@ -28,12 +23,18 @@ public sealed class Plugin {
         Log.Info("Axwabo.CommandSystem has been enabled!");
     }
 
-    [PluginUnload]
-    private void OnDisable() {
-        Instance = null;
+    public override void OnDisabled() {
         CommandRegistrationProcessor.UnregisterAll(this);
         _harmony.UnpatchAll();
         Log.Info("Axwabo.CommandSystem has been disabled!");
     }
 
+    public override string Name => "Axwabo.CommandSystem";
+    public override string Prefix => "CommandSystem";
+    public override string Author => "Axwabo";
+    public override PluginPriority Priority => PluginPriority.Highest;
+    public override Version Version { get; } = new(1, 0, 0);
+
 }
+
+#endif

@@ -1,12 +1,16 @@
-﻿using System;
+﻿#if !EXILED
+using PluginAPI.Core;
+#else
+#endif
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Selectors.Filtering;
 using PlayerRoles;
-using PluginAPI.Core;
 using RemoteAdmin;
 using UnityEngine;
+using static Axwabo.CommandSystem.Extensions;
 using Random = UnityEngine.Random;
 
 namespace Axwabo.CommandSystem.Selectors;
@@ -77,9 +81,9 @@ public static class AtSelectorProcessor {
 
     private static HubFilter ParseLimit(string value, out int limit) {
         limit = value switch {
-            "all" => Player.Count,
-            "half" => Mathf.CeilToInt(Player.Count / 2f),
-            "quarter" => Mathf.CeilToInt(Player.Count / 4f),
+            "all" => PlayerCount,
+            "half" => Mathf.CeilToInt(PlayerCount / 2f),
+            "quarter" => Mathf.CeilToInt(PlayerCount / 4f),
             _ => int.TryParse(value, out var x) ? x : ParseFractionLimit(value)
         };
         return null;
@@ -91,7 +95,7 @@ public static class AtSelectorProcessor {
         var split = value.Split('/');
         return split.Length < 2 || !int.TryParse(split[0], out var numerator) || !int.TryParse(split[1], out var denominator)
             ? -1
-            : Mathf.CeilToInt(Player.Count * (numerator / (float) denominator));
+            : Mathf.CeilToInt(PlayerCount * (numerator / (float) denominator));
     }
 
     public static List<ReferenceHub> ExecuteSelector(char selectorChar, List<HubFilter> filters, int limit) => GetDefaultTargets(

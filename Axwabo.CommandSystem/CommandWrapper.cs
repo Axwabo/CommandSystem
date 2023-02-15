@@ -1,6 +1,10 @@
-﻿using System;
-using CommandSystem;
+﻿#if !EXILED
 using PluginAPI.Core;
+#else
+using Exiled.API.Features;
+#endif
+using System;
+using CommandSystem;
 
 namespace Axwabo.CommandSystem;
 

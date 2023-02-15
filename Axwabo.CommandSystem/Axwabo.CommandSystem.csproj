@@ -17,26 +17,38 @@
         <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
         <NoWarn>MSB3277</NoWarn>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>x64</PlatformTarget>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>x64</PlatformTarget>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NW-Release|AnyCPU' ">
         <DebugType>pdbonly</DebugType>
         <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
         <DefineConstants>TRACE</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <OutputPath>bin\NW-Release\</OutputPath>
+        <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EXILED-Dbg|AnyCPU' ">
+        <OutputPath>bin\EXILED-Dbg\</OutputPath>
+        <DefineConstants>EXILED</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NW-Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <OutputPath>bin\NW-Debug\</OutputPath>
+        <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EXILED-Rel|AnyCPU' ">
+        <OutputPath>bin\EXILED-Rel\</OutputPath>
+        <DefineConstants>EXILED</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -45,14 +57,41 @@
         <Reference Include="Assembly-CSharp">
             <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp.dll</HintPath>
         </Reference>
+        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
+        </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
             <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="Axwabo.Helpers.NWAPI">
             <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
         </Reference>
-        <Reference Include="CommandSystem.Core">
-            <HintPath>$(NW-ASSEMBLIES)\CommandSystem.Core.dll</HintPath>
+        <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\CommandSystem.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.API, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.API.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CreditTags, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CreditTags.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CustomItems, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CustomItems.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CustomRoles, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CustomRoles.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Events, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Events.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Loader, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Loader.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Permissions, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Permissions.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Updater.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis, Version=3.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
             <HintPath>..\packages\Microsoft.CodeAnalysis.Common.3.3.1\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
@@ -67,11 +106,14 @@
             <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
         </Reference>
         <Reference Include="mscorlib"/>
+        <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\NorthwoodLib.dll</HintPath>
+        </Reference>
         <Reference Include="NWAPIPermissionSystem">
             <HintPath>$(NW-ASSEMBLIES)\NWAPIPermissionSystem.dll</HintPath>
         </Reference>
         <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\Northwood.PluginAPI.12.0.0\lib\net48\PluginAPI.dll</HintPath>
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\PluginAPI.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -154,6 +196,8 @@
         <Compile Include="Exceptions\PlayerListProcessorException.cs"/>
         <Compile Include="Exceptions\TypeMismatchException.cs"/>
         <Compile Include="Exceptions\NameNotSetException.cs"/>
+        <Compile Include="Config.cs"/>
+        <Compile Include="ExiledPlugin.cs"/>
         <Compile Include="Extensions.cs"/>
         <Compile Include="GenericTypeExtensions.cs"/>
         <Compile Include="Patches\CommandImplementationPatch.cs"/>
@@ -172,7 +216,7 @@
         <Compile Include="Permissions\OneOfVanillaPermissionsAttribute.cs"/>
         <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs"/>
         <Compile Include="Permissions\SingleVanillaPermissionsAttribute.cs"/>
-        <Compile Include="Plugin.cs"/>
+        <Compile Include="NWPlugin.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="PropertyManager\BaseCommandPropertyManager.cs"/>
         <Compile Include="PropertyManager\Resolvers\IAffectedAllPlayersResolver.cs"/>

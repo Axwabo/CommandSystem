@@ -1,4 +1,9 @@
-﻿using System;
+﻿#if !EXILED
+using PluginAPI.Core;
+#else
+using Exiled.API.Features;
+#endif
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
@@ -7,7 +12,6 @@ using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
 using CommandSystem;
-using PluginAPI.Core;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Registration;
@@ -106,7 +110,12 @@ public sealed class CommandRegistrationProcessor {
             if (attr is CommandTargetAttribute targetAttribute)
                 targets = CommandTargetAttribute.Combine(targets, targetAttribute);
         if (targets is CommandHandlerType.None) {
-            Log.Warning($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
+#if !EXILED
+            Log.Warning
+#else
+            Log.Warn
+#endif
+                ($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
             return;
         }
 

@@ -4,13 +4,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axwabo.CommandSystem", "Axw
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		NW-Release|Any CPU = NW-Release|Any CPU
+		EXILED-Dbg|Any CPU = EXILED-Dbg|Any CPU
+		NW-Debug|Any CPU = NW-Debug|Any CPU
+		EXILED-Rel|Any CPU = EXILED-Rel|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9C0DB556-5717-440F-A419-4B554BC54C7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C0DB556-5717-440F-A419-4B554BC54C7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C0DB556-5717-440F-A419-4B554BC54C7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C0DB556-5717-440F-A419-4B554BC54C7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.NW-Release|Any CPU.ActiveCfg = NW-Release|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.NW-Release|Any CPU.Build.0 = NW-Release|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.EXILED-Dbg|Any CPU.ActiveCfg = EXILED-Dbg|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.EXILED-Dbg|Any CPU.Build.0 = EXILED-Dbg|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.NW-Debug|Any CPU.ActiveCfg = NW-Debug|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.NW-Debug|Any CPU.Build.0 = NW-Debug|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.EXILED-Rel|Any CPU.ActiveCfg = EXILED-Rel|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.EXILED-Rel|Any CPU.Build.0 = EXILED-Rel|Any CPU
 	EndGlobalSection
 EndGlobal
