@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Selectors;
 using Axwabo.Helpers.Pools;
@@ -26,6 +27,25 @@ internal static class ProcessPlayersListPatch {
             label.False(),
             targets.Load(),
             Return
+        });
+
+        var atProcessor = list.FindCode(OpCodes.Ldstr) - 1;
+        var atEnd = list.FindCode(OpCodes.Leave, start: list.FindCode(OpCodes.Newarr));
+        list.RemoveRange(atProcessor, atEnd - atProcessor + 1);
+
+        var digitCheck = list.FindCode(OpCodes.Ble_S) + 1;
+        list.RemoveRange(digitCheck, list.FindCode(OpCodes.Brfalse_S, start: digitCheck) - digitCheck + 1);
+
+        var parseSingle = list.FindIndex(i => i.operand is MethodInfo {Name: nameof(int.TryParse)}) - 4;
+        var loopStart = Ldloc(1).MoveLabelsFrom(list[parseSingle]).MoveBlocksFrom(list[parseSingle]);
+        list.RemoveRange(parseSingle, 17);
+        list.InsertRange(parseSingle, new[] {
+            loopStart,
+            Ldloc(8),
+            Ldloc(9),
+            LdelemRef,
+            Ldloc(1),
+            Call(typeof(PlayerSelectionManager), nameof(PlayerSelectionManager.ParseSingleQuery)),
         });
         foreach (var codeInstruction in list)
             yield return codeInstruction;

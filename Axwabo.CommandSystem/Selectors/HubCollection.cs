@@ -18,8 +18,14 @@ public sealed class HubCollection : List<ReferenceHub> {
 
     public HubCollection(ReferenceHub hub) : base(1) => Add(hub);
 
-    public static HubCollection From(ReferenceHub hub) => hub == null ? Empty : new HubCollection(hub);
+    public static HubCollection From(ReferenceHub hub, List<ReferenceHub> candidates = null)
+        => hub == null
+            ? Empty
+            : candidates == null || candidates.Contains(hub)
+                ? new HubCollection(1) {hub}
+                : Empty;
 
-    public static HubCollection From(CommandSender sender) => From((sender as PlayerCommandSender)?.ReferenceHub);
+    public static HubCollection From(CommandSender sender, List<ReferenceHub> candidates = null)
+        => From((sender as PlayerCommandSender)?.ReferenceHub, candidates);
 
 }

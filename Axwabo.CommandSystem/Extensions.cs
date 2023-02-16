@@ -1,13 +1,12 @@
-﻿#if !EXILED
-using PluginAPI.Core;
+﻿using System;
+using System.Collections.Generic;
+using Axwabo.CommandSystem.Structs;
+using Utils;
+#if !EXILED
+using System.Linq;
 #else
 using Exiled.API.Features;
 #endif
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Axwabo.CommandSystem.Structs;
-using Utils;
 
 namespace Axwabo.CommandSystem;
 
@@ -57,12 +56,5 @@ public static class Extensions {
         list.Add(value);
         return true;
     }
-
-    public static int PlayerCount =>
-#if !EXILED
-        Player.Count;
-#else
-        Server.PlayerCount;
-#endif
 
 }

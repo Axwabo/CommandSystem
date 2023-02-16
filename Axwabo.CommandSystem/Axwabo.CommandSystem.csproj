@@ -55,16 +55,13 @@
             <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net48\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-            <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp.dll</HintPath>
-        </Reference>
-        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
+            <HintPath>..\..\assemblies\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
             <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="Axwabo.Helpers.NWAPI">
-            <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
+            <HintPath>..\..\assemblies\Axwabo.Helpers.dll</HintPath>
         </Reference>
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
             <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\CommandSystem.Core.dll</HintPath>

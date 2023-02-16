@@ -1,15 +1,15 @@
-﻿#if !EXILED
-using PluginAPI.Core;
-#else
-using Exiled.API.Features;
-#endif
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Exceptions;
 using PlayerRoles;
 using PlayerRoles.Spectating;
 using RemoteAdmin;
+#if !EXILED
+using PluginAPI.Core;
+#else
+using Exiled.API.Features;
+#endif
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -17,7 +17,7 @@ public static class PlayerSelectionManager {
 
     public static CommandSender CurrentSender;
 
-    private static readonly char[] StackSeparators = {':', '>', '.', '_', '-', ' '};
+    private static readonly char[] StackSeparators = {':', '>', '_', '-', ' '};
     private const string StackPrefix = "@stack";
     private const string SpectatedPrefix = "@spectated";
     private const string SpectatedPrefixShort = "@spec";
@@ -31,6 +31,13 @@ public static class PlayerSelectionManager {
 
     public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer && h.IsAlive()).ToList();
 
+    public static int PlayerCount =>
+#if !EXILED
+        Player.Count;
+#else
+        Server.PlayerCount;
+#endif
+
     public static bool TryProcessPlayersCustom(ArraySegment<string> arguments, int startIndex, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         arguments = arguments.Segment(startIndex);
         if (arguments.Count == 0) {
@@ -41,8 +48,6 @@ public static class PlayerSelectionManager {
 
         var formatted = string.Join(" ", arguments);
         try {
-            if (TryDeterminePrefix(formatted, keepEmptyEntries, out targets, out newArgs))
-                return true;
             if (arguments.At(0) != "*")
                 return formatted.StartsWith("@")
                     ? AtSelectorProcessor.ProcessString(formatted.Substring(1), keepEmptyEntries, out targets, out newArgs)
@@ -56,6 +61,23 @@ public static class PlayerSelectionManager {
                 throw;
             throw new PlayerListProcessorException($"{e.GetType().FullName}: {e.Message}", e);
         }
+    }
+
+    public static void ParseSingleQuery(string query, List<ReferenceHub> hubList) {
+        if (string.IsNullOrEmpty(query))
+            return;
+        var trimmed = query.Trim();
+        if (int.TryParse(trimmed, out var id) && ReferenceHub.TryGetHub(id, out var hub)) {
+            if (!hubList.Contains(hub))
+                hubList.Add(hub);
+            return;
+        }
+
+        if (!TryUseStandaloneProcessor(trimmed, false, out var targets, out _))
+            return;
+        foreach (var target in targets)
+            if (!hubList.Contains(target))
+                hubList.Add(target);
     }
 
     private static bool TryFindPlayerByName(ArraySegment<string> arguments, out List<ReferenceHub> targets, out string[] args) {
@@ -80,7 +102,7 @@ public static class PlayerSelectionManager {
 
     private static bool IsIdOrDot(char character) => character == '.' || char.IsDigit(character) || char.IsWhiteSpace(character);
 
-    private static bool TryDeterminePrefix(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
+    public static bool TryUseStandaloneProcessor(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         if (formatted.StartsWith(StackPrefix, StringComparison.OrdinalIgnoreCase)) {
             ProcessStack(formatted.Substring(StackPrefix.Length).TrimStart(), keepEmptyEntries, out targets, out newArgs);
             return true;

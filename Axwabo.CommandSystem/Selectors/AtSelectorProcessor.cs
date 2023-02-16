@@ -1,17 +1,15 @@
-﻿#if !EXILED
-using PluginAPI.Core;
-#else
-#endif
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Axwabo.CommandSystem.Exceptions;
-using Axwabo.CommandSystem.Selectors.Filtering;
 using PlayerRoles;
 using RemoteAdmin;
 using UnityEngine;
-using static Axwabo.CommandSystem.Extensions;
 using Random = UnityEngine.Random;
+#if !EXILED
+using Axwabo.CommandSystem.Selectors.Filtering;
+#else
+#endif
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -20,6 +18,8 @@ public static class AtSelectorProcessor {
     private static readonly char[] ValidChars = {'a', 'r', 's', 'o', 'A', 'R', 'S', 'O'};
 
     public static bool ProcessString(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
+        if (!formatted.Contains(".") && PlayerSelectionManager.TryUseStandaloneProcessor("@" + formatted, keepEmptyEntries, out targets, out newArgs))
+            return true;
         char selectorChar;
         if (formatted.Length < 1 || !IsValidChar(selectorChar = formatted[0])) {
             targets = null;
@@ -33,12 +33,21 @@ public static class AtSelectorProcessor {
             return true;
         }
 
-        if (formatted[1] != '[') {
-            targets = ExecuteSelector(selectorChar, null, -1);
-            newArgs = PlayerSelectionManager.Split(formatted.Substring(1), keepEmptyEntries, true);
-            return true;
+        if (formatted[1] == '[')
+            return ParseAdvanced(formatted, keepEmptyEntries, out targets, out newArgs, selectorChar);
+
+        if (!char.IsWhiteSpace(formatted[1])) {
+            targets = null;
+            newArgs = null;
+            return false;
         }
 
+        targets = ExecuteSelector(selectorChar, null, -1);
+        newArgs = PlayerSelectionManager.Split(formatted.Substring(1), keepEmptyEntries, true);
+        return true;
+    }
+
+    private static bool ParseAdvanced(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs, char selectorChar) {
         var state = new ParserState {
             FullString = formatted,
             EndIndex = 3
@@ -81,9 +90,9 @@ public static class AtSelectorProcessor {
 
     private static HubFilter ParseLimit(string value, out int limit) {
         limit = value switch {
-            "all" => PlayerCount,
-            "half" => Mathf.CeilToInt(PlayerCount / 2f),
-            "quarter" => Mathf.CeilToInt(PlayerCount / 4f),
+            "all" => PlayerSelectionManager.PlayerCount,
+            "half" => Mathf.CeilToInt(PlayerSelectionManager.PlayerCount / 2f),
+            "quarter" => Mathf.CeilToInt(PlayerSelectionManager.PlayerCount / 4f),
             _ => int.TryParse(value, out var x) ? x : ParseFractionLimit(value)
         };
         return null;
@@ -95,7 +104,7 @@ public static class AtSelectorProcessor {
         var split = value.Split('/');
         return split.Length < 2 || !int.TryParse(split[0], out var numerator) || !int.TryParse(split[1], out var denominator)
             ? -1
-            : Mathf.CeilToInt(PlayerCount * (numerator / (float) denominator));
+            : Mathf.CeilToInt(PlayerSelectionManager.PlayerCount * (numerator / (float) denominator));
     }
 
     public static List<ReferenceHub> ExecuteSelector(char selectorChar, List<HubFilter> filters, int limit) => GetDefaultTargets(
