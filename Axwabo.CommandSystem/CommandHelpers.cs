@@ -1,5 +1,6 @@
 ﻿using System;
 using CommandSystem;
+using RemoteAdmin;
 
 namespace Axwabo.CommandSystem;
 
@@ -19,5 +20,7 @@ public static class CommandHelpers {
     public static bool IsHidden(ICommand command) => command is CommandWrapper wrapper
         ? wrapper.BackingCommand is Commands.Interfaces.IHiddenCommand
         : command is IHiddenCommand;
+
+    public static ReferenceHub Hub(this CommandSender sender) => ((PlayerCommandSender) sender).ReferenceHub;
 
 }

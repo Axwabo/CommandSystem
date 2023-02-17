@@ -1,12 +1,12 @@
-﻿using System;
+﻿#if EXILED
+using Exiled.API.Features;
+#else
+using System.Linq;
+#endif
+using System;
 using System.Collections.Generic;
 using Axwabo.CommandSystem.Structs;
 using Utils;
-#if !EXILED
-using System.Linq;
-#else
-using Exiled.API.Features;
-#endif
 
 namespace Axwabo.CommandSystem;
 

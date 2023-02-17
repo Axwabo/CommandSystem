@@ -1,15 +1,15 @@
-﻿using System;
+﻿#if EXILED
+using Exiled.API.Features;
+#else
+using PluginAPI.Core;
+#endif
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Exceptions;
 using PlayerRoles;
 using PlayerRoles.Spectating;
 using RemoteAdmin;
-#if !EXILED
-using PluginAPI.Core;
-#else
-using Exiled.API.Features;
-#endif
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -32,10 +32,10 @@ public static class PlayerSelectionManager {
     public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer && h.IsAlive()).ToList();
 
     public static int PlayerCount =>
-#if !EXILED
-        Player.Count;
-#else
+#if EXILED
         Server.PlayerCount;
+#else
+        Player.Count;
 #endif
 
     public static bool TryProcessPlayersCustom(ArraySegment<string> arguments, int startIndex, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {

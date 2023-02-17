@@ -1,7 +1,7 @@
-﻿#if !EXILED
-using PluginAPI.Core;
-#else
+﻿#if EXILED
 using Exiled.API.Features;
+#else
+using PluginAPI.Core;
 #endif
 using System;
 using System.Collections.Generic;
@@ -110,10 +110,10 @@ public sealed class CommandRegistrationProcessor {
             if (attr is CommandTargetAttribute targetAttribute)
                 targets = CommandTargetAttribute.Combine(targets, targetAttribute);
         if (targets is CommandHandlerType.None) {
-#if !EXILED
-            Log.Warning
-#else
+#if EXILED
             Log.Warn
+#else
+            Log.Warning
 #endif
                 ($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
             return;

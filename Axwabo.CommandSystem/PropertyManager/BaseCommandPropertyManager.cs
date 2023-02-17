@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Attributes.Interfaces;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
@@ -22,15 +23,16 @@ public static class BaseCommandPropertyManager {
             : false;
     }
 
-    public static bool TryResolveProperties(CommandBase command, out string name, out string description, out string[] aliases, out string[] usage, out int minArguments) {
+    public static bool TryResolveProperties(CommandBase command, out string name, out string description, out string[] aliases, out string[] usage, out int minArguments, out bool playerOnly) {
         ValidateRegistration(command);
         name = null;
         description = null;
         var aliasList = new List<string>();
         var usageList = new List<string>();
         minArguments = 0;
+        playerOnly = false;
         foreach (var attribute in command.GetType().GetCustomAttributes()) {
-            if (ResolveBaseAttribute(command, attribute, ref name, ref description, aliasList, usageList, ref minArguments))
+            if (ResolveBaseAttribute(command, attribute, ref name, ref description, aliasList, usageList, ref minArguments, ref playerOnly))
                 continue;
             var type = attribute.GetType();
             ResolveName(ref name, type, attribute);
@@ -91,7 +93,7 @@ public static class BaseCommandPropertyManager {
         return null;
     }
 
-    private static bool ResolveBaseAttribute(CommandBase command, Attribute attribute, ref string name, ref string description, List<string> aliases, List<string> usage, ref int minArguments) {
+    private static bool ResolveBaseAttribute(CommandBase command, Attribute attribute, ref string name, ref string description, List<string> aliases, List<string> usage, ref int minArguments, ref bool playerOnly) {
         var completed = false;
         if (attribute is ICommandName n) {
             name = n.Name ?? throw new NameNotSetException($"Null command name provided by attribute {attribute.GetType().FullName} on type {command.GetType().FullName}.");
@@ -117,6 +119,11 @@ public static class BaseCommandPropertyManager {
 
         if (attribute is IMinArguments m) {
             minArguments = m.MinArguments;
+            completed = true;
+        }
+
+        if (attribute is PlayerOnlyCommand) {
+            playerOnly = true;
             completed = true;
         }
 

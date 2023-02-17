@@ -1,7 +1,7 @@
-﻿#if !EXILED
-using PluginAPI.Core;
-#else
+﻿#if EXILED
 using Exiled.API.Features;
+#else
+using PluginAPI.Core;
 #endif
 using System;
 using CommandSystem;
@@ -12,7 +12,7 @@ internal sealed class CommandWrapper : ICommand, IUsageProvider {
 
     private static readonly string[] MultipleChoices = {"...multiple choices"};
 
-    internal readonly CommandBase BackingCommand;
+    public readonly CommandBase BackingCommand;
 
     public CommandWrapper(CommandBase backingCommand) => BackingCommand = backingCommand;
 
@@ -25,8 +25,8 @@ internal sealed class CommandWrapper : ICommand, IUsageProvider {
     public string[] Usage {
         get {
             var array = BackingCommand.Usage;
-            return array is null or {Length: 0}
-                ? Array.Empty<string>()
+            return array is not {Length: not 0}
+                ? null
                 : array.Length switch {
                     1 => array[0].Split(),
                     _ => MultipleChoices

@@ -1,5 +1,6 @@
 ﻿using System;
 using Axwabo.CommandSystem.Attributes;
+using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Structs;
 using Axwabo.Helpers.Pools;
 
@@ -8,7 +9,7 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 [CommandProperties(CommandHandlerType.RaAndServer, "stackduplicate", 1, "Duplicates the specified selections on the player stack.")]
 [Aliases("stackdup", "sdup")]
 [Usage("", "all/*", "first/f/top/t", $"[indexes separated by spaces or one of{Separators}]")]
-public sealed class StackDuplicate : CommandBase {
+public sealed class StackDuplicate : CommandBase, INotEnoughArguments {
 
     private const string Separators = " .,;_+-";
 
@@ -21,7 +22,7 @@ public sealed class StackDuplicate : CommandBase {
                 _ => DuplicateSpecific(selection, arguments)
             };
 
-    protected override CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender)
+    public CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender)
         => !PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result) ? result : DuplicateFirst(selection);
 
     private static CommandResult DuplicateFirst(PlayerSelectionStack selection) {

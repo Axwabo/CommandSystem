@@ -17,11 +17,10 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand {
                 failed.Add(new CommandResultOnTarget(target, result.Response, false));
         }
 
+        if (succeeded.Count == 0 && failed.Count == 0)
+            return CommandResult.Failed(NoPlayersAffected);
         return CompileResult(succeeded, failed);
     }
-
-    protected sealed override CommandResult ExecuteOnSingleTarget(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender)
-        => base.ExecuteOnSingleTarget(target, arguments, sender);
 
     protected abstract CommandResult ExecuteOn(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender);
 
@@ -29,11 +28,13 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand {
         var affected = success.Count;
         return affected == 0
             ? CommandResult.Failed(NoPlayersAffected)
-            : CommandResult.Succeeded(affected == 1
-                ? GetAffectedMessageSingle(success[0].Target)
-                : IsEveryoneAffected(affected)
-                    ? GetAffectedMessageAll(affected)
-                    : GetAffectedMessage(affected));
+            : CommandResult.Succeeded(
+                affected == 1
+                    ? GetAffectedMessageSingle(success[0].Target)
+                    : IsEveryoneAffected(affected)
+                        ? GetAffectedMessageAll(affected)
+                        : GetAffectedMessage(affected)
+            );
     }
 
 }
