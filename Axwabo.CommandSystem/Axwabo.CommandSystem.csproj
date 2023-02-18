@@ -26,12 +26,14 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <OutputPath>bin\NW-Release\</OutputPath>
         <PlatformTarget>x64</PlatformTarget>
+        <DocumentationFile>bin\NW-Release\Axwabo.CommandSystem.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EXILED-Dbg|AnyCPU' ">
         <OutputPath>bin\EXILED-Dbg\</OutputPath>
         <DefineConstants>EXILED</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PlatformTarget>x64</PlatformTarget>
+        <DocumentationFile>bin\EXILED-Dbg\Axwabo.CommandSystem.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NW-Debug|AnyCPU' ">
         <DebugSymbols>true</DebugSymbols>
@@ -43,12 +45,14 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <OutputPath>bin\NW-Debug\</OutputPath>
         <PlatformTarget>x64</PlatformTarget>
+        <DocumentationFile>bin\NW-Debug\Axwabo.CommandSystem.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EXILED-Rel|AnyCPU' ">
         <OutputPath>bin\EXILED-Rel\</OutputPath>
         <DefineConstants>EXILED</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PlatformTarget>x64</PlatformTarget>
+        <DocumentationFile>bin\EXILED-Rel\Axwabo.CommandSystem.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -179,6 +183,7 @@
         <Compile Include="Attributes\UsageAttribute.cs"/>
         <Compile Include="CommandBase.cs"/>
         <Compile Include="CommandHelpers.cs"/>
+        <Compile Include="Commands\Interfaces\ICustomResultCompiler.cs"/>
         <Compile Include="Commands\Interfaces\IHiddenCommand.cs"/>
         <Compile Include="Commands\Interfaces\INotEnoughArguments.cs"/>
         <Compile Include="Commands\Interfaces\IPlayerOnlyCommand.cs"/>

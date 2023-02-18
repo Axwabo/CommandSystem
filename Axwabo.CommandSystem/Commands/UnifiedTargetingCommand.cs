@@ -36,16 +36,24 @@ public abstract class UnifiedTargetingCommand : CommandBase {
         _affectedOneGenerator ??= generator;
     }
 
-    protected override int MinArguments => base.MinArguments + 1;
+    protected sealed override int MinArguments => TargetingMinArguments + 1;
+
+    protected virtual int TargetingMinArguments => base.MinArguments;
 
     private bool ShouldBeAffected(ReferenceHub hub) => ShouldAffectSpectators || hub.IsAlive();
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
+        if (arguments.Count < 1)
+            return OnNotEnoughArgumentsProvided(arguments, sender, MinArguments);
         var targets = arguments.GetTargets(out var newArgs)?.Where(ShouldBeAffected).ToList();
         if (targets is not {Count: not 0})
             return OnNoTargetsFound();
         var args = new ArraySegment<string>(newArgs ?? Array.Empty<string>());
-        return targets.Count == 1 ? ExecuteOnSingleTarget(targets[0], arguments, sender) : ExecuteOnTargets(targets, args, sender);
+        return args.Count < TargetingMinArguments
+            ? OnNotEnoughArgumentsProvided(args, sender, MinArguments)
+            : targets.Count == 1
+                ? ExecuteOnSingleTarget(targets[0], args, sender)
+                : ExecuteOnTargets(targets, args, sender);
     }
 
     protected abstract CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender);

@@ -5,6 +5,6 @@ namespace Axwabo.CommandSystem.Commands.Interfaces;
 
 public interface INotEnoughArguments {
 
-    CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender);
+    CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender, int required);
 
 }

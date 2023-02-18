@@ -12,11 +12,11 @@ public static class GenericTypeExtensions {
         return args is not {Length: not 0} ? null : args[0];
     }
 
-    public static Type GetGenericInterface(this Type targetType, Type genericDefinition) => targetType.GetInterfaces().FirstOrDefault(e => e.IsGenericType && e.GetGenericTypeDefinition() == genericDefinition);
+    public static Type GetGenericInterface(Type targetType, Type genericDefinition) => targetType.GetInterfaces().FirstOrDefault(e => e.IsGenericType && e.GetGenericTypeDefinition() == genericDefinition);
 
-    public static bool TryGetGenericInterface(this Type targetType, Type genericDefinition, out Type genericInterface) => (genericInterface = GetGenericInterface(targetType, genericDefinition)) != null;
+    public static bool TryGetGenericInterface(Type targetType, Type genericDefinition, out Type genericInterface) => (genericInterface = GetGenericInterface(targetType, genericDefinition)) != null;
 
-    public static Type ImplementedGenericType(this object resolver, Type interfaceType)
+    public static Type ImplementedGenericType(object resolver, Type interfaceType)
         => FirstGenericType(
             GetGenericInterface(resolver.GetType(), interfaceType)
             ?? throw new TypeMismatchException($"Interface does not implement the generic type {interfaceType.Name}")

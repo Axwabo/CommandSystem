@@ -59,7 +59,7 @@ public static class PlayerSelectionManager {
             Log.Error($"Failed to parse player list! Content:\n{formatted}\nError:\n{Misc.RemoveStacktraceZeroes(e.ToString())}");
             if (e is PlayerListProcessorException)
                 throw;
-            throw new PlayerListProcessorException($"{e.GetType().FullName}: {e.Message}", e);
+            throw new PlayerListProcessorException(e.Message, e);
         }
     }
 

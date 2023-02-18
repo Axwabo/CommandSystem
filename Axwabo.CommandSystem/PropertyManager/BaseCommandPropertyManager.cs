@@ -75,7 +75,7 @@ public static class BaseCommandPropertyManager {
     private static IPermissionChecker ResolveInstanceBasedPermissionChecker(Attribute attribute, CommandBase command) {
         if (attribute is IInstanceBasedPermissionCreator creator)
             return creator.Create(command);
-        if (!attribute.GetType().TryGetGenericInterface(typeof(IGenericInstanceBasedPermissionCreator<>), out var type))
+        if (!GenericTypeExtensions.TryGetGenericInterface(attribute.GetType(), typeof(IGenericInstanceBasedPermissionCreator<>), out var type))
             return null;
         var method = type.GetMethod("Create");
         if (method == null)

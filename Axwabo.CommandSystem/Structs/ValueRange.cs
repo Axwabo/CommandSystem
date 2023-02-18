@@ -8,10 +8,15 @@ public struct ValueRange<T> where T : IComparable {
 
     private const string Separator = "..";
 
-    public static bool TryParse(string value, TryParseDelegate<T> valueParser, out ValueRange<T> range) {
+    public static bool TryParse(string value, TryParseDelegate<T> valueParser, out ValueRange<T> range)
+        => TryParseInternal(value, valueParser, out range, false);
+
+    private static bool TryParseInternal(string value, TryParseDelegate<T> valueParser, out ValueRange<T> range, bool throwOnInvalid) {
         if (value.Contains(Separator))
-            return TryParseWithRange(value, valueParser, out range);
+            return TryParseWithRange(value, valueParser, out range, throwOnInvalid);
         if (!valueParser(value, out var parsed)) {
+            if (throwOnInvalid)
+                throw new FormatException($"Invalid value for single value range (type {typeof(T).FullName}): {value}");
             range = default;
             return false;
         }
@@ -26,23 +31,23 @@ public struct ValueRange<T> where T : IComparable {
     }
 
     public static ValueRange<T> Parse(string value, TryParseDelegate<T> valueParser)
-        => TryParse(value, valueParser, out var range)
+        => TryParseInternal(value, valueParser, out var range, true)
             ? range
             : throw new FormatException($"Invalid range: {value}");
 
-    private static bool TryParseWithRange(string value, TryParseDelegate<T> valueParser, out ValueRange<T> range) {
+    private static bool TryParseWithRange(string value, TryParseDelegate<T> valueParser, out ValueRange<T> range, bool throwOnInvalid) {
         T start = default;
         T end = default;
         var startSet = false;
         var endSet = false;
         if (value.StartsWith(Separator))
-            endSet = valueParser(value.Substring(2), out end);
+            endSet = ParseValue(value.Substring(2), nameof(end), valueParser, throwOnInvalid, out end);
         else if (value.EndsWith(Separator))
-            startSet = valueParser(value.Substring(0, value.Length - 2), out start);
+            startSet = ParseValue(value.Substring(0, value.Length - 2), nameof(start), valueParser, throwOnInvalid, out start);
         else {
             var splitIndex = value.IndexOf(Separator, StringComparison.Ordinal);
-            startSet = valueParser(value.Substring(0, splitIndex), out start);
-            endSet = valueParser(value.Substring(splitIndex + 2), out end);
+            startSet = ParseValue(value.Substring(0, splitIndex), nameof(start), valueParser, throwOnInvalid, out start);
+            endSet = ParseValue(value.Substring(splitIndex + 2), nameof(end), valueParser, throwOnInvalid, out end);
         }
 
         if (!startSet && !endSet) {
@@ -57,6 +62,13 @@ public struct ValueRange<T> where T : IComparable {
             End = end
         };
         return true;
+    }
+
+    private static bool ParseValue(string value, string variableName, TryParseDelegate<T> valueParser, bool throwOnInvalid, out T start) {
+        var startSet = valueParser(value, out start);
+        if (!startSet && throwOnInvalid)
+            throw new FormatException($"Invalid value for {variableName} (type {typeof(T).FullName}): {value}");
+        return startSet;
     }
 
     #endregion

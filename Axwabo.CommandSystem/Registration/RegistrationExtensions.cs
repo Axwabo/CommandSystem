@@ -20,7 +20,7 @@ public static class RegistrationExtensions {
             throw new ArgumentNullException(nameof(interfaceType));
         if (resolver == null)
             throw new ArgumentNullException(nameof(resolver));
-        var implementedInterface = resolver.GetType().GetGenericInterface(interfaceType);
+        var implementedInterface = GenericTypeExtensions.GetGenericInterface(resolver.GetType(), interfaceType);
         if (implementedInterface == null)
             throw new TypeMismatchException($"Expected an implementation of {interfaceType.Name} with generic type {parameterType.FullName}, got: {resolver.GetType().FullName}");
         var method = implementedInterface.GetMethods()[0];
@@ -59,7 +59,7 @@ public static class RegistrationExtensions {
 
     private static void ConsumeAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod) {
         if (attribute is TBaseResolver resolver)
-            addMethod(processor, resolver.ImplementedGenericType(genericType), resolver);
+            addMethod(processor, GenericTypeExtensions.ImplementedGenericType(resolver, genericType), resolver);
     }
 
     private static void Add<TResolver, TResult>(this List<ResolverContainer<TResolver, TResult>> list, Type suppliedGenericType, Type requiredGenericType, TResolver resolver) {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Commands;
@@ -24,7 +25,9 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand {
 
     protected abstract CommandResult ExecuteOn(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender);
 
-    protected virtual CommandResult CompileResult(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures) {
+    private CommandResult CompileResult(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures) {
+        if (this is ICustomResultCompiler custom)
+            return custom.CompileResult(success, failures);
         var affected = success.Count;
         return affected == 0
             ? CommandResult.Failed(NoPlayersAffected)

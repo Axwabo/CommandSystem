@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.Selectors.Filtering;
 using PlayerRoles;
 using RemoteAdmin;
 using UnityEngine;
 using Random = UnityEngine.Random;
-#if !EXILED
-using Axwabo.CommandSystem.Selectors.Filtering;
-#else
-#endif
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -53,9 +50,15 @@ public static class AtSelectorProcessor {
             EndIndex = 3
         };
 
-        for (var i = 2; i < formatted.Length; i++)
-            if (ProcessChar(i, state))
+        int i;
+        for (i = 2; i < formatted.Length; i++) {
+            var processChar = ProcessChar(i, state);
+            if (processChar)
                 break;
+        }
+
+        if (i == formatted.Length && state.EndIndex < formatted.Length)
+            CloseSelector(i, state);
 
         targets = ExecuteSelector(selectorChar, state.Filters, state.Limit);
         newArgs = state.EndIndex >= formatted.Length
@@ -183,9 +186,6 @@ public static class AtSelectorProcessor {
             state.Builder.Append(c);
             return false;
         }
-
-        if (index == state.FullString.Length - 1)
-            return CloseSelector(index, state);
 
         switch (c) {
             case ']':
