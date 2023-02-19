@@ -30,7 +30,7 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EXILED-Dbg|AnyCPU' ">
         <OutputPath>bin\EXILED-Dbg\</OutputPath>
-        <DefineConstants>EXILED</DefineConstants>
+        <DefineConstants>EXILED;DEBUG;TRACE</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PlatformTarget>x64</PlatformTarget>
         <DocumentationFile>bin\EXILED-Dbg\Axwabo.CommandSystem.xml</DocumentationFile>
@@ -49,7 +49,7 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EXILED-Rel|AnyCPU' ">
         <OutputPath>bin\EXILED-Rel\</OutputPath>
-        <DefineConstants>EXILED</DefineConstants>
+        <DefineConstants>EXILED;TRACE</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PlatformTarget>x64</PlatformTarget>
         <DocumentationFile>bin\EXILED-Rel\Axwabo.CommandSystem.xml</DocumentationFile>
@@ -176,9 +176,10 @@
         <Compile Include="Attributes\Interfaces\IGenericInstanceBasedPermissionCreator.cs"/>
         <Compile Include="Attributes\Interfaces\IInstanceBasedPermissionCreator.cs"/>
         <Compile Include="Attributes\Interfaces\IMinArguments.cs"/>
+        <Compile Include="Attributes\Interfaces\IPlayerOnlyAttribute.cs"/>
         <Compile Include="Attributes\Interfaces\IUsage.cs"/>
         <Compile Include="Attributes\MinArgumentsAttribute.cs"/>
-        <Compile Include="Attributes\PlayerOnlyCommand.cs"/>
+        <Compile Include="Attributes\PlayerOnlyCommandAttribute.cs"/>
         <Compile Include="Attributes\PresetCommandListeners.cs"/>
         <Compile Include="Attributes\UsageAttribute.cs"/>
         <Compile Include="CommandBase.cs"/>

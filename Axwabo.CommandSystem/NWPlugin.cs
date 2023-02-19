@@ -8,6 +8,9 @@ using PluginAPI.Enums;
 
 namespace Axwabo.CommandSystem;
 
+/// <summary>
+/// The main plugin class for the Northwood Plugin API.
+/// </summary>
 public sealed class Plugin {
 
     private Harmony _harmony;

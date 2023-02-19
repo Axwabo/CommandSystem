@@ -18,16 +18,16 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand {
                 failed.Add(new CommandResultOnTarget(target, result.Response, false));
         }
 
-        if (succeeded.Count == 0 && failed.Count == 0)
-            return CommandResult.Failed(NoPlayersAffected);
-        return CompileResult(succeeded, failed);
+        return succeeded.Count == 0 && failed.Count == 0
+            ? CommandResult.Failed(NoPlayersAffected)
+            : this is ICustomResultCompiler custom
+                ? custom.CompileCustomResult(succeeded, failed)
+                : CompileResult(succeeded);
     }
 
     protected abstract CommandResult ExecuteOn(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender);
 
-    private CommandResult CompileResult(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures) {
-        if (this is ICustomResultCompiler custom)
-            return custom.CompileResult(success, failures);
+    protected CommandResult CompileResult(List<CommandResultOnTarget> success) {
         var affected = success.Count;
         return affected == 0
             ? CommandResult.Failed(NoPlayersAffected)

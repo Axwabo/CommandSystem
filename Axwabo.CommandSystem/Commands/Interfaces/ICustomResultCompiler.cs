@@ -5,6 +5,6 @@ namespace Axwabo.CommandSystem.Commands.Interfaces;
 
 public interface ICustomResultCompiler {
 
-    CommandResult CompileResult(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures);
+    CommandResult CompileCustomResult(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures);
 
 }

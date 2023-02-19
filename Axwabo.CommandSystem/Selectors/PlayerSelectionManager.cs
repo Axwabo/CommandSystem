@@ -13,8 +13,12 @@ using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Selectors;
 
+/// <summary>
+/// Manages custom player selectors.
+/// </summary>
 public static class PlayerSelectionManager {
 
+    /// <summary>The current <see cref="CommandSender"/> executing a command.</summary>
     public static CommandSender CurrentSender;
 
     private static readonly char[] StackSeparators = {':', '>', '_', '-', ' '};
@@ -22,15 +26,33 @@ public static class PlayerSelectionManager {
     private const string SpectatedPrefix = "@spectated";
     private const string SpectatedPrefixShort = "@spec";
 
+    /// <summary>The message displayed when a command throws an exception.</summary>
     public const string CommandExecutionFailedError = "Command execution failed! Error: ";
+
+    /// <summary>The message displayed when the supplied player list cannot be parse.</summary>
     public const string FailedToParsePlayerList = "Failed to parse player list: ";
 
-    public static string EnsureNotEmpty(this string s, string message = null) => string.IsNullOrEmpty(s) ? throw new PlayerListProcessorException(message) : s;
+    /// <summary>
+    /// Ensures that the given string is not empty.
+    /// </summary>
+    /// <param name="s">The string to check.</param>
+    /// <param name="message">The message to create the exception with.</param>
+    /// <returns>The string itself.</returns>
+    /// <exception cref="PlayerListProcessorException">Thrown when the string is null or empty.</exception>
+    public static string EnsureNotEmpty(this string s, string message = null)
+        => !string.IsNullOrEmpty(s)
+            ? s
+            : message == null
+                ? throw new PlayerListProcessorException()
+                : throw new PlayerListProcessorException(message);
 
+    /// <summary>Gets all players.</summary>
     public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer).ToList();
 
+    /// <summary>Gets all alive players.</summary>
     public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer && h.IsAlive()).ToList();
 
+    /// <summary>Gets the player count.</summary>
     public static int PlayerCount =>
 #if EXILED
         Server.PlayerCount;
@@ -38,6 +60,16 @@ public static class PlayerSelectionManager {
         Player.Count;
 #endif
 
+    /// <summary>
+    /// Attempts to process the given argument array as a player list with the custom selectors.
+    /// </summary>
+    /// <param name="arguments">The arguments to process.</param>
+    /// <param name="startIndex">The index to start processing from.</param>
+    /// <param name="keepEmptyEntries">Whether to keep empty entries in the argument array.</param>
+    /// <param name="targets">The parsed list of targets.</param>
+    /// <param name="newArgs">The new argument array.</param>
+    /// <returns>Whether the custom processing was successful.</returns>
+    /// <exception cref="PlayerListProcessorException">Re-thrown upon an exception.</exception>
     public static bool TryProcessPlayersCustom(ArraySegment<string> arguments, int startIndex, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         arguments = arguments.Segment(startIndex);
         if (arguments.Count == 0) {
@@ -63,6 +95,11 @@ public static class PlayerSelectionManager {
         }
     }
 
+    /// <summary>
+    /// Attempts to process the given string as a player list with the custom selectors.
+    /// </summary>
+    /// <param name="query">The string to process.</param>
+    /// <param name="hubList">The list of targets to add to.</param>
     public static void ParseSingleQuery(string query, List<ReferenceHub> hubList) {
         if (string.IsNullOrEmpty(query))
             return;
@@ -102,6 +139,14 @@ public static class PlayerSelectionManager {
 
     private static bool IsIdOrDot(char character) => character == '.' || char.IsDigit(character) || char.IsWhiteSpace(character);
 
+    /// <summary>
+    /// Attempts to use a standalone player list processor.
+    /// </summary>
+    /// <param name="formatted">The string to process.</param>
+    /// <param name="keepEmptyEntries">Whether to keep empty entries in the argument array.</param>
+    /// <param name="targets">The parsed list of targets.</param>
+    /// <param name="newArgs">The new argument array.</param>
+    /// <returns>Whether the custom processing was successful.</returns>
     public static bool TryUseStandaloneProcessor(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         if (formatted.StartsWith(StackPrefix, StringComparison.OrdinalIgnoreCase)) {
             ProcessStack(formatted.Substring(StackPrefix.Length).TrimStart(), keepEmptyEntries, out targets, out newArgs);
@@ -188,6 +233,13 @@ public static class PlayerSelectionManager {
             ? HubCollection.Empty
             : stack.PopAt(index);
 
+    /// <summary>
+    /// Splits the given string by spaces, optionally keeping empty entries.
+    /// </summary>
+    /// <param name="s">The string to split.</param>
+    /// <param name="keepEmptyEntries">Whether to keep empty entries.</param>
+    /// <param name="preTrimStart">Whether to trim the whitespace character at index 0.</param>
+    /// <returns>The split string.</returns>
     public static string[] Split(string s, bool keepEmptyEntries, bool preTrimStart = false) {
         if (preTrimStart && s.Length > 0 && char.IsWhiteSpace(s[0]))
             s = s.Substring(1);

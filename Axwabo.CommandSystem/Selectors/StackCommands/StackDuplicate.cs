@@ -6,13 +6,15 @@ using Axwabo.Helpers.Pools;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
-[CommandProperties(CommandHandlerType.RaAndServer, "stackduplicate", 1, "Duplicates the specified selections on the player stack.")]
-[Aliases("stackdup", "sdup")]
+/// <summary>A command to duplicate selections on the selection stack.</summary>
+[CommandProperties(CommandHandlerType.RaAndServer, "stackDuplicate", 1, "Duplicates the specified selections on the player stack.")]
+[Aliases("stackDup", "sDup")]
 [Usage("", "all/*", "first/f/top/t", $"[indexes separated by spaces or one of{Separators}]")]
 public sealed class StackDuplicate : CommandBase, INotEnoughArguments {
 
     private const string Separators = " .,;_+-";
 
+    /// <inheritdoc />
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
         => !PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result)
             ? result

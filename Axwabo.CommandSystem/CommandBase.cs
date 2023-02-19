@@ -33,12 +33,12 @@ public abstract class CommandBase {
     /// <summary>Shows all possible usages if any with a "Usage(s):" prefix.</summary>
     /// <example>
     /// <code>
-    /// Usage: mycommand [arg]
+    /// Usage: myCommand [arg]
     /// </code>
     /// <code>
     /// Usages:
-    /// mycommand [arg1]
-    /// mycommand [arg2]
+    /// myCommand [arg1]
+    /// myCommand [arg2]
     /// </code>
     /// </example>
     public string CombinedUsage {
@@ -93,19 +93,19 @@ public abstract class CommandBase {
         var pre = this is IPreExecutionFilter filter ? filter.OnBeforeExecuted(arguments, sender) : null;
         return pre ?? (
             arguments.Count < MinArguments
-                ? OnNotEnoughArgumentsProvided(arguments, sender, MinArguments)
+                ? OnNotEnoughArguments(arguments, sender, MinArguments)
                 : Execute(arguments, sender)
         );
     }
 
     private CommandResult? CheckIfPlayerOnly(ArraySegment<string> arguments, CommandSender sender)
         => sender is PlayerCommandSender
-            ? null
+            ? CommandResult.Null
             : this is IPlayerOnlyCommand playerOnly
                 ? playerOnly.OnNotPlayer(arguments, sender) ?? CommandResult.Failed(MustBePlayer)
                 : _playerOnly
                     ? CommandResult.Failed(MustBePlayer)
-                    : null;
+                    : CommandResult.Null;
 
     /// <summary>
     /// Generates a response when not enough arguments are provided.
@@ -114,7 +114,7 @@ public abstract class CommandBase {
     /// <param name="sender">The sender of the command.</param>
     /// <param name="required">The minimum amount of arguments required to execute the command.</param>
     /// <returns>The result of failure.</returns>
-    protected CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender, int required) =>
+    protected CommandResult OnNotEnoughArguments(ArraySegment<string> arguments, CommandSender sender, int required) =>
         this is INotEnoughArguments notEnough
             ? notEnough.OnNotEnoughArgumentsProvided(arguments, sender, required)
             : $"!You need to provide at least {"argument".PluralizeWithCount(required)}! {CombinedUsage}".TrimEnd();

@@ -10,10 +10,21 @@ using Random = UnityEngine.Random;
 
 namespace Axwabo.CommandSystem.Selectors;
 
+/// <summary>
+/// Manages @-selector processing.
+/// </summary>
 public static class AtSelectorProcessor {
 
     private static readonly char[] ValidChars = {'a', 'r', 's', 'o', 'A', 'R', 'S', 'O'};
 
+    /// <summary>
+    /// Processes the specified string.
+    /// </summary>
+    /// <param name="formatted">The string to process.</param>
+    /// <param name="keepEmptyEntries">Whether to keep empty entries in the resulting array.</param>
+    /// <param name="targets">The resulting list of targets.</param>
+    /// <param name="newArgs">The new arguments.</param>
+    /// <returns>Whether the string was processed.</returns>
     public static bool ProcessString(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs) {
         if (!formatted.Contains(".") && PlayerSelectionManager.TryUseStandaloneProcessor("@" + formatted, keepEmptyEntries, out targets, out newArgs))
             return true;
@@ -67,6 +78,15 @@ public static class AtSelectorProcessor {
         return true;
     }
 
+    /// <summary>
+    /// Gets a <see cref="HubFilter"/> based on the specified name and value.
+    /// </summary>
+    /// <param name="name">The name of the filter.</param>
+    /// <param name="value">The value of the filter.</param>
+    /// <param name="limit">A reference to the limit variable.</param>
+    /// <param name="inverted">Whether the filter should be inverted.</param>
+    /// <returns>A <see cref="HubFilter"/> delegate.</returns>
+    /// <exception cref="PlayerListProcessorException">Thrown if no filter was found.</exception>
     public static HubFilter GetFilter(string name, string value, ref int limit, bool inverted = false) {
         if (string.IsNullOrEmpty(name))
             return null;
@@ -86,7 +106,7 @@ public static class AtSelectorProcessor {
             "health" or "hp" => PresetHubFilters.Health(value),
             "artificalhealth" or "ahp" => PresetHubFilters.ArtificialHealth(value),
             "humeshield" or "hs" => PresetHubFilters.HumeShield(value),
-            _ => CustomHubFilterRegistry.Get(alias) ?? throw new PlayerListProcessorException($"Unknown player filter: {name}")
+            _ => CustomHubFilterRegistry.Get(alias, value) ?? throw new PlayerListProcessorException($"Unknown player filter: {name}")
         };
         return inverted ? filter.Invert() : filter;
     }
@@ -110,6 +130,13 @@ public static class AtSelectorProcessor {
             : Mathf.CeilToInt(PlayerSelectionManager.PlayerCount * (numerator / (float) denominator));
     }
 
+    /// <summary>
+    /// Executes the advanced selectors.
+    /// </summary>
+    /// <param name="selectorChar">The main selector character.</param>
+    /// <param name="filters">The filters to use.</param>
+    /// <param name="limit">The maximum amount of players; -1 will result in no limit.</param>
+    /// <returns>The selected players.</returns>
     public static List<ReferenceHub> ExecuteSelector(char selectorChar, List<HubFilter> filters, int limit) => GetDefaultTargets(
         GetAllFiltered(filters),
         selectorChar,
@@ -176,6 +203,11 @@ public static class AtSelectorProcessor {
         }
     }
 
+    /// <summary>
+    /// Determines whether the given character is a valid main selector.
+    /// </summary>
+    /// <param name="c">The character to check.</param>
+    /// <returns>Whether the character is a valid main selector.</returns>
     public static bool IsValidChar(char c) => ValidChars.Contains(c);
 
     private static bool ProcessChar(int index, ParserState state) {

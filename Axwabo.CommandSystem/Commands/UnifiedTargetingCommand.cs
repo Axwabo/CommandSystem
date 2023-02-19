@@ -44,13 +44,13 @@ public abstract class UnifiedTargetingCommand : CommandBase {
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
         if (arguments.Count < 1)
-            return OnNotEnoughArgumentsProvided(arguments, sender, MinArguments);
+            return OnNotEnoughArguments(arguments, sender, MinArguments);
         var targets = arguments.GetTargets(out var newArgs)?.Where(ShouldBeAffected).ToList();
         if (targets is not {Count: not 0})
             return OnNoTargetsFound();
         var args = new ArraySegment<string>(newArgs ?? Array.Empty<string>());
         return args.Count < TargetingMinArguments
-            ? OnNotEnoughArgumentsProvided(args, sender, MinArguments)
+            ? OnNotEnoughArguments(args, sender, MinArguments)
             : targets.Count == 1
                 ? ExecuteOnSingleTarget(targets[0], args, sender)
                 : ExecuteOnTargets(targets, args, sender);

@@ -6,8 +6,9 @@ using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
+/// <summary>A command to push players onto the selection stack.</summary>
 [CommandProperties(CommandHandlerType.RaAndServer, "stackPush", "Pushes the given players onto the selection stack.")]
-[Aliases("spush", "sp")]
+[Aliases("sPush", "sp")]
 [Usage("<players>")]
 public sealed class StackPush : UnifiedTargetingCommand {
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Attributes.Interfaces;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
@@ -122,7 +121,7 @@ public static class BaseCommandPropertyManager {
             completed = true;
         }
 
-        if (attribute is PlayerOnlyCommand) {
+        if (attribute is IPlayerOnlyAttribute) {
             playerOnly = true;
             completed = true;
         }

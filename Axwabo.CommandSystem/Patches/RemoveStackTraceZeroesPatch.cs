@@ -11,13 +11,13 @@ public static class RemoveStackTraceZeroesPatch {
     public static readonly Regex ReplaceRegex = new("\\s\\[(?:[0-9a-fx]+)\\] in <(?:[0-9a-f]+)>:0", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     private static readonly CodeInstruction[] Instructions = {
-        Ldfld(typeof(RemoveStackTraceZeroesPatch), nameof(ReplaceRegex)),
         Ldarg(0),
-        String(""),
-        Call<Regex>(nameof(Regex.Replace), new[] {typeof(string), typeof(string)}),
+        Call(typeof(RemoveStackTraceZeroesPatch), nameof(Replace)),
         Return
     };
 
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => Instructions;
+
+    public static string Replace(string input) => ReplaceRegex.Replace(input, "");
 
 }
