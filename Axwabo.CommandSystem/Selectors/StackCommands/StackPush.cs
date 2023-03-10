@@ -12,6 +12,7 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 [Usage("<players>")]
 public sealed class StackPush : UnifiedTargetingCommand {
 
+    /// <inheritdoc />
     protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender) {
         if (!PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result, true))
             return result;

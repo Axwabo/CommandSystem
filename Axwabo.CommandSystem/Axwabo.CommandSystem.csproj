@@ -201,10 +201,11 @@
         <Compile Include="Exceptions\PlayerListProcessorException.cs"/>
         <Compile Include="Exceptions\TypeMismatchException.cs"/>
         <Compile Include="Exceptions\NameNotSetException.cs"/>
-        <Compile Include="Config.cs"/>
+        <Compile Include="ExiledConfig.cs"/>
         <Compile Include="ExiledPlugin.cs"/>
         <Compile Include="Extensions.cs"/>
         <Compile Include="GenericTypeExtensions.cs"/>
+        <Compile Include="NWConfig.cs"/>
         <Compile Include="Patches\CommandImplementationPatch.cs"/>
         <Compile Include="Patches\CommandProcessorPatch.cs"/>
         <Compile Include="Patches\ConsolePatch.cs"/>
@@ -212,6 +213,10 @@
         <Compile Include="Patches\ParseCommandsPatch.cs"/>
         <Compile Include="Patches\ProcessPlayersListPatch.cs"/>
         <Compile Include="Patches\QueryProcessorPatch.cs"/>
+        <Compile Include="Patches\RemoteAdminExtensions\ExternalLookupPatch.cs"/>
+        <Compile Include="Patches\RemoteAdminExtensions\RequestAuthPatch.cs"/>
+        <Compile Include="Patches\RemoteAdminExtensions\RequestDataPatch.cs"/>
+        <Compile Include="Patches\RemoteAdminExtensions\RemoteAdminPlayerListPatch.cs"/>
         <Compile Include="Patches\RemoveStackTraceZeroesPatch.cs"/>
         <Compile Include="Permissions\AtLeastOneVanillaPlayerPermissionChecker.cs"/>
         <Compile Include="Permissions\StringPermissionChecker.cs"/>
@@ -234,6 +239,10 @@
         <Compile Include="PropertyManager\Resolvers\ITargetSelectionResolver.cs"/>
         <Compile Include="PropertyManager\TargetingCommandPropertyManager.cs"/>
         <Compile Include="Registration\ResolverContainer.cs"/>
+        <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
+        <Compile Include="RemoteAdminExtensions\RemoteAdminOptionBase.cs"/>
+        <Compile Include="RemoteAdminExtensions\RemoteAdminOptionManager.cs"/>
+        <Compile Include="RemoteAdminExtensions\RequestDataButton.cs"/>
         <Compile Include="Selectors\Filtering\CustomHubFilterRegistry.cs"/>
         <Compile Include="Selectors\Filtering\Delegates.cs"/>
         <Compile Include="Selectors\Filtering\FilterEntry.cs"/>

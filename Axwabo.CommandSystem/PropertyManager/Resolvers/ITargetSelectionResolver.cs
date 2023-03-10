@@ -9,6 +9,6 @@ public interface ITargetSelectionResolver {
 
 public interface ITargetSelectionResolver<in TAttribute> : ITargetSelectionResolver where TAttribute : Attribute {
 
-    ITargetSelectionManager ResolveGenerator(TAttribute attribute);
+    ITargetSelectionManager ResolveManager(TAttribute attribute);
 
 }

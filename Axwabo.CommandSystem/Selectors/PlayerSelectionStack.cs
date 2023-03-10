@@ -114,8 +114,10 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// <summary>Gets the amount of lists in the stack.</summary>
     public int Count => _stack.Count;
 
+    /// <inheritdoc />
     public IEnumerator<HubCollection> GetEnumerator() => _stack.GetEnumerator();
 
+    /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     /// <summary>

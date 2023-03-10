@@ -24,6 +24,7 @@ public sealed class StackDuplicate : CommandBase, INotEnoughArguments {
                 _ => DuplicateSpecific(selection, arguments)
             };
 
+    /// <inheritdoc />
     public CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender, int required)
         => !PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result) ? result : DuplicateFirst(selection);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Axwabo.CommandSystem.Attributes.Advanced.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.Selectors;
@@ -13,7 +14,7 @@ public abstract class UnifiedTargetingCommand : CommandBase {
 
     private readonly string _noTargetsFoundMessage = "No targets were found.";
     private readonly string _noPlayersAffected = "No players were affected.";
-    private readonly bool _shouldAffectSpectators = true;
+    private readonly bool _shouldAffectSpectators;
 
     private readonly IAffectedMultiplePlayersMessageGenerator _affectedMultipleGenerator;
     private readonly IAffectedAllPlayersGenerator _allAffectedGenerator;
@@ -21,6 +22,7 @@ public abstract class UnifiedTargetingCommand : CommandBase {
     private readonly ITargetSelectionManager _selectionManager;
 
     protected UnifiedTargetingCommand() {
+        _shouldAffectSpectators = this is not IShouldAffectSpectators {AffectSpectators: false};
         var affectedMultiple = "Done! The request affected {0}.";
         var affectedOne = "Done! The request affected {0}.";
         TargetingCommandPropertyManager.ResolveProperties(this, ref _noTargetsFoundMessage, ref affectedMultiple, ref affectedOne, ref _noPlayersAffected, ref _shouldAffectSpectators);
@@ -36,12 +38,14 @@ public abstract class UnifiedTargetingCommand : CommandBase {
         _affectedOneGenerator ??= generator;
     }
 
+    /// <inheritdoc />
     protected sealed override int MinArguments => TargetingMinArguments + 1;
 
     protected virtual int TargetingMinArguments => base.MinArguments;
 
     private bool ShouldBeAffected(ReferenceHub hub) => ShouldAffectSpectators || hub.IsAlive();
 
+    /// <inheritdoc />
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {
         if (arguments.Count < 1)
             return OnNotEnoughArguments(arguments, sender, MinArguments);

@@ -1,4 +1,6 @@
-﻿namespace Axwabo.CommandSystem.Structs;
+﻿using System;
+
+namespace Axwabo.CommandSystem.Structs;
 
 /// <summary>
 /// Represents the result of a command execution.
@@ -6,6 +8,8 @@
 public readonly struct CommandResult {
 
     #region Static
+
+    private const string InvalidCast = "Implicit cast of a null string to a CommandResult. If you want to return a nullable CommandResult, use \"CommandResult.Null\". If you want to return an empty response, use the constructor or the \"Succeeded\" method.";
 
     /// <summary>
     /// Creates a new succeeding <see cref="CommandResult"/> with the given response.
@@ -69,7 +73,7 @@ public readonly struct CommandResult {
     /// <returns>A new <see cref="CommandResult"/>.</returns>
     /// <remarks>If the response starts with '!', it will be treated as a failing response. If you want your response to start with '!', use <see cref="Succeeded"/> or <see cref="CommandResult(bool,string)">the other constructor</see>.</remarks>
     /// <seealso cref="CommandResult(string)"/>
-    public static implicit operator CommandResult(string s) => new(s);
+    public static implicit operator CommandResult(string s) => new(s ?? throw new ArgumentNullException(nameof(s), InvalidCast));
 
     /// <summary>
     /// Creates an empty <see cref="CommandResult"/> with the given success state.
