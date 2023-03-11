@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Selectors;
+using Axwabo.Helpers;
 using Axwabo.Helpers.Pools;
 using HarmonyLib;
+using UnityEngine.SceneManagement;
 using Utils;
 using static Axwabo.Helpers.Harmony.InstructionHelper;
 
@@ -49,6 +52,49 @@ internal static class ProcessPlayersListPatch {
         });
         foreach (var codeInstruction in list)
             yield return codeInstruction;
+    }
+
+    private static bool _alreadyTriedToUnpatch;
+
+    internal static void RegisterEvent() => SceneManager.sceneLoaded += OnSceneWasLoaded;
+
+    internal static void UnregisterEvent() => SceneManager.sceneLoaded -= OnSceneWasLoaded;
+
+    private static void OnSceneWasLoaded(Scene arg0, LoadSceneMode arg1) {
+        if (_alreadyTriedToUnpatch)
+            return;
+        _alreadyTriedToUnpatch = true;
+        try {
+            var result = RemoveCedModPatch();
+            if (result != null)
+#if EXILED
+                Exiled.API.Features.Log
+#else
+                PluginAPI.Core.Log
+#endif
+                    .Info(result);
+        } catch (Exception e) {
+#if EXILED
+            Exiled.API.Features.Log.Warn
+#else
+            PluginAPI.Core.Log.Warning
+#endif
+                ("Failed to unpatch CedMod's player list processor, player selectors will not work!\n" + e);
+        }
+    }
+
+    private static string RemoveCedModPatch() {
+        var type = AccessTools.TypeByName("CedMod.CedModMain");
+        if (type is null)
+            return null;
+        var harmony = type.StaticGet("Singleton")?.Get<Harmony>("_harmony");
+        if (harmony is null)
+            return "Could not find CedMod's Harmony instance.";
+        var method = AccessTools.Method(AccessTools.TypeByName("CedMod.Patches.RAProcessPlayerPatch"), "Prefix");
+        if (method is null)
+            return "CedMod player list patch was found but without the prefix method.";
+        harmony.Unpatch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), method);
+        return "CedMod player list processor has been unpatched.";
     }
 
 }

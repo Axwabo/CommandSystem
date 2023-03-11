@@ -18,10 +18,11 @@ internal static class RequestAuthPatch {
 
         var list = new List<CodeInstruction>(instructions);
         var label = generator.DefineLabel();
-        list[0].labels.Add(label);
+        var index = list.FindCode(OpCodes.Isinst) - 1;
+        var instruction = list[index];
         var response = generator.Local<string>();
-        list.InsertRange(0, new[] {
-            Ldarg(2),
+        list.InsertRange(index, new[] {
+            Ldarg(2).MoveLabelsFrom(instruction),
             Call<string>(nameof(string.Trim), Array.Empty<Type>()),
             RequestDataButton.RequestAuth.Load(),
             Ldarg(1),
@@ -39,7 +40,7 @@ internal static class RequestAuthPatch {
             Call<CommandSender>(nameof(CommandSender.RaReply)),
             Return
         });
-
+        instruction.labels.Add(label);
         return list;
     }
 

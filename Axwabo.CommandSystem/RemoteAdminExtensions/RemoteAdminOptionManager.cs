@@ -16,7 +16,11 @@ public static class RemoteAdminOptionManager {
 
     private static readonly List<RemoteAdminOptionBase> Options = new();
 
-    public static void RegisterOption(RemoteAdminOptionBase option) => Options.Add(option);
+    public static void RegisterOption(RemoteAdminOptionBase option) {
+        if (option is null)
+            throw new ArgumentNullException(nameof(option));
+        Options.Add(option);
+    }
 
     public static IEnumerable<RemoteAdminOptionBase> AllOptions => Options.AsReadOnly();
 

@@ -14,7 +14,7 @@ internal static class RemoteAdminPlayerListPatch {
         if (!Plugin.Instance.Config.EnableRemoteAdminExtensions)
             return instructions;
         var list = new List<CodeInstruction>(instructions);
-        var index = list.FindIndex(i => i.operand is MethodInfo {Name: "Rent"}) + 2;
+        var index = list.FindIndex(i => i.operand is MethodInfo {Name: nameof(RaPlayerList.SortPlayersDescending)}) + 3;
         list.InsertRange(index, new[] {
             Ldarg(1),
             Ldloc(8),

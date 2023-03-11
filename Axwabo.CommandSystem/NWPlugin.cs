@@ -1,5 +1,6 @@
 ﻿#if !EXILED
 using System;
+using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using HarmonyLib;
 using PluginAPI.Core;
@@ -29,6 +30,7 @@ public sealed class Plugin {
         _harmony = new Harmony("Axwabo.CommandSystem");
         try {
             _harmony.PatchAll();
+            ProcessPlayersListPatch.RegisterEvent();
         } catch (Exception e) {
             Log.Error("Patching failed! Some features will not work properly.\n" + e);
         }
@@ -39,6 +41,7 @@ public sealed class Plugin {
 
     [PluginUnload]
     private void OnDisable() {
+        ProcessPlayersListPatch.UnregisterEvent();
         Instance = null;
         CommandRegistrationProcessor.UnregisterAll(this);
         _harmony.UnpatchAll();

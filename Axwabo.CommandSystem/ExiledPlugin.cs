@@ -1,5 +1,6 @@
 ﻿#if EXILED
 using System;
+using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -23,6 +24,7 @@ public sealed class Plugin : Plugin<Config> {
         _harmony = new Harmony("Axwabo.CommandSystem");
         try {
             _harmony.PatchAll();
+            ProcessPlayersListPatch.RegisterEvent();
         } catch (Exception e) {
             Log.Error("Patching failed! Some features will not work properly.\n" + e);
         }
@@ -33,6 +35,7 @@ public sealed class Plugin : Plugin<Config> {
 
     /// <summary>Called when the plugin is disabled.</summary>
     public override void OnDisabled() {
+        ProcessPlayersListPatch.UnregisterEvent();
         Instance = this;
         CommandRegistrationProcessor.UnregisterAll(this);
         _harmony.UnpatchAll();
