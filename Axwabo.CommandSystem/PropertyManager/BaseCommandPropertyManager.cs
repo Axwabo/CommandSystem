@@ -8,22 +8,24 @@ using Axwabo.CommandSystem.Registration;
 
 namespace Axwabo.CommandSystem.PropertyManager;
 
+/// <summary>Attribute to property handler for base commands.</summary>
 public static class BaseCommandPropertyManager {
 
+    /// <summary>The current command registration processor.</summary>
     public static CommandRegistrationProcessor CurrentProcessor { get; internal set; }
 
-    public static bool ValidateRegistration(CommandBase command, bool throwIfProcessorIsNull = true) {
-        if (command is null)
-            throw new ArgumentNullException(nameof(command));
-        if (CurrentProcessor != null)
-            return true;
-        return throwIfProcessorIsNull
-            ? throw new InvalidOperationException("Attempted to resolve command properties outside of a registration process.")
-            : false;
-    }
-
+    /// <summary>
+    /// Attempts to resolve the basic properties of a command.
+    /// </summary>
+    /// <param name="command">The command to resolve properties for.</param>
+    /// <param name="name">The name of the command.</param>
+    /// <param name="description">The description of the command.</param>
+    /// <param name="aliases">Aliases for the command.</param>
+    /// <param name="usage">Usage examples for the command.</param>
+    /// <param name="minArguments">The minimum number of arguments required to execute the command.</param>
+    /// <param name="playerOnly">Whether the command can only be executed by a player.</param>
+    /// <returns>Whether the command name successfully resolved.</returns>
     public static bool TryResolveProperties(CommandBase command, out string name, out string description, out string[] aliases, out string[] usage, out int minArguments, out bool playerOnly) {
-        ValidateRegistration(command);
         name = null;
         description = null;
         var aliasList = new List<string>();
@@ -45,13 +47,16 @@ public static class BaseCommandPropertyManager {
         return !string.IsNullOrEmpty(name);
     }
 
+    /// <summary>
+    /// Resolves the permission checkers for a command.
+    /// </summary>
+    /// <param name="command">The command to resolve permission checkers for.</param>
+    /// <returns>The permission checker for the command. If multiple were found, they will be merged into a <see cref="CombinedPermissionChecker"/>.</returns>
     public static IPermissionChecker ResolvePermissionChecker(CommandBase command) {
-        if (!ValidateRegistration(command, false))
-            return null;
         var list = new List<IPermissionChecker>();
         list.AddIfNotNull(command as IPermissionChecker);
         foreach (var attribute in command.GetType().GetCustomAttributes()) {
-            if (list.AddIfNotNull(ResolveBasePermissionChecker(attribute)))
+            if (list.AddIfNotNull(ResolveBasePermissionChecker(attribute)) || CurrentProcessor == null)
                 continue;
             if (!list.AddIfNotNull(ResolveInstanceBasedPermissionChecker(attribute, command)))
                 list.AddIfNotNull(ResolveCustomPermissionChecker(attribute));
@@ -65,9 +70,9 @@ public static class BaseCommandPropertyManager {
     }
 
     private static IPermissionChecker ResolveBasePermissionChecker(Attribute attribute) => attribute switch {
-        SingleVanillaPermissionsAttribute single => new SimpleVanillaPlayerPermissionChecker(single.Permissions),
+        SingleVanillaPermissionsAttribute single => new SimpleVanillaPlayerPermissionChecker(single.Permission),
         OneOfVanillaPermissionsAttribute oneOf => new AtLeastOneVanillaPlayerPermissionChecker(oneOf.Permissions),
-        StringPermissionsAttribute cedMod => new StringPermissionChecker(cedMod.Permission),
+        StringPermissionsAttribute stringBased => new StringPermissionChecker(stringBased.Permission),
         _ => null
     };
 
@@ -95,7 +100,7 @@ public static class BaseCommandPropertyManager {
     private static bool ResolveBaseAttribute(CommandBase command, Attribute attribute, ref string name, ref string description, List<string> aliases, List<string> usage, ref int minArguments, ref bool playerOnly) {
         var completed = false;
         if (attribute is ICommandName n) {
-            name = n.Name ?? throw new NameNotSetException($"Null command name provided by attribute {attribute.GetType().FullName} on type {command.GetType().FullName}.");
+            name = n.Name ?? throw new InvalidNameException($"Null command name provided by attribute {attribute.GetType().FullName} on type {command.GetType().FullName}.");
             completed = true;
         }
 
@@ -126,7 +131,7 @@ public static class BaseCommandPropertyManager {
             completed = true;
         }
 
-        return completed;
+        return completed || CurrentProcessor == null;
     }
 
     private static void ResolveName(ref string name, Type type, Attribute attribute) {

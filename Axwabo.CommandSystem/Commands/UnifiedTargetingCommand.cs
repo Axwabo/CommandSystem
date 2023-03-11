@@ -43,7 +43,9 @@ public abstract class UnifiedTargetingCommand : CommandBase {
 
     protected virtual int TargetingMinArguments => base.MinArguments;
 
-    private bool ShouldBeAffected(ReferenceHub hub) => ShouldAffectSpectators || hub.IsAlive();
+    private bool ShouldBeAffected(ReferenceHub hub) => (ShouldAffectSpectators || hub.IsAlive()) && FilterTarget(hub);
+
+    protected virtual bool FilterTarget(ReferenceHub hub) => true;
 
     /// <inheritdoc />
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender) {

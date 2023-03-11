@@ -18,6 +18,7 @@ internal static class RemoteAdminPlayerListPatch {
         list.InsertRange(index, new[] {
             Ldarg(1),
             Ldloc(8),
+            Int1,
             Call(typeof(RemoteAdminOptionManager), nameof(RemoteAdminOptionManager.AppendAllOptions))
         });
         return list;

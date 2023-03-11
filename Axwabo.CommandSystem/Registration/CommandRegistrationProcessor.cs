@@ -11,32 +11,47 @@ using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
+using Axwabo.CommandSystem.RemoteAdminExtensions;
 using CommandSystem;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Registration;
 
+/// <summary>Handles the registration of commands.</summary>
 public sealed class CommandRegistrationProcessor {
 
     #region Auto-Register
 
+    /// <summary>Registers all commands in the assembly of the given object instance with registration attributes on the type.</summary>
+    /// <param name="assemblyMemberInstance">An object from the assembly.</param>
     public static void RegisterAll(object assemblyMemberInstance) => RegisterAll(assemblyMemberInstance.GetType());
 
+    /// <summary>Registers all commands in the assembly of the given type with registration attributes on the it.</summary>
+    /// <param name="typeInAssembly">A type from the assembly.</param>
     public static void RegisterAll(Type typeInAssembly)
-        => new CommandRegistrationProcessor(typeInAssembly.Assembly)
+        => Create(typeInAssembly.Assembly)
             .WithRegistrationAttributesFrom(typeInAssembly)
             .Execute();
 
-    public static void RegisterAll(Assembly assembly) => new CommandRegistrationProcessor(assembly).Execute();
+    /// <summary>Registers all commands in the given assembly.</summary>
+    /// <param name="assembly">The assembly to register commands from.</param>
+    /// <remarks>Use <see cref="RegisterAll(object)"/> or <see cref="RegisterAll(Type)"/> to also pull the registration attributes from a type.</remarks>
+    public static void RegisterAll(Assembly assembly) => Create(assembly).Execute();
 
     #endregion
 
     #region Unregister
 
+    /// <summary>Removes all registered commands in the assembly of the given object instance.</summary>
+    /// <param name="assemblyMemberInstance">An object from the assembly.</param>
     public static void UnregisterAll(object assemblyMemberInstance) => UnregisterAll(assemblyMemberInstance.GetType());
 
+    /// <summary>Removes all registered commands in the assembly of the given type.</summary>
+    /// <param name="typeInAssembly">A type from the assembly.</param>
     public static void UnregisterAll(Type typeInAssembly) => UnregisterAll(typeInAssembly.Assembly);
 
+    /// <summary>Removes all registered commands in the given assembly.</summary>
+    /// <param name="assembly">The assembly to remove commands from.</param>
     public static void UnregisterAll(Assembly assembly) {
         UnregisterFromHandler(assembly, CommandProcessor.RemoteAdminCommandHandler);
         UnregisterFromHandler(assembly, GameCore.Console.singleton.ConsoleCommandHandler);
@@ -53,16 +68,23 @@ public sealed class CommandRegistrationProcessor {
 
     #region Create
 
+    /// <summary>Creates a new <see cref="CommandRegistrationProcessor"/> with the assembly of the given object instance.</summary>
+    /// <param name="assemblyMemberInstance">An object from the assembly.</param>
     public static CommandRegistrationProcessor Create(object assemblyMemberInstance) => Create(assemblyMemberInstance.GetType().Assembly);
 
+    /// <summary>Creates a new <see cref="CommandRegistrationProcessor"/> with the assembly of the given type.</summary>
+    /// <param name="typeInAssembly">A type from the assembly.</param>
     public static CommandRegistrationProcessor Create(Type typeInAssembly) => Create(typeInAssembly.Assembly);
 
+    /// <summary>Creates a new <see cref="CommandRegistrationProcessor"/> with the given assembly.</summary>
+    /// <param name="assembly">The assembly to register commands from.</param>
     public static CommandRegistrationProcessor Create(Assembly assembly) => new(assembly);
 
     #endregion
 
     #region Fields
 
+    /// <summary>The assembly to register commands from.</summary>
     public Assembly TargetAssembly { get; }
 
     private CommandRegistrationProcessor(Assembly assembly) => TargetAssembly = assembly;
@@ -89,12 +111,13 @@ public sealed class CommandRegistrationProcessor {
 
     #region Exec
 
+    /// <summary>Executes the processor, registering all commands and remote admin extensions in the assembly.</summary>
     public void Execute() {
         BaseCommandPropertyManager.CurrentProcessor = this;
         try {
             foreach (var type in TargetAssembly.GetTypes())
-                if (!type.IsAbstract && typeof(CommandBase).IsAssignableFrom(type))
-                    RegisterCommand(type);
+                if (!type.IsAbstract)
+                    ProcessType(type);
         } catch (ReflectionTypeLoadException ex) {
             Log.Error("Failed to load types from assembly: \"" + TargetAssembly.FullName + "\"\nList of all exceptions:");
             foreach (var loaderException in ex.LoaderExceptions)
@@ -102,6 +125,13 @@ public sealed class CommandRegistrationProcessor {
         } finally {
             BaseCommandPropertyManager.CurrentProcessor = null;
         }
+    }
+
+    private static void ProcessType(Type type) {
+        if (typeof(CommandBase).IsAssignableFrom(type))
+            RegisterCommand(type);
+        else if (typeof(RemoteAdminOptionBase).IsAssignableFrom(type))
+            RemoteAdminOptionManager.RegisterOption((RemoteAdminOptionBase) Activator.CreateInstance(type));
     }
 
     private static void RegisterCommand(Type type) {

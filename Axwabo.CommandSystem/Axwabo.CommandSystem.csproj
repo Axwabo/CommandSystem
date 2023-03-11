@@ -59,13 +59,13 @@
             <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net48\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-            <HintPath>..\..\assemblies\Assembly-CSharp.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
             <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="Axwabo.Helpers.NWAPI">
-            <HintPath>..\..\assemblies\Axwabo.Helpers.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
         </Reference>
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
             <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\CommandSystem.Core.dll</HintPath>
@@ -177,10 +177,15 @@
         <Compile Include="Attributes\Interfaces\IInstanceBasedPermissionCreator.cs"/>
         <Compile Include="Attributes\Interfaces\IMinArguments.cs"/>
         <Compile Include="Attributes\Interfaces\IPlayerOnlyAttribute.cs"/>
+        <Compile Include="Attributes\Interfaces\IRemoteAdminOptionIdentifier.cs"/>
+        <Compile Include="Attributes\Interfaces\IStaticOptionText.cs"/>
         <Compile Include="Attributes\Interfaces\IUsage.cs"/>
         <Compile Include="Attributes\MinArgumentsAttribute.cs"/>
         <Compile Include="Attributes\PlayerOnlyCommandAttribute.cs"/>
         <Compile Include="Attributes\PresetCommandListeners.cs"/>
+        <Compile Include="Attributes\RaExt\AutoOptionIdAttribute.cs"/>
+        <Compile Include="Attributes\RaExt\RemoteAdminOptionIdentifierAttribute.cs"/>
+        <Compile Include="Attributes\RaExt\StaticOptionTextAttribute.cs"/>
         <Compile Include="Attributes\UsageAttribute.cs"/>
         <Compile Include="CommandBase.cs"/>
         <Compile Include="CommandHelpers.cs"/>
@@ -200,7 +205,7 @@
         <Compile Include="CompilerHacks.cs"/>
         <Compile Include="Exceptions\PlayerListProcessorException.cs"/>
         <Compile Include="Exceptions\TypeMismatchException.cs"/>
-        <Compile Include="Exceptions\NameNotSetException.cs"/>
+        <Compile Include="Exceptions\InvalidNameException.cs"/>
         <Compile Include="ExiledConfig.cs"/>
         <Compile Include="ExiledPlugin.cs"/>
         <Compile Include="Extensions.cs"/>
@@ -229,6 +234,7 @@
         <Compile Include="NWPlugin.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="PropertyManager\BaseCommandPropertyManager.cs"/>
+        <Compile Include="PropertyManager\RemoteAdminExtensionPropertyManager.cs"/>
         <Compile Include="PropertyManager\Resolvers\IAffectedAllPlayersResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IAffectedMultiplePlayersResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IAffectedOnePlayerResolver.cs"/>
@@ -240,6 +246,7 @@
         <Compile Include="PropertyManager\TargetingCommandPropertyManager.cs"/>
         <Compile Include="Registration\ResolverContainer.cs"/>
         <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
+        <Compile Include="RemoteAdminExtensions\OptionListCommand.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionBase.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionManager.cs"/>
         <Compile Include="RemoteAdminExtensions\RequestDataButton.cs"/>

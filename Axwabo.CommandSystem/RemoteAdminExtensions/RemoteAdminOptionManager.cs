@@ -1,15 +1,14 @@
-﻿using System;
+﻿#if EXILED
+using Exiled.API.Features;
+#else
+using PluginAPI.Core;
+#endif
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 using Axwabo.Helpers;
-using PluginAPI.Core;
 using RemoteAdmin;
-
-#if EXILED
-using Exiled.API.Features;
-#else
-#endif
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 
@@ -19,13 +18,13 @@ public static class RemoteAdminOptionManager {
 
     public static void RegisterOption(RemoteAdminOptionBase option) => Options.Add(option);
 
-    public static IEnumerable<RemoteAdminOptionBase> GetOptions() => Options.AsReadOnly();
+    public static IEnumerable<RemoteAdminOptionBase> AllOptions => Options.AsReadOnly();
 
     public static bool HandleCustomRequest(string name, RequestDataButton button, PlayerCommandSender sender, out string response) {
         name = name.Trim().TrimEnd('.');
         try {
             foreach (var option in Options) {
-                if (!option.OptionName.Equals(name, StringComparison.OrdinalIgnoreCase))
+                if (!option.OptionIdentifier.Equals(name, StringComparison.OrdinalIgnoreCase))
                     continue;
                 response = option.OnClick(button, sender);
                 if (response == null)
@@ -43,10 +42,11 @@ public static class RemoteAdminOptionManager {
         return false;
     }
 
-    public static void AppendAllOptions(CommandSender sender, StringBuilder builder) {
+    public static void AppendAllOptions(CommandSender sender, StringBuilder builder, bool hideIdentifier = true) {
+        var textToFormat = hideIdentifier ? "<size=0>({0})</size>{1}" : "({0}) {1}";
         foreach (var option in Options)
             if (option is not IOptionVisibilityController controller || controller.IsVisibleTo(sender))
-                builder.AppendLine($"<size=0>({option.OptionName})</size>{option.GetText(sender)}");
+                builder.AppendLine(string.Format(textToFormat, option.OptionIdentifier, option.GetText(sender)));
     }
 
 }
