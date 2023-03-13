@@ -3,7 +3,8 @@
 /// <summary>
 /// Stores the result of a command along with the <see cref="ReferenceHub"/> it was executed on.
 /// </summary>
-public readonly struct CommandResultOnTarget {
+public readonly struct CommandResultOnTarget
+{
 
     /// <summary>The target of execution.</summary>
     public readonly ReferenceHub Target;
@@ -23,7 +24,8 @@ public readonly struct CommandResultOnTarget {
     /// <param name="target">The target of execution.</param>
     /// <param name="response">The response of the command.</param>
     /// <param name="success">Whether the command was successful.</param>
-    public CommandResultOnTarget(ReferenceHub target, string response, bool success = true) {
+    public CommandResultOnTarget(ReferenceHub target, string response, bool success = true)
+    {
         Target = target;
         Response = response;
         Success = success;
@@ -34,7 +36,8 @@ public readonly struct CommandResultOnTarget {
     /// </summary>
     /// <param name="target">The target of execution.</param>
     /// <param name="success">Whether the command was successful.</param>
-    public CommandResultOnTarget(ReferenceHub target, bool success) {
+    public CommandResultOnTarget(ReferenceHub target, bool success)
+    {
         Target = target;
         Response = null;
         Success = success;

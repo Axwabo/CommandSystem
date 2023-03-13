@@ -10,15 +10,18 @@ using static Axwabo.Helpers.Harmony.InstructionHelper;
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 
 [HarmonyPatch(typeof(ExternalLookupCommand), nameof(ExternalLookupCommand.Execute))]
-internal static class ExternalLookupPatch {
+internal static class ExternalLookupPatch
+{
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    {
         if (!Plugin.Instance.Config.EnableRemoteAdminExtensions)
             return instructions;
         var list = new List<CodeInstruction>(instructions);
         var label = generator.DefineLabel();
         list[0].labels.Add(label);
-        list.InsertRange(0, new[] {
+        list.InsertRange(0, new[]
+        {
             String(" "),
             Ldarg(1),
             Box<ArraySegment<string>>(),

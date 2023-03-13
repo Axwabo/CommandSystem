@@ -1,13 +1,16 @@
 ﻿namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 
-internal sealed class DefaultTargetingMessageGenerator : IAffectedMultiplePlayersMessageGenerator, IAffectedAllPlayersGenerator, IAffectedOnePlayerMessageGenerator {
+internal sealed class DefaultTargetingMessageGenerator : IAffectedMultiplePlayersMessageGenerator, IAffectedAllPlayersMessageGenerator, IAffectedOnePlayerMessageGenerator
+{
 
     private readonly bool _affectedMultipleIsCustom;
     private readonly string _affectedMultipleMessage = "Done! The request affected {0}.";
 
-    public string AffectedMultipleMessage {
+    public string AffectedMultipleMessage
+    {
         get => _affectedMultipleMessage;
-        init {
+        init
+        {
             _affectedMultipleIsCustom = value == _affectedMultipleMessage;
             _affectedMultipleMessage = value;
         }

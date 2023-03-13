@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Axwabo.CommandSystem.Structs;
 using Utils;
 
@@ -9,7 +10,8 @@ namespace Axwabo.CommandSystem;
 /// <summary>
 /// Common extension methods.
 /// </summary>
-public static class Extensions {
+public static class Extensions
+{
 
     /// <summary>
     /// Combines the nicknames of the given hubs into a single string.
@@ -52,7 +54,8 @@ public static class Extensions {
     /// <param name="searchStart">The index to start searching from.</param>
     /// <param name="separators">The separators to search for.</param>
     /// <returns>The substring.</returns>
-    public static string Substring(this string s, int searchStart, params char[] separators) {
+    public static string Substring(this string s, int searchStart, params char[] separators)
+    {
         var index = s.IndexOfAny(separators, searchStart);
         return index == -1 ? s.Substring(searchStart) : s.Substring(searchStart, index - searchStart);
     }
@@ -114,20 +117,25 @@ public static class Extensions {
     /// <param name="value">The value to use.</param>
     /// <param name="field">The field reference to set.</param>
     /// <typeparam name="T">The type of the field.</typeparam>
-    public static void SetFieldIfNotNull<T>(this T value, ref T field) where T : class {
+    public static void SetFieldIfNotNull<T>(this T value, ref T field) where T : class
+    {
         if (value != null)
             field = value;
     }
 
     /// <summary>
-    /// Safely casts this value and sets the referenced field if the field's value is not null.
+    /// Safely casts this value and sets the referenced field if the field's value is null.
     /// </summary>
     /// <param name="value">The value to cast.</param>
     /// <param name="field">The field reference to set.</param>
     /// <typeparam name="T">The type to cast to.</typeparam>
-    public static void SafeCastAndSetIfNotNull<T>(this object value, ref T field) where T : class {
-        if (field != null && value is T t)
-            field = t;
+    /// <returns>Whether the value was set.</returns>
+    public static bool SafeCastAndSetIfNull<T>(this object value, ref T field) where T : class
+    {
+        if (field != null || value is not T t)
+            return false;
+        field = t;
+        return true;
     }
 
     /// <summary>
@@ -137,11 +145,55 @@ public static class Extensions {
     /// <param name="value">The value to add.</param>
     /// <typeparam name="T">The type of the list.</typeparam>
     /// <returns>Whether the value was added.</returns>
-    public static bool AddIfNotNull<T>(this List<T> list, T value) where T : class {
+    public static bool AddIfNotNull<T>(this List<T> list, T value) where T : class
+    {
         if (value == null)
             return false;
         list.Add(value);
         return true;
     }
+
+    /// <summary>
+    /// Safely casts the value and adds it to the list.
+    /// </summary>
+    /// <param name="list">The list to add the object to.</param>
+    /// <param name="value">The value to add.</param>
+    /// <typeparam name="T">The type of the list.</typeparam>
+    /// <returns>Whether the value was added.</returns>
+    public static bool SafeCastAndAdd<T>(this List<T> list, object value) where T : class
+    {
+        if (value is not T t)
+            return false;
+        list.Add(t);
+        return true;
+    }
+
+    /// <summary>
+    /// Invokes the instance method if the method has a single parameter and the argument can be assigned to that parameter.
+    /// </summary>
+    /// <param name="method">The method to invoke.</param>
+    /// <param name="instance">The instance to invoke the method on.</param>
+    /// <param name="argument">The argument to pass to the method.</param>
+    /// <returns>The return value of the method, or <see langword="null"/> if the method could not be invoked.</returns>
+    public static object InvokeIfSingleParameterMatchesType(this MethodInfo method, object instance, object argument)
+    {
+        if (method == null)
+            return null;
+        var parameters = method.GetParameters();
+        return parameters is {Length: 1} && parameters[0].ParameterType.IsInstanceOfType(argument)
+            ? method.Invoke(instance, new[] {argument})
+            : null;
+    }
+
+    /// <summary>
+    /// Invokes the instance method if the method has a single parameter and the argument can be assigned to that parameter and casts the result to <typeparamref name="TReturn"/>.
+    /// </summary>
+    /// <param name="method">The method to invoke.</param>
+    /// <param name="instance">The instance to invoke the method on.</param>
+    /// <param name="argument">The argument to pass to the method.</param>
+    /// <typeparam name="TReturn">The type to cast the return value to.</typeparam>
+    /// <returns>The return value of the method, or <see langword="default"/> if the method could not be invoked.</returns>
+    public static TReturn InvokeIfSingleParameterMatchesType<TReturn>(this MethodInfo method, object instance, object argument)
+        => (TReturn) method.InvokeIfSingleParameterMatchesType(instance, argument);
 
 }

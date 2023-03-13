@@ -6,7 +6,8 @@ namespace Axwabo.CommandSystem.Attributes;
 /// Defines the types of default command handlers.
 /// </summary>
 [Flags]
-public enum CommandHandlerType : byte {
+public enum CommandHandlerType : byte
+{
 
     /// <summary>No command handler.</summary>
     None = 0,

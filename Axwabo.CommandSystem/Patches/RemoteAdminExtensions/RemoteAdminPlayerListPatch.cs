@@ -8,14 +8,17 @@ using static Axwabo.Helpers.Harmony.InstructionHelper;
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 
 [HarmonyPatch(typeof(RaPlayerList), nameof(RaPlayerList.ReceiveData), typeof(CommandSender), typeof(string))]
-internal static class RemoteAdminPlayerListPatch {
+internal static class RemoteAdminPlayerListPatch
+{
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    {
         if (!Plugin.Instance.Config.EnableRemoteAdminExtensions)
             return instructions;
         var list = new List<CodeInstruction>(instructions);
         var index = list.FindIndex(i => i.operand is MethodInfo {Name: nameof(RaPlayerList.SortPlayersDescending)}) + 3;
-        list.InsertRange(index, new[] {
+        list.InsertRange(index, new[]
+        {
             Ldarg(1),
             Ldloc(8),
             Int1,

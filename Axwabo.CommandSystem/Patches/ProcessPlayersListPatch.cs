@@ -13,14 +13,17 @@ using static Axwabo.Helpers.Harmony.InstructionHelper;
 namespace Axwabo.CommandSystem.Patches;
 
 [HarmonyPatch(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList))]
-internal static class ProcessPlayersListPatch {
+internal static class ProcessPlayersListPatch
+{
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    {
         var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
         var targets = generator.DeclareLocal(typeof(List<ReferenceHub>));
         var label = generator.DefineLabel();
         list[0].labels.Add(label);
-        list.InsertRange(0, new[] {
+        list.InsertRange(0, new[]
+        {
             Ldarg(0),
             Ldarg(1),
             Ldarg(3),
@@ -42,7 +45,8 @@ internal static class ProcessPlayersListPatch {
         var parseSingle = list.FindIndex(i => i.operand is MethodInfo {Name: nameof(int.TryParse)}) - 4;
         var loopStart = Ldloc(1).MoveLabelsFrom(list[parseSingle]).MoveBlocksFrom(list[parseSingle]);
         list.RemoveRange(parseSingle, 17);
-        list.InsertRange(parseSingle, new[] {
+        list.InsertRange(parseSingle, new[]
+        {
             loopStart,
             Ldloc(8),
             Ldloc(9),
@@ -60,11 +64,13 @@ internal static class ProcessPlayersListPatch {
 
     internal static void UnregisterEvent() => SceneManager.sceneLoaded -= OnSceneWasLoaded;
 
-    private static void OnSceneWasLoaded(Scene arg0, LoadSceneMode arg1) {
+    private static void OnSceneWasLoaded(Scene arg0, LoadSceneMode arg1)
+    {
         if (_alreadyTriedToUnpatch)
             return;
         _alreadyTriedToUnpatch = true;
-        try {
+        try
+        {
             var result = RemoveCedModPatch();
             if (result != null)
 #if EXILED
@@ -73,7 +79,9 @@ internal static class ProcessPlayersListPatch {
                 PluginAPI.Core.Log
 #endif
                     .Info(result);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
 #if EXILED
             Exiled.API.Features.Log.Warn
 #else
@@ -83,7 +91,8 @@ internal static class ProcessPlayersListPatch {
         }
     }
 
-    private static string RemoveCedModPatch() {
+    private static string RemoveCedModPatch()
+    {
         var type = AccessTools.TypeByName("CedMod.CedModMain");
         if (type is null)
             return null;

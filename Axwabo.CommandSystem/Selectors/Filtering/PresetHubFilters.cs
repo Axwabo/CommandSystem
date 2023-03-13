@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem.Selectors.Filtering;
 /// <summary>
 /// Contains a number of predefined filters for <see cref="ReferenceHub"/> instances.
 /// </summary>
-public static class PresetHubFilters {
+public static class PresetHubFilters
+{
 
     /// <summary>
     /// Inverts the given filter.
@@ -79,8 +80,10 @@ public static class PresetHubFilters {
     /// Checks whether the player is on the current sender's player selection stack.
     /// </summary>
     /// <remarks>The stack of the <see cref="PlayerSelectionManager.CurrentSender"/> is used at the time of accessing this property.</remarks>
-    public static HubFilter Stack {
-        get {
+    public static HubFilter Stack
+    {
+        get
+        {
             var stack = PlayerSelectionStack.Get(PlayerSelectionManager.CurrentSender);
             return stack == null ? null : hub => stack.Contains(hub);
         }

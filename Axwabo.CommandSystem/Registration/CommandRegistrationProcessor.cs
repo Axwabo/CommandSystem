@@ -18,7 +18,8 @@ using RemoteAdmin;
 namespace Axwabo.CommandSystem.Registration;
 
 /// <summary>Handles the registration of commands.</summary>
-public sealed class CommandRegistrationProcessor {
+public sealed class CommandRegistrationProcessor
+{
 
     #region Auto-Register
 
@@ -52,13 +53,15 @@ public sealed class CommandRegistrationProcessor {
 
     /// <summary>Removes all registered commands in the given assembly.</summary>
     /// <param name="assembly">The assembly to remove commands from.</param>
-    public static void UnregisterAll(Assembly assembly) {
+    public static void UnregisterAll(Assembly assembly)
+    {
         UnregisterFromHandler(assembly, CommandProcessor.RemoteAdminCommandHandler);
         UnregisterFromHandler(assembly, GameCore.Console.singleton.ConsoleCommandHandler);
         UnregisterFromHandler(assembly, QueryProcessor.DotCommandHandler);
     }
 
-    private static void UnregisterFromHandler(Assembly assembly, ICommandHandler handler) {
+    private static void UnregisterFromHandler(Assembly assembly, ICommandHandler handler)
+    {
         foreach (var cmd in handler.AllCommands)
             if (cmd is CommandWrapper wrapper && wrapper.BackingCommand.GetType().Assembly == assembly)
                 handler.UnregisterCommand(cmd);
@@ -97,13 +100,13 @@ public sealed class CommandRegistrationProcessor {
 
     internal readonly List<ResolverContainer<ICommandUsageResolver, string[]>> UsageResolvers = new();
 
-    internal readonly List<ResolverContainer<ICommandPermissionCreator, IPermissionChecker>> PermissionCreators = new();
+    internal readonly List<ResolverContainer<IAttributeBasedPermissionCreator, IPermissionChecker>> PermissionCreators = new();
 
     internal readonly List<ResolverContainer<IAffectedMultiplePlayersResolver, IAffectedMultiplePlayersMessageGenerator>> TargetingMultipleMessageResolvers = new();
 
     internal readonly List<ResolverContainer<IAffectedOnePlayerResolver, IAffectedOnePlayerMessageGenerator>> TargetingSingleMessageResolvers = new();
 
-    internal readonly List<ResolverContainer<IAffectedAllPlayersResolver, IAffectedAllPlayersGenerator>> TargetingAllMessageResolvers = new();
+    internal readonly List<ResolverContainer<IAffectedAllPlayersResolver, IAffectedAllPlayersMessageGenerator>> TargetingAllMessageResolvers = new();
 
     internal readonly List<ResolverContainer<ITargetSelectionResolver, ITargetSelectionManager>> TargetSelectionManagerResolvers = new();
 
@@ -111,35 +114,44 @@ public sealed class CommandRegistrationProcessor {
 
     #region Exec
 
-    /// <summary>Executes the processor, registering all commands and remote admin extensions in the assembly.</summary>
-    public void Execute() {
+    /// <summary>Executes the processor, registering all commands and Remote Admin extensions in the assembly.</summary>
+    public void Execute()
+    {
         BaseCommandPropertyManager.CurrentProcessor = this;
-        try {
+        try
+        {
             foreach (var type in TargetAssembly.GetTypes())
                 if (!type.IsAbstract)
                     ProcessType(type);
-        } catch (ReflectionTypeLoadException ex) {
+        }
+        catch (ReflectionTypeLoadException ex)
+        {
             Log.Error("Failed to load types from assembly: \"" + TargetAssembly.FullName + "\"\nList of all exceptions:");
             foreach (var loaderException in ex.LoaderExceptions)
                 Log.Error(loaderException.ToString());
-        } finally {
+        }
+        finally
+        {
             BaseCommandPropertyManager.CurrentProcessor = null;
         }
     }
 
-    private static void ProcessType(Type type) {
+    private static void ProcessType(Type type)
+    {
         if (typeof(CommandBase).IsAssignableFrom(type))
             RegisterCommand(type);
         else if (typeof(RemoteAdminOptionBase).IsAssignableFrom(type))
             RemoteAdminOptionManager.RegisterOption((RemoteAdminOptionBase) Activator.CreateInstance(type));
     }
 
-    private static void RegisterCommand(Type type) {
+    private static void RegisterCommand(Type type)
+    {
         var targets = CommandHandlerType.None;
         foreach (var attr in type.GetCustomAttributes())
             if (attr is CommandTargetAttribute targetAttribute)
                 targets = CommandTargetAttribute.Combine(targets, targetAttribute);
-        if (targets is CommandHandlerType.None) {
+        if (targets is CommandHandlerType.None)
+        {
 #if EXILED
             Log.Warn
 #else
@@ -149,7 +161,12 @@ public sealed class CommandRegistrationProcessor {
             return;
         }
 
-        var wrapper = new CommandWrapper((CommandBase) Activator.CreateInstance(type));
+        CreateWrapperAndRegister(type, targets);
+    }
+
+    private static void CreateWrapperAndRegister(Type commandBaseType, CommandHandlerType targets)
+    {
+        var wrapper = new CommandWrapper((CommandBase) Activator.CreateInstance(commandBaseType));
         if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
             CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(wrapper);
         if (targets.HasFlagFast(CommandHandlerType.ServerConsole))

@@ -5,7 +5,8 @@ namespace Axwabo.CommandSystem.Structs;
 /// <summary>
 /// Represents the result of a command execution.
 /// </summary>
-public readonly struct CommandResult {
+public readonly struct CommandResult
+{
 
     #region Static
 
@@ -46,7 +47,8 @@ public readonly struct CommandResult {
     /// </summary>
     /// <param name="response">The response of the command.</param>
     /// <remarks>If the response starts with '!', it will be treated as a failing response. If you want your response to start with '!', use <see cref="Succeeded"/> or <see cref="CommandResult(bool,string)">the other constructor</see>.</remarks>
-    public CommandResult(string response) {
+    public CommandResult(string response)
+    {
         var success = string.IsNullOrEmpty(response) || !response.StartsWith("!");
         Response = success ? response : response.Substring(1);
         Success = success;
@@ -57,7 +59,8 @@ public readonly struct CommandResult {
     /// </summary>
     /// <param name="success">Whether the command was successful.</param>
     /// <param name="response">The response of the command.</param>
-    public CommandResult(bool success, string response) {
+    public CommandResult(bool success, string response)
+    {
         Response = response;
         Success = success;
     }
@@ -88,6 +91,15 @@ public readonly struct CommandResult {
     /// <param name="r">The <see cref="CommandResult"/> to cast.</param>
     /// <returns>Whether the command succeeded.</returns>
     public static implicit operator bool(CommandResult r) => r.Success;
+
+    /// <summary>
+    /// Casts a <see cref="CommandResult"/> to a string, returning its response.
+    /// </summary>
+    /// <param name="r">The <see cref="CommandResult"/> to cast.</param>
+    /// <returns>The response of the command.</returns>
+    /// <seealso cref="IsEmpty"/>
+    /// <seealso cref="Response"/>
+    public static implicit operator string(CommandResult r) => r.Response;
 
     #endregion
 

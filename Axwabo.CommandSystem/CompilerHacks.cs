@@ -2,6 +2,7 @@
 
 namespace System.Runtime.CompilerServices;
 
-internal sealed class IsExternalInit {
+internal sealed class IsExternalInit
+{
 
 }

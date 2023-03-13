@@ -9,9 +9,11 @@ using RemoteAdmin;
 namespace Axwabo.CommandSystem.Patches;
 
 [HarmonyPatch(typeof(QueryProcessor), nameof(QueryProcessor.ParseCommandsToStruct))]
-internal static class ParseCommandsPatch {
+internal static class ParseCommandsPatch
+{
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    {
         var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
         var index = list.FindIndex(i => i.opcode == OpCodes.Isinst
                                         && i.operand as Type == typeof(global::CommandSystem.IHiddenCommand));

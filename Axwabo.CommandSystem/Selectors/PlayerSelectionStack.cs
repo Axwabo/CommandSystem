@@ -13,7 +13,8 @@ namespace Axwabo.CommandSystem.Selectors;
 /// <summary>
 /// A stack of <see cref="HubCollection" /> type lists.
 /// </summary>
-public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollection> {
+public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollection>
+{
 
     private readonly List<HubCollection> _stack = new();
 
@@ -43,7 +44,8 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// </summary>
     /// <param name="index">The index of the list to pop.</param>
     /// <returns>The popped <see cref="HubCollection"/>.</returns>
-    public HubCollection PopAt(int index) {
+    public HubCollection PopAt(int index)
+    {
         var i = LastIndex - index;
         var removed = _stack[i];
         _stack.RemoveAt(i);
@@ -54,7 +56,8 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// Gets the list and clears the stack.
     /// </summary>
     /// <returns>All selections in the stack.</returns>
-    public List<ReferenceHub> PopAll() {
+    public List<ReferenceHub> PopAll()
+    {
         var all = new HashSet<ReferenceHub>();
         var count = Count;
         for (var i = count - 1; i >= 0; i--)
@@ -91,7 +94,8 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     public void Reverse() => _stack.Reverse();
 
     /// <summary>Duplicates all values in the stack.</summary>
-    public void DuplicateAll() {
+    public void DuplicateAll()
+    {
         var dup = _stack.ToArray();
         _stack.AddRange(dup);
     }
@@ -101,7 +105,8 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// </summary>
     /// <param name="hub">The hub to search for.</param>
     /// <returns>Whether the hub is present.</returns>
-    public bool Contains(ReferenceHub hub) {
+    public bool Contains(ReferenceHub hub)
+    {
         foreach (var hubs in _stack)
             if (hubs.Contains(hub))
                 return true;
@@ -134,15 +139,19 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// <param name="inverted">Whether to invert the order of the stack.</param>
     /// <returns>The stack as a string.</returns>
     /// <remarks>If the order is reversed, it will start from the bottom.</remarks>
-    public string ToString(bool inverted) {
+    public string ToString(bool inverted)
+    {
         var sb = StringBuilderPool.Shared.Rent();
-        lock (_stack) {
+        lock (_stack)
+        {
             var count = _stack.Count;
 
-            void Append(int index) {
+            void Append(int index)
+            {
                 var hubs = _stack[index];
                 var visualIndex = count - index - 1;
-                if (hubs.Count == 0) {
+                if (hubs.Count == 0)
+                {
                     sb.AppendLine($"#{visualIndex} [EMPTY]");
                     return;
                 }
@@ -174,7 +183,8 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// </summary>
     /// <param name="sender">The sender to get the stack from.</param>
     /// <returns>The <see cref="PlayerSelectionStack"/> on the sender's Game Object. May be null.</returns>
-    public static PlayerSelectionStack Get(CommandSender sender) => sender switch {
+    public static PlayerSelectionStack Get(CommandSender sender) => sender switch
+    {
         PlayerCommandSender player => Get(player.ReferenceHub),
         ServerConsoleSender => Get(Console.singleton),
         _ => null
@@ -188,14 +198,17 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// <param name="result">The result of the command upon failure.</param>
     /// <param name="canBeEmpty">Whether the stack can be empty.</param>
     /// <returns>Whether the command can be executed.</returns>
-    public static bool PreprocessCommand(CommandSender sender, out PlayerSelectionStack selection, out CommandResult result, bool canBeEmpty = false) {
+    public static bool PreprocessCommand(CommandSender sender, out PlayerSelectionStack selection, out CommandResult result, bool canBeEmpty = false)
+    {
         selection = Get(sender);
-        if (selection == null) {
+        if (selection == null)
+        {
             result = $"!Cannot get a selection stack object from {sender.GetType().FullName}.";
             return false;
         }
 
-        if (selection.IsEmpty && !canBeEmpty) {
+        if (selection.IsEmpty && !canBeEmpty)
+        {
             result = "!The selection stack is empty.";
             return false;
         }

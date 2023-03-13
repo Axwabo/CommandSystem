@@ -3,7 +3,8 @@
 /// <summary>
 /// Supplies a static no players affected message.
 /// </summary>
-public interface IStaticNoPlayersAffectedMessage {
+public interface IStaticNoPlayersAffectedMessage
+{
 
     /// <summary>
     /// Gets the "no players affected" message.

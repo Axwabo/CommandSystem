@@ -9,15 +9,18 @@ using static Axwabo.Helpers.Harmony.InstructionHelper;
 namespace Axwabo.CommandSystem.Patches;
 
 [HarmonyPatch(typeof(HelpCommand), nameof(HelpCommand.Execute))]
-internal static class CommandImplementationPatch {
+internal static class CommandImplementationPatch
+{
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    {
         var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
         var index = list.FindIndex(i => i.operand is MethodInfo {Name: "GetType"}) - 1;
         var leave = list.FindCode(OpCodes.Leave_S, start: index);
         var blocks = list[index].ExtractBlocks();
         list.RemoveRange(index, leave - index);
-        list.InsertRange(index, new[] {
+        list.InsertRange(index, new[]
+        {
             Ldarg(3).WithBlocks(blocks),
             Ldarg(3),
             LdindRef,

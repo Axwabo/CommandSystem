@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem.Selectors.Filtering;
 /// <summary>
 /// Stores custom filters that can be used in advanced player selectors.
 /// </summary>
-public static class CustomHubFilterRegistry {
+public static class CustomHubFilterRegistry
+{
 
     private static readonly List<FilterEntry> RegisteredFilters = new();
 
@@ -19,7 +20,8 @@ public static class CustomHubFilterRegistry {
     /// <param name="filter">The filter to register.</param>
     /// <param name="aliases">The aliases that can be used to refer to the filter.</param>
     /// <returns>Whether any aliases were registered.</returns>
-    public static bool Register(HubFilter filter, params string[] aliases) {
+    public static bool Register(HubFilter filter, params string[] aliases)
+    {
         if (!ValidateRegistration(aliases))
             return false;
         RegisteredFilters.Add(new FilterEntry(filter, aliases));
@@ -32,7 +34,8 @@ public static class CustomHubFilterRegistry {
     /// <param name="filterSupplier">The filter supplier to register.</param>
     /// <param name="aliases">The aliases that can be used to refer to the filter.</param>
     /// <returns>Whether any aliases were registered.</returns>
-    public static bool Register(FilterSupplier filterSupplier, params string[] aliases) {
+    public static bool Register(FilterSupplier filterSupplier, params string[] aliases)
+    {
         if (!ValidateRegistration(aliases))
             return false;
         RegisteredFilters.Add(new FilterEntry(filterSupplier, aliases));
@@ -45,11 +48,14 @@ public static class CustomHubFilterRegistry {
     /// <param name="alias">The alias to search for.</param>
     /// <param name="supplier">The filter entry that was found.</param>
     /// <returns>Whether a filter entry was found.</returns>
-    public static bool TryGetExisting(string alias, out FilterEntry supplier) {
-        foreach (var entry in RegisteredFilters) {
+    public static bool TryGetExisting(string alias, out FilterEntry supplier)
+    {
+        foreach (var entry in RegisteredFilters)
+        {
             if (!entry.IsValid)
                 continue;
-            foreach (var entryAlias in entry.Aliases) {
+            foreach (var entryAlias in entry.Aliases)
+            {
                 if (!string.Equals(entryAlias, alias, StringComparison.OrdinalIgnoreCase))
                     continue;
                 supplier = entry;

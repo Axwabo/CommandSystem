@@ -169,11 +169,11 @@
         <Compile Include="Attributes\CommandNameAttribute.cs"/>
         <Compile Include="Attributes\CommandPropertiesAttribute.cs"/>
         <Compile Include="Attributes\CommandHandlerType.cs"/>
-        <Compile Include="Attributes\EnumCommandNameAttribute.cs"/>
         <Compile Include="Attributes\Interfaces\IAliases.cs"/>
         <Compile Include="Attributes\Interfaces\IDescription.cs"/>
         <Compile Include="Attributes\Interfaces\ICommandName.cs"/>
-        <Compile Include="Attributes\Interfaces\IGenericInstanceBasedPermissionCreator.cs"/>
+        <Compile Include="Attributes\Interfaces\IGenericCommandInstanceBasedPermissionCreator.cs"/>
+        <Compile Include="Attributes\Interfaces\IGenericRemoteAdminOptionInstanceBasedPermissionCreator.cs"/>
         <Compile Include="Attributes\Interfaces\IInstanceBasedPermissionCreator.cs"/>
         <Compile Include="Attributes\Interfaces\IMinArguments.cs"/>
         <Compile Include="Attributes\Interfaces\IPlayerOnlyAttribute.cs"/>
@@ -183,7 +183,7 @@
         <Compile Include="Attributes\MinArgumentsAttribute.cs"/>
         <Compile Include="Attributes\PlayerOnlyCommandAttribute.cs"/>
         <Compile Include="Attributes\PresetCommandListeners.cs"/>
-        <Compile Include="Attributes\RaExt\AutoOptionIdAttribute.cs"/>
+        <Compile Include="Attributes\RaExt\AutoGenerateIdAttribute.cs"/>
         <Compile Include="Attributes\RaExt\RemoteAdminOptionIdentifierAttribute.cs"/>
         <Compile Include="Attributes\RaExt\StaticOptionTextAttribute.cs"/>
         <Compile Include="Attributes\UsageAttribute.cs"/>
@@ -194,10 +194,11 @@
         <Compile Include="Commands\Interfaces\INotEnoughArguments.cs"/>
         <Compile Include="Commands\Interfaces\IPlayerOnlyCommand.cs"/>
         <Compile Include="Commands\Interfaces\IPreExecutionFilter.cs"/>
+        <Compile Include="Commands\Interfaces\ITargetFilter.cs"/>
         <Compile Include="Commands\MessageOverrides\DefaultTargetingMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\IAffectedMultiplePlayersMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\IAffectedOnePlayerMessageGenerator.cs"/>
-        <Compile Include="Commands\MessageOverrides\IAffectedAllPlayersGenerator.cs"/>
+        <Compile Include="Commands\MessageOverrides\IAffectedAllPlayersMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\ITargetSelectionManager.cs"/>
         <Compile Include="Commands\SeparatedTargetingCommand.cs"/>
         <Compile Include="Commands\UnifiedTargetingCommand.cs"/>
@@ -230,7 +231,7 @@
         <Compile Include="Permissions\IPermissionChecker.cs"/>
         <Compile Include="Permissions\OneOfVanillaPermissionsAttribute.cs"/>
         <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs"/>
-        <Compile Include="Permissions\SingleVanillaPermissionsAttribute.cs"/>
+        <Compile Include="Permissions\VanillaPermissionsAttribute.cs"/>
         <Compile Include="NWPlugin.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="PropertyManager\BaseCommandPropertyManager.cs"/>
@@ -241,7 +242,7 @@
         <Compile Include="PropertyManager\Resolvers\ICommandAliasResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\ICommandPermissionCreator.cs"/>
+        <Compile Include="PropertyManager\Resolvers\IAttributeBasedPermissionCreator.cs"/>
         <Compile Include="PropertyManager\Resolvers\ITargetSelectionResolver.cs"/>
         <Compile Include="PropertyManager\TargetingCommandPropertyManager.cs"/>
         <Compile Include="Registration\ResolverContainer.cs"/>

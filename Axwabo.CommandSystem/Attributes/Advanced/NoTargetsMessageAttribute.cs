@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem.Attributes.Advanced;
 /// Supplies a static no targets found message.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class NoTargetsMessageAttribute : Attribute, IStaticNoTargetsFoundMessage {
+public sealed class NoTargetsMessageAttribute : Attribute, IStaticNoTargetsFoundMessage
+{
 
     /// <inheritdoc />
     public string NoTargets { get; }

@@ -4,10 +4,11 @@ using Axwabo.CommandSystem.Attributes.Interfaces;
 namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
-/// Specifies that the attribute supplies the name of the command.
+/// Sets a static name for the command.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class CommandNameAttribute : Attribute, ICommandName {
+public sealed class CommandNameAttribute : Attribute, ICommandName
+{
 
     /// <inheritdoc />
     public string Name { get; }

@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem.Attributes;
 /// Attribute for defining aliases for a command.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class AliasesAttribute : Attribute, IAliases {
+public sealed class AliasesAttribute : Attribute, IAliases
+{
 
     /// <inheritdoc />
     public string[] Aliases { get; }

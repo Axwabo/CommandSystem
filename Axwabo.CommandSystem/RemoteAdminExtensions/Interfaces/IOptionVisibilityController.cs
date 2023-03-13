@@ -3,7 +3,8 @@
 /// <summary>
 /// Controls the visibility of a <see cref="RemoteAdminOptionBase"/>.
 /// </summary>
-public interface IOptionVisibilityController {
+public interface IOptionVisibilityController
+{
 
     /// <summary>
     /// Determines whether the option is visible to the specified sender.

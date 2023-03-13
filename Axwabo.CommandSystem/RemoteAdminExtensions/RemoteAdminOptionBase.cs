@@ -1,41 +1,92 @@
 ﻿using Axwabo.CommandSystem.Attributes.RaExt;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 
-public abstract class RemoteAdminOptionBase {
+/// <summary>
+/// Base class for creating Remote Admin options.
+/// </summary>
+public abstract class RemoteAdminOptionBase
+{
 
-    private static uint _autoDecrement = 10;
+    private static uint _autoDecrement = 10; // CedMod compatibility
 
-    protected virtual string InitOnlyOptionId { get; }
-
+    /// <summary>Whether this option identifier can also be used as a standalone selector.</summary>
+    /// <seealso cref="Axwabo.CommandSystem.Selectors.PlayerSelectionManager"/>
     protected virtual bool CanBeUsedAsStandaloneSelector => false;
 
     private readonly string _staticText;
 
-    private InvalidNameException InvalidId => new($"Option identifier on type {GetType().FullName} is empty, numeric only or contains one of the following invalid characters: {RemoteAdminExtensionPropertyManager.InvalidCharacters}");
+    private InvalidNameException InvalidId => new($"Option identifier on type {GetType().FullName} is empty, numeric only or contains one of the following invalid characters: {RemoteAdminOptionManager.InvalidCharacters}");
 
-    public RemoteAdminOptionBase() {
+    /// <summary>When overridden in a derived class, it will be used to set the <see cref="OptionIdentifier"/>.</summary>
+    protected virtual string InitOnlyOptionId => null;
+
+    /// <summary>Gets the identifier of this option.</summary>
+    public string OptionIdentifier { get; }
+
+    /// <summary>A permission checker for the command.</summary>
+    public virtual IPermissionChecker Permissions { get; }
+
+    // ReSharper disable VirtualMemberCallInConstructor
+    /// <summary>
+    /// Initializes an instance of <see cref="RemoteAdminOptionBase"/>.
+    /// </summary>
+    /// <exception cref="InvalidNameException">Thrown if <see cref="InitOnlyOptionId"/> is not null and invalid or the attributes don't provide a valid identifier.</exception>
+    protected RemoteAdminOptionBase()
+    {
         var id = InitOnlyOptionId;
-        if (!string.IsNullOrWhiteSpace(id) && !RemoteAdminExtensionPropertyManager.IsValidOptionName(id))
+        var derivedIsEmpty = string.IsNullOrWhiteSpace(id);
+        if (!derivedIsEmpty && !RemoteAdminOptionManager.IsValidOptionId(id))
             throw InvalidId;
-        var resolved = RemoteAdminExtensionPropertyManager.TryResolveProperties(this, out id, out _staticText);
-        if (id == AutoOptionIdAttribute.Identifier)
+        var resolved = RemoteAdminExtensionPropertyManager.TryResolveProperties(this, out var idFromAttribute, out _staticText);
+        if (derivedIsEmpty)
+            id = idFromAttribute;
+        if (id == AutoGenerateIdAttribute.Identifier)
             OptionIdentifier = "-" + ++_autoDecrement;
         else if (!resolved)
             throw InvalidId;
         else
             OptionIdentifier = (CanBeUsedAsStandaloneSelector ? "@" : "$") + id;
+        Permissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
     }
 
-    public string OptionIdentifier { get; }
-
+    /// <summary>
+    /// Gets the text to display for the given sender.
+    /// </summary>
+    /// <param name="sender">The user to get the text for.</param>
+    /// <returns>The text to display.</returns>
+    // TODO: support icons
     public string GetText(CommandSender sender) => GenerateDisplayText(sender);
 
+    /// <summary>
+    /// Generates the text to display for the given sender.
+    /// </summary>
+    /// <param name="sender">The user to get the text for.</param>
+    /// <returns>The generated text.</returns>
     protected virtual string GenerateDisplayText(CommandSender sender) => _staticText;
 
-    public abstract string OnClick(RequestDataButton button, PlayerCommandSender sender);
+    /// <summary>
+    /// Handles the click of the given button and checks for insufficient permissions beforehand.
+    /// </summary>
+    /// <param name="button">The button that was clicked.</param>
+    /// <param name="sender">The user that clicked the button.</param>
+    /// <returns>The text to display.</returns>
+    public string OnClick(RequestDataButton button, PlayerCommandSender sender)
+    {
+        var permissions = Permissions.CheckSafe(sender);
+        return !permissions ? permissions : HandleButtonClick(button, sender);
+    }
+
+    /// <summary>
+    /// Handles the functionality of the given button.
+    /// </summary>
+    /// <param name="button">The button that was clicked.</param>
+    /// <param name="sender">The user that clicked the button.</param>
+    /// <returns>The text to display.</returns>
+    protected abstract string HandleButtonClick(RequestDataButton button, PlayerCommandSender sender);
 
 }

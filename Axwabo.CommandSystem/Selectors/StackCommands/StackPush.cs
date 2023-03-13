@@ -10,10 +10,12 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 [CommandProperties(CommandHandlerType.RaAndServer, "stackPush", "Pushes the given players onto the selection stack.")]
 [Aliases("sPush", "sp")]
 [Usage("<players>")]
-public sealed class StackPush : UnifiedTargetingCommand {
+public sealed class StackPush : UnifiedTargetingCommand
+{
 
     /// <inheritdoc />
-    protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender) {
+    protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
+    {
         if (!PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result, true))
             return result;
         selection.Push(targets);

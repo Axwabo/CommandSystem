@@ -11,23 +11,28 @@ using static Axwabo.Helpers.Harmony.InstructionHelper;
 namespace Axwabo.CommandSystem.Patches;
 
 [HarmonyPatch(typeof(QueryProcessor), nameof(QueryProcessor.ProcessGameConsoleQuery))]
-internal static class QueryProcessorPatch {
+internal static class QueryProcessorPatch
+{
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    {
         var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
         var pre = list.FindCode(OpCodes.Ldloc_1);
-        list.InsertRange(pre, new[] {
+        list.InsertRange(pre, new[]
+        {
             This.MoveBlocksFrom(list[pre]),
             Ldfld<QueryProcessor>(nameof(QueryProcessor._sender)),
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
         });
-        list.InsertRange(list.FindCode(OpCodes.Stloc_2, start: pre) + 1, new[] {
+        list.InsertRange(list.FindCode(OpCodes.Stloc_2, start: pre) + 1, new[]
+        {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
         });
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
         list.RemoveRange(failedIndex, 4);
-        list.InsertRange(failedIndex, new[] {
+        list.InsertRange(failedIndex, new[]
+        {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
             Ldloc(4),

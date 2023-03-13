@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem.Attributes.Advanced;
 /// Supplies a static no players affected message.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class NoPlayersAffectedMessageAttribute : Attribute, IStaticNoPlayersAffectedMessage {
+public sealed class NoPlayersAffectedMessageAttribute : Attribute, IStaticNoPlayersAffectedMessage
+{
 
     /// <inheritdoc />
     public string NoPlayersAffected { get; }

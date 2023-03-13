@@ -8,7 +8,8 @@ using CommandSystem;
 
 namespace Axwabo.CommandSystem;
 
-internal sealed class CommandWrapper : ICommand, IUsageProvider {
+internal sealed class CommandWrapper : ICommand, IUsageProvider
+{
 
     private static readonly string[] MultipleChoices = {"...multiple choices"};
 
@@ -22,27 +23,32 @@ internal sealed class CommandWrapper : ICommand, IUsageProvider {
 
     public string Description => BackingCommand.Description;
 
-    public string[] Usage {
-        get {
+    public string[] Usage
+    {
+        get
+        {
             var array = BackingCommand.Usage;
             return array is not {Length: not 0}
                 ? null
-                : array.Length switch {
+                : array.Length switch
+                {
                     1 => array[0].Split(),
                     _ => MultipleChoices
                 };
         }
     }
 
-    public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
-        if (sender is not CommandSender s) {
+    public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+    {
+        if (sender is not CommandSender s)
+        {
             response = $"FATAL ERROR: sender is not a CommandSender, are you implementing the interface yourself?\n{CommandHelpers.GetTypeInfo(GetType())}";
             Log.Error($"Could not execute command {Command}:\n{response}");
             return false;
         }
 
         var result = BackingCommand.ExecuteBase(arguments, s);
-        response = result.IsEmpty ? "[no response]" : result.Response;
+        response = result.IsEmpty ? "[no response]" : result;
         return result.Success;
     }
 

@@ -9,9 +9,10 @@ using RemoteAdmin;
 namespace Axwabo.CommandSystem;
 
 /// <summary>
-/// A base class for creating commands.
+/// Base class for creating commands.
 /// </summary>
-public abstract class CommandBase {
+public abstract class CommandBase
+{
 
     private const string MustBePlayer = "You must be a player to use this command!";
 
@@ -41,8 +42,10 @@ public abstract class CommandBase {
     /// myCommand [arg2]
     /// </code>
     /// </example>
-    public string CombinedUsage {
-        get {
+    public string CombinedUsage
+    {
+        get
+        {
             var name = Name;
             var count = Usage is {Length: var l} ? l : 0;
             return count == 0 ? "" : $"{"Usage".Pluralize(count)}:{(count == 1 ? " " : "\n")}{name} {string.Join($"\n{name} ", Usage)}".TrimEnd();
@@ -66,10 +69,11 @@ public abstract class CommandBase {
 
     // ReSharper disable VirtualMemberCallInConstructor
     /// <summary>
-    /// Creates a new instance of <see cref="CommandBase"/>.
+    /// Creates a new <see cref="CommandBase"/> instance.
     /// </summary>
     /// <exception cref="InvalidNameException">If the <see cref="Name">command name property</see> is not overriden and is not specified by attributes on the class.</exception>
-    protected CommandBase() {
+    protected CommandBase()
+    {
         if (string.IsNullOrWhiteSpace(Name) && !BaseCommandPropertyManager.TryResolveProperties(this, out _name, out _desc, out _aliases, out _usage, out _minArgs, out _playerOnly))
             throw new InvalidNameException($"Command name on type {GetType().FullName} is not set. Are you missing an attribute or custom name resolver?");
         Permissions ??= BaseCommandPropertyManager.ResolvePermissionChecker(this);
@@ -78,16 +82,17 @@ public abstract class CommandBase {
     /// <summary>
     /// Executes the command with all checks.
     /// </summary>
-    /// <param name="arguments">The arguments provided to the command.</param>
+    /// <param name="arguments">The arguments passed to the command.</param>
     /// <param name="sender">The sender of the command.</param>
     /// <returns>The result of execution.</returns>
-    public CommandResult ExecuteBase(ArraySegment<string> arguments, CommandSender sender) {
+    public CommandResult ExecuteBase(ArraySegment<string> arguments, CommandSender sender)
+    {
         var playerOnly = CheckIfPlayerOnly(arguments, sender);
         if (playerOnly.HasValue)
             return playerOnly.Value;
 
         var permissions = Permissions;
-        var permissionCheck = sender.FullPermissions || permissions == null ? (CommandResult) true : permissions.CheckPermission(sender);
+        var permissionCheck = permissions.CheckSafe(sender);
         if (!permissionCheck)
             return permissionCheck;
         var pre = this is IPreExecutionFilter filter ? filter.OnBeforeExecuted(arguments, sender) : null;
@@ -110,19 +115,22 @@ public abstract class CommandBase {
     /// <summary>
     /// Generates a response when not enough arguments are provided.
     /// </summary>
-    /// <param name="arguments">The arguments provided to the command.</param>
+    /// <param name="arguments">The arguments passed to the command.</param>
     /// <param name="sender">The sender of the command.</param>
     /// <param name="required">The minimum amount of arguments required to execute the command.</param>
     /// <returns>The result of failure.</returns>
-    protected CommandResult OnNotEnoughArguments(ArraySegment<string> arguments, CommandSender sender, int required) =>
-        this is INotEnoughArguments notEnough
+    protected CommandResult OnNotEnoughArguments(ArraySegment<string> arguments, CommandSender sender, int required)
+    {
+        var custom = this is INotEnoughArguments notEnough
             ? notEnough.OnNotEnoughArgumentsProvided(arguments, sender, required)
-            : $"!You need to provide at least {"argument".PluralizeWithCount(required)}! {CombinedUsage}".TrimEnd();
+            : CommandResult.Null;
+        return custom ?? $"!You need to provide at least {"argument".PluralizeWithCount(required)}! {CombinedUsage}".TrimEnd();
+    }
 
     /// <summary>
     /// The main body of the command.
     /// </summary>
-    /// <param name="arguments">The arguments provided to the command.</param>
+    /// <param name="arguments">The arguments passed to the command.</param>
     /// <param name="sender">The sender of the command.</param>
     /// <returns>The result of execution.</returns>
     protected abstract CommandResult Execute(ArraySegment<string> arguments, CommandSender sender);

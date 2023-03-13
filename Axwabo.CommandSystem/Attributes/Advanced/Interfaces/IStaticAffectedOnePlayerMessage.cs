@@ -3,7 +3,8 @@
 /// <summary>
 /// Supplies a static affected one player message.
 /// </summary>
-public interface IStaticAffectedOnePlayerMessage {
+public interface IStaticAffectedOnePlayerMessage
+{
 
     /// <summary>
     /// Gets the "affected one player" message.

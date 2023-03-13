@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem;
 /// <summary>
 /// Provides methods for working with generic types.
 /// </summary>
-public static class GenericTypeExtensions {
+public static class GenericTypeExtensions
+{
 
     /// <summary>
     /// Gets the first generic type argument of the given type.
@@ -15,7 +16,8 @@ public static class GenericTypeExtensions {
     /// <param name="o">The object or type to get the generic type argument from.</param>
     /// <returns>The first generic type argument of the given type.</returns>
     /// <remarks>If a <see cref="Type"/> object is given it will be used.</remarks>
-    public static Type FirstGenericArgument(object o) {
+    public static Type FirstGenericArgument(object o)
+    {
         if (o == null)
             throw new ArgumentNullException(nameof(o));
         var type = o as Type ?? o.GetType();

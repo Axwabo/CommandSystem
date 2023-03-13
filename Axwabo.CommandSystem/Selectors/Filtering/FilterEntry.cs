@@ -5,7 +5,8 @@ namespace Axwabo.CommandSystem.Selectors.Filtering;
 /// <summary>
 /// A struct that stores a <see cref="HubFilter"/> or creates one based on a supplied value.
 /// </summary>
-public readonly struct FilterEntry {
+public readonly struct FilterEntry
+{
 
     /// <summary>An already defined <see cref="HubFilter"/>.</summary>
     public readonly HubFilter Filter;
@@ -26,7 +27,8 @@ public readonly struct FilterEntry {
     /// <param name="aliases">The aliases for the filter.</param>
     /// <exception cref="ArgumentException">Thrown if no aliases are specified.</exception>
     /// <exception cref="ArgumentNullException">Thrown if the filter is null.</exception>
-    public FilterEntry(HubFilter filter, params string[] aliases) {
+    public FilterEntry(HubFilter filter, params string[] aliases)
+    {
         Aliases = aliases is {Length: not 0} ? aliases : throw new ArgumentException("At least one alias must be specified", nameof(aliases));
         Filter = filter ?? throw new ArgumentNullException(nameof(filter));
         Supplier = null;
@@ -39,7 +41,8 @@ public readonly struct FilterEntry {
     /// <param name="aliases">The aliases for the filter.</param>
     /// <exception cref="ArgumentException">Thrown if no aliases are specified.</exception>
     /// <exception cref="ArgumentNullException">Thrown if the supplier is null.</exception>
-    public FilterEntry(FilterSupplier supplier, params string[] aliases) {
+    public FilterEntry(FilterSupplier supplier, params string[] aliases)
+    {
         Aliases = aliases is {Length: not 0} ? aliases : throw new ArgumentException("At least one alias must be specified", nameof(aliases));
         Supplier = supplier ?? throw new ArgumentNullException(nameof(supplier));
         Filter = null;

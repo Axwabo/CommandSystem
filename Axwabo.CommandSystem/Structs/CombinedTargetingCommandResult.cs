@@ -1,13 +1,16 @@
-﻿namespace Axwabo.CommandSystem.Structs;
+﻿#pragma warning disable CS1591
+namespace Axwabo.CommandSystem.Structs;
 
-public readonly ref struct CombinedTargetingCommandResult {
+public readonly ref struct CombinedTargetingCommandResult
+{
 
     public readonly int Affected;
 
     public readonly string Response;
 
 
-    public CombinedTargetingCommandResult(int affected, string response) {
+    public CombinedTargetingCommandResult(int affected, string response)
+    {
         Affected = affected;
         Response = response;
     }

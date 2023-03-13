@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem.Attributes.Advanced;
 /// Supplies a static affected one player message.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class AffectedOnePlayerMessageAttribute : Attribute, IStaticAffectedOnePlayerMessage {
+public sealed class AffectedOnePlayerMessageAttribute : Attribute, IStaticAffectedOnePlayerMessage
+{
 
     /// <inheritdoc />
     public string AffectedOne { get; }

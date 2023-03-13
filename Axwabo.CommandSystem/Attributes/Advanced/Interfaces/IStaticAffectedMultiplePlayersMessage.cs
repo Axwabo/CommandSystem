@@ -3,7 +3,8 @@
 /// <summary>
 /// Supplies a static affected multiple players message.
 /// </summary>
-public interface IStaticAffectedMultiplePlayersMessage {
+public interface IStaticAffectedMultiplePlayersMessage
+{
 
     /// <summary>
     /// Gets the "affected multiple players" message.

@@ -12,7 +12,8 @@ namespace Axwabo.CommandSystem;
 /// <summary>
 /// The main plugin class for the Northwood Plugin API.
 /// </summary>
-public sealed class Plugin {
+public sealed class Plugin
+{
 
     /// <summary>The current plugin instance.</summary>
     public static Plugin Instance { get; private set; }
@@ -25,13 +26,17 @@ public sealed class Plugin {
 
     [PluginEntryPoint("Axwabo.CommandSystem", "1.0.0", "Adds a sophisticated command system to the game.", "Axwabo")]
     [PluginPriority(LoadPriority.Lowest)]
-    private void OnEnable() {
+    private void OnEnable()
+    {
         Instance = this;
         _harmony = new Harmony("Axwabo.CommandSystem");
-        try {
+        try
+        {
             _harmony.PatchAll();
             ProcessPlayersListPatch.RegisterEvent();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.Error("Patching failed! Some features will not work properly.\n" + e);
         }
 
@@ -40,7 +45,8 @@ public sealed class Plugin {
     }
 
     [PluginUnload]
-    private void OnDisable() {
+    private void OnDisable()
+    {
         ProcessPlayersListPatch.UnregisterEvent();
         Instance = null;
         CommandRegistrationProcessor.UnregisterAll(this);

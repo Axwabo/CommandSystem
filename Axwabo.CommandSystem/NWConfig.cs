@@ -4,7 +4,8 @@ namespace Axwabo.CommandSystem;
 /// <summary>
 /// Configuration for the Northwood Plugin API.
 /// </summary>
-public sealed class Config {
+public sealed class Config
+{
 
     /// <summary>Whether playerID copying should be replaced with nickname copying.</summary>
     public bool CopyNicknameInsteadOfID { get; set; } = true;

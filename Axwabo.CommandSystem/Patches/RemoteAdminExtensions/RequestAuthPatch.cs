@@ -10,9 +10,11 @@ using static Axwabo.Helpers.Harmony.InstructionHelper;
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 
 [HarmonyPatch(typeof(RaPlayerAuth), nameof(RaPlayerAuth.ReceiveData))]
-internal static class RequestAuthPatch {
+internal static class RequestAuthPatch
+{
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    {
         if (!Plugin.Instance.Config.EnableRemoteAdminExtensions)
             return instructions;
 
@@ -21,7 +23,8 @@ internal static class RequestAuthPatch {
         var index = list.FindCode(OpCodes.Isinst) - 1;
         var instruction = list[index];
         var response = generator.Local<string>();
-        list.InsertRange(index, new[] {
+        list.InsertRange(index, new[]
+        {
             Ldarg(2).MoveLabelsFrom(instruction),
             Call<string>(nameof(string.Trim), Array.Empty<Type>()),
             RequestDataButton.RequestAuth.Load(),

@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem.Attributes.Advanced;
 /// Supplies a static affected multiple players message.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class AffectedMultiplePlayersMessageAttribute : Attribute, IStaticAffectedMultiplePlayersMessage {
+public sealed class AffectedMultiplePlayersMessageAttribute : Attribute, IStaticAffectedMultiplePlayersMessage
+{
 
     /// <inheritdoc />
     public string AffectedMultiple { get; }

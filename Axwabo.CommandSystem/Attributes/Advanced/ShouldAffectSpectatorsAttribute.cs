@@ -7,7 +7,8 @@ namespace Axwabo.CommandSystem.Attributes.Advanced;
 /// Controls whether the command should affect spectators.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class ShouldAffectSpectatorsAttribute : Attribute, IShouldAffectSpectators {
+public sealed class ShouldAffectSpectatorsAttribute : Attribute, IShouldAffectSpectators
+{
 
     /// <inheritdoc />
     public bool AffectSpectators { get; }

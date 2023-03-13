@@ -6,21 +6,25 @@ An SCP: Secret Laboratory plugin to improve moderation, command development and 
 
 ## NW Plugin API
 
-1. Run `p install Axwabo/CommandSystem` in the server console
-2. Restart the server
+### Built-in Plugin Manager
 
-## Manual
+1. Run `p install CedModV2/NWAPIPermissionSystem` in the server console
+2. Run `p install Axwabo/CommandSystem` in the server console
+3. Restart the server
+
+### Manual
 
 1. Install [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/) (NWAPI version) as a dependency
 2. Install [Harmony](https://github.com/pardeike/Harmony) as a dependency, you need the **net4.8** version
-3. Download the `Axwabo.CommandSystem.dll` file from the releases page
-4. Place the file in the `plugins` folder: `%appdata%\SCP Secret Laboratory\PluginAPI\plugins\port\`
-5. Restart the server
+3. Install the [Permission System plugin](https://github.com/CedModV2/NWAPIPermissionSystem)
+4. Download the `Axwabo.CommandSystem-nw.dll` file from the releases page
+5. Place the file in the `plugins` folder: `%appdata%/SCP Secret Laboratory/PluginAPI/plugins/port/`
+6. Restart the server
 
-## Developer API
+## Development
 
 1. Download [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/) and add it as a reference
-2. Download the `Axwabo.CommandSystem.dll` file from the releases page
+2. Download the `Axwabo.CommandSystem-nw.dll` file from the releases page
 3. Add the assembly as a reference to your project
 4. Code away!
 
@@ -36,14 +40,14 @@ Call `Axwabo.CommandSystem.Registration.CommandRegistrationProcessor.RegisterAll
 to register all commands from your assembly. Example:
 
 ```csharp
-using PluginAPI.Core;
 using Axwabo.CommandSystem.Registration;
+using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 
 public sealed class MyPlugin
 {
     [PluginEntryPoint("Name", "Version", "Description", "Author")]
-    public void OnEnabled()
+    private void OnEnabled()
     {
         CommandRegistrationProcessor.RegisterAll(this);
         Log.Info("MyPlugin has been enabled.");
@@ -51,7 +55,7 @@ public sealed class MyPlugin
 }
 ```
 
-To create your custom commands,
+**To create your custom commands,**
 
 1. Extend the `Axwabo.CommandSystem.CommandBase` class.
 2. Add the attribute `Axwabo.CommandSystem.Attributes.CommandProperties` to your class and specify the necessary properties.
@@ -66,7 +70,7 @@ The base-game player ID list parsing has been extended with a more powerful way 
 For example, if you want to forceclass yourself to Class-D, instead of `forceclass 2 1` you can do `forceclass @s 1`, where
 **@s** stands for "self".
 
-It also allows you to select a player based on a substring of their nickname, no more need to go to the GUI-based RA anymore 😉
+It also allows you to select a player based on a substring of their nickname, no more going to the GUI RA anymore 😉
 
 **You can read more about player selectors on the wiki.**
 
@@ -84,6 +88,6 @@ Use `stackPop [index]` to discard the topmost player list from the stack.
 
 When using a command that accepts player targets, you can use `@stack` to use the topmost player list from the stack.
 
-You can also give it an index to use a specific player list from the stack, separated by one of `:>_- ` characters. For example, `@stack:1` will use the second player list from the stack.
+You can also give it an index to use a specific player list from the stack, separated by one of `:>_-` characters. For example, `@stack:1` will use the second player list from the stack.
 
-Note: the most recently pushed player list is considered the top of the stack. To view the list, use `stackList` and list at index 0 is the topmost player list.
+Note: the most recently pushed player list is considered the top of the stack. To view the stack, use `stackList` and list at index 0 is the topmost player list.

@@ -6,16 +6,17 @@ namespace Axwabo.CommandSystem.Attributes;
 /// An attribute that specifies which default command handlers a command should be registered to.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-public class CommandTargetAttribute : Attribute {
+public class CommandTargetAttribute : Attribute
+{
 
-    /// <summary>The command handler type.</summary>
-    public readonly CommandHandlerType Target;
+    /// <summary>The command handler types.</summary>
+    public CommandHandlerType Targets { get; }
 
     /// <summary>
-    /// Creates a new <see cref="CommandTargetAttribute"/>.
+    /// Initializes a new instance of the <see cref="CommandTargetAttribute"/> class.
     /// </summary>
-    /// <param name="target">The command handler type.</param>
-    public CommandTargetAttribute(CommandHandlerType target) => Target = target;
+    /// <param name="targets">The command handler types.</param>
+    public CommandTargetAttribute(CommandHandlerType targets) => Targets = targets;
 
     /// <summary>
     /// Combines the current command handler type with the one from the attribute.
@@ -24,6 +25,6 @@ public class CommandTargetAttribute : Attribute {
     /// <param name="attribute">The attribute to combine.</param>
     /// <returns>The combination of the two types.</returns>
     public static CommandHandlerType Combine(CommandHandlerType current, CommandTargetAttribute attribute)
-        => attribute == null ? current : current | attribute.Target;
+        => attribute == null ? current : current | attribute.Targets;
 
 }

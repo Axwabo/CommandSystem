@@ -9,9 +9,11 @@ using static Axwabo.Helpers.Harmony.InstructionHelper;
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 
 [HarmonyPatch(typeof(RaPlayer), nameof(RaPlayer.ReceiveData), typeof(CommandSender), typeof(string))]
-internal static class RequestDataPatch {
+internal static class RequestDataPatch
+{
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    {
         var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
         var cfg = Plugin.Instance.Config;
@@ -26,12 +28,14 @@ internal static class RequestDataPatch {
         ListPool<CodeInstruction>.Shared.Return(list);
     }
 
-    private static void PatchExtensions(List<CodeInstruction> list, ILGenerator generator) {
+    private static void PatchExtensions(List<CodeInstruction> list, ILGenerator generator)
+    {
         var label = generator.DefineLabel();
         var index = list.FindCode(OpCodes.Isinst) + 2;
         var response = generator.Local<string>();
         list[index].labels.Add(label);
-        list.InsertRange(index, new[] {
+        list.InsertRange(index, new[]
+        {
             Ldloc(0),
             Int1,
             LdelemRef,
@@ -57,11 +61,13 @@ internal static class RequestDataPatch {
         });
     }
 
-    private static void PatchNickname(List<CodeInstruction> list) {
+    private static void PatchNickname(List<CodeInstruction> list)
+    {
         var startIndex = list.FindCall<List<ReferenceHub>>("get_Item");
         var combined = list.FindIndex(i => i.operand is "Nickname: ") + 3;
         list.RemoveAt(combined);
-        list.InsertRange(combined, new[] {
+        list.InsertRange(combined, new[]
+        {
             String(" <color=green><link=CP_ID>\uF0C5</link></color>"),
             Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
         });
@@ -71,7 +77,8 @@ internal static class RequestDataPatch {
 
         var send = list.FindCall<RaClipboard>(nameof(RaClipboard.Send), start: startIndex) - 6;
         list.RemoveRange(send, 6);
-        list.InsertRange(send, new[] {
+        list.InsertRange(send, new[]
+        {
             RaClipboard.RaClipBoardType.PlayerId.Load(),
             Ldloc(9),
             Get<NicknameSync>(nameof(NicknameSync.MyNick))

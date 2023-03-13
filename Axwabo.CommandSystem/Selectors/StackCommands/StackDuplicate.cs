@@ -9,8 +9,9 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 /// <summary>A command to duplicate selections on the selection stack.</summary>
 [CommandProperties(CommandHandlerType.RaAndServer, "stackDuplicate", 1, "Duplicates the specified selections on the player stack.")]
 [Aliases("stackDup", "sDup")]
-[Usage("", "all/*", "first/f/top/t", $"[indexes separated by spaces or one of{Separators}]")]
-public sealed class StackDuplicate : CommandBase, INotEnoughArguments {
+[Usage("", "all/*", "first/f/top/t", $"indexes separated by spaces or one of{Separators}")]
+public sealed class StackDuplicate : CommandBase, INotEnoughArguments
+{
 
     private const string Separators = " .,;_+-";
 
@@ -18,31 +19,36 @@ public sealed class StackDuplicate : CommandBase, INotEnoughArguments {
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
         => !PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result)
             ? result
-            : arguments.At(0).ToLower() switch {
+            : arguments.At(0).ToLower() switch
+            {
                 "all" or "*" => DuplicateAll(selection),
                 "first" or "f" or "top" or "t" => DuplicateFirst(selection),
                 _ => DuplicateSpecific(selection, arguments)
             };
 
     /// <inheritdoc />
-    public CommandResult OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender, int required)
+    public CommandResult? OnNotEnoughArgumentsProvided(ArraySegment<string> arguments, CommandSender sender, int required)
         => !PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result) ? result : DuplicateFirst(selection);
 
-    private static CommandResult DuplicateFirst(PlayerSelectionStack selection) {
+    private static CommandResult DuplicateFirst(PlayerSelectionStack selection)
+    {
         var dup = selection.Peek();
         selection.Push(dup);
         return $"Duplicated the first selection on the selection stack:\n{dup.CombineNicknames()}";
     }
 
-    private static CommandResult DuplicateAll(PlayerSelectionStack selection) {
+    private static CommandResult DuplicateAll(PlayerSelectionStack selection)
+    {
         selection.DuplicateAll();
         return "Duplicated all selections on the selection stack.";
     }
 
-    private static CommandResult DuplicateSpecific(PlayerSelectionStack selection, ArraySegment<string> arguments) {
+    private static CommandResult DuplicateSpecific(PlayerSelectionStack selection, ArraySegment<string> arguments)
+    {
         var split = string.Join(" ", arguments).Split(Separators.ToCharArray());
         var push = ListPool<HubCollection>.Shared.Rent(split.Length);
-        try {
+        try
+        {
             foreach (var s in split)
                 if (int.TryParse(s, out var index) && index >= 0 && index < selection.Count)
                     push.Add(selection.PeekAt(index));
@@ -52,7 +58,9 @@ public sealed class StackDuplicate : CommandBase, INotEnoughArguments {
                 selection.Push(collection);
 
             return $"Duplicated {"selection".PluralizeWithCount(push.Count)} on the selection stack.";
-        } finally {
+        }
+        finally
+        {
             ListPool<HubCollection>.Shared.Return(push);
         }
     }

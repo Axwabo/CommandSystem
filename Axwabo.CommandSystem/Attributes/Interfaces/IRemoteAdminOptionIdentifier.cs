@@ -1,7 +1,14 @@
 ﻿namespace Axwabo.CommandSystem.Attributes.Interfaces;
 
-public interface IRemoteAdminOptionIdentifier {
+/// <summary>
+/// Specifies that the attribute returns an identifier for the Remote Admin option.
+/// </summary>
+public interface IRemoteAdminOptionIdentifier
+{
 
-    string Name { get; }
+    /// <summary>
+    /// Gets the identifier of the Remote Admin option.
+    /// </summary>
+    string Id { get; }
 
 }

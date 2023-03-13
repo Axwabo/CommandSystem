@@ -6,7 +6,8 @@ namespace Axwabo.CommandSystem;
 /// <summary>
 /// Configuration for EXILED.
 /// </summary>
-public sealed class Config : IConfig {
+public sealed class Config : IConfig
+{
 
     /// <summary>Whether the plugin is enabled.</summary>
     public bool IsEnabled { get; set; } = true;

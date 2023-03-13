@@ -10,7 +10,8 @@ namespace Axwabo.CommandSystem.Registration;
 /// <summary>
 /// Extensions for the <see cref="CommandRegistrationProcessor"/>.
 /// </summary>
-public static class RegistrationExtensions {
+public static class RegistrationExtensions
+{
 
     #region Helpers
 
@@ -22,7 +23,8 @@ public static class RegistrationExtensions {
     /// <returns>Whether the flag is present.</returns>
     public static bool HasFlagFast(this CommandHandlerType target, CommandHandlerType flag) => (target & flag) == flag;
 
-    private static MethodInfo GetGenericResolverMethod(Type parameterType, Type interfaceType, object resolver, out Type param) {
+    private static MethodInfo GetGenericResolverMethod(Type parameterType, Type interfaceType, object resolver, out Type param)
+    {
         if (parameterType == null)
             throw new ArgumentNullException(nameof(parameterType));
         if (interfaceType == null)
@@ -57,7 +59,8 @@ public static class RegistrationExtensions {
     /// <param name="type">The type to get the attributes from.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="processor"/> or <paramref name="type"/> is null.</exception>
-    public static CommandRegistrationProcessor WithRegistrationAttributesFrom(this CommandRegistrationProcessor processor, Type type) {
+    public static CommandRegistrationProcessor WithRegistrationAttributesFrom(this CommandRegistrationProcessor processor, Type type)
+    {
         if (processor == null)
             throw new ArgumentNullException(nameof(processor));
         if (type == null)
@@ -67,20 +70,23 @@ public static class RegistrationExtensions {
         return processor;
     }
 
-    private static void AddRegistrationAttribute(CommandRegistrationProcessor processor, Attribute attribute) {
+    private static void AddRegistrationAttribute(CommandRegistrationProcessor processor, Attribute attribute)
+    {
         processor.ConsumeAttribute<ICommandNameResolver>(attribute, typeof(ICommandNameResolver<>), WithNameResolver);
         processor.ConsumeAttribute<ICommandDescriptionResolver>(attribute, typeof(ICommandDescriptionResolver<>), WithDescriptionResolver);
         processor.ConsumeAttribute<ICommandAliasResolver>(attribute, typeof(ICommandAliasResolver<>), WithAliasResolver);
         processor.ConsumeAttribute<ICommandUsageResolver>(attribute, typeof(ICommandUsageResolver<>), WithUsageResolver);
-        processor.ConsumeAttribute<ICommandPermissionCreator>(attribute, typeof(ICommandPermissionCreator<>), WithPermissionCreator);
+        processor.ConsumeAttribute<IAttributeBasedPermissionCreator>(attribute, typeof(IAttributeBasedPermissionCreator<>), WithPermissionCreator);
     }
 
-    private static void ConsumeAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod) {
+    private static void ConsumeAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod)
+    {
         if (attribute is TBaseResolver resolver)
             addMethod(processor, GenericTypeExtensions.ImplementedGenericType(resolver, genericType), resolver);
     }
 
-    private static void Add<TResolver, TResult>(this List<ResolverContainer<TResolver, TResult>> list, Type suppliedGenericType, Type requiredGenericType, TResolver resolver) {
+    private static void Add<TResolver, TResult>(this List<ResolverContainer<TResolver, TResult>> list, Type suppliedGenericType, Type requiredGenericType, TResolver resolver)
+    {
         var method = GetGenericResolverMethod(suppliedGenericType, requiredGenericType, resolver, out var param);
         list.Add(new ResolverContainer<TResolver, TResult>(method, param, resolver));
     }
@@ -109,7 +115,8 @@ public static class RegistrationExtensions {
     /// <param name="nameResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="ICommandNameResolver{T}"/> with the correct generic type.</exception>
-    public static CommandRegistrationProcessor WithNameResolver(this CommandRegistrationProcessor processor, Type type, ICommandNameResolver nameResolver) {
+    public static CommandRegistrationProcessor WithNameResolver(this CommandRegistrationProcessor processor, Type type, ICommandNameResolver nameResolver)
+    {
         processor.NameResolvers.Add(type, typeof(ICommandNameResolver<>), nameResolver);
         return processor;
     }
@@ -132,7 +139,8 @@ public static class RegistrationExtensions {
     /// <param name="descriptionResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="ICommandDescriptionResolver{T}"/> with the correct generic type.</exception>
-    public static CommandRegistrationProcessor WithDescriptionResolver(this CommandRegistrationProcessor processor, Type type, ICommandDescriptionResolver descriptionResolver) {
+    public static CommandRegistrationProcessor WithDescriptionResolver(this CommandRegistrationProcessor processor, Type type, ICommandDescriptionResolver descriptionResolver)
+    {
         processor.DescriptionResolvers.Add(type, typeof(ICommandDescriptionResolver<>), descriptionResolver);
         return processor;
     }
@@ -155,7 +163,8 @@ public static class RegistrationExtensions {
     /// <param name="aliasResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="ICommandAliasResolver{T}"/> with the correct generic type.</exception>
-    public static CommandRegistrationProcessor WithAliasResolver(this CommandRegistrationProcessor processor, Type type, ICommandAliasResolver aliasResolver) {
+    public static CommandRegistrationProcessor WithAliasResolver(this CommandRegistrationProcessor processor, Type type, ICommandAliasResolver aliasResolver)
+    {
         processor.AliasResolvers.Add(type, typeof(ICommandAliasResolver<>), aliasResolver);
         return processor;
     }
@@ -178,7 +187,8 @@ public static class RegistrationExtensions {
     /// <param name="usageResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="ICommandUsageResolver{T}"/> with the correct generic type.</exception>
-    public static CommandRegistrationProcessor WithUsageResolver(this CommandRegistrationProcessor processor, Type type, ICommandUsageResolver usageResolver) {
+    public static CommandRegistrationProcessor WithUsageResolver(this CommandRegistrationProcessor processor, Type type, ICommandUsageResolver usageResolver)
+    {
         processor.UsageResolvers.Add(type, typeof(ICommandUsageResolver<>), usageResolver);
         return processor;
     }
@@ -190,7 +200,7 @@ public static class RegistrationExtensions {
     /// <param name="permissionCreator">The resolver to add.</param>
     /// <typeparam name="T">The type of the attribute to resolve the permission from.</typeparam>
     /// <returns>The processor itself.</returns>
-    public static CommandRegistrationProcessor WithPermissionCreator<T>(this CommandRegistrationProcessor processor, ICommandPermissionCreator<T> permissionCreator) where T : Attribute
+    public static CommandRegistrationProcessor WithPermissionCreator<T>(this CommandRegistrationProcessor processor, IAttributeBasedPermissionCreator<T> permissionCreator) where T : Attribute
         => WithPermissionCreator(processor, typeof(T), permissionCreator);
 
     /// <summary>
@@ -200,9 +210,10 @@ public static class RegistrationExtensions {
     /// <param name="type">The type of the attribute to resolve the permission from.</param>
     /// <param name="permissionCreator">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
-    /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="ICommandPermissionCreator{T}"/> with the correct generic type.</exception>
-    public static CommandRegistrationProcessor WithPermissionCreator(this CommandRegistrationProcessor processor, Type type, ICommandPermissionCreator permissionCreator) {
-        processor.PermissionCreators.Add(type, typeof(ICommandPermissionCreator<>), permissionCreator);
+    /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="IAttributeBasedPermissionCreator{TAttribute}"/> with the correct generic type.</exception>
+    public static CommandRegistrationProcessor WithPermissionCreator(this CommandRegistrationProcessor processor, Type type, IAttributeBasedPermissionCreator permissionCreator)
+    {
+        processor.PermissionCreators.Add(type, typeof(IAttributeBasedPermissionCreator<>), permissionCreator);
         return processor;
     }
 
@@ -228,7 +239,8 @@ public static class RegistrationExtensions {
     /// <param name="generatorResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="IAffectedMultiplePlayersResolver{T}"/> with the correct generic type.</exception>
-    public static CommandRegistrationProcessor WithTargetingAffectedMultipleResolver(this CommandRegistrationProcessor processor, Type type, IAffectedMultiplePlayersResolver generatorResolver) {
+    public static CommandRegistrationProcessor WithTargetingAffectedMultipleResolver(this CommandRegistrationProcessor processor, Type type, IAffectedMultiplePlayersResolver generatorResolver)
+    {
         processor.TargetingMultipleMessageResolvers.Add(type, typeof(IAffectedMultiplePlayersResolver<>), generatorResolver);
         return processor;
     }
@@ -251,7 +263,8 @@ public static class RegistrationExtensions {
     /// <param name="generatorResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="IAffectedOnePlayerResolver{T}"/> with the correct generic type.</exception>
-    public static CommandRegistrationProcessor WithTargetingAffectedOneResolver(this CommandRegistrationProcessor processor, Type type, IAffectedOnePlayerResolver generatorResolver) {
+    public static CommandRegistrationProcessor WithTargetingAffectedOneResolver(this CommandRegistrationProcessor processor, Type type, IAffectedOnePlayerResolver generatorResolver)
+    {
         processor.TargetingSingleMessageResolvers.Add(type, typeof(IAffectedOnePlayerResolver<>), generatorResolver);
         return processor;
     }
@@ -274,7 +287,8 @@ public static class RegistrationExtensions {
     /// <param name="generatorResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown if the resolver does not implement the generic <see cref="IAffectedAllPlayersResolver{TAttribute}"/>.</exception>
-    public static CommandRegistrationProcessor WithTargetingAffectedAllResolver(this CommandRegistrationProcessor processor, Type type, IAffectedAllPlayersResolver generatorResolver) {
+    public static CommandRegistrationProcessor WithTargetingAffectedAllResolver(this CommandRegistrationProcessor processor, Type type, IAffectedAllPlayersResolver generatorResolver)
+    {
         processor.TargetingAllMessageResolvers.Add(type, typeof(IAffectedAllPlayersResolver<>), generatorResolver);
         return processor;
     }
@@ -297,7 +311,8 @@ public static class RegistrationExtensions {
     /// <param name="selectionResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown if the resolver does not implement the generic <see cref="ITargetSelectionResolver{TAttribute}"/>.</exception>
-    public static CommandRegistrationProcessor WithTargetingSelectionResolver(this CommandRegistrationProcessor processor, Type type, ITargetSelectionResolver selectionResolver) {
+    public static CommandRegistrationProcessor WithTargetingSelectionResolver(this CommandRegistrationProcessor processor, Type type, ITargetSelectionResolver selectionResolver)
+    {
         processor.TargetSelectionManagerResolvers.Add(type, typeof(ITargetSelectionResolver<>), selectionResolver);
         return processor;
     }

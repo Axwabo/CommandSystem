@@ -1,4 +1,6 @@
 ﻿using System;
+using Axwabo.CommandSystem.Permissions;
+using Axwabo.CommandSystem.Structs;
 using CommandSystem;
 using RemoteAdmin;
 
@@ -7,7 +9,8 @@ namespace Axwabo.CommandSystem;
 /// <summary>
 /// Helper methods for commands.
 /// </summary>
-public static class CommandHelpers {
+public static class CommandHelpers
+{
 
     /// <summary>
     /// Gets the full path of the class implementing the command.
@@ -29,7 +32,8 @@ public static class CommandHelpers {
     /// </summary>
     /// <param name="command">The command to get the usage of.</param>
     /// <returns>The usage of the command.</returns>
-    public static string GetUsage(ICommand command) => command switch {
+    public static string GetUsage(ICommand command) => command switch
+    {
         CommandWrapper {BackingCommand: var bc} => bc.Usage is {Length: not 0} ? "\n" + bc.CombinedUsage : "",
         IUsageProvider {Usage.Length: not 0} usage => $"\nUsage: {command.Command} {usage.DisplayCommandUsage()}",
         _ => ""
@@ -41,7 +45,7 @@ public static class CommandHelpers {
     /// <param name="command">The command to check.</param>
     /// <returns><see langword="true"/> if the command is hidden; otherwise, <see langword="false"/>.</returns>
     public static bool IsHidden(ICommand command) => command is CommandWrapper wrapper
-        ? wrapper.BackingCommand is Commands.Interfaces.IHiddenCommand
+        ? wrapper.BackingCommand is Commands.Interfaces.IHiddenCommand {IsHidden: true}
         : command is IHiddenCommand;
 
     /// <summary>
@@ -51,5 +55,22 @@ public static class CommandHelpers {
     /// <returns>The <see cref="ReferenceHub"/> of the sender.</returns>
     /// <exception cref="InvalidCastException">Thrown when the sender is not a <see cref="PlayerCommandSender"/>.</exception>
     public static ReferenceHub Hub(this CommandSender sender) => ((PlayerCommandSender) sender).ReferenceHub;
+
+    /// <summary>
+    /// Safely checks for permissions, given an <see cref="IPermissionChecker"/> and the <see cref="CommandSender"/>.
+    /// </summary>
+    /// <param name="checker">The permission checker to use.</param>
+    /// <param name="sender">The sender to check the permissions of.</param>
+    /// <returns>A <see cref="CommandResult"/> indicating whether the sender has the permissions. If the <see cref="CommandResult.Success"/> field is true, the check has passed.</returns>
+    /// <seealso cref="IPermissionChecker.CheckPermission"/>
+    public static CommandResult CheckSafe(this IPermissionChecker checker, CommandSender sender)
+    {
+        if (sender == null)
+            return "!No sender was provided.";
+        if (sender.FullPermissions || checker == null)
+            return true;
+        var result = checker.CheckPermission(sender);
+        return !result && result.IsEmpty ? "!Insufficient permissions." : result;
+    }
 
 }
