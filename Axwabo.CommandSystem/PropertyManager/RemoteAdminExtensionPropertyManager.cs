@@ -68,12 +68,14 @@ public static class RemoteAdminExtensionPropertyManager
     /// Resolves the permission checkers for a RA option.
     /// </summary>
     /// <param name="option">The command to resolve permission checkers for.</param>
+    /// <param name="member">The member to resolve permission checkers for. If null, the command's type will be used.</param>
     /// <returns>The permission checker for the command. If multiple were found, they will be merged into a <see cref="CombinedPermissionChecker"/>.</returns>
-    public static IPermissionChecker ResolvePermissionChecker(RemoteAdminOptionBase option)
+    public static IPermissionChecker ResolvePermissionChecker(RemoteAdminOptionBase option, MemberInfo member = null)
     {
         var list = new List<IPermissionChecker>();
-        list.SafeCastAndAdd(option);
-        foreach (var attribute in option.GetType().GetCustomAttributes())
+        if (member is Type)
+            list.SafeCastAndAdd(option);
+        foreach (var attribute in (member ?? option.GetType()).GetCustomAttributes())
         {
             if (list.AddIfNotNull(BaseCommandPropertyManager.ResolveBuiltInPermissionChecker(attribute)))
                 continue;

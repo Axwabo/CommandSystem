@@ -29,7 +29,7 @@ public sealed class StringPermissionChecker : IPermissionChecker
     public CommandResult CheckPermission(CommandSender sender)
     {
         var hasPermission = sender.CheckPermission(Permission);
-        return hasPermission ? true : "!You don't have permission to use this command. Required: " + Permission;
+        return hasPermission ? true : "!You don't have permissions to use this feature. Required: " + Permission;
     }
 
 }

@@ -1,9 +1,4 @@
-﻿#if EXILED
-using Exiled.API.Features;
-#else
-using PluginAPI.Core;
-#endif
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Exceptions;
@@ -56,9 +51,9 @@ public static class PlayerSelectionManager
     /// <summary>Gets the player count.</summary>
     public static int PlayerCount =>
 #if EXILED
-        Server.PlayerCount;
+        Exiled.API.Features.Server.PlayerCount;
 #else
-        Player.Count;
+        PluginAPI.Core.Player.Count;
 #endif
 
     /// <summary>

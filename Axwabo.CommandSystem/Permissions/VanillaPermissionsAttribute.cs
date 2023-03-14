@@ -6,7 +6,7 @@ namespace Axwabo.CommandSystem.Permissions;
 /// An attribute specifying that a given permission is required.
 /// </summary>
 /// <seealso cref="OneOfVanillaPermissionsAttribute"/>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class VanillaPermissionsAttribute : Attribute
 {
 

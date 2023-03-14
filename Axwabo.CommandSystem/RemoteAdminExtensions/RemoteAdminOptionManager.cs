@@ -1,15 +1,11 @@
-﻿#if EXILED
-using Exiled.API.Features;
-#else
-using PluginAPI.Core;
-#endif
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 using Axwabo.Helpers;
 using RemoteAdmin;
+using RemoteAdmin.Interfaces;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 
@@ -113,5 +109,14 @@ public static class RemoteAdminOptionManager
         s = s.Trim();
         return s.Length > 0 && s.IndexOfAny(InvalidCharactersArray) == -1 && s.Any(NonDigit);
     }
+
+    /// <summary>
+    /// Sends a reply to the given sender via a communication method.
+    /// </summary>
+    /// <param name="communication">The communication method to use.</param>
+    /// <param name="sender">The user to reply send the to.</param>
+    /// <param name="content">The content to send.</param>
+    public static void SendReply(this IServerCommunication communication, CommandSender sender, string content)
+        => sender.RaReply($"${communication.DataId} {content}", true, true, "");
 
 }

@@ -46,17 +46,10 @@ internal static class RequestDataPatch
             response.LoadAddress(),
             Call(typeof(RemoteAdminOptionManager), nameof(RemoteAdminOptionManager.HandleCustomRequest)),
             label.False(),
-            Ldarg(1),
-            String("${0} {1}"),
             This,
-            Get<RaPlayer>(nameof(RaPlayer.DataId)),
-            Box<int>(),
+            Ldarg(1),
             response.Load(),
-            Call<string>(nameof(string.Format), new[] {typeof(string), typeof(object), typeof(object)}),
-            Int1,
-            Int1,
-            Ldfld<string>(nameof(string.Empty)),
-            Call<CommandSender>(nameof(CommandSender.RaReply)),
+            Call(typeof(RemoteAdminOptionManager), nameof(RemoteAdminOptionManager.SendReply)),
             Return
         });
     }

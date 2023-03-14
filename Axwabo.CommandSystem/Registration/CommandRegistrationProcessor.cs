@@ -1,9 +1,4 @@
-﻿#if EXILED
-using Exiled.API.Features;
-#else
-using PluginAPI.Core;
-#endif
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
@@ -152,12 +147,7 @@ public sealed class CommandRegistrationProcessor
                 targets = CommandTargetAttribute.Combine(targets, targetAttribute);
         if (targets is CommandHandlerType.None)
         {
-#if EXILED
-            Log.Warn
-#else
-            Log.Warning
-#endif
-                ($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
+            Log.Warn($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
             return;
         }
 
@@ -166,7 +156,10 @@ public sealed class CommandRegistrationProcessor
 
     private static void CreateWrapperAndRegister(Type commandBaseType, CommandHandlerType targets)
     {
-        var wrapper = new CommandWrapper((CommandBase) Activator.CreateInstance(commandBaseType));
+        var commandBase = (CommandBase) Activator.CreateInstance(commandBaseType);
+        if (commandBase is IRegistrationFilter {AllowRegistration: false})
+            return;
+        var wrapper = new CommandWrapper(commandBase);
         if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
             CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(wrapper);
         if (targets.HasFlagFast(CommandHandlerType.ServerConsole))

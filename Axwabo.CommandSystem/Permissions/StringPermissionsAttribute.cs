@@ -8,7 +8,7 @@ namespace Axwabo.CommandSystem.Permissions;
 /// <remarks>
 /// The NWAPI version requires the <a href="https://github.com/CedModV2/NWAPIPermissionSystem">Permission System plugin</a> which is not needed if you're using the EXILED version.
 /// </remarks>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class StringPermissionsAttribute : Attribute
 {
 

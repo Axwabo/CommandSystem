@@ -14,11 +14,11 @@ public abstract class RemoteAdminOptionBase
 
     private static uint _autoDecrement = 10; // CedMod compatibility
 
+    private readonly string _staticText;
+
     /// <summary>Whether this option identifier can also be used as a standalone selector.</summary>
     /// <seealso cref="Axwabo.CommandSystem.Selectors.PlayerSelectionManager"/>
     protected virtual bool CanBeUsedAsStandaloneSelector => false;
-
-    private readonly string _staticText;
 
     private InvalidNameException InvalidId => new($"Option identifier on type {GetType().FullName} is empty, numeric only or contains one of the following invalid characters: {RemoteAdminOptionManager.InvalidCharacters}");
 
@@ -28,7 +28,7 @@ public abstract class RemoteAdminOptionBase
     /// <summary>Gets the identifier of this option.</summary>
     public string OptionIdentifier { get; }
 
-    /// <summary>A permission checker for the command.</summary>
+    /// <summary>A permission checker that controls the global visibility of the option.</summary>
     public virtual IPermissionChecker Permissions { get; }
 
     // ReSharper disable VirtualMemberCallInConstructor

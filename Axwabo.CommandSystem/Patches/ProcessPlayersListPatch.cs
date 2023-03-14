@@ -56,6 +56,8 @@ internal static class ProcessPlayersListPatch
         });
         foreach (var codeInstruction in list)
             yield return codeInstruction;
+
+        ListPool<CodeInstruction>.Shared.Return(list);
     }
 
     private static bool _alreadyTriedToUnpatch;
@@ -73,21 +75,11 @@ internal static class ProcessPlayersListPatch
         {
             var result = RemoveCedModPatch();
             if (result != null)
-#if EXILED
-                Exiled.API.Features.Log
-#else
-                PluginAPI.Core.Log
-#endif
-                    .Info(result);
+                Log.Info(result);
         }
         catch (Exception e)
         {
-#if EXILED
-            Exiled.API.Features.Log.Warn
-#else
-            PluginAPI.Core.Log.Warning
-#endif
-                ("Failed to unpatch CedMod's player list processor, player selectors will not work!\n" + e);
+            Log.Warn("Failed to unpatch CedMod's player list processor, player selectors will not work!\n" + e);
         }
     }
 

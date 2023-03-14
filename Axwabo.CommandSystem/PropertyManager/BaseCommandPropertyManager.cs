@@ -54,12 +54,14 @@ public static class BaseCommandPropertyManager
     /// Resolves the permission checkers for a command.
     /// </summary>
     /// <param name="command">The command to resolve permission checkers for.</param>
+    /// <param name="member">The member to resolve permission checkers for. If null, the command's type will be used.</param>
     /// <returns>The permission checker for the command. If multiple were found, they will be merged into a <see cref="CombinedPermissionChecker"/>.</returns>
-    public static IPermissionChecker ResolvePermissionChecker(CommandBase command)
+    public static IPermissionChecker ResolvePermissionChecker(CommandBase command, MemberInfo member = null)
     {
         var list = new List<IPermissionChecker>();
-        list.SafeCastAndAdd(command);
-        foreach (var attribute in command.GetType().GetCustomAttributes())
+        if (member is Type)
+            list.SafeCastAndAdd(command);
+        foreach (var attribute in (member ?? command.GetType()).GetCustomAttributes())
         {
             if (list.AddIfNotNull(ResolveBuiltInPermissionChecker(attribute)))
                 continue;

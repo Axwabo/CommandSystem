@@ -1,9 +1,4 @@
-﻿#if EXILED
-using Exiled.API.Features;
-#else
-using PluginAPI.Core;
-#endif
-using System;
+﻿using System;
 using CommandSystem;
 
 namespace Axwabo.CommandSystem;

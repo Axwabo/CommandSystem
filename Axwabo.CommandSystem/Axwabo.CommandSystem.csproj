@@ -211,6 +211,7 @@
         <Compile Include="ExiledPlugin.cs"/>
         <Compile Include="Extensions.cs"/>
         <Compile Include="GenericTypeExtensions.cs"/>
+        <Compile Include="Log.cs"/>
         <Compile Include="NWConfig.cs"/>
         <Compile Include="Patches\CommandImplementationPatch.cs"/>
         <Compile Include="Patches\CommandProcessorPatch.cs"/>
@@ -245,7 +246,11 @@
         <Compile Include="PropertyManager\Resolvers\IAttributeBasedPermissionCreator.cs"/>
         <Compile Include="PropertyManager\Resolvers\ITargetSelectionResolver.cs"/>
         <Compile Include="PropertyManager\TargetingCommandPropertyManager.cs"/>
+        <Compile Include="Registration\IRegistrationFilter.cs"/>
+        <Compile Include="Registration\RegistrationExtensions.NonGeneric.cs"/>
+        <Compile Include="Registration\RegistrationExtensions.With.cs"/>
         <Compile Include="Registration\ResolverContainer.cs"/>
+        <Compile Include="RemoteAdminExtensions\IndividualButtonBasedRemoteAdminOption.cs"/>
         <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
         <Compile Include="RemoteAdminExtensions\OptionListCommand.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionBase.cs"/>

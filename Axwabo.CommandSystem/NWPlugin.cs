@@ -3,7 +3,6 @@ using System;
 using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using HarmonyLib;
-using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 
