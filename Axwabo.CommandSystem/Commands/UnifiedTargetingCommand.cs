@@ -56,7 +56,9 @@ public abstract class UnifiedTargetingCommand : CommandBase
     /// <summary>The minimum amount of arguments required to execute the command excluding the player list argument.</summary>
     protected virtual int MinArgumentsWithoutTargets => base.MinArguments;
 
-    private bool ShouldBeAffected(ReferenceHub hub) => (ShouldAffectSpectators || hub.IsAlive()) && (this is not ITargetFilter filter || filter.FilterTarget(hub));
+    private bool ShouldBeAffected(ReferenceHub hub)
+        => (ShouldAffectSpectators || hub.IsAlive())
+           && (this is not ITargetFilteringPolicy policy || policy.FilterTarget(hub));
 
     /// <inheritdoc />
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)

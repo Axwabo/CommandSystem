@@ -3,7 +3,7 @@
 /// <summary>
 /// An interface used by <see cref="UnifiedTargetingCommand"/> to filter targets.
 /// </summary>
-public interface ITargetFilter
+public interface ITargetFilteringPolicy
 {
 
     /// <summary>

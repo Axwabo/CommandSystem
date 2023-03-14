@@ -141,4 +141,36 @@ public static partial class RegistrationExtensions
 
     #endregion
 
+    #region Remote Admin Option Properties
+
+    /// <summary>
+    /// Adds a Remote Admin option id resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="type">The type of the attribute to resolve the id from.</param>
+    /// <param name="idResolver">The resolver to add.</param>
+    /// <returns>The processor itself.</returns>
+    /// <exception cref="TypeMismatchException">Thrown if the resolver does not implement the generic <see cref="IRemoteAdminOptionIdResolver{TAttribute}"/>.</exception>
+    public static CommandRegistrationProcessor WithRemoteAdminOptionIdResolver(this CommandRegistrationProcessor processor, Type type, IRemoteAdminOptionIdResolver idResolver)
+    {
+        processor.RemoteAdminOptionIdResolvers.Add(type, typeof(IRemoteAdminOptionIdResolver<>), idResolver);
+        return processor;
+    }
+
+    /// <summary>
+    /// Adds a static Remote Admin option text resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="type">The type of the attribute to resolve the text from.</param>
+    /// <param name="textResolver">The resolver to add.</param>
+    /// <returns>The processor itself.</returns>
+    /// <exception cref="TypeMismatchException">Thrown if the resolver does not implement the generic <see cref="IStaticOptionTextResolver{TAttribute}"/>.</exception>
+    public static CommandRegistrationProcessor WithRemoteAdminOptionTextResolver(this CommandRegistrationProcessor processor, Type type, IStaticOptionTextResolver textResolver)
+    {
+        processor.StaticOptionTextResolvers.Add(type, typeof(IStaticOptionTextResolver<>), textResolver);
+        return processor;
+    }
+
+    #endregion
+
 }

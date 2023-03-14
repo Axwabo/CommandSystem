@@ -9,9 +9,7 @@ using RemoteAdmin.Interfaces;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 
-/// <summary>
-/// Manages the custom Remote Admin options.
-/// </summary>
+/// <summary>Manages the custom Remote Admin options.</summary>
 public static class RemoteAdminOptionManager
 {
 
@@ -34,9 +32,7 @@ public static class RemoteAdminOptionManager
         Options.Add(option);
     }
 
-    /// <summary>
-    /// Retrieves the list of registered options.
-    /// </summary>
+    /// <summary>Retrieves the list of registered options.</summary>
     public static IEnumerable<RemoteAdminOptionBase> AllOptions => Options.AsReadOnly();
 
     /// <summary>
@@ -91,7 +87,7 @@ public static class RemoteAdminOptionManager
     {
         var textToFormat = hideIdentifier ? "<size=0>({0})</size>{1}" : "({0}) {1}";
         foreach (var option in Options)
-            if (option.Permissions.CheckSafe(sender) && (option is not IOptionVisibilityController controller || controller.IsVisibleTo(sender)))
+            if (option.VisibilityPermissions.CheckSafe(sender) && (option is not IOptionVisibilityController controller || controller.IsVisibleTo(sender)))
                 builder.AppendLine(string.Format(textToFormat, option.OptionIdentifier, option.GetText(sender)));
     }
 

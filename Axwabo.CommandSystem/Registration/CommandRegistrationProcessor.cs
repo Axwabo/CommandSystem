@@ -105,6 +105,10 @@ public sealed class CommandRegistrationProcessor
 
     internal readonly List<ResolverContainer<ITargetSelectionResolver, ITargetSelectionManager>> TargetSelectionManagerResolvers = new();
 
+    internal readonly List<ResolverContainer<IRemoteAdminOptionIdResolver, string>> RemoteAdminOptionIdResolvers = new();
+
+    internal readonly List<ResolverContainer<IStaticOptionTextResolver, string>> StaticOptionTextResolvers = new();
+
     #endregion
 
     #region Exec

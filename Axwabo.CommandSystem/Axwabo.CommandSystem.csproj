@@ -194,7 +194,7 @@
         <Compile Include="Commands\Interfaces\INotEnoughArguments.cs"/>
         <Compile Include="Commands\Interfaces\IPlayerOnlyCommand.cs"/>
         <Compile Include="Commands\Interfaces\IPreExecutionFilter.cs"/>
-        <Compile Include="Commands\Interfaces\ITargetFilter.cs"/>
+        <Compile Include="Commands\Interfaces\ITargetFilteringPolicy.cs"/>
         <Compile Include="Commands\MessageOverrides\DefaultTargetingMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\IAffectedMultiplePlayersMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\IAffectedOnePlayerMessageGenerator.cs"/>
@@ -244,6 +244,8 @@
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IAttributeBasedPermissionCreator.cs"/>
+        <Compile Include="PropertyManager\Resolvers\IRemoteAdminOptionIdResolver.cs"/>
+        <Compile Include="PropertyManager\Resolvers\IStaticOptionTextResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ITargetSelectionResolver.cs"/>
         <Compile Include="PropertyManager\TargetingCommandPropertyManager.cs"/>
         <Compile Include="Registration\IRegistrationFilter.cs"/>

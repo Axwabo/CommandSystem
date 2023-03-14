@@ -83,6 +83,14 @@ public static partial class RegistrationExtensions
         processor.ConsumeAttribute<ICommandAliasResolver>(attribute, typeof(ICommandAliasResolver<>), WithAliasResolver);
         processor.ConsumeAttribute<ICommandUsageResolver>(attribute, typeof(ICommandUsageResolver<>), WithUsageResolver);
         processor.ConsumeAttribute<IAttributeBasedPermissionCreator>(attribute, typeof(IAttributeBasedPermissionCreator<>), WithPermissionCreator);
+
+        processor.ConsumeAttribute<IAffectedMultiplePlayersResolver>(attribute, typeof(IAffectedMultiplePlayersResolver<>), WithTargetingAffectedMultipleResolver);
+        processor.ConsumeAttribute<IAffectedOnePlayerResolver>(attribute, typeof(IAffectedOnePlayerResolver<>), WithTargetingAffectedOneResolver);
+        processor.ConsumeAttribute<IAffectedAllPlayersResolver>(attribute, typeof(IAffectedAllPlayersResolver<>), WithTargetingAffectedAllResolver);
+        processor.ConsumeAttribute<ITargetSelectionResolver>(attribute, typeof(ITargetSelectionResolver<>), WithTargetingSelectionResolver);
+
+        processor.ConsumeAttribute<IRemoteAdminOptionIdResolver>(attribute, typeof(IRemoteAdminOptionIdResolver<>), WithRemoteAdminOptionIdResolver);
+        processor.ConsumeAttribute<IStaticOptionTextResolver>(attribute, typeof(IStaticOptionTextResolver<>), WithRemoteAdminOptionTextResolver);
     }
 
     private static void ConsumeAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod)

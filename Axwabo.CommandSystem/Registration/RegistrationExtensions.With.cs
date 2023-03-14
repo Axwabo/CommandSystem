@@ -104,4 +104,28 @@ public static partial class RegistrationExtensions
 
     #endregion
 
+    #region Remote Admin Option Properties
+
+    /// <summary>
+    /// Adds a Remote Admin option id resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="idResolver">The resolver to add.</param>
+    /// <typeparam name="T">The type of the attribute to resolve the id from.</typeparam>
+    /// <returns>The processor itself.</returns>
+    public static CommandRegistrationProcessor WithRemoteAdminOptionIdResolver<T>(this CommandRegistrationProcessor processor, IRemoteAdminOptionIdResolver<T> idResolver) where T : Attribute
+        => WithRemoteAdminOptionIdResolver(processor, typeof(T), idResolver);
+
+    /// <summary>
+    /// Adds a static Remote Admin option text resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="textResolver">The resolver to add.</param>
+    /// <typeparam name="T">The type of the attribute to resolve the text from.</typeparam>
+    /// <returns>The processor itself.</returns>
+    public static CommandRegistrationProcessor WithRemoteAdminOptionTextResolver<T>(this CommandRegistrationProcessor processor, IStaticOptionTextResolver<T> textResolver) where T : Attribute
+        => WithRemoteAdminOptionTextResolver(processor, typeof(T), textResolver);
+
+    #endregion
+
 }

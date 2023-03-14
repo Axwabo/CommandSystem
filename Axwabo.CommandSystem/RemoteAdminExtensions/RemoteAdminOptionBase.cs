@@ -6,13 +6,11 @@ using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 
-/// <summary>
-/// Base class for creating Remote Admin options.
-/// </summary>
+/// <summary>Base class for creating Remote Admin options.</summary>
 public abstract class RemoteAdminOptionBase
 {
 
-    private static uint _autoDecrement = 10; // CedMod compatibility
+    private static uint _autoId = 10; // CedMod compatibility
 
     private readonly string _staticText;
 
@@ -29,7 +27,7 @@ public abstract class RemoteAdminOptionBase
     public string OptionIdentifier { get; }
 
     /// <summary>A permission checker that controls the global visibility of the option.</summary>
-    public virtual IPermissionChecker Permissions { get; }
+    public virtual IPermissionChecker VisibilityPermissions { get; }
 
     // ReSharper disable VirtualMemberCallInConstructor
     /// <summary>
@@ -46,12 +44,12 @@ public abstract class RemoteAdminOptionBase
         if (derivedIsEmpty)
             id = idFromAttribute;
         if (id == AutoGenerateIdAttribute.Identifier)
-            OptionIdentifier = "-" + ++_autoDecrement;
+            OptionIdentifier = "-" + ++_autoId;
         else if (!resolved)
             throw InvalidId;
         else
             OptionIdentifier = (CanBeUsedAsStandaloneSelector ? "@" : "$") + id;
-        Permissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
+        VisibilityPermissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
     }
 
     /// <summary>
@@ -77,7 +75,7 @@ public abstract class RemoteAdminOptionBase
     /// <returns>The text to display.</returns>
     public string OnClick(RequestDataButton button, PlayerCommandSender sender)
     {
-        var permissions = Permissions.CheckSafe(sender);
+        var permissions = VisibilityPermissions.CheckSafe(sender);
         return !permissions ? permissions : HandleButtonClick(button, sender);
     }
 
