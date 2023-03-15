@@ -9,7 +9,7 @@ namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 /// <summary>
 /// A Remote Admin option class that handles each button individually, allowing for different permissions.
 /// </summary>
-public abstract class IndividualButtonBasedRemoteAdminOption : RemoteAdminOptionBase
+public abstract class ButtonBasedRemoteAdminOption : RemoteAdminOptionBase
 {
 
     private static readonly RequestDataButton[] RequestDataButtonValues = {RequestDataButton.BasicInfo, RequestDataButton.RequestIP, RequestDataButton.RequestAuth, RequestDataButton.ExternalLookup};
@@ -25,8 +25,8 @@ public abstract class IndividualButtonBasedRemoteAdminOption : RemoteAdminOption
         _ => throw new ArgumentOutOfRangeException(nameof(button), button, "Button could not be mapped to a method")
     };
 
-    /// <summary>Creates a new <see cref="IndividualButtonBasedRemoteAdminOption"/> instance.</summary>
-    protected IndividualButtonBasedRemoteAdminOption()
+    /// <summary>Creates a new <see cref="ButtonBasedRemoteAdminOption"/> instance.</summary>
+    protected ButtonBasedRemoteAdminOption()
     {
         foreach (var button in RequestDataButtonValues)
             _buttonPermissions[button] = RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this, GetMethodByButton(button).Method);

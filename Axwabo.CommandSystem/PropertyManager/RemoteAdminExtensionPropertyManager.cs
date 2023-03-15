@@ -18,22 +18,27 @@ public static class RemoteAdminExtensionPropertyManager
     /// <param name="option">The option to resolve properties for.</param>
     /// <param name="id">The identifier of the option.</param>
     /// <param name="staticText">The static text of the option.</param>
+    /// <param name="icon">The icon of the option.</param>
     /// <returns>Whether the option id was successfully resolved.</returns>
-    public static bool TryResolveProperties(RemoteAdminOptionBase option, out string id, out string staticText)
+    public static bool TryResolveProperties(RemoteAdminOptionBase option, out string id, out string staticText, out BlinkingIcon icon)
     {
         id = null;
         staticText = null;
+        icon = option is IOptionIconProvider provider ? provider.CreateIcon() : null;
         foreach (var attribute in option.GetType().GetCustomAttributes())
         {
-            if (ResolveBaseAttribute(option, attribute, ref id, ref staticText))
+            if (ResolveBaseAttribute(option, attribute, ref id, ref staticText, ref icon) || BaseCommandPropertyManager.CurrentProcessor == null)
                 continue;
-            // TODO: custom resolvers
+            var type = attribute.GetType();
+            ResolveIdentifier(ref id, type, attribute);
+            ResolveStaticText(ref staticText, type, attribute);
+            ResolveIcon(ref icon, type, attribute);
         }
 
         return RemoteAdminOptionManager.IsValidOptionId(id);
     }
 
-    private static bool ResolveBaseAttribute(RemoteAdminOptionBase option, Attribute attribute, ref string id, ref string staticText)
+    private static bool ResolveBaseAttribute(RemoteAdminOptionBase option, Attribute attribute, ref string id, ref string staticText, ref BlinkingIcon icon)
     {
         var completed = false;
         if (attribute is IRemoteAdminOptionIdentifier identifier)
@@ -45,6 +50,12 @@ public static class RemoteAdminExtensionPropertyManager
         if (attribute is IStaticOptionText text)
         {
             text.Text.SetFieldIfNotNull(ref staticText);
+            completed = true;
+        }
+
+        if (attribute is IOptionIconProvider iconProvider)
+        {
+            icon = iconProvider.CreateIcon();
             completed = true;
         }
 
@@ -89,6 +100,27 @@ public static class RemoteAdminExtensionPropertyManager
             1 => list[0],
             _ => new CombinedPermissionChecker(list.ToArray())
         };
+    }
+
+    private static void ResolveIdentifier(ref string id, Type type, Attribute attribute)
+    {
+        foreach (var resolver in BaseCommandPropertyManager.CurrentProcessor.RemoteAdminOptionIdResolvers)
+            if (resolver.Takes(type))
+                id = resolver.Resolve(attribute);
+    }
+
+    private static void ResolveStaticText(ref string staticText, Type type, Attribute attribute)
+    {
+        foreach (var resolver in BaseCommandPropertyManager.CurrentProcessor.StaticOptionTextResolvers)
+            if (resolver.Takes(type))
+                staticText = resolver.Resolve(attribute);
+    }
+
+    private static void ResolveIcon(ref BlinkingIcon icon, Type type, Attribute attribute)
+    {
+        foreach (var resolver in BaseCommandPropertyManager.CurrentProcessor.OptionIconResolvers)
+            if (resolver.Takes(type))
+                icon = resolver.Resolve(attribute);
     }
 
 }

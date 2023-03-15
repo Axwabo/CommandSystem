@@ -109,6 +109,8 @@ public sealed class CommandRegistrationProcessor
 
     internal readonly List<ResolverContainer<IStaticOptionTextResolver, string>> StaticOptionTextResolvers = new();
 
+    internal readonly List<ResolverContainer<IOptionIconResolver, BlinkingIcon>> OptionIconResolvers = new();
+
     #endregion
 
     #region Exec

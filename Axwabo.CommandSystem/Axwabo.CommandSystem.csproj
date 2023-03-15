@@ -152,6 +152,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Attributes\Interfaces\IOptionIconProvider.cs"/>
         <Compile Include="Attributes\Targeting\AffectedOnePlayerMessageAttribute.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IShouldAffectSpectators.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedMultiplePlayersMessage.cs"/>
@@ -244,6 +245,7 @@
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IAttributeBasedPermissionCreator.cs"/>
+        <Compile Include="PropertyManager\Resolvers\IOptionIconResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IRemoteAdminOptionIdResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IStaticOptionTextResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ITargetSelectionResolver.cs"/>
@@ -253,7 +255,7 @@
         <Compile Include="Registration\RegistrationExtensions.With.cs"/>
         <Compile Include="Registration\ResolverContainer.cs"/>
         <Compile Include="RemoteAdminExtensions\BlinkingIcon.cs"/>
-        <Compile Include="RemoteAdminExtensions\IndividualButtonBasedRemoteAdminOption.cs"/>
+        <Compile Include="RemoteAdminExtensions\ButtonBasedRemoteAdminOption.cs"/>
         <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
         <Compile Include="RemoteAdminExtensions\OptionListCommand.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionBase.cs"/>

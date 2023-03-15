@@ -50,7 +50,7 @@ public abstract class RemoteAdminOptionBase
         var derivedIsEmpty = string.IsNullOrWhiteSpace(id);
         if (!derivedIsEmpty && !RemoteAdminOptionManager.IsValidOptionId(id))
             throw InvalidId;
-        var resolved = RemoteAdminExtensionPropertyManager.TryResolveProperties(this, out var idFromAttribute, out _staticText);
+        var resolved = RemoteAdminExtensionPropertyManager.TryResolveProperties(this, out var idFromAttribute, out _staticText, out _icon);
         if (derivedIsEmpty)
             id = idFromAttribute;
         if (id == AutoGenerateIdAttribute.Identifier)
