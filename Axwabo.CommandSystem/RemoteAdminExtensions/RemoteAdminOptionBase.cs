@@ -15,6 +15,8 @@ public abstract class RemoteAdminOptionBase
 
     private readonly string _staticText;
 
+    private BlinkingIcon _icon;
+
     /// <summary>Whether this option identifier can also be used as a standalone selector.</summary>
     /// <seealso cref="Axwabo.CommandSystem.Selectors.PlayerSelectionManager"/>
     protected virtual bool CanBeUsedAsStandaloneSelector => false;
@@ -29,6 +31,13 @@ public abstract class RemoteAdminOptionBase
 
     /// <summary>A permission checker that controls the global visibility of the option.</summary>
     public virtual IPermissionChecker VisibilityPermissions { get; }
+
+    /// <summary>The leading icon of the option (before the generated text).</summary>
+    public BlinkingIcon Icon
+    {
+        get => _icon;
+        protected set => _icon = value;
+    }
 
     // ReSharper disable VirtualMemberCallInConstructor
     /// <summary>
@@ -58,8 +67,7 @@ public abstract class RemoteAdminOptionBase
     /// </summary>
     /// <param name="sender">The user to get the text for.</param>
     /// <returns>The text to display.</returns>
-    // TODO: support icons
-    public string GetText(CommandSender sender) => GenerateDisplayText(sender);
+    public string GetText(CommandSender sender) => (Icon == null ? "" : Icon) + GenerateDisplayText(sender);
 
     /// <summary>
     /// Generates the text to display for the given sender.

@@ -1,4 +1,4 @@
-﻿using Axwabo.CommandSystem.Structs;
+﻿using Axwabo.Helpers;
 using PlayerRoles;
 using PlayerStatsSystem;
 
@@ -42,7 +42,7 @@ public static class PresetHubFilters
     /// <param name="role">The role type to check for.</param>
     /// <returns>The filter.</returns>
     public static HubFilter Role(string role)
-        => FromParameterized(Role, ValueRange<RoleTypeId>.Parse(role.EnsureNotEmpty("Role type must not be empty"), Parse.EnumIgnoreCase));
+        => FromParameterized(Role, ValueRange<RoleTypeId>.Parse(role.EnsureNotEmpty("Role type must not be empty"), Parse.Role));
 
     /// <summary>
     /// Gets a <see cref="HubFilter"/> for the given team.
@@ -95,7 +95,7 @@ public static class PresetHubFilters
     /// <param name="item">The item type to check for.</param>
     /// <returns>The filter.</returns>
     public static HubFilter CurrentItem(string item)
-        => FromParameterized(CurrentItem, ValueRange<ItemType>.Parse(item.EnsureNotEmpty("Item type must not be empty"), Parse.EnumIgnoreCase));
+        => FromParameterized(CurrentItem, ValueRange<ItemType>.Parse(item.EnsureNotEmpty("Item type must not be empty"), Parse.Item));
 
     /// <summary>
     /// Checks whether the given player has god mode enabled.

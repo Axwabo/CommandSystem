@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Axwabo.CommandSystem.Attributes;
-using Axwabo.CommandSystem.Attributes.Targeting;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Structs;
 
@@ -10,7 +9,6 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 [CommandProperties(CommandHandlerType.RaAndServer, "stackPush", "Pushes the given players onto the selection stack.")]
 [Aliases("sPush", "sp")]
 [Usage("<players>")]
-[ShouldAffectSpectators]
 internal sealed class StackPush : UnifiedTargetingCommand
 {
 

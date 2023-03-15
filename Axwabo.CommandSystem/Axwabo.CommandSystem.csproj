@@ -213,7 +213,6 @@
         <Compile Include="GenericTypeExtensions.cs"/>
         <Compile Include="Log.cs"/>
         <Compile Include="NWConfig.cs"/>
-        <Compile Include="Parse.cs"/>
         <Compile Include="Patches\CommandImplementationPatch.cs"/>
         <Compile Include="Patches\CommandProcessorPatch.cs"/>
         <Compile Include="Patches\ConsolePatch.cs"/>
@@ -253,6 +252,7 @@
         <Compile Include="Registration\RegistrationExtensions.NonGeneric.cs"/>
         <Compile Include="Registration\RegistrationExtensions.With.cs"/>
         <Compile Include="Registration\ResolverContainer.cs"/>
+        <Compile Include="RemoteAdminExtensions\BlinkingIcon.cs"/>
         <Compile Include="RemoteAdminExtensions\IndividualButtonBasedRemoteAdminOption.cs"/>
         <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
         <Compile Include="RemoteAdminExtensions\OptionListCommand.cs"/>
@@ -266,7 +266,6 @@
         <Compile Include="Structs\CommandResult.cs"/>
         <Compile Include="Structs\CombinedTargetingCommandResult.cs"/>
         <Compile Include="Structs\CommandResultOnTarget.cs"/>
-        <Compile Include="Structs\TryParseDelegate.cs"/>
         <Compile Include="Registration\CommandRegistrationProcessor.cs"/>
         <Compile Include="Registration\RegistrationExtensions.cs"/>
         <Compile Include="Selectors\AtSelectorProcessor.cs"/>
@@ -279,7 +278,6 @@
         <Compile Include="Selectors\StackCommands\StackPop.cs"/>
         <Compile Include="Selectors\StackCommands\StackPush.cs"/>
         <Compile Include="Selectors\StackCommands\StackReverse.cs"/>
-        <Compile Include="Structs\ValueRange.cs"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config"/>
