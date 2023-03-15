@@ -1,7 +1,7 @@
 ﻿using System;
-using Axwabo.CommandSystem.Attributes.Advanced.Interfaces;
+using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 
-namespace Axwabo.CommandSystem.Attributes.Advanced;
+namespace Axwabo.CommandSystem.Attributes.Targeting;
 
 /// <summary>
 /// Supplies a static affected one player message.

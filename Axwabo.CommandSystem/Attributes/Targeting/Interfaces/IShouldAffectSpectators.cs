@@ -1,4 +1,4 @@
-﻿namespace Axwabo.CommandSystem.Attributes.Advanced.Interfaces;
+﻿namespace Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 
 /// <summary>
 /// Controls whether the command should affect spectators.

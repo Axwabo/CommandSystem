@@ -1,6 +1,9 @@
 ﻿namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 
-internal sealed class DefaultTargetingMessageGenerator : IAffectedMultiplePlayersMessageGenerator, IAffectedAllPlayersMessageGenerator, IAffectedOnePlayerMessageGenerator
+internal sealed class DefaultTargetingMessageGenerator :
+    IAffectedMultiplePlayersMessageGenerator,
+    IAffectedAllPlayersMessageGenerator,
+    IAffectedOnePlayerMessageGenerator
 {
 
     private readonly bool _affectedMultipleIsCustom;
@@ -11,7 +14,7 @@ internal sealed class DefaultTargetingMessageGenerator : IAffectedMultiplePlayer
         get => _affectedMultipleMessage;
         init
         {
-            _affectedMultipleIsCustom = value == _affectedMultipleMessage;
+            _affectedMultipleIsCustom |= value != _affectedMultipleMessage;
             _affectedMultipleMessage = value;
         }
     }

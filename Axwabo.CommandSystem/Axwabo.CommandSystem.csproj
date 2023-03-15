@@ -152,17 +152,17 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Attributes\Advanced\AffectedOnePlayerMessageAttribute.cs"/>
-        <Compile Include="Attributes\Advanced\Interfaces\IShouldAffectSpectators.cs"/>
-        <Compile Include="Attributes\Advanced\Interfaces\IStaticAffectedMultiplePlayersMessage.cs"/>
-        <Compile Include="Attributes\Advanced\Interfaces\IStaticAffectedOnePlayerMessage.cs"/>
-        <Compile Include="Attributes\Advanced\Interfaces\IStaticNoPlayersAffectedMessage.cs"/>
-        <Compile Include="Attributes\Advanced\Interfaces\IStaticNoTargetsFoundMessage.cs"/>
-        <Compile Include="Attributes\Advanced\AffectedMultiplePlayersMessageAttribute.cs"/>
-        <Compile Include="Attributes\Advanced\NoPlayersAffectedMessageAttribute.cs"/>
-        <Compile Include="Attributes\Advanced\NoTargetsMessageAttribute.cs"/>
-        <Compile Include="Attributes\Advanced\ShouldAffectSpectatorsAttribute.cs"/>
-        <Compile Include="Attributes\Advanced\StaticTargetingMessagesAttribute.cs"/>
+        <Compile Include="Attributes\Targeting\AffectedOnePlayerMessageAttribute.cs"/>
+        <Compile Include="Attributes\Targeting\Interfaces\IShouldAffectSpectators.cs"/>
+        <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedMultiplePlayersMessage.cs"/>
+        <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedOnePlayerMessage.cs"/>
+        <Compile Include="Attributes\Targeting\Interfaces\IStaticNoPlayersAffectedMessage.cs"/>
+        <Compile Include="Attributes\Targeting\Interfaces\IStaticNoTargetsFoundMessage.cs"/>
+        <Compile Include="Attributes\Targeting\AffectedMultiplePlayersMessageAttribute.cs"/>
+        <Compile Include="Attributes\Targeting\NoPlayersAffectedMessageAttribute.cs"/>
+        <Compile Include="Attributes\Targeting\NoTargetsMessageAttribute.cs"/>
+        <Compile Include="Attributes\Targeting\ShouldAffectSpectatorsAttribute.cs"/>
+        <Compile Include="Attributes\Targeting\StaticTargetingMessagesAttribute.cs"/>
         <Compile Include="Attributes\AliasesAttribute.cs"/>
         <Compile Include="Attributes\DescriptionAttribute.cs"/>
         <Compile Include="Attributes\CommandTargetAttribute.cs"/>
@@ -213,6 +213,7 @@
         <Compile Include="GenericTypeExtensions.cs"/>
         <Compile Include="Log.cs"/>
         <Compile Include="NWConfig.cs"/>
+        <Compile Include="Parse.cs"/>
         <Compile Include="Patches\CommandImplementationPatch.cs"/>
         <Compile Include="Patches\CommandProcessorPatch.cs"/>
         <Compile Include="Patches\ConsolePatch.cs"/>

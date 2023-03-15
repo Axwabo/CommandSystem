@@ -13,4 +13,9 @@ public interface IOptionVisibilityController
     /// <returns>Whether the option should be shown.</returns>
     bool IsVisibleTo(CommandSender sender);
 
+    /// <summary>
+    /// Whether button clicks should be processed even if the option is hidden.
+    /// </summary>
+    bool AllowInteractionsWhenHidden { get; }
+
 }

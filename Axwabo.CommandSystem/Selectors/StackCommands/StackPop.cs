@@ -1,18 +1,14 @@
 ﻿using System;
 using Axwabo.CommandSystem.Attributes;
-using Axwabo.CommandSystem.Attributes.Advanced;
 using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
-/// <summary>A command to pop the topmost list from the selection stack.</summary>
 [CommandProperties(CommandHandlerType.RaAndServer, "stackPop", "Pops the topmost players from the selection stack.", "spop")]
 [Usage("", "<index>")]
-[ShouldAffectSpectators]
-public sealed class StackPop : CommandBase
+internal sealed class StackPop : CommandBase
 {
 
-    /// <inheritdoc />
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
     {
         if (!PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result))

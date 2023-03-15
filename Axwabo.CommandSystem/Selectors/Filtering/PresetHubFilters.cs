@@ -42,7 +42,7 @@ public static class PresetHubFilters
     /// <param name="role">The role type to check for.</param>
     /// <returns>The filter.</returns>
     public static HubFilter Role(string role)
-        => FromParameterized(Role, ValueRange<RoleTypeId>.Parse(role.EnsureNotEmpty("Role type must not be empty"), Extensions.TryParseIgnoreCase));
+        => FromParameterized(Role, ValueRange<RoleTypeId>.Parse(role.EnsureNotEmpty("Role type must not be empty"), Parse.EnumIgnoreCase));
 
     /// <summary>
     /// Gets a <see cref="HubFilter"/> for the given team.
@@ -50,7 +50,7 @@ public static class PresetHubFilters
     /// <param name="team">The team to check for.</param>
     /// <returns>The filter.</returns>
     public static HubFilter Team(string team)
-        => FromParameterized(Team, ValueRange<Team>.Parse(team.EnsureNotEmpty("Team must not be empty"), Extensions.TryParseIgnoreCase));
+        => FromParameterized(Team, ValueRange<Team>.Parse(team.EnsureNotEmpty("Team must not be empty"), Parse.EnumIgnoreCase));
 
     /// <summary>
     /// Gets a <see cref="HubFilter"/> for the given player id.
@@ -59,7 +59,7 @@ public static class PresetHubFilters
     /// <returns>The filter.</returns>
     /// <remarks>PlayerID differs from UserID. PlayerID is the number you can see in the Remote Admin GUI next to the player's nickname.</remarks>
     public static HubFilter Id(string id)
-        => FromParameterized(Id, ValueRange<int>.Parse(id.EnsureNotEmpty("Player id must not be empty"), Extensions.TryParseInt));
+        => FromParameterized(Id, ValueRange<int>.Parse(id.EnsureNotEmpty("Player id must not be empty"), Parse.Int));
 
     /// <summary>
     /// Gets a <see cref="HubFilter"/> for the given nickname.
@@ -95,7 +95,7 @@ public static class PresetHubFilters
     /// <param name="item">The item type to check for.</param>
     /// <returns>The filter.</returns>
     public static HubFilter CurrentItem(string item)
-        => FromParameterized(CurrentItem, ValueRange<ItemType>.Parse(item.EnsureNotEmpty("Item type must not be empty"), Extensions.TryParseIgnoreCase));
+        => FromParameterized(CurrentItem, ValueRange<ItemType>.Parse(item.EnsureNotEmpty("Item type must not be empty"), Parse.EnumIgnoreCase));
 
     /// <summary>
     /// Checks whether the given player has god mode enabled.
@@ -117,7 +117,7 @@ public static class PresetHubFilters
     /// <param name="value">The health value to check for.</param>
     /// <returns>The filter.</returns>
     public static HubFilter Health(string value)
-        => FromParameterized(Health, ValueRange<float>.Parse(value.EnsureNotEmpty("Health must not be empty"), Extensions.TryParseFloat));
+        => FromParameterized(Health, ValueRange<float>.Parse(value.EnsureNotEmpty("Health must not be empty"), Parse.Float));
 
     /// <summary>
     /// Gets a <see cref="HubFilter"/> for the given player's artificial health.
@@ -125,7 +125,7 @@ public static class PresetHubFilters
     /// <param name="value">The artificial health value to check for.</param>
     /// <returns>The filter.</returns>
     public static HubFilter ArtificialHealth(string value)
-        => FromParameterized(ArtificialHealth, ValueRange<float>.Parse(value.EnsureNotEmpty("Artificial health must not be empty"), Extensions.TryParseFloat));
+        => FromParameterized(ArtificialHealth, ValueRange<float>.Parse(value.EnsureNotEmpty("Artificial health must not be empty"), Parse.Float));
 
     /// <summary>
     /// Gets a <see cref="HubFilter"/> for the given player's hume shield.
@@ -133,7 +133,7 @@ public static class PresetHubFilters
     /// <param name="value">The hume shield value to check for.</param>
     /// <returns>The filter.</returns>
     public static HubFilter HumeShield(string value)
-        => FromParameterized(HumeShield, ValueRange<float>.Parse(value.EnsureNotEmpty("Hume shield must not be empty"), Extensions.TryParseFloat));
+        => FromParameterized(HumeShield, ValueRange<float>.Parse(value.EnsureNotEmpty("Hume shield must not be empty"), Parse.Float));
 
     #endregion
 

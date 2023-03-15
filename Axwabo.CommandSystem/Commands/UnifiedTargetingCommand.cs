@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Axwabo.CommandSystem.Attributes.Advanced.Interfaces;
+using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.PropertyManager;
@@ -33,7 +33,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
     /// </summary>
     protected UnifiedTargetingCommand()
     {
-        _shouldAffectSpectators = this is not IShouldAffectSpectators {AffectSpectators: false};
+        _shouldAffectSpectators = this is IShouldAffectSpectators {AffectSpectators: true};
         var affectedMultiple = "Done! The request affected {0}.";
         var affectedOne = affectedMultiple;
         TargetingCommandPropertyManager.ResolveProperties(this, ref _noTargetsFoundMessage, ref affectedMultiple, ref affectedOne, ref _noPlayersAffected, ref _shouldAffectSpectators);

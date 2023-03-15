@@ -77,31 +77,6 @@ public static class Extensions
     public static bool ContainsIgnoreCase(this string s, string value) => s.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
 
     /// <summary>
-    /// Attempts to parse the given string as an enum value, ignoring case.
-    /// </summary>
-    /// <param name="value">The string to parse.</param>
-    /// <param name="result">The result.</param>
-    /// <typeparam name="T">The enum type.</typeparam>
-    /// <returns>Whether the string was parsed successfully.</returns>
-    public static bool TryParseIgnoreCase<T>(string value, out T result) where T : struct => Enum.TryParse(value.Trim(), true, out result);
-
-    /// <summary>
-    /// Attempts to parse the given string as an integer.
-    /// </summary>
-    /// <param name="value">The string to parse.</param>
-    /// <param name="result">The result.</param>
-    /// <returns>Whether the string was parsed successfully.</returns>
-    public static bool TryParseInt(string value, out int result) => int.TryParse(value.Trim(), out result);
-
-    /// <summary>
-    /// Attempts to parse the given string as a float.
-    /// </summary>
-    /// <param name="value">The string to parse.</param>
-    /// <param name="result">The result.</param>
-    /// <returns>Whether the string was parsed successfully.</returns>
-    public static bool TryParseFloat(string value, out float result) => float.TryParse(value.Trim(), out result);
-
-    /// <summary>
     /// Parses the list of arguments into a list of <see cref="ReferenceHub"/> instances.
     /// </summary>
     /// <param name="arguments">The arguments to parse.</param>

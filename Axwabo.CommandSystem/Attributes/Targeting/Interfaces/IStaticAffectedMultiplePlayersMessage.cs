@@ -1,4 +1,4 @@
-﻿namespace Axwabo.CommandSystem.Attributes.Advanced.Interfaces;
+﻿namespace Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 
 /// <summary>
 /// Supplies a static affected multiple players message.

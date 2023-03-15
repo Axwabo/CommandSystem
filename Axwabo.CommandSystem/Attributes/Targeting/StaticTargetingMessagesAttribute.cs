@@ -1,13 +1,17 @@
 ﻿using System;
-using Axwabo.CommandSystem.Attributes.Advanced.Interfaces;
+using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 
-namespace Axwabo.CommandSystem.Attributes.Advanced;
+namespace Axwabo.CommandSystem.Attributes.Targeting;
 
 /// <summary>
 /// Supplies static targeting messages.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class StaticTargetingMessagesAttribute : Attribute, IStaticNoTargetsFoundMessage, IStaticAffectedOnePlayerMessage, IStaticAffectedMultiplePlayersMessage, IStaticNoPlayersAffectedMessage
+public sealed class StaticTargetingMessagesAttribute : Attribute,
+    IStaticNoTargetsFoundMessage,
+    IStaticAffectedOnePlayerMessage,
+    IStaticAffectedMultiplePlayersMessage,
+    IStaticNoPlayersAffectedMessage
 {
 
     /// <inheritdoc />

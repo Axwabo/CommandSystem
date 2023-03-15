@@ -2,6 +2,7 @@
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
+using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
@@ -76,7 +77,11 @@ public abstract class RemoteAdminOptionBase
     public string OnClick(RequestDataButton button, PlayerCommandSender sender)
     {
         var permissions = VisibilityPermissions.CheckSafe(sender);
-        return !permissions ? permissions : HandleButtonClick(button, sender);
+        return !permissions
+            ? permissions
+            : this is IOptionVisibilityController {AllowInteractionsWhenHidden: false} controller && !controller.IsVisibleTo(sender)
+                ? "Insufficient permissions."
+                : HandleButtonClick(button, sender);
     }
 
     /// <summary>
