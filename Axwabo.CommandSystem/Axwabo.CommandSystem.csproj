@@ -201,6 +201,7 @@
         <Compile Include="Commands\MessageOverrides\IAffectedOnePlayerMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\IAffectedAllPlayersMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\ITargetSelectionManager.cs"/>
+        <Compile Include="Commands\ParentCommand.cs"/>
         <Compile Include="Commands\SeparatedTargetingCommand.cs"/>
         <Compile Include="Commands\UnifiedTargetingCommand.cs"/>
         <Compile Include="CommandWrapper.cs"/>
