@@ -18,13 +18,13 @@ public sealed class BlinkingIcon
     /// <summary>Whether to surround the content with brackets [].</summary>
     public bool SurroundWithBrackets { get; set; }
 
-    /// <summary>Whether to add a trailing space after the content.</summary>
+    /// <summary>Whether to add a trailing space after the content. Defaults to true.</summary>
     public bool TrailingSpace { get; set; } = true;
 
-    /// <summary>Whether this icon is active.</summary>
-    public bool ActiveSelf { get; set; } = true;
+    /// <summary>Whether this icon should blink. Defaults to true.</summary>
+    public bool ShouldBlink { get; set; } = true;
 
-    /// <summary>The overall color of this icon.</summary>
+    /// <summary>The overall color of this icon. Defaults to <see cref="Color.white"/>.</summary>
     public Color OverallColor { get; set; } = Color.white;
 
     /// <summary>
@@ -63,7 +63,7 @@ public sealed class BlinkingIcon
 
     /// <inheritdoc />
     public override string ToString()
-        => !IsGloballyActive || !ActiveSelf
+        => ShouldBlink && !IsGloballyActive
             ? ""
             : $"{(SurroundWithBrackets ? "[" : "")}{Content}{(SurroundWithBrackets ? "]" : "")}{(TrailingSpace ? " " : "")}".Color(OverallColor);
 

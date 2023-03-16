@@ -88,7 +88,7 @@ public abstract class RemoteAdminOptionBase
         return !permissions
             ? permissions
             : this is IOptionVisibilityController {AllowInteractionsWhenHidden: false} controller && !controller.IsVisibleTo(sender)
-                ? "Insufficient permissions."
+                ? "This option is not accessible at the moment."
                 : HandleButtonClick(button, sender);
     }
 

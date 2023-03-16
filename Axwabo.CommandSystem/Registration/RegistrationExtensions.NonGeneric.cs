@@ -171,6 +171,21 @@ public static partial class RegistrationExtensions
         return processor;
     }
 
+    // icon
+    /// <summary>
+    /// Adds a Remote Admin option icon resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="type">The type of the attribute to resolve the icon from.</param>
+    /// <param name="iconResolver">The resolver to add.</param>
+    /// <returns>The processor itself.</returns>
+    /// <exception cref="TypeMismatchException">Thrown if the resolver does not implement the generic <see cref="IOptionIconResolver{TAttribute}"/>.</exception>
+    public static CommandRegistrationProcessor WithRemoteAdminOptionIconResolver(this CommandRegistrationProcessor processor, Type type, IOptionIconResolver iconResolver)
+    {
+        processor.OptionIconResolvers.Add(type, typeof(IOptionIconResolver<>), iconResolver);
+        return processor;
+    }
+
     #endregion
 
 }

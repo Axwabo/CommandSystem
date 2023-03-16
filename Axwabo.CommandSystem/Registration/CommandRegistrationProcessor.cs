@@ -80,6 +80,22 @@ public sealed class CommandRegistrationProcessor
 
     #endregion
 
+    #region Register to Handler
+
+    /// <summary>Registers a command to the <see cref="RemoteAdminCommandHandler"/>.</summary>
+    /// <param name="command">The command to register.</param>
+    public static void RegisterRemoteAdminCommand(ICommand command) => CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
+
+    /// <summary>Registers a command to the <see cref="GameConsoleCommandHandler"/>.</summary>
+    /// <param name="command">The command to register.</param>
+    public static void RegisterServerConsoleCommand(ICommand command) => GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+
+    /// <summary>Registers a command to the <see cref="ClientCommandHandler"/>.</summary>
+    /// <param name="command">The command to register.</param>
+    public static void RegisterClientCommand(ICommand command) => QueryProcessor.DotCommandHandler.RegisterCommand(command);
+
+    #endregion
+
     #region Fields
 
     /// <summary>The assembly to register commands from.</summary>
@@ -142,36 +158,46 @@ public sealed class CommandRegistrationProcessor
         if (typeof(CommandBase).IsAssignableFrom(type))
             RegisterCommand(type);
         else if (typeof(RemoteAdminOptionBase).IsAssignableFrom(type))
-            RemoteAdminOptionManager.RegisterOption((RemoteAdminOptionBase) Activator.CreateInstance(type));
+            RegisterOption(type);
+    }
+
+    private static void RegisterOption(Type type)
+    {
+        foreach (var attr in type.GetCustomAttributes())
+            if (attr is IRegistrationFilter {AllowRegistration: false})
+                return;
+        RemoteAdminOptionManager.RegisterOption((RemoteAdminOptionBase) Activator.CreateInstance(type));
     }
 
     private static void RegisterCommand(Type type)
     {
         var targets = CommandHandlerType.None;
         foreach (var attr in type.GetCustomAttributes())
+        {
+            if (attr is IRegistrationFilter {AllowRegistration: false})
+                return;
             if (attr is CommandTargetAttribute targetAttribute)
                 targets = CommandTargetAttribute.Combine(targets, targetAttribute);
-        if (targets is CommandHandlerType.None)
-        {
-            Log.Warn($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
-            return;
         }
 
-        CreateWrapperAndRegister(type, targets);
+        if (targets is CommandHandlerType.None)
+            Log.Warn($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
+        else
+            CreateCommandWrapperAndRegister(type, targets);
     }
 
-    private static void CreateWrapperAndRegister(Type commandBaseType, CommandHandlerType targets)
+    private static void CreateCommandWrapperAndRegister(Type commandBaseType, CommandHandlerType targets)
     {
         var commandBase = (CommandBase) Activator.CreateInstance(commandBaseType);
         if (commandBase is IRegistrationFilter {AllowRegistration: false})
             return;
         var wrapper = new CommandWrapper(commandBase);
         if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
-            CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(wrapper);
+            RegisterRemoteAdminCommand(wrapper);
         if (targets.HasFlagFast(CommandHandlerType.ServerConsole))
-            GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(wrapper);
+            RegisterServerConsoleCommand(wrapper);
         if (targets.HasFlagFast(CommandHandlerType.Client))
-            QueryProcessor.DotCommandHandler.RegisterCommand(wrapper);
+            RegisterClientCommand(wrapper);
     }
 
     #endregion

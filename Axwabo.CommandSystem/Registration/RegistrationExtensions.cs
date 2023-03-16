@@ -91,6 +91,7 @@ public static partial class RegistrationExtensions
 
         processor.ConsumeAttribute<IRemoteAdminOptionIdResolver>(attribute, typeof(IRemoteAdminOptionIdResolver<>), WithRemoteAdminOptionIdResolver);
         processor.ConsumeAttribute<IStaticOptionTextResolver>(attribute, typeof(IStaticOptionTextResolver<>), WithRemoteAdminOptionTextResolver);
+        processor.ConsumeAttribute<IOptionIconResolver>(attribute, typeof(IOptionIconResolver<>), WithRemoteAdminOptionIconResolver);
     }
 
     private static void ConsumeAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod)

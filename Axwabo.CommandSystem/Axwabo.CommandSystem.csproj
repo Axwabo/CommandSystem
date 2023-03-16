@@ -152,7 +152,9 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Attributes\DoNotAutoRegister.cs"/>
         <Compile Include="Attributes\Interfaces\IOptionIconProvider.cs"/>
+        <Compile Include="Attributes\RaExt\OptionIconAttribute.cs"/>
         <Compile Include="Attributes\Targeting\AffectedOnePlayerMessageAttribute.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IShouldAffectSpectators.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedMultiplePlayersMessage.cs"/>

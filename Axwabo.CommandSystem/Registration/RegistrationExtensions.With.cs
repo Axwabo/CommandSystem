@@ -126,6 +126,16 @@ public static partial class RegistrationExtensions
     public static CommandRegistrationProcessor WithRemoteAdminOptionTextResolver<T>(this CommandRegistrationProcessor processor, IStaticOptionTextResolver<T> textResolver) where T : Attribute
         => WithRemoteAdminOptionTextResolver(processor, typeof(T), textResolver);
 
+    /// <summary>
+    /// Adds a Remote Admin option icon resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="iconResolver">The resolver to add.</param>
+    /// <typeparam name="T">The type of the attribute to resolve the icon from.</typeparam>
+    /// <returns>The processor itself.</returns>
+    public static CommandRegistrationProcessor WithRemoteAdminOptionIconResolver<T>(this CommandRegistrationProcessor processor, IOptionIconResolver<T> iconResolver) where T : Attribute
+        => WithRemoteAdminOptionIconResolver(processor, typeof(T), iconResolver);
+
     #endregion
 
 }
