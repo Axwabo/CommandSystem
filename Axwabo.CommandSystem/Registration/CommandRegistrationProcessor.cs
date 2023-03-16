@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
+using Axwabo.CommandSystem.Attributes.Parenting;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
@@ -9,6 +11,7 @@ using Axwabo.CommandSystem.PropertyManager.Resolvers;
 using Axwabo.CommandSystem.RemoteAdminExtensions;
 using CommandSystem;
 using RemoteAdmin;
+using Utils.NonAllocLINQ;
 
 namespace Axwabo.CommandSystem.Registration;
 
@@ -80,7 +83,7 @@ public sealed class CommandRegistrationProcessor
 
     #endregion
 
-    #region Register to Handler
+    #region Add to Handler
 
     /// <summary>Registers a command to the <see cref="RemoteAdminCommandHandler"/>.</summary>
     /// <param name="command">The command to register.</param>
@@ -131,6 +134,14 @@ public sealed class CommandRegistrationProcessor
 
     #region Exec
 
+    private readonly Dictionary<Type, List<Type>> _subcommandsToRegister = new();
+
+    private readonly Dictionary<Type, Axwabo.CommandSystem.Commands.ParentCommand> _registeredParentCommands = new();
+
+    private readonly Dictionary<Type, CommandHandlerType> _standaloneCommands = new();
+
+    private readonly HashSet<Type> _skippedCommands = new();
+
     /// <summary>Executes the processor, registering all commands and Remote Admin extensions in the assembly.</summary>
     public void Execute()
     {
@@ -140,6 +151,10 @@ public sealed class CommandRegistrationProcessor
             foreach (var type in TargetAssembly.GetTypes())
                 if (!type.IsAbstract)
                     ProcessType(type);
+            foreach (var pair in _standaloneCommands)
+                CreateCommandWrapperAndRegister(pair.Key, pair.Value);
+            RegisterSubcommands();
+            _skippedCommands.ForEach(LogSkippedCommand);
         }
         catch (ReflectionTypeLoadException ex)
         {
@@ -153,12 +168,44 @@ public sealed class CommandRegistrationProcessor
         }
     }
 
-    private static void ProcessType(Type type)
+    private void ProcessType(Type type)
     {
-        if (typeof(CommandBase).IsAssignableFrom(type))
-            RegisterCommand(type);
-        else if (typeof(RemoteAdminOptionBase).IsAssignableFrom(type))
+        if (typeof(RemoteAdminOptionBase).IsAssignableFrom(type))
             RegisterOption(type);
+        if (!typeof(CommandBase).IsAssignableFrom(type))
+            return;
+        var targets = CommandHandlerType.None;
+        var isSubcommand = false;
+        foreach (var attr in type.GetCustomAttributes())
+            if (ProcessCommandAttribute(type, attr, ref isSubcommand, ref targets))
+                return;
+        if (isSubcommand)
+            return;
+        if (targets != CommandHandlerType.None)
+            _standaloneCommands.Add(type, targets);
+        else
+            _skippedCommands.Add(type);
+    }
+
+    private bool ProcessCommandAttribute(Type type, Attribute attr, ref bool isSubcommand, ref CommandHandlerType targets)
+    {
+        switch (attr)
+        {
+            case IRegistrationFilter {AllowRegistration: false}:
+                return true;
+            case SubcommandOfParentAttribute subOf when typeof(Axwabo.CommandSystem.Commands.ParentCommand).IsAssignableFrom(subOf.ParentType):
+                isSubcommand = true;
+                _subcommandsToRegister.GetOrAdd(subOf.ParentType, () => new List<Type>()).Add(type);
+                return false;
+            case UsesSubcommandAttribute usesSub when typeof(Axwabo.CommandSystem.Commands.ParentCommand).IsAssignableFrom(type):
+                _subcommandsToRegister.GetOrAdd(type, () => new List<Type>()).Add(usesSub.SubcommandType);
+                return false;
+            case CommandTargetAttribute targetAttribute:
+                targets = CommandTargetAttribute.Combine(targets, targetAttribute);
+                return false;
+            default:
+                return false;
+        }
     }
 
     private static void RegisterOption(Type type)
@@ -169,28 +216,15 @@ public sealed class CommandRegistrationProcessor
         RemoteAdminOptionManager.RegisterOption((RemoteAdminOptionBase) Activator.CreateInstance(type));
     }
 
-    private static void RegisterCommand(Type type)
-    {
-        var targets = CommandHandlerType.None;
-        foreach (var attr in type.GetCustomAttributes())
-        {
-            if (attr is IRegistrationFilter {AllowRegistration: false})
-                return;
-            if (attr is CommandTargetAttribute targetAttribute)
-                targets = CommandTargetAttribute.Combine(targets, targetAttribute);
-        }
+    private static void LogSkippedCommand(Type type) => Log.Warn($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
 
-        if (targets is CommandHandlerType.None)
-            Log.Warn($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
-        else
-            CreateCommandWrapperAndRegister(type, targets);
-    }
-
-    private static void CreateCommandWrapperAndRegister(Type commandBaseType, CommandHandlerType targets)
+    private void CreateCommandWrapperAndRegister(Type commandType, CommandHandlerType targets)
     {
-        var commandBase = (CommandBase) Activator.CreateInstance(commandBaseType);
+        var commandBase = (CommandBase) Activator.CreateInstance(commandType);
         if (commandBase is IRegistrationFilter {AllowRegistration: false})
             return;
+        if (commandBase is Axwabo.CommandSystem.Commands.ParentCommand parent)
+            _registeredParentCommands.Add(commandType, parent);
         var wrapper = new CommandWrapper(commandBase);
         if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
             RegisterRemoteAdminCommand(wrapper);
@@ -198,6 +232,28 @@ public sealed class CommandRegistrationProcessor
             RegisterServerConsoleCommand(wrapper);
         if (targets.HasFlagFast(CommandHandlerType.Client))
             RegisterClientCommand(wrapper);
+    }
+
+    private void RegisterSubcommands()
+    {
+        foreach (var pair in _subcommandsToRegister)
+        {
+            foreach (var type in pair.Value)
+                _skippedCommands.Remove(type);
+            if (!_registeredParentCommands.TryGetValue(pair.Key, out var parent))
+            {
+                Log.Debug($"Parent command of type \"{pair.Key.FullName}\" was not registered.\nDependent subcommands: {string.Join(", ", pair.Value.Select(t => t.FullName))}");
+                continue;
+            }
+
+            _skippedCommands.Remove(pair.Key);
+            foreach (var type in pair.Value)
+            {
+                var commandBase = (CommandBase) Activator.CreateInstance(type);
+                if (commandBase is not IRegistrationFilter {AllowRegistration: false})
+                    parent.RegisterSubcommand(commandBase);
+            }
+        }
     }
 
     #endregion

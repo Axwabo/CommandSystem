@@ -154,6 +154,8 @@
     <ItemGroup>
         <Compile Include="Attributes\DoNotAutoRegister.cs"/>
         <Compile Include="Attributes\Interfaces\IOptionIconProvider.cs"/>
+        <Compile Include="Attributes\Parenting\SubcommandOfParentAttribute.cs"/>
+        <Compile Include="Attributes\Parenting\UsesSubcommandAttribute.cs"/>
         <Compile Include="Attributes\RaExt\OptionIconAttribute.cs"/>
         <Compile Include="Attributes\Targeting\AffectedOnePlayerMessageAttribute.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IShouldAffectSpectators.cs"/>

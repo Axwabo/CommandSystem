@@ -69,11 +69,19 @@ public abstract class ParentCommand : CommandBase
     }
 
     /// <inheritdoc />
-    public override string[] Usage => UsagesOfSubcommands.ToArray();
+    public override string[] Usage
+    {
+        get
+        {
+            var sub = UsagesOfSubcommands;
+            var usage = base.Usage;
+            if (usage is {Length: not 0})
+                sub.InsertRange(0, usage);
+            return sub.ToArray();
+        }
+    }
 
-    /// <summary>
-    /// Gets the usage list of all subcommands including command names.
-    /// </summary>
+    /// <summary>Gets the usage list of all subcommands including command names.</summary>
     protected List<string> UsagesOfSubcommands
     {
         get

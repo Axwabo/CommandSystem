@@ -7,7 +7,7 @@ internal static class Log
 #if EXILED
         Exiled.API.Features.Log.Debug(obj);
 #else
-        PluginAPI.Core.Log.Debug(obj?.ToString());
+        PluginAPI.Core.Log.Debug(obj?.ToString(), Plugin.Instance?.Config.Debug ?? true);
 #endif
 
     public static void Info(object obj) =>

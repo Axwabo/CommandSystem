@@ -19,7 +19,7 @@ internal static class RequestDataPatch
         var cfg = Plugin.Instance.Config;
         if (cfg.EnableRemoteAdminExtensions)
             PatchExtensions(list, generator);
-        if (cfg.CopyNicknameInsteadOfID)
+        if (cfg.CopyNicknameInsteadOfId)
             PatchNickname(list);
 
         foreach (var codeInstruction in list)
