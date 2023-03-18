@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.Structs;
+using Axwabo.Helpers.Pools;
 using CommandSystem;
 using RemoteAdmin;
 
@@ -34,7 +36,7 @@ public static class CommandHelpers
     /// <returns>The usage of the command.</returns>
     public static string GetUsage(ICommand command) => command switch
     {
-        CommandWrapper {BackingCommand: var bc} => bc.Usage is {Length: not 0} ? "\n" + bc.CombinedUsage : "",
+        CommandWrapper {BackingCommand: { } bc} => bc.Usage is {Length: not 0} ? "\n" + bc.CombinedUsage : "",
         IUsageProvider {Usage.Length: not 0} usage => $"\nUsage: {command.Command} {usage.DisplayCommandUsage()}",
         _ => ""
     };
@@ -71,6 +73,148 @@ public static class CommandHelpers
             return true;
         var result = checker.CheckPermission(sender);
         return !result && result.IsEmpty ? "!Insufficient permissions." : result;
+    }
+
+    /// <summary>
+    /// Gets the full help string for the given command.
+    /// </summary>
+    /// <param name="command">The command to get help for.</param>
+    /// <param name="arguments">The arguments that may determine subcommands.</param>
+    /// <returns>The full help string.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="command"/> is <see langword="null"/>.</exception>
+    public static string GetHelpForCommand(ICommand command, ArraySegment<string> arguments)
+    {
+        if (command == null)
+            throw new ArgumentNullException(nameof(command));
+        var args = arguments.Segment(1);
+        return command is CommandWrapper {BackingCommand: { } backingCommand}
+            ? GetHelpForCustomCommand(backingCommand, args)
+            : GetHelpForVanillaCommand(command, args);
+    }
+
+    /// <summary>
+    /// Gets the help string for a vanilla <see cref="ICommand"/>.
+    /// </summary>
+    /// <param name="command">The command to get help for.</param>
+    /// <param name="args">The arguments that may determine subcommands.</param>
+    /// <returns>The help string.</returns>
+    public static string GetHelpForVanillaCommand(ICommand command, ArraySegment<string> args)
+    {
+        var sb = StringBuilderPool.Shared.Rent();
+        var str = command.Command;
+        while (args.Count != 0 && command is ICommandHandler commandHandler && commandHandler.TryGetCommand(args.At(0), out var subcommand))
+        {
+            command = subcommand;
+            str = str + " " + subcommand.Command;
+            if (args.Count <= 1)
+                break;
+            args = args.Segment(1);
+        }
+
+        sb.Append(str + " - " + (command is IHelpProvider helpProvider ? helpProvider.GetHelp(args) : command.Description));
+        if (command.Aliases is {Length: not 0})
+            sb.AppendLine().Append("Aliases: " + string.Join(", ", command.Aliases));
+        GetCommandList(command, "\nSubcommand list:", sb);
+        sb.AppendLine(GetUsage(command));
+        sb.Append("Implemented in: " + GetTypeInfo(command.GetType()));
+        return StringBuilderPool.Shared.ToStringReturn(sb);
+    }
+
+    /// <summary>
+    /// Gets the help string for a custom <see cref="CommandBase"/>.
+    /// </summary>
+    /// <param name="command">The command to get help for.</param>
+    /// <param name="arguments">The arguments that may determine subcommands.</param>
+    /// <returns>The help string.</returns>
+    public static string GetHelpForCustomCommand(CommandBase command, ArraySegment<string> arguments)
+    {
+        var sb = StringBuilderPool.Shared.Rent();
+        var commandName = command.Name;
+        while (arguments.Count != 0 && command is Commands.ParentCommand parent && parent.TryGetSubcommand(arguments.At(0), out var subcommand))
+        {
+            command = subcommand;
+            commandName = commandName + " " + subcommand.Name;
+            if (arguments.Count <= 1)
+                break;
+            arguments = arguments.Segment(1);
+        }
+
+        sb.Append(commandName + " - " + command.Description);
+        if (command.Aliases is {Length: not 0})
+            sb.AppendLine().Append("Aliases: " + string.Join(", ", command.Aliases));
+        if (command is Commands.ParentCommand parentCommand)
+        {
+            sb.AppendLine().Append("Subcommand list:");
+            GetCustomCommandList(parentCommand, sb);
+        }
+
+        if (command.Usage is {Length: not 0})
+            sb.AppendLine().Append(command.CombinedUsage);
+        sb.AppendLine().Append("Implemented in: " + GetTypeInfo(command.GetType()));
+        return StringBuilderPool.Shared.ToStringReturn(sb);
+    }
+
+    /// <summary>
+    /// Gets the subcommand list of a command.
+    /// </summary>
+    /// <param name="command">The command to get the subcommands of.</param>
+    /// <param name="header">The header to prepend the list with.</param>
+    /// <param name="builder">The <see cref="StringBuilder"/> to append the list to.</param>
+    public static void GetCommandList(ICommand command, string header, StringBuilder builder)
+    {
+        if (command is CommandWrapper {BackingCommand: Commands.ParentCommand parent})
+        {
+            builder.Append(header);
+            GetCustomCommandList(parent, builder);
+            StringBuilderPool.Shared.Return(builder);
+            return;
+        }
+
+        if (command is not ICommandHandler handler)
+        {
+            StringBuilderPool.Shared.Return(builder);
+            return;
+        }
+
+        builder.Append(header);
+        GetVanillaCommandList(handler, builder);
+        StringBuilderPool.Shared.Return(builder);
+    }
+
+    /// <summary>
+    /// Gets the subcommand list of a vanilla <see cref="ICommandHandler"/>.
+    /// </summary>
+    /// <param name="handler">The command handler to get the subcommands of.</param>
+    /// <param name="builder">The <see cref="StringBuilder"/> to append the list to.</param>
+    public static void GetVanillaCommandList(ICommandHandler handler, StringBuilder builder)
+    {
+        foreach (var subcommand in handler.AllCommands)
+        {
+            if (IsHidden(subcommand))
+                continue;
+            builder.AppendLine();
+            builder.Append("> ").Append(subcommand.Command).Append(" - ").Append(subcommand.Description);
+            if (subcommand.Aliases is {Length: not 0})
+                builder.Append(" - Aliases: ").Append(string.Join(", ", subcommand.Aliases));
+        }
+    }
+
+    /// <summary>
+    /// Gets the subcommand list of a custom <see cref="Commands.ParentCommand"/>.
+    /// </summary>
+    /// <param name="parent">The parent command to get the subcommands of.</param>
+    /// <param name="builder">The <see cref="StringBuilder"/> to append the list to.</param>
+    public static void GetCustomCommandList(Commands.ParentCommand parent, StringBuilder builder)
+    {
+        foreach (var subcommand in parent.AllSubcommands)
+        {
+            if (subcommand is Commands.Interfaces.IHiddenCommand {IsHidden: true})
+                continue;
+            builder.AppendLine();
+            builder.Append("> ").Append(subcommand.Name).Append(" - ").Append(subcommand.Description);
+            if (subcommand.Aliases is {Length: not 0})
+                builder.Append(" - Aliases: ").Append(string.Join(", ", subcommand.Aliases));
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Commands;
@@ -88,10 +89,15 @@ public abstract class ParentCommand : CommandBase
         {
             var list = new List<string>();
             foreach (var command in Subcommands)
+            {
+                if (command is IHiddenCommand {IsHidden: true})
+                    continue;
                 if (command.Usage is not {Length: not 0})
                     list.Add(command.Name);
                 else
                     list.AddRange(command.Usage.Select(e => $"{command.Name} {e}"));
+            }
+
             return list;
         }
     }
@@ -114,6 +120,6 @@ public abstract class ParentCommand : CommandBase
     /// <param name="arguments">The arguments passed to the command.</param>
     /// <param name="sender">The sender of the command.</param>
     /// <returns>The result of execution.</returns>
-    protected virtual CommandResult ExecuteParent(ArraySegment<string> arguments, CommandSender sender) => "!Unknown subcommand!";
+    protected virtual CommandResult ExecuteParent(ArraySegment<string> arguments, CommandSender sender) => $"!Unknown subcommand! {CombinedUsage}";
 
 }

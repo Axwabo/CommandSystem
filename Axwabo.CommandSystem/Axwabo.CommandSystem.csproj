@@ -219,7 +219,7 @@
         <Compile Include="GenericTypeExtensions.cs"/>
         <Compile Include="Log.cs"/>
         <Compile Include="NWConfig.cs"/>
-        <Compile Include="Patches\CommandImplementationPatch.cs"/>
+        <Compile Include="Patches\HelpCommandPatch.cs"/>
         <Compile Include="Patches\CommandProcessorPatch.cs"/>
         <Compile Include="Patches\ConsolePatch.cs"/>
         <Compile Include="Patches\GetCommandListPatch.cs"/>
