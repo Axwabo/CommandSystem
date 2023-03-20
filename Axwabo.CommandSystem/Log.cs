@@ -17,7 +17,6 @@ internal static class Log
         PluginAPI.Core.Log.Info(obj?.ToString());
 #endif
 
-
     public static void Warn(object obj) =>
 #if EXILED
         Exiled.API.Features.Log.Warn(obj);

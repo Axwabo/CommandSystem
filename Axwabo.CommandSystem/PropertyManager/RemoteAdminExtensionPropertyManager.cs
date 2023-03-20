@@ -32,13 +32,8 @@ public static class RemoteAdminExtensionPropertyManager
         canBeUsedAsStandaloneSelector = false;
         foreach (var attribute in option.GetType().GetCustomAttributes())
         {
-            if (attribute is HiddenByDefaultAttribute)
-            {
-                isHiddenByDefault = true;
-                continue;
-            }
-
-            if (ResolveBaseAttribute(option, attribute, ref id, ref staticText, ref icon, ref canBeUsedAsStandaloneSelector) || BaseCommandPropertyManager.CurrentProcessor == null)
+            ResolveBaseAttribute(option, attribute, ref id, ref staticText, ref icon, ref canBeUsedAsStandaloneSelector, ref isHiddenByDefault);
+            if (BaseCommandPropertyManager.CurrentProcessor == null)
                 continue;
             var type = attribute.GetType();
             ResolveIdentifier(ref id, type, attribute);
@@ -49,34 +44,33 @@ public static class RemoteAdminExtensionPropertyManager
         return RemoteAdminOptionManager.IsValidOptionId(id);
     }
 
-    private static bool ResolveBaseAttribute(RemoteAdminOptionBase option, Attribute attribute, ref string id, ref string staticText, ref BlinkingIcon icon, ref bool canBeUsedAsStandaloneSelector)
+    private static void ResolveBaseAttribute(
+        RemoteAdminOptionBase option,
+        Attribute attribute,
+        ref string id,
+        ref string staticText,
+        ref BlinkingIcon icon,
+        ref bool canBeUsedAsStandaloneSelector,
+        ref bool isHiddenByDefault
+    )
     {
-        var completed = false;
-        if (attribute is IRemoteAdminOptionIdentifier identifier)
+        if (attribute is HiddenByDefaultAttribute)
         {
-            id = identifier.Id ?? throw new InvalidNameException($"Null option identifier provided by attribute {attribute.GetType().FullName} on type {option.GetType().FullName}.");
-            completed = true;
+            isHiddenByDefault = true;
+            return;
         }
+
+        if (attribute is IRemoteAdminOptionIdentifier identifier)
+            id = identifier.Id ?? throw new InvalidNameException($"Null option identifier provided by attribute {attribute.GetType().FullName} on type {option.GetType().FullName}.");
 
         if (attribute is IStaticOptionText text)
-        {
             text.Text.SetFieldIfNotNull(ref staticText);
-            completed = true;
-        }
 
         if (attribute is IOptionIconProvider iconProvider)
-        {
-            icon = iconProvider.CreateIcon();
-            completed = true;
-        }
+            iconProvider.CreateIcon().SetFieldIfNotNull(ref icon);
 
         if (attribute is IStandaloneSelectorOption {CanBeUsedAsStandaloneSelector: true})
-        {
             canBeUsedAsStandaloneSelector = true;
-            completed = true;
-        }
-
-        return completed;
     }
 
     /// <summary>

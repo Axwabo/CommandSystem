@@ -1,6 +1,11 @@
-﻿using System;
-using Axwabo.CommandSystem.Attributes.Interfaces;
+﻿extern alias E;
+#if EXILED
+using E::Axwabo.Helpers;
+#else
 using Axwabo.Helpers;
+#endif
+using System;
+using Axwabo.CommandSystem.Attributes.Interfaces;
 
 namespace Axwabo.CommandSystem.Attributes.RaExt;
 

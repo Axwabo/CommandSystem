@@ -1,14 +1,20 @@
-﻿using System;
+﻿extern alias E;
+#if EXILED
+using E::Axwabo.Helpers;
+using static E::Axwabo.Helpers.Harmony.InstructionHelper;
+#else
+using Axwabo.Helpers;
+using static Axwabo.Helpers.Harmony.InstructionHelper;
+#endif
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Selectors;
-using Axwabo.Helpers;
-using Axwabo.Helpers.Pools;
 using HarmonyLib;
+using NorthwoodLib.Pools;
 using UnityEngine.SceneManagement;
 using Utils;
-using static Axwabo.Helpers.Harmony.InstructionHelper;
 
 namespace Axwabo.CommandSystem.Patches;
 

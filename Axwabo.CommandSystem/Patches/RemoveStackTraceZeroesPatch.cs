@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿extern alias E;
+#if EXILED
+using static E::Axwabo.Helpers.Harmony.InstructionHelper;
+#else
+using static Axwabo.Helpers.Harmony.InstructionHelper;
+#endif
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using HarmonyLib;
-using static Axwabo.Helpers.Harmony.InstructionHelper;
 
 namespace Axwabo.CommandSystem.Patches;
 

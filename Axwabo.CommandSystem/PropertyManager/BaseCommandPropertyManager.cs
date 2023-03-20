@@ -26,7 +26,15 @@ public static class BaseCommandPropertyManager
     /// <param name="minArguments">The minimum number of arguments required to execute the command.</param>
     /// <param name="playerOnly">Whether the command can only be executed by a player.</param>
     /// <returns>Whether the command name was successfully resolved.</returns>
-    public static bool TryResolveProperties(CommandBase command, out string name, out string description, out string[] aliases, out string[] usage, out int minArguments, out bool playerOnly)
+    public static bool TryResolveProperties(
+        CommandBase command,
+        out string name,
+        out string description,
+        out string[] aliases,
+        out string[] usage,
+        out int minArguments,
+        out bool playerOnly
+    )
     {
         name = null;
         description = null;
@@ -36,7 +44,8 @@ public static class BaseCommandPropertyManager
         playerOnly = false;
         foreach (var attribute in command.GetType().GetCustomAttributes())
         {
-            if (ResolveBaseAttribute(command, attribute, ref name, ref description, aliasList, usageList, ref minArguments, ref playerOnly))
+            ResolveBaseAttribute(command, attribute, ref name, ref description, aliasList, usageList, ref minArguments, ref playerOnly);
+            if (CurrentProcessor == null)
                 continue;
             var type = attribute.GetType();
             ResolveName(ref name, type, attribute);
@@ -119,20 +128,22 @@ public static class BaseCommandPropertyManager
         return null;
     }
 
-    private static bool ResolveBaseAttribute(CommandBase command, Attribute attribute, ref string name, ref string description, List<string> aliases, List<string> usage, ref int minArguments, ref bool playerOnly)
+    private static void ResolveBaseAttribute(
+        CommandBase command,
+        Attribute attribute,
+        ref string name,
+        ref string description,
+        List<string> aliases,
+        List<string> usage,
+        ref int minArguments,
+        ref bool playerOnly
+    )
     {
-        var completed = false;
         if (attribute is ICommandName n)
-        {
             name = n.Name ?? throw new InvalidNameException($"Null command name provided by attribute {attribute.GetType().FullName} on type {command.GetType().FullName}.");
-            completed = true;
-        }
 
         if (attribute is IDescription d)
-        {
             description = d.Description;
-            completed = true;
-        }
 
         if (attribute is IAliases a)
         {
@@ -149,18 +160,10 @@ public static class BaseCommandPropertyManager
         }
 
         if (attribute is IMinArguments m)
-        {
             minArguments = m.MinArguments;
-            completed = true;
-        }
 
         if (attribute is IPlayerOnlyAttribute)
-        {
             playerOnly = true;
-            completed = true;
-        }
-
-        return completed || CurrentProcessor == null;
     }
 
     private static void ResolveName(ref string name, Type type, Attribute attribute)

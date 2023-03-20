@@ -1,4 +1,9 @@
-﻿using Axwabo.Helpers;
+﻿#if EXILED
+extern alias E;
+using E::Axwabo.Helpers;
+#else
+using Axwabo.Helpers;
+#endif
 using PlayerRoles;
 using PlayerStatsSystem;
 

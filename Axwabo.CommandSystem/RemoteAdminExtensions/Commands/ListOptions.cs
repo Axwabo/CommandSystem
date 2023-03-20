@@ -2,7 +2,7 @@
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Attributes.Containers;
 using Axwabo.CommandSystem.Structs;
-using Axwabo.Helpers.Pools;
+using NorthwoodLib.Pools;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 

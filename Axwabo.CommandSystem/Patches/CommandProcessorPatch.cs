@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿extern alias E;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Selectors;
-using Axwabo.Helpers.Pools;
 using HarmonyLib;
+using NorthwoodLib.Pools;
 using RemoteAdmin;
 using static Axwabo.CommandSystem.Selectors.PlayerSelectionManager;
+#if EXILED
+using static E::Axwabo.Helpers.Harmony.InstructionHelper;
+#else
 using static Axwabo.Helpers.Harmony.InstructionHelper;
+#endif
 
 namespace Axwabo.CommandSystem.Patches;
 

@@ -67,6 +67,10 @@
         <Reference Include="Axwabo.Helpers.NWAPI">
             <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
         </Reference>
+        <Reference Include="Axwabo.Helpers">
+            <HintPath>$(EXILED-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
+            <Aliases>E</Aliases>
+        </Reference>
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
             <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\CommandSystem.Core.dll</HintPath>
         </Reference>
@@ -107,6 +111,9 @@
             <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
         </Reference>
         <Reference Include="mscorlib"/>
+        <Reference Include="NorthwoodLib">
+            <HintPath>..\..\assemblies\NorthwoodLib.dll</HintPath>
+        </Reference>
         <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
             <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\NorthwoodLib.dll</HintPath>
         </Reference>
@@ -279,7 +286,6 @@
         <Compile Include="Selectors\Filtering\PresetHubFilters.cs"/>
         <Compile Include="Selectors\StackOption.cs"/>
         <Compile Include="Structs\CommandResult.cs"/>
-        <Compile Include="Structs\CombinedTargetingCommandResult.cs"/>
         <Compile Include="Structs\CommandResultOnTarget.cs"/>
         <Compile Include="Registration\CommandRegistrationProcessor.cs"/>
         <Compile Include="Registration\RegistrationExtensions.cs"/>

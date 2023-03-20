@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿extern alias E;
+#if EXILED
+using static E::Axwabo.Helpers.Harmony.InstructionHelper;
+#else
+using static Axwabo.Helpers.Harmony.InstructionHelper;
+#endif
+using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.RemoteAdminExtensions;
 using HarmonyLib;
 using RemoteAdmin.Communication;
-using static Axwabo.Helpers.Harmony.InstructionHelper;
 
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 

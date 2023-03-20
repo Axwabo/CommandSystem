@@ -1,4 +1,9 @@
-﻿using Axwabo.Helpers;
+﻿extern alias E;
+#if EXILED
+using E::Axwabo.Helpers;
+#else
+using Axwabo.Helpers;
+#endif
 using UnityEngine;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;

@@ -9,7 +9,7 @@ public sealed class ExamplePlugin
     [PluginEntryPoint("CommandSystemExample", "1.0.0", "Example plugin for the command system.", "Axwabo")]
     private void OnEnabled()
     {
-        // register all command and Remote Admin options in this assembly
+        // register all commands and Remote Admin options in this assembly
         CommandRegistrationProcessor.RegisterAll(this);
     }
 

@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
+﻿extern alias E;
+#if EXILED
+using E::Axwabo.Helpers.Harmony;
+#else
 using Axwabo.Helpers.Harmony;
+#endif
+using System.Collections.Generic;
+using System.Reflection.Emit;
 using CommandSystem.Commands.Shared;
 using HarmonyLib;
 

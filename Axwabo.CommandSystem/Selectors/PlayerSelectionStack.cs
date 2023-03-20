@@ -1,10 +1,16 @@
-﻿using System.Collections;
+﻿extern alias E;
+
+#if EXILED
+using E::Axwabo.Helpers;
+#else
+using Axwabo.Helpers;
+#endif
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Structs;
-using Axwabo.Helpers;
-using Axwabo.Helpers.Pools;
 using GameCore;
+using NorthwoodLib.Pools;
 using RemoteAdmin;
 using UnityEngine;
 

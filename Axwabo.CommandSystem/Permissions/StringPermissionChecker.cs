@@ -28,8 +28,16 @@ public sealed class StringPermissionChecker : IPermissionChecker
     /// <inheritdoc />
     public CommandResult CheckPermission(CommandSender sender)
     {
-        var hasPermission = sender.CheckPermission(Permission);
+        var hasPermission = Check(sender, Permission);
         return hasPermission ? true : "!You don't have permissions to use this feature. Required: " + Permission;
     }
+
+    /// <summary>
+    /// A static method to check if a sender has a specific permission.
+    /// </summary>
+    /// <param name="sender">The sender to check.</param>
+    /// <param name="permission">The permission to check.</param>
+    /// <returns>Whether the sender has the permission.</returns>
+    public static bool Check(CommandSender sender, string permission) => sender.CheckPermission(permission);
 
 }

@@ -1,9 +1,14 @@
-﻿using System;
+﻿extern alias E;
+#if EXILED
+using E::Axwabo.Helpers.Harmony;
+#else
+using Axwabo.Helpers.Harmony;
+#endif
+using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using Axwabo.Helpers.Harmony;
-using Axwabo.Helpers.Pools;
 using HarmonyLib;
+using NorthwoodLib.Pools;
 using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Patches;
