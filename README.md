@@ -1,6 +1,6 @@
 ﻿# Axwabo.CommandSystem
 
-An SCP: Secret Laboratory plugin to improve moderation, command development and the Remote Admin GUI.
+An SCP: Secret Laboratory plugin to improve player selection, command development and the Remote Admin GUI.
 
 # Installation
 
@@ -65,7 +65,8 @@ public sealed class MyPlugin
 
 ## Improved Player Selectors
 
-The base-game player ID list parsing has been extended with a more powerful way to select players. It's integrated into the base game, meaning you can use vanilla commands with the selectors.
+The base-game player ID list parsing has been extended with a more powerful way to select players.
+It's integrated into the base game, meaning you can use vanilla commands with the selectors.
 
 For example, if you want to forceclass yourself to Class-D, instead of `forceclass 2 1` you can do `forceclass @s 1`, where
 **@s** stands for "self".
@@ -76,18 +77,33 @@ It also allows you to select a player based on a substring of their nickname, no
 
 ## Remote Admin GUI Extensions
 
-(WIP)
+Note: this feature is not currently compatible with [CedMod](https://github.com/CedModV2/CedMod), need to merge [PR #30](https://github.com/CedModV2/CedMod/pull/30).
+
+The `Axwabo.CommandSystem.RemoteAdminExtensions.RemoteAdminOptionBase` class lets you add "player entries" to the Remote Admin GUI.
+These can be interacted with through the buttons in the `Request Data` section.
+
+For example, a simple counter can be made by making the `Request Data` subtract one, the `Request IP` button add one number and `Request Auth` would reset the counter.
+
+To list, hide or show specific options in the GUI, use the `raOption` command.
+
+The `Stack` option is built-in but hidden by default.
+It allows you to use the [players on the stack](#player-selection-stack) in the Remote Admin GUI.
+To enable it, execute the `raOpt show @stack` command.
+
+**The wiki contains more details about RA Extensions.**
 
 ## Player Selection Stack
 
-Everyone with Remote Admin access is able to use the player selection stack. You can push a list of players, pop, duplicate, clear. It's incredibly useful for commands that require multiple players.
+Everyone with Remote Admin access is able to use the player selection stack. You can push a list of players, pop, duplicate, clear.
+It's incredibly useful for commands that require multiple players.
 
 Use `stackPush <players>` to push a list of players to the stack. This also works with player selectors.
 
 Use `stackPop [index]` to discard the topmost player list from the stack.
 
-When using a command that accepts player targets, you can use `@stack` to use the topmost player list from the stack.
+When using a command that accepts player targets, you can use `@stack` to use the topmost (at index 0) player list from the stack.
 
-You can also give it an index to use a specific player list from the stack, separated by one of `:>_-` characters. For example, `@stack:1` will use the second player list from the stack.
+You can also give it an index to use a specific player list from the stack, separated by one of `:>_-` characters.
+For example, `@stack:1` will use the second player list from the stack (indexes start with 0).
 
 Note: the most recently pushed player list is considered the top of the stack. To view the stack, use `stackList` and list at index 0 is the topmost player list.

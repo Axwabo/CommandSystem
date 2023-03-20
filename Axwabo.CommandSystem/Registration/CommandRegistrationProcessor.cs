@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes;
-using Axwabo.CommandSystem.Attributes.Parenting;
+using Axwabo.CommandSystem.Attributes.Containers;
+using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
@@ -12,6 +13,7 @@ using Axwabo.CommandSystem.RemoteAdminExtensions;
 using CommandSystem;
 using RemoteAdmin;
 using Utils.NonAllocLINQ;
+using Console = GameCore.Console;
 
 namespace Axwabo.CommandSystem.Registration;
 
@@ -54,8 +56,9 @@ public sealed class CommandRegistrationProcessor
     public static void UnregisterAll(Assembly assembly)
     {
         UnregisterFromHandler(assembly, CommandProcessor.RemoteAdminCommandHandler);
-        UnregisterFromHandler(assembly, GameCore.Console.singleton.ConsoleCommandHandler);
+        UnregisterFromHandler(assembly, Console.singleton.ConsoleCommandHandler);
         UnregisterFromHandler(assembly, QueryProcessor.DotCommandHandler);
+        RemoteAdminOptionManager.UnregisterAll(assembly);
     }
 
     private static void UnregisterFromHandler(Assembly assembly, ICommandHandler handler)
@@ -91,7 +94,7 @@ public sealed class CommandRegistrationProcessor
 
     /// <summary>Registers a command to the <see cref="GameConsoleCommandHandler"/>.</summary>
     /// <param name="command">The command to register.</param>
-    public static void RegisterServerConsoleCommand(ICommand command) => GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+    public static void RegisterServerConsoleCommand(ICommand command) => Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
 
     /// <summary>Registers a command to the <see cref="ClientCommandHandler"/>.</summary>
     /// <param name="command">The command to register.</param>
@@ -136,7 +139,7 @@ public sealed class CommandRegistrationProcessor
 
     private readonly Dictionary<Type, List<Type>> _subcommandsToRegister = new();
 
-    private readonly Dictionary<Type, Axwabo.CommandSystem.Commands.ParentCommand> _registeredParentCommands = new();
+    private readonly Dictionary<Type, ContainerCommand> _registeredContainerCommands = new();
 
     private readonly Dictionary<Type, CommandHandlerType> _standaloneCommands = new();
 
@@ -193,12 +196,12 @@ public sealed class CommandRegistrationProcessor
         {
             case IRegistrationFilter {AllowRegistration: false}:
                 return true;
-            case SubcommandOfParentAttribute subOf when typeof(Axwabo.CommandSystem.Commands.ParentCommand).IsAssignableFrom(subOf.ParentType):
+            case SubcommandOfContainerAttribute subOf when typeof(ContainerCommand).IsAssignableFrom(subOf.ContainerType):
                 isSubcommand = true;
-                _subcommandsToRegister.GetOrAdd(subOf.ParentType, () => new List<Type>()).Add(type);
+                _subcommandsToRegister.GetOrAdd(subOf.ContainerType, () => new List<Type>()).Add(type);
                 return false;
-            case UsesSubcommandAttribute usesSub when typeof(Axwabo.CommandSystem.Commands.ParentCommand).IsAssignableFrom(type):
-                _subcommandsToRegister.GetOrAdd(type, () => new List<Type>()).Add(usesSub.SubcommandType);
+            case UsesSubcommandsAttribute {SubcommandTypes: { } types} when typeof(ContainerCommand).IsAssignableFrom(type):
+                _subcommandsToRegister.GetOrAdd(type, () => new List<Type>()).AddRange(types);
                 return false;
             case CommandTargetAttribute targetAttribute:
                 targets = CommandTargetAttribute.Combine(targets, targetAttribute);
@@ -223,8 +226,8 @@ public sealed class CommandRegistrationProcessor
         var commandBase = (CommandBase) Activator.CreateInstance(commandType);
         if (commandBase is IRegistrationFilter {AllowRegistration: false})
             return;
-        if (commandBase is Axwabo.CommandSystem.Commands.ParentCommand parent)
-            _registeredParentCommands.Add(commandType, parent);
+        if (commandBase is ContainerCommand container)
+            _registeredContainerCommands.Add(commandType, container);
         var wrapper = new CommandWrapper(commandBase);
         if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
             RegisterRemoteAdminCommand(wrapper);
@@ -240,9 +243,9 @@ public sealed class CommandRegistrationProcessor
         {
             foreach (var type in pair.Value)
                 _skippedCommands.Remove(type);
-            if (!_registeredParentCommands.TryGetValue(pair.Key, out var parent))
+            if (!_registeredContainerCommands.TryGetValue(pair.Key, out var container))
             {
-                Log.Debug($"Parent command of type \"{pair.Key.FullName}\" was not registered.\nDependent subcommands: {string.Join(", ", pair.Value.Select(t => t.FullName))}");
+                Log.Debug($"Container command of type \"{pair.Key.FullName}\" was not registered.\nDependent subcommands: {string.Join(", ", pair.Value.Select(t => t.FullName))}");
                 continue;
             }
 
@@ -251,7 +254,7 @@ public sealed class CommandRegistrationProcessor
             {
                 var commandBase = (CommandBase) Activator.CreateInstance(type);
                 if (commandBase is not IRegistrationFilter {AllowRegistration: false})
-                    parent.RegisterSubcommand(commandBase);
+                    container.RegisterSubcommand(commandBase);
             }
         }
     }

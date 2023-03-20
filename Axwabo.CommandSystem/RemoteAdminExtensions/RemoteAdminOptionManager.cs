@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using Axwabo.CommandSystem.Attributes.RaExt;
+using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 using Axwabo.Helpers;
 using RemoteAdmin;
@@ -14,11 +17,14 @@ public static class RemoteAdminOptionManager
 {
 
     /// <summary>A string containing all characters which identifiers may not contain.</summary>
-    public const string InvalidCharacters = "$@()\"<>.";
+    public const string InvalidCharacters = "$@()\".<>";
 
     private static readonly char[] InvalidCharactersArray = InvalidCharacters.ToCharArray();
 
     private static readonly List<RemoteAdminOptionBase> Options = new();
+
+    /// <summary>Retrieves the list of registered options.</summary>
+    public static IReadOnlyList<RemoteAdminOptionBase> AllOptions => Options.AsReadOnly();
 
     /// <summary>
     /// Registers a new Remote Admin option.
@@ -32,8 +38,35 @@ public static class RemoteAdminOptionManager
         Options.Add(option);
     }
 
-    /// <summary>Retrieves the list of registered options.</summary>
-    public static IEnumerable<RemoteAdminOptionBase> AllOptions => Options.AsReadOnly();
+    /// <summary>
+    /// Unregisters all Remote Admin options that are defined in the specified assembly.
+    /// </summary>
+    /// <param name="assembly">The assembly to unregister the options from.</param>
+    public static void UnregisterAll(Assembly assembly) => Options.RemoveAll(e => e.GetType().Assembly == assembly);
+
+    /// <summary>
+    /// Attempts to retrieve an option by its identifier.
+    /// </summary>
+    /// <param name="identifier">The identifier of the option.</param>
+    /// <param name="option">The found option.</param>
+    /// <returns>Whether the option was found.</returns>
+    public static bool TryGetOption(string identifier, out RemoteAdminOptionBase option)
+    {
+        option = Options.FirstOrDefault(e => e.OptionIdentifier.Equals(identifier, StringComparison.OrdinalIgnoreCase));
+        return option != null;
+    }
+
+    /// <summary>
+    /// Attempts to retrieve an option by its type's full name.
+    /// </summary>
+    /// <param name="fullName">The full name of the option's type.</param>
+    /// <param name="option">The found option.</param>
+    /// <returns>Whether the option was found.</returns>
+    public static bool TryGetOptionByType(string fullName, out RemoteAdminOptionBase option)
+    {
+        option = Options.FirstOrDefault(e => e.GetType().FullName == fullName);
+        return option != null;
+    }
 
     /// <summary>
     /// Handles a Remote Admin button click.
@@ -42,10 +75,10 @@ public static class RemoteAdminOptionManager
     /// <param name="button">The button that was clicked.</param>
     /// <param name="sender">The sender of the request.</param>
     /// <param name="response">The response to send to the sender.</param>
-    /// <returns>True if the request was handled, false otherwise.</returns>
+    /// <returns>True if the request was handled and the response is not null, false otherwise.</returns>
     public static bool HandleCustomRequest(string identifier, RequestDataButton button, PlayerCommandSender sender, out string response)
     {
-        if (sender == null)
+        if (sender == null || identifier == null)
         {
             response = null;
             return false;
@@ -82,13 +115,23 @@ public static class RemoteAdminOptionManager
     /// <param name="sender">The sender of the request.</param>
     /// <param name="builder">The <see cref="StringBuilder"/> to append the options to.</param>
     /// <param name="hideIdentifier">Whether to hide the option identifier using the size tag.</param>
+    /// <param name="preferredOnly">Whether to only display options preferred by the sender.</param>
     /// <remarks>Only displays options accessible and visible to the given sender.</remarks>
-    public static void AppendAllOptions(CommandSender sender, StringBuilder builder, bool hideIdentifier = true)
+    public static bool AppendAllOptions(CommandSender sender, StringBuilder builder, bool hideIdentifier = true, bool preferredOnly = true)
     {
         var textToFormat = hideIdentifier ? "<size=0>({0})</size>{1}" : "({0}) {1}";
+        var success = false;
         foreach (var option in Options)
-            if (option.VisibilityPermissions.CheckSafe(sender) && (option is not IOptionVisibilityController controller || controller.IsVisibleTo(sender)))
+            if (option.VisibilityPermissions.CheckSafe(sender)
+                && (!preferredOnly || !OptionSettingsContainer.IsHidden(sender.SenderId, option))
+                && (option is not IOptionVisibilityController controller || controller.IsVisibleTo(sender))
+               )
+            {
+                success = true;
                 builder.AppendLine(string.Format(textToFormat, option.OptionIdentifier, option.GetText(sender)));
+            }
+
+        return success;
     }
 
     private static bool NonDigit(char arg) => arg != '-' && !char.IsDigit(arg);
@@ -102,6 +145,8 @@ public static class RemoteAdminOptionManager
     {
         if (s == null)
             return false;
+        if (s is AutoGenerateIdAttribute.Identifier)
+            return true;
         s = s.Trim();
         return s.Length > 0 && s.IndexOfAny(InvalidCharactersArray) == -1 && s.Any(NonDigit);
     }

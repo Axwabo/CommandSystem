@@ -154,9 +154,13 @@
     <ItemGroup>
         <Compile Include="Attributes\DoNotAutoRegister.cs"/>
         <Compile Include="Attributes\Interfaces\IOptionIconProvider.cs"/>
-        <Compile Include="Attributes\Parenting\SubcommandOfParentAttribute.cs"/>
-        <Compile Include="Attributes\Parenting\UsesSubcommandAttribute.cs"/>
+        <Compile Include="Attributes\Containers\SubcommandOfContainerAttribute.cs"/>
+        <Compile Include="Attributes\Containers\UsesSubcommandsAttribute.cs"/>
+        <Compile Include="Attributes\Interfaces\IStandaloneSelectorOption.cs"/>
+        <Compile Include="Attributes\RaExt\HiddenByDefaultAttribute.cs"/>
         <Compile Include="Attributes\RaExt\OptionIconAttribute.cs"/>
+        <Compile Include="Attributes\RaExt\RemoteAdminOptionPropertiesAttribute.cs"/>
+        <Compile Include="Attributes\RaExt\StandaloneSelectorAttribute.cs"/>
         <Compile Include="Attributes\Targeting\AffectedOnePlayerMessageAttribute.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IShouldAffectSpectators.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedMultiplePlayersMessage.cs"/>
@@ -205,7 +209,7 @@
         <Compile Include="Commands\MessageOverrides\IAffectedOnePlayerMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\IAffectedAllPlayersMessageGenerator.cs"/>
         <Compile Include="Commands\MessageOverrides\ITargetSelectionManager.cs"/>
-        <Compile Include="Commands\ParentCommand.cs"/>
+        <Compile Include="Commands\ContainerCommand.cs"/>
         <Compile Include="Commands\SeparatedTargetingCommand.cs"/>
         <Compile Include="Commands\UnifiedTargetingCommand.cs"/>
         <Compile Include="CommandWrapper.cs"/>
@@ -261,8 +265,11 @@
         <Compile Include="Registration\ResolverContainer.cs"/>
         <Compile Include="RemoteAdminExtensions\BlinkingIcon.cs"/>
         <Compile Include="RemoteAdminExtensions\ButtonBasedRemoteAdminOption.cs"/>
+        <Compile Include="RemoteAdminExtensions\Commands\HideOption.cs"/>
+        <Compile Include="RemoteAdminExtensions\Commands\ListOptions.cs"/>
+        <Compile Include="RemoteAdminExtensions\Commands\OptionSettingsContainer.cs"/>
+        <Compile Include="RemoteAdminExtensions\Commands\ShowOption.cs"/>
         <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
-        <Compile Include="RemoteAdminExtensions\OptionListCommand.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionBase.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionManager.cs"/>
         <Compile Include="RemoteAdminExtensions\RequestDataButton.cs"/>
@@ -270,6 +277,7 @@
         <Compile Include="Selectors\Filtering\Delegates.cs"/>
         <Compile Include="Selectors\Filtering\FilterEntry.cs"/>
         <Compile Include="Selectors\Filtering\PresetHubFilters.cs"/>
+        <Compile Include="Selectors\StackOption.cs"/>
         <Compile Include="Structs\CommandResult.cs"/>
         <Compile Include="Structs\CombinedTargetingCommandResult.cs"/>
         <Compile Include="Structs\CommandResultOnTarget.cs"/>

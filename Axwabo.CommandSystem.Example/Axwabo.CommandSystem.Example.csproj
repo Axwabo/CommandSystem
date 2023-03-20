@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{5BFC1CF9-4ABA-4D60-8E21-AE1C0E72100D}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Axwabo.CommandSystem.Example</RootNamespace>
+        <AssemblyName>Axwabo.CommandSystem.Example</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass">
+            <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="Axwabo.Helpers.NWAPI">
+            <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
+        </Reference>
+        <Reference Include="CommandSystem.Core">
+            <HintPath>..\..\assemblies\CommandSystem.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Mirror">
+            <HintPath>$(NW-ASSEMBLIES)\Mirror.dll</HintPath>
+        </Reference>
+        <Reference Include="Mirror.Components">
+            <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
+        </Reference>
+        <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\Northwood.PluginAPI.12.0.0\lib\net48\PluginAPI.dll</HintPath>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(NW-ASSEMBLIES)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+            <HintPath>..\packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="AttributeCommand.cs"/>
+        <Compile Include="ExamplePlugin.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="SimpleCommand.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="packages.config"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Axwabo.CommandSystem\Axwabo.CommandSystem.csproj">
+            <Project>{9c0db556-5717-440f-a419-4b554bc54c7a}</Project>
+            <Name>Axwabo.CommandSystem</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>

@@ -1,5 +1,6 @@
 ﻿#if EXILED
 using System;
+using System.IO;
 using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using Exiled.API.Enums;
@@ -13,6 +14,9 @@ namespace Axwabo.CommandSystem;
 /// </summary>
 public sealed class Plugin : Plugin<Config>
 {
+
+    /// <summary>Gets the plugin's config directory.</summary>
+    public static string PluginDirectory => Path.Combine(Paths.Plugins, "Axwabo.CommandSystem");
 
     /// <summary>The current plugin instance.</summary>
     public static Plugin Instance { get; private set; }

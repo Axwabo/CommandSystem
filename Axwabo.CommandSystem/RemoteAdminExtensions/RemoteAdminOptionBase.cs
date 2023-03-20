@@ -18,6 +18,7 @@ public abstract class RemoteAdminOptionBase
     private BlinkingIcon _icon;
 
     /// <summary>Whether this option identifier can also be used as a standalone selector.</summary>
+    /// <seealso cref="StandaloneSelectorAttribute"/>
     /// <seealso cref="Axwabo.CommandSystem.Selectors.PlayerSelectionManager"/>
     protected virtual bool CanBeUsedAsStandaloneSelector => false;
 
@@ -39,6 +40,9 @@ public abstract class RemoteAdminOptionBase
         protected set => _icon = value;
     }
 
+    /// <summary>Whether this instance is hidden to all users by default.</summary>
+    public bool IsHiddenByDefault { get; }
+
     // ReSharper disable VirtualMemberCallInConstructor
     /// <summary>
     /// Initializes an instance of <see cref="RemoteAdminOptionBase"/>.
@@ -50,7 +54,8 @@ public abstract class RemoteAdminOptionBase
         var derivedIsEmpty = string.IsNullOrWhiteSpace(id);
         if (!derivedIsEmpty && !RemoteAdminOptionManager.IsValidOptionId(id))
             throw InvalidId;
-        var resolved = RemoteAdminExtensionPropertyManager.TryResolveProperties(this, out var idFromAttribute, out _staticText, out _icon);
+        var resolved = RemoteAdminExtensionPropertyManager.TryResolveProperties(this, out var idFromAttribute, out _staticText, out _icon, out var hiddenByDefault, out var standaloneSelector);
+        IsHiddenByDefault = hiddenByDefault;
         if (derivedIsEmpty)
             id = idFromAttribute;
         if (id == AutoGenerateIdAttribute.Identifier)
@@ -58,7 +63,7 @@ public abstract class RemoteAdminOptionBase
         else if (!resolved)
             throw InvalidId;
         else
-            OptionIdentifier = (CanBeUsedAsStandaloneSelector ? "@" : "$") + id;
+            OptionIdentifier = (standaloneSelector || CanBeUsedAsStandaloneSelector ? "@" : "$") + id;
         VisibilityPermissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
     }
 

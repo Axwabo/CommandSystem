@@ -22,7 +22,9 @@ internal static class RemoteAdminPlayerListPatch
             Ldarg(1),
             Ldloc(8),
             Int1,
-            Call(typeof(RemoteAdminOptionManager), nameof(RemoteAdminOptionManager.AppendAllOptions))
+            Int1,
+            Call(typeof(RemoteAdminOptionManager), nameof(RemoteAdminOptionManager.AppendAllOptions)),
+            Pop
         });
         return list;
     }

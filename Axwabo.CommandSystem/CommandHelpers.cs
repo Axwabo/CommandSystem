@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Text;
+using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.Structs;
 using Axwabo.Helpers.Pools;
 using CommandSystem;
 using RemoteAdmin;
+using IHiddenCommand = Axwabo.CommandSystem.Commands.Interfaces.IHiddenCommand;
 
 namespace Axwabo.CommandSystem;
 
@@ -47,8 +49,8 @@ public static class CommandHelpers
     /// <param name="command">The command to check.</param>
     /// <returns><see langword="true"/> if the command is hidden; otherwise, <see langword="false"/>.</returns>
     public static bool IsHidden(ICommand command) => command is CommandWrapper wrapper
-        ? wrapper.BackingCommand is Commands.Interfaces.IHiddenCommand {IsHidden: true}
-        : command is IHiddenCommand;
+        ? wrapper.BackingCommand is IHiddenCommand {IsHidden: true}
+        : command is global::CommandSystem.IHiddenCommand;
 
     /// <summary>
     /// Casts the command sender to a <see cref="PlayerCommandSender"/> and returns its <see cref="ReferenceHub"/>.
@@ -130,7 +132,7 @@ public static class CommandHelpers
     {
         var sb = StringBuilderPool.Shared.Rent();
         var commandName = command.Name;
-        while (arguments.Count != 0 && command is Commands.ParentCommand parent && parent.TryGetSubcommand(arguments.At(0), out var subcommand))
+        while (arguments.Count != 0 && command is ContainerCommand container && container.TryGetSubcommand(arguments.At(0), out var subcommand))
         {
             command = subcommand;
             commandName = commandName + " " + subcommand.Name;
@@ -142,10 +144,10 @@ public static class CommandHelpers
         sb.Append(commandName + " - " + command.Description);
         if (command.Aliases is {Length: not 0})
             sb.AppendLine().Append("Aliases: " + string.Join(", ", command.Aliases));
-        if (command is Commands.ParentCommand parentCommand)
+        if (command is ContainerCommand containerCommand)
         {
             sb.AppendLine().Append("Subcommand list:");
-            GetCustomCommandList(parentCommand, sb);
+            GetCustomCommandList(containerCommand, sb);
         }
 
         if (command.Usage is {Length: not 0})
@@ -162,10 +164,10 @@ public static class CommandHelpers
     /// <param name="builder">The <see cref="StringBuilder"/> to append the list to.</param>
     public static void GetCommandList(ICommand command, string header, StringBuilder builder)
     {
-        if (command is CommandWrapper {BackingCommand: Commands.ParentCommand parent})
+        if (command is CommandWrapper {BackingCommand: ContainerCommand container})
         {
             builder.Append(header);
-            GetCustomCommandList(parent, builder);
+            GetCustomCommandList(container, builder);
             StringBuilderPool.Shared.Return(builder);
             return;
         }
@@ -200,15 +202,15 @@ public static class CommandHelpers
     }
 
     /// <summary>
-    /// Gets the subcommand list of a custom <see cref="Commands.ParentCommand"/>.
+    /// Gets the subcommand list of a custom <see cref="ContainerCommand"/>.
     /// </summary>
-    /// <param name="parent">The parent command to get the subcommands of.</param>
+    /// <param name="container">The container command to get the subcommands of.</param>
     /// <param name="builder">The <see cref="StringBuilder"/> to append the list to.</param>
-    public static void GetCustomCommandList(Commands.ParentCommand parent, StringBuilder builder)
+    public static void GetCustomCommandList(ContainerCommand container, StringBuilder builder)
     {
-        foreach (var subcommand in parent.AllSubcommands)
+        foreach (var subcommand in container.AllSubcommands)
         {
-            if (subcommand is Commands.Interfaces.IHiddenCommand {IsHidden: true})
+            if (subcommand is IHiddenCommand {IsHidden: true})
                 continue;
             builder.AppendLine();
             builder.Append("> ").Append(subcommand.Name).Append(" - ").Append(subcommand.Description);

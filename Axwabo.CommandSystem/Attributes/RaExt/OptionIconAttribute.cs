@@ -8,12 +8,12 @@ namespace Axwabo.CommandSystem.Attributes.RaExt;
 /// <summary>
 /// An attribute to set the icon of a <see cref="RemoteAdminOptionBase"/>.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class OptionIconAttribute : Attribute, IOptionIconProvider
+[AttributeUsage(AttributeTargets.Class)]
+public class OptionIconAttribute : Attribute, IOptionIconProvider
 {
 
     /// <inheritdoc cref="BlinkingIcon.Content"/>
-    public string Content { get; }
+    public string IconContent { get; init; }
 
     /// <inheritdoc cref="BlinkingIcon.SurroundWithBrackets"/>
     public bool SurroundWithBrackets { get; init; }
@@ -33,15 +33,17 @@ public sealed class OptionIconAttribute : Attribute, IOptionIconProvider
     /// <summary>
     /// Initializes a new <see cref="OptionIconAttribute"/> instance.
     /// </summary>
-    /// <param name="content">The content of this icon.</param>
-    public OptionIconAttribute(string content) => Content = content;
+    /// <param name="iconContent">The content of this icon.</param>
+    public OptionIconAttribute(string iconContent) => IconContent = iconContent;
 
     /// <inheritdoc />
     public BlinkingIcon CreateIcon()
     {
+        if (IconContent == null)
+            return null;
         var icon = ContentColor != null
-            ? new BlinkingIcon(Content, ContentColor, SurroundWithBrackets)
-            : new BlinkingIcon(Content, SurroundWithBrackets);
+            ? new BlinkingIcon(IconContent, ContentColor, SurroundWithBrackets)
+            : new BlinkingIcon(IconContent, SurroundWithBrackets);
         if (OverallColor != null && ColorUtility.TryParseHtmlString(OverallColor, out var color))
             icon.OverallColor = color;
         icon.TrailingSpace = TrailingSpace;

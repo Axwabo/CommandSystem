@@ -11,7 +11,7 @@ public sealed class AutoGenerateIdAttribute : Attribute, IRemoteAdminOptionIdent
 {
 
     /// <summary>A string literal that is used to identify the attribute.</summary>
-    public const string Identifier = "@$";
+    public const string Identifier = "$@";
 
     /// <inheritdoc />
     public string Id => Identifier;

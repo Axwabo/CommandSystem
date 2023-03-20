@@ -9,7 +9,7 @@ namespace Axwabo.CommandSystem.Commands;
 /// <summary>
 /// A command encapsulating other subcommands.
 /// </summary>
-public abstract class ParentCommand : CommandBase
+public abstract class ContainerCommand : CommandBase
 {
 
     /// <summary>The list of subcommands.</summary>
@@ -39,8 +39,8 @@ public abstract class ParentCommand : CommandBase
         }
 
         if (command.GetType() == existing.GetType())
-            throw new InvalidOperationException($"Duplicate registration of subcommand \"{command.GetType().FullName}\" in parent command \"{GetType().FullName}\"");
-        throw new InvalidOperationException($"Subcommand \"{command.GetType().FullName}\" already exists in parent command \"{GetType().FullName}\"; conflict with \"{existing.GetType().FullName}\"");
+            throw new InvalidOperationException($"Duplicate registration of subcommand \"{command.GetType().FullName}\" in container command \"{GetType().FullName}\"");
+        throw new InvalidOperationException($"Subcommand \"{command.GetType().FullName}\" already exists in container command \"{GetType().FullName}\"; conflict with \"{existing.GetType().FullName}\"");
     }
 
     /// <summary>
@@ -103,16 +103,16 @@ public abstract class ParentCommand : CommandBase
     }
 
     /// <summary>
-    /// Attempts to execute a subcommand, or the parent command if no subcommand is found.
+    /// Attempts to execute a subcommand, or the container command if no subcommand is found.
     /// </summary>
     /// <param name="arguments">The arguments passed to the command.</param>
     /// <param name="sender">The sender of the command.</param>
     /// <returns>The result of execution.</returns>
-    /// <seealso cref="ExecuteParent"/>
+    /// <seealso cref="ExecuteContainer"/>
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
         => arguments.Count != 0 && TryGetSubcommand(arguments.At(0), out var subcommand)
             ? subcommand.ExecuteBase(arguments.Segment(1), sender)
-            : ExecuteParent(arguments, sender);
+            : ExecuteContainer(arguments, sender);
 
     /// <summary>
     /// Called when no subcommand is found. This method is NOT min-argument checked by default and may be invoked an empty argument array!
@@ -120,6 +120,6 @@ public abstract class ParentCommand : CommandBase
     /// <param name="arguments">The arguments passed to the command.</param>
     /// <param name="sender">The sender of the command.</param>
     /// <returns>The result of execution.</returns>
-    protected virtual CommandResult ExecuteParent(ArraySegment<string> arguments, CommandSender sender) => $"!Unknown subcommand! {CombinedUsage}";
+    protected virtual CommandResult ExecuteContainer(ArraySegment<string> arguments, CommandSender sender) => $"!Unknown subcommand! {CombinedUsage}";
 
 }

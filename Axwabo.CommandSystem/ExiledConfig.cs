@@ -1,4 +1,5 @@
 ﻿#if EXILED
+using System.ComponentModel;
 using Exiled.API.Interfaces;
 
 namespace Axwabo.CommandSystem;

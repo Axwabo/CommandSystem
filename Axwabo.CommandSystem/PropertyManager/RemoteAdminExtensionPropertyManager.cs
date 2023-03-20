@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Axwabo.CommandSystem.Attributes.Interfaces;
+using Axwabo.CommandSystem.Attributes.RaExt;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.RemoteAdminExtensions;
@@ -19,15 +20,25 @@ public static class RemoteAdminExtensionPropertyManager
     /// <param name="id">The identifier of the option.</param>
     /// <param name="staticText">The static text of the option.</param>
     /// <param name="icon">The icon of the option.</param>
+    /// <param name="isHiddenByDefault">Whether the option is hidden to users by default.</param>
+    /// <param name="canBeUsedAsStandaloneSelector">Whether the option can be used as a standalone selector.</param>
     /// <returns>Whether the option id was successfully resolved.</returns>
-    public static bool TryResolveProperties(RemoteAdminOptionBase option, out string id, out string staticText, out BlinkingIcon icon)
+    public static bool TryResolveProperties(RemoteAdminOptionBase option, out string id, out string staticText, out BlinkingIcon icon, out bool isHiddenByDefault, out bool canBeUsedAsStandaloneSelector)
     {
         id = null;
         staticText = null;
         icon = option is IOptionIconProvider provider ? provider.CreateIcon() : null;
+        isHiddenByDefault = false;
+        canBeUsedAsStandaloneSelector = false;
         foreach (var attribute in option.GetType().GetCustomAttributes())
         {
-            if (ResolveBaseAttribute(option, attribute, ref id, ref staticText, ref icon) || BaseCommandPropertyManager.CurrentProcessor == null)
+            if (attribute is HiddenByDefaultAttribute)
+            {
+                isHiddenByDefault = true;
+                continue;
+            }
+
+            if (ResolveBaseAttribute(option, attribute, ref id, ref staticText, ref icon, ref canBeUsedAsStandaloneSelector) || BaseCommandPropertyManager.CurrentProcessor == null)
                 continue;
             var type = attribute.GetType();
             ResolveIdentifier(ref id, type, attribute);
@@ -38,7 +49,7 @@ public static class RemoteAdminExtensionPropertyManager
         return RemoteAdminOptionManager.IsValidOptionId(id);
     }
 
-    private static bool ResolveBaseAttribute(RemoteAdminOptionBase option, Attribute attribute, ref string id, ref string staticText, ref BlinkingIcon icon)
+    private static bool ResolveBaseAttribute(RemoteAdminOptionBase option, Attribute attribute, ref string id, ref string staticText, ref BlinkingIcon icon, ref bool canBeUsedAsStandaloneSelector)
     {
         var completed = false;
         if (attribute is IRemoteAdminOptionIdentifier identifier)
@@ -56,6 +67,12 @@ public static class RemoteAdminExtensionPropertyManager
         if (attribute is IOptionIconProvider iconProvider)
         {
             icon = iconProvider.CreateIcon();
+            completed = true;
+        }
+
+        if (attribute is IStandaloneSelectorOption {CanBeUsedAsStandaloneSelector: true})
+        {
+            canBeUsedAsStandaloneSelector = true;
             completed = true;
         }
 
