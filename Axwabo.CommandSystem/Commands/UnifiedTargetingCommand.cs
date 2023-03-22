@@ -56,6 +56,11 @@ public abstract class UnifiedTargetingCommand : CommandBase
     /// <summary>The minimum amount of arguments required to execute the command excluding the player list argument.</summary>
     protected virtual int MinArgumentsWithoutTargets => base.MinArguments;
 
+    /// <inheritdoc />
+    public override string[] Usage => base.Usage is {Length: not 0} usage
+        ? usage.Select(e => $"<players> {e}").ToArray()
+        : new[] {"players"};
+
     private bool ShouldBeAffected(ReferenceHub hub)
         => (ShouldAffectSpectators || hub.IsAlive())
            && (this is not ITargetFilteringPolicy policy || policy.FilterTarget(hub));
@@ -119,7 +124,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
     /// </summary>
     /// <param name="affected">The number of affected players.</param>
     /// <returns>Whether everyone was affected.</returns>
-    protected bool IsEveryoneAffected(int affected)
+    protected bool IsEveryoneAffectedInternal(int affected)
         => _selectionManager?.IsEveryoneAffected(affected)
            ?? (ShouldAffectSpectators ? PlayerSelectionManager.AllPlayers : PlayerSelectionManager.NonSpectators).Count == affected;
 

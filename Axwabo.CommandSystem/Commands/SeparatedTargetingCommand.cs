@@ -30,7 +30,7 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand
         return succeeded.Count == 0 && failed.Count == 0
             ? CommandResult.Failed(NoPlayersAffected)
             : this is ICustomResultCompiler custom
-                ? custom.CompileCustomResult(succeeded, failed)
+                ? custom.CompileResultCustom(succeeded, failed)
                 : CompileResult(succeeded);
     }
 
@@ -56,7 +56,7 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand
             : CommandResult.Succeeded(
                 affected == 1
                     ? GetAffectedMessageSingle(success[0].Target)
-                    : IsEveryoneAffected(affected)
+                    : IsEveryoneAffectedInternal(affected)
                         ? GetAffectedMessageAll(affected)
                         : GetAffectedMessage(affected)
             );

@@ -3,6 +3,8 @@
 public enum CustomCommandType
 {
 
-    // TODO
+    Flash,
+    SendHint,
+    DiscordBroadcast
 
 }

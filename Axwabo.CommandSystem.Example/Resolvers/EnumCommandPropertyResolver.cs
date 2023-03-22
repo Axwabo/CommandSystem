@@ -1,5 +1,4 @@
-﻿using System;
-using Axwabo.CommandSystem.Permissions;
+﻿using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 namespace Axwabo.CommandSystem.Example.Resolvers;
@@ -18,6 +17,7 @@ internal sealed class EnumCommandPropertyResolver :
 
     public string ResolveDescription(EnumCommandAttribute attribute) => EnumCommandAttribute.GetDescription(attribute.Command);
 
-    public IPermissionChecker CreatePermissionCheckerInstance(EnumCommandAttribute attribute) => throw new NotImplementedException();
+    public IPermissionChecker CreatePermissionCheckerInstance(EnumCommandAttribute attribute)
+        => new StringPermissionChecker(_config.Permissions[attribute.Command]);
 
 }

@@ -75,6 +75,9 @@
         <Compile Include="Resolvers\CustomCommandType.cs"/>
         <Compile Include="Resolvers\EnumCommandAttribute.cs"/>
         <Compile Include="Resolvers\EnumCommandPropertyResolver.cs"/>
+        <Compile Include="Resolvers\DiscordBroadcastCommand.cs"/>
+        <Compile Include="Resolvers\FlashCommand.cs"/>
+        <Compile Include="Resolvers\SendHintCommand.cs"/>
         <Compile Include="SimpleCommand.cs"/>
     </ItemGroup>
     <ItemGroup>
