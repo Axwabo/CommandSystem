@@ -66,6 +66,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="AttributeCommand.cs"/>
+        <Compile Include="CounterOption.cs"/>
+        <Compile Include="CountPlayersHoldingCoins.cs"/>
         <Compile Include="ExamplePlugin.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="SimpleCommand.cs"/>

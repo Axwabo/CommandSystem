@@ -40,6 +40,10 @@ public static class RemoteAdminOptionManager
     {
         if (option is null)
             throw new ArgumentNullException(nameof(option));
+        if (TryGetOptionByType(option.GetType().FullName, out var sameType))
+            throw new InvalidOperationException($"An option with the same type \"{sameType.GetType().FullName}\" is already registered.");
+        if (TryGetOption(option.OptionIdentifier, out var sameIdentifier))
+            throw new InvalidOperationException($"An option with the same identifier \"{sameIdentifier.OptionIdentifier}\" is already registered. Conflicting types: \"{option.GetType().FullName}\" against \"{sameIdentifier.GetType().FullName}\"");
         Options.Add(option);
     }
 
@@ -119,7 +123,7 @@ public static class RemoteAdminOptionManager
     /// </summary>
     /// <param name="sender">The sender of the request.</param>
     /// <param name="builder">The <see cref="StringBuilder"/> to append the options to.</param>
-    /// <param name="hideIdentifier">Whether to hide the option identifier using the size tag.</param>
+    /// <param name="hideIdentifier">Whether to hide the option identifier using the size tag and skip entries that are not visible with <see cref="IOptionVisibilityController"/>.</param>
     /// <param name="preferredOnly">Whether to only display options preferred by the sender.</param>
     /// <remarks>Only displays options accessible and visible to the given sender.</remarks>
     public static bool AppendAllOptions(CommandSender sender, StringBuilder builder, bool hideIdentifier = true, bool preferredOnly = true)
@@ -127,14 +131,21 @@ public static class RemoteAdminOptionManager
         var textToFormat = hideIdentifier ? "<size=0>({0})</size>{1}" : "({0}) {1}";
         var success = false;
         foreach (var option in Options)
-            if (option.VisibilityPermissions.CheckSafe(sender)
-                && (!preferredOnly || !OptionSettingsContainer.IsHidden(sender.SenderId, option))
-                && (option is not IOptionVisibilityController controller || controller.IsVisibleTo(sender))
-               )
-            {
-                success = true;
-                builder.AppendLine(string.Format(textToFormat, option.OptionIdentifier, option.GetText(sender)));
-            }
+        {
+            if (!option.VisibilityPermissions.CheckSafe(sender) || preferredOnly && OptionPreferencesContainer.IsHidden(sender.SenderId, option))
+                continue;
+            var hidden = option is IOptionVisibilityController controller && !controller.IsVisibleTo(sender);
+            if (hideIdentifier && hidden)
+                continue;
+            success = true;
+            var hiddenString = OptionPreferencesContainer.IsHidden(sender.SenderId, option)
+                ? "[HIDDEN BY PREFS] ".Color("#c8c8c8")
+                : hidden
+                    ? "[HIDDEN BY CONTROLLER] ".Color("#c8c8c8")
+                    : "";
+            var idString = hideIdentifier ? option.OptionIdentifier : option.OptionIdentifier.Color("#9696ff");
+            builder.AppendLine(hiddenString + string.Format(textToFormat, idString, option.GetText(sender)));
+        }
 
         return success;
     }

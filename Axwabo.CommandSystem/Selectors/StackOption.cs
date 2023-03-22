@@ -4,8 +4,8 @@ using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Selectors;
 
-[RemoteAdminOptionProperties("stack", "Stack", true)]
-[HiddenByDefault]
+[RemoteAdminOptionProperties("stack", "Stack", "green")]
+[StandaloneSelector]
 internal sealed class StackOption : RemoteAdminOptionBase
 {
 

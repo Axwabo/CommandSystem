@@ -7,7 +7,7 @@ using NorthwoodLib.Pools;
 namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 
 [CommandProperties("list", "Lists all RA options available to you.")]
-[SubcommandOfContainer(typeof(OptionSettingsContainer))]
+[SubcommandOfContainer(typeof(OptionPreferencesContainer))]
 internal sealed class ListOptions : CommandBase
 {
 

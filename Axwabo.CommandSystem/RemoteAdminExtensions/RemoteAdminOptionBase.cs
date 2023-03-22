@@ -40,8 +40,8 @@ public abstract class RemoteAdminOptionBase
         protected set => _icon = value;
     }
 
-    /// <summary>Whether this instance is hidden to all users by default.</summary>
-    public bool IsHiddenByDefault { get; }
+    /// <summary>Whether this instance is visible to all users by default.</summary>
+    public bool IsVisibleByDefault { get; }
 
     // ReSharper disable VirtualMemberCallInConstructor
     /// <summary>
@@ -54,8 +54,8 @@ public abstract class RemoteAdminOptionBase
         var derivedIsEmpty = string.IsNullOrWhiteSpace(id);
         if (!derivedIsEmpty && !RemoteAdminOptionManager.IsValidOptionId(id))
             throw InvalidId;
-        var resolved = RemoteAdminExtensionPropertyManager.TryResolveProperties(this, out var idFromAttribute, out _staticText, out _icon, out var hiddenByDefault, out var standaloneSelector);
-        IsHiddenByDefault = hiddenByDefault;
+        var resolved = RemoteAdminExtensionPropertyManager.TryResolveProperties(this, out var idFromAttribute, out _staticText, out _icon, out var visibleByDefault, out var standaloneSelector);
+        IsVisibleByDefault = visibleByDefault;
         if (derivedIsEmpty)
             id = idFromAttribute;
         if (id == AutoGenerateIdAttribute.Identifier)

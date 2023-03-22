@@ -20,19 +20,19 @@ public static class RemoteAdminExtensionPropertyManager
     /// <param name="id">The identifier of the option.</param>
     /// <param name="staticText">The static text of the option.</param>
     /// <param name="icon">The icon of the option.</param>
-    /// <param name="isHiddenByDefault">Whether the option is hidden to users by default.</param>
+    /// <param name="isVisibleByDefault">Whether the option is visible to users by default.</param>
     /// <param name="canBeUsedAsStandaloneSelector">Whether the option can be used as a standalone selector.</param>
     /// <returns>Whether the option id was successfully resolved.</returns>
-    public static bool TryResolveProperties(RemoteAdminOptionBase option, out string id, out string staticText, out BlinkingIcon icon, out bool isHiddenByDefault, out bool canBeUsedAsStandaloneSelector)
+    public static bool TryResolveProperties(RemoteAdminOptionBase option, out string id, out string staticText, out BlinkingIcon icon, out bool isVisibleByDefault, out bool canBeUsedAsStandaloneSelector)
     {
         id = null;
         staticText = null;
         icon = option is IOptionIconProvider provider ? provider.CreateIcon() : null;
-        isHiddenByDefault = false;
+        isVisibleByDefault = false;
         canBeUsedAsStandaloneSelector = false;
         foreach (var attribute in option.GetType().GetCustomAttributes())
         {
-            ResolveBaseAttribute(option, attribute, ref id, ref staticText, ref icon, ref canBeUsedAsStandaloneSelector, ref isHiddenByDefault);
+            ResolveBaseAttribute(option, attribute, ref id, ref staticText, ref icon, ref canBeUsedAsStandaloneSelector, ref isVisibleByDefault);
             if (BaseCommandPropertyManager.CurrentProcessor == null)
                 continue;
             var type = attribute.GetType();
@@ -51,12 +51,12 @@ public static class RemoteAdminExtensionPropertyManager
         ref string staticText,
         ref BlinkingIcon icon,
         ref bool canBeUsedAsStandaloneSelector,
-        ref bool isHiddenByDefault
+        ref bool isVisibleByDefault
     )
     {
-        if (attribute is HiddenByDefaultAttribute)
+        if (attribute is VisibleByDefaultAttribute)
         {
-            isHiddenByDefault = true;
+            isVisibleByDefault = true;
             return;
         }
 

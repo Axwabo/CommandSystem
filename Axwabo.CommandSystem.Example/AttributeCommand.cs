@@ -11,7 +11,7 @@ namespace Axwabo.CommandSystem.Example;
 [ClientCommand]
 [CommandName("attributeCommand")]
 [Description("Command with attributes")]
-[Aliases("attributeAlias")]
+[Aliases("attributeAlias", "attributeAlias2")]
 [MinArguments(1)] // at least one argument is required
 [Usage("number")] // do not include the command name
 public sealed class AttributeCommand : CommandBase, IHiddenCommand

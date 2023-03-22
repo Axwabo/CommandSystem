@@ -164,7 +164,7 @@
         <Compile Include="Attributes\Containers\SubcommandOfContainerAttribute.cs"/>
         <Compile Include="Attributes\Containers\UsesSubcommandsAttribute.cs"/>
         <Compile Include="Attributes\Interfaces\IStandaloneSelectorOption.cs"/>
-        <Compile Include="Attributes\RaExt\HiddenByDefaultAttribute.cs"/>
+        <Compile Include="Attributes\RaExt\VisibleByDefaultAttribute.cs"/>
         <Compile Include="Attributes\RaExt\OptionIconAttribute.cs"/>
         <Compile Include="Attributes\RaExt\RemoteAdminOptionPropertiesAttribute.cs"/>
         <Compile Include="Attributes\RaExt\StandaloneSelectorAttribute.cs"/>
@@ -274,7 +274,7 @@
         <Compile Include="RemoteAdminExtensions\ButtonBasedRemoteAdminOption.cs"/>
         <Compile Include="RemoteAdminExtensions\Commands\HideOption.cs"/>
         <Compile Include="RemoteAdminExtensions\Commands\ListOptions.cs"/>
-        <Compile Include="RemoteAdminExtensions\Commands\OptionSettingsContainer.cs"/>
+        <Compile Include="RemoteAdminExtensions\Commands\OptionPreferencesContainer.cs"/>
         <Compile Include="RemoteAdminExtensions\Commands\ShowOption.cs"/>
         <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionBase.cs"/>
