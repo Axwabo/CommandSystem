@@ -21,7 +21,7 @@ internal sealed class DefaultTargetingMessageGenerator :
 
     public string AffectedOneMessage { get; init; } = "Done! The request affected {0}.";
 
-    public string OnAffected(int players) => string.Format(AffectedMultipleMessage, _affectedMultipleIsCustom ? "players".PluralizeWithCount(players) : players.ToString());
+    public string OnAffected(int players) => string.Format(AffectedMultipleMessage, !_affectedMultipleIsCustom ? "players".PluralizeWithCount(players) : players.ToString());
 
     public string OnEveryoneAffected(int players) => OnAffected(players);
 

@@ -38,7 +38,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
         var affectedOne = affectedMultiple;
         TargetingCommandPropertyManager.ResolveProperties(this, ref _noTargetsFoundMessage, ref affectedMultiple, ref affectedOne, ref _noPlayersAffected, ref _shouldAffectSpectators);
         TargetingCommandPropertyManager.ResolveGenerators(this, out _affectedMultipleGenerator, out _allAffectedGenerator, out _affectedOneGenerator, out _selectionManager);
-        if (_affectedMultipleGenerator is not null || _allAffectedGenerator is not null || _affectedOneGenerator is not null)
+        if (_affectedMultipleGenerator is not null && _allAffectedGenerator is not null && _affectedOneGenerator is not null)
             return;
         var generator = new DefaultTargetingMessageGenerator
         {

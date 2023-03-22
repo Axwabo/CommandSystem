@@ -68,8 +68,13 @@
         <Compile Include="AttributeCommand.cs"/>
         <Compile Include="CounterOption.cs"/>
         <Compile Include="CountPlayersHoldingCoins.cs"/>
+        <Compile Include="ExampleConfig.cs"/>
         <Compile Include="ExamplePlugin.cs"/>
+        <Compile Include="GiveRandomKeycard.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Resolvers\CustomCommandType.cs"/>
+        <Compile Include="Resolvers\EnumCommandAttribute.cs"/>
+        <Compile Include="Resolvers\EnumCommandPropertyResolver.cs"/>
         <Compile Include="SimpleCommand.cs"/>
     </ItemGroup>
     <ItemGroup>

@@ -72,31 +72,39 @@ public static partial class RegistrationExtensions
         if (type == null)
             throw new ArgumentNullException(nameof(type));
         foreach (var attribute in type.GetCustomAttributes())
-            AddRegistrationAttribute(processor, attribute);
+            WithMultiplexResolverObject(processor, attribute);
         return processor;
     }
 
-    private static void AddRegistrationAttribute(CommandRegistrationProcessor processor, Attribute attribute)
+    /// <summary>
+    /// Adds all registration resolvers to the <see cref="CommandRegistrationProcessor"/> from the given object instance.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolvers to.</param>
+    /// <param name="instance">The instance to get the resolvers from.</param>
+    /// <returns>The processor itself.</returns>
+    public static CommandRegistrationProcessor WithMultiplexResolverObject(this CommandRegistrationProcessor processor, object instance)
     {
-        processor.ConsumeAttribute<ICommandNameResolver>(attribute, typeof(ICommandNameResolver<>), WithNameResolver);
-        processor.ConsumeAttribute<ICommandDescriptionResolver>(attribute, typeof(ICommandDescriptionResolver<>), WithDescriptionResolver);
-        processor.ConsumeAttribute<ICommandAliasResolver>(attribute, typeof(ICommandAliasResolver<>), WithAliasResolver);
-        processor.ConsumeAttribute<ICommandUsageResolver>(attribute, typeof(ICommandUsageResolver<>), WithUsageResolver);
-        processor.ConsumeAttribute<IAttributeBasedPermissionCreator>(attribute, typeof(IAttributeBasedPermissionCreator<>), WithPermissionCreator);
+        processor.ConsumeInstance<ICommandNameResolver>(instance, typeof(ICommandNameResolver<>), WithNameResolver);
+        processor.ConsumeInstance<ICommandDescriptionResolver>(instance, typeof(ICommandDescriptionResolver<>), WithDescriptionResolver);
+        processor.ConsumeInstance<ICommandAliasResolver>(instance, typeof(ICommandAliasResolver<>), WithAliasResolver);
+        processor.ConsumeInstance<ICommandUsageResolver>(instance, typeof(ICommandUsageResolver<>), WithUsageResolver);
+        processor.ConsumeInstance<IAttributeBasedPermissionCreator>(instance, typeof(IAttributeBasedPermissionCreator<>), WithPermissionCreator);
 
-        processor.ConsumeAttribute<IAffectedMultiplePlayersResolver>(attribute, typeof(IAffectedMultiplePlayersResolver<>), WithTargetingAffectedMultipleResolver);
-        processor.ConsumeAttribute<IAffectedOnePlayerResolver>(attribute, typeof(IAffectedOnePlayerResolver<>), WithTargetingAffectedOneResolver);
-        processor.ConsumeAttribute<IAffectedAllPlayersResolver>(attribute, typeof(IAffectedAllPlayersResolver<>), WithTargetingAffectedAllResolver);
-        processor.ConsumeAttribute<ITargetSelectionResolver>(attribute, typeof(ITargetSelectionResolver<>), WithTargetingSelectionResolver);
+        processor.ConsumeInstance<IAffectedMultiplePlayersResolver>(instance, typeof(IAffectedMultiplePlayersResolver<>), WithTargetingAffectedMultipleResolver);
+        processor.ConsumeInstance<IAffectedOnePlayerResolver>(instance, typeof(IAffectedOnePlayerResolver<>), WithTargetingAffectedOneResolver);
+        processor.ConsumeInstance<IAffectedAllPlayersResolver>(instance, typeof(IAffectedAllPlayersResolver<>), WithTargetingAffectedAllResolver);
+        processor.ConsumeInstance<ITargetSelectionResolver>(instance, typeof(ITargetSelectionResolver<>), WithTargetingSelectionResolver);
 
-        processor.ConsumeAttribute<IRemoteAdminOptionIdResolver>(attribute, typeof(IRemoteAdminOptionIdResolver<>), WithRemoteAdminOptionIdResolver);
-        processor.ConsumeAttribute<IStaticOptionTextResolver>(attribute, typeof(IStaticOptionTextResolver<>), WithRemoteAdminOptionTextResolver);
-        processor.ConsumeAttribute<IOptionIconResolver>(attribute, typeof(IOptionIconResolver<>), WithRemoteAdminOptionIconResolver);
+        processor.ConsumeInstance<IRemoteAdminOptionIdResolver>(instance, typeof(IRemoteAdminOptionIdResolver<>), WithRemoteAdminOptionIdResolver);
+        processor.ConsumeInstance<IStaticOptionTextResolver>(instance, typeof(IStaticOptionTextResolver<>), WithRemoteAdminOptionTextResolver);
+        processor.ConsumeInstance<IOptionIconResolver>(instance, typeof(IOptionIconResolver<>), WithRemoteAdminOptionIconResolver);
+
+        return processor;
     }
 
-    private static void ConsumeAttribute<TBaseResolver>(this CommandRegistrationProcessor processor, Attribute attribute, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod)
+    private static void ConsumeInstance<TBaseResolver>(this CommandRegistrationProcessor processor, object instance, Type genericType, Func<CommandRegistrationProcessor, Type, TBaseResolver, CommandRegistrationProcessor> addMethod)
     {
-        if (attribute is TBaseResolver resolver)
+        if (instance is TBaseResolver resolver)
             addMethod(processor, GenericTypeExtensions.ImplementedGenericType(resolver, genericType), resolver);
     }
 
