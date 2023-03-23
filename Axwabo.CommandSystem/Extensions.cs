@@ -17,7 +17,7 @@ public static class Extensions
     /// Combines the nicknames of the given hubs into a single string.
     /// </summary>
     /// <param name="hubs">The hubs to combine.</param>
-    /// <param name="separator">The separator to use.</param>
+    /// <param name="separator">The string to use as a separator.<paramref name="separator" /> is included in the returned string only if <paramref name="hubs" /> has more than one element.</param>
     /// <returns>The combined string.</returns>
     public static string CombineNicknames(this IEnumerable<ReferenceHub> hubs, string separator = ", ")
         => string.Join(separator, hubs.Select(p => p.nicknameSync.MyNick));
@@ -26,10 +26,43 @@ public static class Extensions
     /// Combines the nicknames of the given hubs from <see cref="CommandResultOnTarget"/> objects into a single string.
     /// </summary>
     /// <param name="results">The results to combine.</param>
-    /// <param name="separator">The separator to use.</param>
+    /// <param name="separator">The string to use as a separator.<paramref name="separator" /> is included in the returned string only if <paramref name="results" /> has more than one element.</param>
     /// <returns>The combined string.</returns>
     public static string CombineNicknames(this IEnumerable<CommandResultOnTarget> results, string separator = ", ")
-        => string.Join(separator, results.Select(p => p.Target.nicknameSync.MyNick));
+        => string.Join(separator, results.Select(p => p.Nick));
+
+    /// <summary>
+    /// Concatenates the responses of the given <see cref="CommandResult"/> instances using the specified separator.
+    /// </summary>
+    /// <param name="results">The results to concatenate.</param>
+    /// <param name="separator">The string to use as a separator.<paramref name="separator" /> is included in the returned string only if <paramref name="results" /> has more than one element.</param>
+    /// <returns>The concatenated string.</returns>
+    public static string JoinResults(this IEnumerable<CommandResult> results, string separator = ", ")
+        => string.Join(separator, results.Select(p => p.Response));
+
+    /// <summary>
+    /// Concatenates the responses of the given <see cref="CommandResultOnTarget"/> instances using the specified separator.
+    /// </summary>
+    /// <param name="results">The results to concatenate.</param>
+    /// <param name="separator">The string to use as a separator.<paramref name="separator" /> is included in the returned string only if <paramref name="results" /> has more than one element.</param>
+    /// <returns>The concatenated string.</returns>
+    public static string JoinResults(this IEnumerable<CommandResultOnTarget> results, string separator = ", ")
+        => string.Join(separator, results.Select(p => p.Response));
+
+    /// <summary>
+    /// Concatenates the members of a string array segment starting from the given index using the specified separator between each member.
+    /// </summary>
+    /// <param name="arguments">The string to use as a separator.<paramref name="separator" /> is included in the returned string only if <paramref name="arguments" /> has more than one element.</param>
+    /// <param name="start">The index to start joining from.</param>
+    /// <param name="separator">The string to use as a separator.<paramref name="separator" /> is included in the returned string only if the new segment has more than one element.</param>
+    /// <returns>The joined string.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the index indicates an array with a negative count:<br/>
+    /// - the segment was already empty and the index is greater than zero<br/>
+    /// - the index is greater than the segment's length.
+    /// </exception>
+    public static string Join(this ArraySegment<string> arguments, int start = 0, string separator = " ")
+        => string.Join(separator, arguments.Segment(start));
 
     /// <summary>
     /// Pluralizes the given phrase with the given count.

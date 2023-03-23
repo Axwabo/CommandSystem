@@ -19,6 +19,8 @@ namespace Axwabo.CommandSystem.Commands;
 public abstract class UnifiedTargetingCommand : CommandBase
 {
 
+    private static readonly string[] Players = {"<players>"};
+
     private readonly string _noTargetsFoundMessage = "No targets were found.";
     private readonly string _noPlayersAffected = "No players were affected.";
     private readonly bool _shouldAffectSpectators;
@@ -59,7 +61,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
     /// <inheritdoc />
     public override string[] Usage => base.Usage is {Length: not 0} usage
         ? usage.Select(e => $"<players> {e}").ToArray()
-        : new[] {"players"};
+        : Players;
 
     private bool ShouldBeAffected(ReferenceHub hub)
         => (ShouldAffectSpectators || hub.IsAlive())

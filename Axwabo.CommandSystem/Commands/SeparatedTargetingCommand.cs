@@ -22,7 +22,7 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand
         {
             var result = ExecuteOn(target, arguments, sender);
             if (result)
-                succeeded.Add(new CommandResultOnTarget(target, result));
+                succeeded.Add(new CommandResultOnTarget(target, result.Response));
             else
                 failed.Add(new CommandResultOnTarget(target, result, false));
         }

@@ -42,7 +42,7 @@ internal sealed class StackDuplicate : CommandBase, INotEnoughArguments
 
     private static CommandResult DuplicateSpecific(PlayerSelectionStack selection, ArraySegment<string> arguments)
     {
-        var split = string.Join(" ", arguments).Split(Separators.ToCharArray());
+        var split = arguments.Join().Split(Separators.ToCharArray());
         var push = ListPool<HubCollection>.Shared.Rent(split.Length);
         try
         {

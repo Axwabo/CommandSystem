@@ -88,7 +88,7 @@ public static class CommandHelpers
     {
         if (command == null)
             throw new ArgumentNullException(nameof(command));
-        var args = arguments.Segment(1);
+        var args = arguments.Count < 2 ? new ArraySegment<string>(Array.Empty<string>()) : arguments.Segment(1);
         return command is CommandWrapper {BackingCommand: { } backingCommand}
             ? GetHelpForCustomCommand(backingCommand, args)
             : GetHelpForVanillaCommand(command, args);
@@ -107,7 +107,7 @@ public static class CommandHelpers
         while (args.Count != 0 && command is ICommandHandler commandHandler && commandHandler.TryGetCommand(args.At(0), out var subcommand))
         {
             command = subcommand;
-            str = str + " " + subcommand.Command;
+            str += " " + subcommand.Command;
             if (args.Count <= 1)
                 break;
             args = args.Segment(1);
@@ -168,19 +168,14 @@ public static class CommandHelpers
         {
             builder.Append(header);
             GetCustomCommandList(container, builder);
-            StringBuilderPool.Shared.Return(builder);
             return;
         }
 
         if (command is not ICommandHandler handler)
-        {
-            StringBuilderPool.Shared.Return(builder);
             return;
-        }
 
         builder.Append(header);
         GetVanillaCommandList(handler, builder);
-        StringBuilderPool.Shared.Return(builder);
     }
 
     /// <summary>

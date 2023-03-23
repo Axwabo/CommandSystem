@@ -17,7 +17,7 @@ public sealed class SendHintCommand : UnifiedTargetingCommand
     {
         if (!float.TryParse(arguments.At(0), out var duration))
             return "!Invalid duration.";
-        var content = string.Join(" ", arguments.Segment(1));
+        var content = arguments.Join(1);
         var hint = new TextHint(content, new HintParameter[]
         {
             new StringHintParameter(content)

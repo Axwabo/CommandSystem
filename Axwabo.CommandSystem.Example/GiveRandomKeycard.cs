@@ -11,7 +11,6 @@ using InventorySystem;
 namespace Axwabo.CommandSystem.Example;
 
 [RemoteAdminCommand]
-[Usage("Players")]
 [AffectedOnePlayerMessage("{0} has received a random keycard")] // {0} will be replaced with the player's name using string.Format
 public sealed class GiveRandomKeycard : SeparatedTargetingCommand, IAffectedMultiplePlayersMessageGenerator
 {

@@ -66,6 +66,10 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="AttributeCommand.cs"/>
+        <Compile Include="Container\DropItem.cs"/>
+        <Compile Include="Container\Equip.cs"/>
+        <Compile Include="Container\InventoryCommand.cs"/>
+        <Compile Include="Container\SeeInventory.cs"/>
         <Compile Include="CounterOption.cs"/>
         <Compile Include="CountPlayersHoldingCoins.cs"/>
         <Compile Include="ExampleConfig.cs"/>

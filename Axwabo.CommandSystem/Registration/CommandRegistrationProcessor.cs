@@ -196,12 +196,13 @@ public sealed class CommandRegistrationProcessor
         {
             case IRegistrationFilter {AllowRegistration: false}:
                 return true;
-            case SubcommandOfContainerAttribute subOf when typeof(ContainerCommand).IsAssignableFrom(subOf.ContainerType):
+            case SubcommandOfContainerAttribute subOf when !subOf.ContainerType.IsAbstract && typeof(ContainerCommand).IsAssignableFrom(subOf.ContainerType):
                 isSubcommand = true;
                 _subcommandsToRegister.GetOrAdd(subOf.ContainerType, () => new List<Type>()).Add(type);
                 return false;
-            case UsesSubcommandsAttribute {SubcommandTypes: { } types} when typeof(ContainerCommand).IsAssignableFrom(type):
-                _subcommandsToRegister.GetOrAdd(type, () => new List<Type>()).AddRange(types);
+            case UsesSubcommandsAttribute {SubcommandTypes: {Length: not 0} types} when typeof(ContainerCommand).IsAssignableFrom(type):
+                _subcommandsToRegister.GetOrAdd(type, () => new List<Type>())
+                    .AddRange(types.Where(t => !t.IsAbstract && typeof(CommandBase).IsAssignableFrom(t)));
                 return false;
             case CommandTargetAttribute targetAttribute:
                 targets = CommandTargetAttribute.Combine(targets, targetAttribute);

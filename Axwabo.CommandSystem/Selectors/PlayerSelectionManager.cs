@@ -42,8 +42,10 @@ public static class PlayerSelectionManager
                 ? throw new PlayerListProcessorException()
                 : throw new PlayerListProcessorException(message);
 
+    private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || Plugin.Instance.Config.Debug;
+
     /// <summary>Gets all players.</summary>
-    public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer).ToList();
+    public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(NonHost).ToList();
 
     /// <summary>Gets all alive players.</summary>
     public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer && h.IsAlive()).ToList();
@@ -76,7 +78,7 @@ public static class PlayerSelectionManager
             return false;
         }
 
-        var formatted = string.Join(" ", arguments);
+        var formatted = arguments.Join();
         try
         {
             if (arguments.At(0) != "*")

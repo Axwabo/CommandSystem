@@ -15,6 +15,9 @@ public readonly struct CommandResultOnTarget
     /// <summary>Whether the command was successful.</summary>
     public readonly bool Success;
 
+    /// <summary>Quick nickname access.</summary>
+    public readonly string Nick;
+
     /// <summary>Determines whether response is empty.</summary>
     public bool IsEmpty => string.IsNullOrEmpty(Response);
 
@@ -29,6 +32,7 @@ public readonly struct CommandResultOnTarget
         Target = target;
         Response = response;
         Success = success;
+        Nick = target.nicknameSync.MyNick;
     }
 
     /// <summary>
@@ -41,6 +45,7 @@ public readonly struct CommandResultOnTarget
         Target = target;
         Response = null;
         Success = success;
+        Nick = target.nicknameSync.MyNick;
     }
 
     /// <summary>
