@@ -276,15 +276,16 @@
         <Compile Include="RemoteAdminExtensions\Commands\ListOptions.cs"/>
         <Compile Include="RemoteAdminExtensions\Commands\OptionPreferencesContainer.cs"/>
         <Compile Include="RemoteAdminExtensions\Commands\ShowOption.cs"/>
+        <Compile Include="RemoteAdminExtensions\DeveloperMode.cs"/>
         <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionBase.cs"/>
         <Compile Include="RemoteAdminExtensions\RemoteAdminOptionManager.cs"/>
         <Compile Include="RemoteAdminExtensions\RequestDataButton.cs"/>
+        <Compile Include="RemoteAdminExtensions\StackOption.cs"/>
         <Compile Include="Selectors\Filtering\CustomHubFilterRegistry.cs"/>
         <Compile Include="Selectors\Filtering\Delegates.cs"/>
         <Compile Include="Selectors\Filtering\FilterEntry.cs"/>
         <Compile Include="Selectors\Filtering\PresetHubFilters.cs"/>
-        <Compile Include="Selectors\StackOption.cs"/>
         <Compile Include="Structs\CommandResult.cs"/>
         <Compile Include="Structs\CommandResultOnTarget.cs"/>
         <Compile Include="Registration\CommandRegistrationProcessor.cs"/>

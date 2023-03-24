@@ -150,16 +150,22 @@ public static class AtSelectorProcessor
     /// <param name="filters">The filters to use.</param>
     /// <param name="limit">The maximum amount of players; -1 will result in no limit.</param>
     /// <returns>The selected players.</returns>
-    public static List<ReferenceHub> ExecuteSelector(char selectorChar, List<HubFilter> filters, int limit) => GetDefaultTargets(
-        GetAllFiltered(filters),
-        selectorChar,
-        limit
-    );
+    public static List<ReferenceHub> ExecuteSelector(char selectorChar, List<HubFilter> filters, int limit)
+    {
+        var targets = GetDefaultTargets(
+            GetAllFiltered(filters),
+            selectorChar,
+            limit
+        );
+        if (limit > -1 && targets.Count > limit)
+            targets.RemoveRange(limit, targets.Count - limit);
+        return targets;
+    }
 
     private static List<ReferenceHub> GetAllFiltered(List<HubFilter> filters)
     {
         var all = PlayerSelectionManager.AllPlayers;
-        if (filters == null)
+        if (filters is not {Count: not 0})
             return all;
         for (var i = 0; i < all.Count; i++)
         {
@@ -187,7 +193,7 @@ public static class AtSelectorProcessor
         'a' or 'A' => candidates,
         'r' or 'R' => GetRandom(candidates, limit),
         's' or 'S' => Self,
-        'o' or 'O' => Others,
+        'o' or 'O' => Others(candidates),
         _ => throw new ArgumentOutOfRangeException(nameof(selector), selector, null)
     };
 
@@ -213,15 +219,11 @@ public static class AtSelectorProcessor
 
     private static List<ReferenceHub> Self => HubCollection.From(PlayerSelectionManager.CurrentSender);
 
-    private static List<ReferenceHub> Others
+    private static List<ReferenceHub> Others(List<ReferenceHub> candidates)
     {
-        get
-        {
-            var list = PlayerSelectionManager.AllPlayers;
-            if (PlayerSelectionManager.CurrentSender is PlayerCommandSender {ReferenceHub: var hub})
-                list.Remove(hub);
-            return list;
-        }
+        if (PlayerSelectionManager.CurrentSender is PlayerCommandSender {ReferenceHub: var hub})
+            candidates.Remove(hub);
+        return candidates;
     }
 
     /// <summary>

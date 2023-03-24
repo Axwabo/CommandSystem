@@ -1,8 +1,7 @@
 ﻿using Axwabo.CommandSystem.Attributes.RaExt;
-using Axwabo.CommandSystem.RemoteAdminExtensions;
 using RemoteAdmin;
 
-namespace Axwabo.CommandSystem.Selectors;
+namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 
 [RemoteAdminOptionProperties("stack", "Stack", "green")]
 [StandaloneSelector]
