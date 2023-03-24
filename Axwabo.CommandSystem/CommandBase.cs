@@ -74,7 +74,8 @@ public abstract class CommandBase
     /// <exception cref="InvalidNameException">If the <see cref="Name">command name property</see> is not overriden and is not specified by attributes on the class.</exception>
     protected CommandBase()
     {
-        if (string.IsNullOrWhiteSpace(Name) && !BaseCommandPropertyManager.TryResolveProperties(this, out _name, out _desc, out _aliases, out _usage, out _minArgs, out _playerOnly))
+        var resolved = BaseCommandPropertyManager.TryResolveProperties(this, out _name, out _desc, out _aliases, out _usage, out _minArgs, out _playerOnly);
+        if (string.IsNullOrWhiteSpace(Name) && !resolved)
             throw new InvalidNameException($"Command name on type {GetType().FullName} is not set. Are you missing an attribute or custom name resolver?");
         Permissions ??= BaseCommandPropertyManager.ResolvePermissionChecker(this);
     }
