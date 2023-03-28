@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Axwabo.CommandSystem.Commands.Interfaces;
-using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Commands;
 

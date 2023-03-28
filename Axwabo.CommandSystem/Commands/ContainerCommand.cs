@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Commands.Interfaces;
-using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Commands;
 

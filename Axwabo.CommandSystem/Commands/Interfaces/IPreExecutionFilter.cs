@@ -1,5 +1,4 @@
 ﻿using System;
-using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Commands.Interfaces;
 

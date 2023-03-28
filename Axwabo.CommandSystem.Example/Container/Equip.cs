@@ -4,7 +4,6 @@ using System.Linq;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Attributes.Containers;
 using Axwabo.CommandSystem.Commands;
-using Axwabo.CommandSystem.Structs;
 using Axwabo.Helpers;
 
 namespace Axwabo.CommandSystem.Example.Container;

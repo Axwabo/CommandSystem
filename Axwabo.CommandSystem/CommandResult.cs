@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Axwabo.CommandSystem.Structs;
+namespace Axwabo.CommandSystem;
 
 /// <summary>
 /// Represents the result of a command execution.

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Permissions;
-using Axwabo.CommandSystem.Structs;
 using Utils.NonAllocLINQ;
+
 // Northwood's LINQ extension methods
 
 namespace Axwabo.CommandSystem.Example;

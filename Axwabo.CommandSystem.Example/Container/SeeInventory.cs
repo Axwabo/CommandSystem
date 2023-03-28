@@ -5,7 +5,6 @@ using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Permissions;
-using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Example.Container;
 

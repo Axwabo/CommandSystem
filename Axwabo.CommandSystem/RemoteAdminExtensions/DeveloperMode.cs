@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Axwabo.CommandSystem.Attributes.RaExt;
 using Axwabo.CommandSystem.Patches;
-using Axwabo.CommandSystem.Structs;
 using Axwabo.Helpers;
 using CommandSystem;
 using RemoteAdmin;

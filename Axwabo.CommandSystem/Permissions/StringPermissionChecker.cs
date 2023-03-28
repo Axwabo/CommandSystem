@@ -3,7 +3,6 @@ using Exiled.Permissions.Extensions;
 #else
 using NWAPIPermissionSystem;
 #endif
-using Axwabo.CommandSystem.Structs;
 
 namespace Axwabo.CommandSystem.Permissions;
 

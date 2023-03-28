@@ -5,7 +5,6 @@ using Axwabo.CommandSystem.Attributes.Targeting;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.Permissions;
-using Axwabo.CommandSystem.Structs;
 using InventorySystem;
 
 namespace Axwabo.CommandSystem.Example;

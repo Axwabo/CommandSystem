@@ -1,7 +1,6 @@
 ﻿using System;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands.Interfaces;
-using Axwabo.CommandSystem.Structs;
 using NorthwoodLib.Pools;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;

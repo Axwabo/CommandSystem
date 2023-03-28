@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
-using Axwabo.CommandSystem.Structs;
+using Axwabo.CommandSystem.Commands.Interfaces;
+using Axwabo.Helpers;
 using Hints;
 
 namespace Axwabo.CommandSystem.Example.Resolvers;
@@ -10,21 +11,28 @@ namespace Axwabo.CommandSystem.Example.Resolvers;
 [EnumCommand(CustomCommandType.SendHint)]
 [MinArguments(2)]
 [Usage("duration ...message")]
-public sealed class SendHintCommand : UnifiedTargetingCommand
+public sealed class SendHintCommand : SeparatedTargetingCommand, ITargetingPreExecutionFilter
 {
 
-    protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
+    private TextHint _hint;
+
+    public CommandResult? OnBeforeExecuted(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
     {
-        if (!float.TryParse(arguments.At(0), out var duration))
-            return "!Invalid duration.";
+        // make sure the duration is 0 or higher
+        if (!Parse.Float(arguments.At(0), ValueRange<float>.StartOnly(0), out var duration))
+            return "!Invalid duration - must be 0 or greater.";
         var content = arguments.Join(1);
-        var hint = new TextHint(content, new HintParameter[]
+        _hint = new TextHint(content, new HintParameter[]
         {
             new StringHintParameter(content)
         }, durationScalar: duration);
-        foreach (var hub in targets)
-            hub.hints.Show(hint);
-        return $"Hint sent to {"player".PluralizeWithCount(targets.Count)}";
+        return CommandResult.Null;
+    }
+
+    protected override CommandResult ExecuteOn(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender)
+    {
+        target.hints.Show(_hint);
+        return true;
     }
 
 }

@@ -1,4 +1,4 @@
-﻿namespace Axwabo.CommandSystem.Structs;
+﻿namespace Axwabo.CommandSystem;
 
 /// <summary>
 /// Stores the result of a command along with the <see cref="ReferenceHub"/> it was executed on.
