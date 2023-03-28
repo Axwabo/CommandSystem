@@ -122,7 +122,7 @@ public abstract class CommandBase
     /// <returns>The result of failure.</returns>
     protected CommandResult OnNotEnoughArguments(ArraySegment<string> arguments, CommandSender sender, int required)
     {
-        var custom = this is INotEnoughArguments notEnough
+        var custom = this is INotEnoughArgumentsHandler notEnough
             ? notEnough.OnNotEnoughArgumentsProvided(arguments, sender, required)
             : CommandResult.Null;
         return custom ?? $"!You need to provide at least {"argument".PluralizeWithCount(required)}! {CombinedUsage}".TrimEnd();

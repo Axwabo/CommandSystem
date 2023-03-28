@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.RemoteAdminExtensions;
 using Axwabo.CommandSystem.Selectors;
 using GameCore;
 using HarmonyLib;
@@ -23,6 +24,7 @@ internal static class ConsolePatch
     {
         var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
         var pre = list.FindCode(OpCodes.Ldloc_2);
+
         list.InsertRange(pre, new[]
         {
             This.MoveBlocksFrom(list[pre]),
@@ -32,14 +34,24 @@ internal static class ConsolePatch
         list.InsertRange(list.FindCode(OpCodes.Stloc_S, start: pre) + 1, new[]
         {
             Null,
-            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
+            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
+            Ldarg(2),
+            Ldloc(1),
+            Ldloc(7),
+            Ldloc(6),
+            Call<DeveloperMode>(nameof(DeveloperMode.OnCommandExecuted))
         });
+
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
         list.RemoveRange(failedIndex, 6);
         list.InsertRange(failedIndex, new[]
         {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
+            Ldarg(2),
+            Ldloc(1),
+            Ldloc(9),
+            Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
             Ldloc(9),
             Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
             Stloc(10)

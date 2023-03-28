@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.RemoteAdminExtensions;
 using Axwabo.CommandSystem.Selectors;
 using HarmonyLib;
 using NorthwoodLib.Pools;
@@ -32,14 +33,26 @@ internal static class QueryProcessorPatch
         list.InsertRange(list.FindCode(OpCodes.Stloc_2, start: pre) + 1, new[]
         {
             Null,
-            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
+            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
+            This,
+            Ldfld<QueryProcessor>(nameof(QueryProcessor._sender)),
+            Ldloc(0),
+            Ldloc(3),
+            Ldloc(2),
+            Call<DeveloperMode>(nameof(DeveloperMode.OnCommandExecuted))
         });
+
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
         list.RemoveRange(failedIndex, 4);
         list.InsertRange(failedIndex, new[]
         {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
+            This,
+            Ldfld<QueryProcessor>(nameof(QueryProcessor._sender)),
+            Ldloc(0),
+            Ldloc(4),
+            Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
             Ldloc(4),
             Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
             Stloc(5)

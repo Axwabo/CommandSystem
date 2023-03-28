@@ -72,34 +72,48 @@ public readonly struct CommandResult
     /// <summary>
     /// Casts a string to a <see cref="CommandResult"/> with the string as the response.
     /// </summary>
-    /// <param name="s">The string to cast.</param>
+    /// <param name="response">The string to cast.</param>
     /// <returns>A new <see cref="CommandResult"/>.</returns>
     /// <remarks>If the response starts with '!', it will be treated as a failing response. If you want your response to start with '!', use <see cref="Succeeded"/> or <see cref="CommandResult(bool,string)">the other constructor</see>.</remarks>
     /// <seealso cref="CommandResult(string)"/>
-    public static implicit operator CommandResult(string s) => new(s ?? throw new ArgumentNullException(nameof(s), InvalidCast));
+    public static implicit operator CommandResult(string response) => new(response ?? throw new ArgumentNullException(nameof(response), InvalidCast));
 
     /// <summary>
     /// Creates an empty <see cref="CommandResult"/> with the given success state.
     /// </summary>
-    /// <param name="s">The success state.</param>
+    /// <param name="success">The success state.</param>
     /// <returns>A new <see cref="CommandResult"/>.</returns>
-    public static implicit operator CommandResult(bool s) => new(s, null);
+    public static implicit operator CommandResult(bool success) => new(success, null);
+
+    /// <summary>
+    /// Creates a <see cref="CommandResult"/> from a tuple of a string and a bool.
+    /// </summary>
+    /// <param name="tuple">The tuple to cast.</param>
+    /// <returns>A new <see cref="CommandResult"/>.</returns>
+    public static implicit operator CommandResult((string, bool) tuple) => new(tuple.Item2, tuple.Item1);
+
+    /// <summary>
+    /// Creates a <see cref="CommandResult"/> from a tuple of a bool and a string.
+    /// </summary>
+    /// <param name="tuple">The tuple to cast.</param>
+    /// <returns>A new <see cref="CommandResult"/>.</returns>
+    public static implicit operator CommandResult((bool, string) tuple) => new(tuple.Item1, tuple.Item2);
 
     /// <summary>
     /// Casts a <see cref="CommandResult"/> to a bool, determining its success state.
     /// </summary>
-    /// <param name="r">The <see cref="CommandResult"/> to cast.</param>
+    /// <param name="result">The <see cref="CommandResult"/> to cast.</param>
     /// <returns>Whether the command succeeded.</returns>
-    public static implicit operator bool(CommandResult r) => r.Success;
+    public static implicit operator bool(CommandResult result) => result.Success;
 
     /// <summary>
     /// Casts a <see cref="CommandResult"/> to a string, returning its response.
     /// </summary>
-    /// <param name="r">The <see cref="CommandResult"/> to cast.</param>
+    /// <param name="result">The <see cref="CommandResult"/> to cast.</param>
     /// <returns>The response of the command.</returns>
     /// <seealso cref="IsEmpty"/>
     /// <seealso cref="Response"/>
-    public static implicit operator string(CommandResult r) => r.Response;
+    public static implicit operator string(CommandResult result) => result.Response;
 
     #endregion
 

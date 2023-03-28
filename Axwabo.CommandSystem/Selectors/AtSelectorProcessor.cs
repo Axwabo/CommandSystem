@@ -4,6 +4,7 @@ using System.Text;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Selectors.Filtering;
 using PlayerRoles;
+using PlayerRoles.FirstPersonControl;
 using RemoteAdmin;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -112,7 +113,7 @@ public static class AtSelectorProcessor
             "onstack" or "stack" => PresetHubFilters.Stack,
             "currentitem" or "curi" => PresetHubFilters.CurrentItem(value),
             "godmode" or "god" => PresetHubFilters.GodMode,
-            "noclip" or "nc" => PresetHubFilters.Noclip,
+            "noclip" or "nc" => FpcNoclip.IsPermitted,
             "health" or "hp" => PresetHubFilters.Health(value),
             "artificalhealth" or "ahp" => PresetHubFilters.ArtificialHealth(value),
             "humeshield" or "hs" => PresetHubFilters.HumeShield(value),

@@ -110,13 +110,6 @@ public static class PresetHubFilters
     public static bool GodMode(ReferenceHub hub) => hub.characterClassManager.GodMode;
 
     /// <summary>
-    /// Checks whether the given player has noclip enabled.
-    /// </summary>
-    /// <param name="hub">The player to check.</param>
-    /// <returns>Whether the player has noclip enabled.</returns>
-    public static bool Noclip(ReferenceHub hub) => hub.playerStats.GetModule<AdminFlagsStat>().HasFlag(AdminFlags.Noclip);
-
-    /// <summary>
     /// Gets a <see cref="HubFilter"/> for the given player's health.
     /// </summary>
     /// <param name="value">The health value to check for.</param>

@@ -6,7 +6,7 @@ namespace Axwabo.CommandSystem.Commands.Interfaces;
 /// <summary>
 /// A command preprocessor that is invoked when the command is executed with not enough arguments. A <see cref="CommandBase"/> can implement this interface.
 /// </summary>
-public interface INotEnoughArguments
+public interface INotEnoughArgumentsHandler
 {
 
     /// <summary>

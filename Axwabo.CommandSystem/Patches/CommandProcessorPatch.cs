@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.RemoteAdminExtensions;
 using Axwabo.CommandSystem.Selectors;
 using HarmonyLib;
 using NorthwoodLib.Pools;
@@ -49,7 +50,12 @@ internal static class CommandProcessorPatch
         list.InsertRange(list.FindCode(OpCodes.Stloc_S, start: pre) + 1, new[]
         {
             Null,
-            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
+            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
+            Ldarg(1),
+            Ldloc(1),
+            Ldloc(9),
+            Ldloc(8),
+            Call<DeveloperMode>(nameof(DeveloperMode.OnCommandExecuted))
         });
 
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
@@ -58,6 +64,10 @@ internal static class CommandProcessorPatch
         {
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
+            Ldarg(1),
+            Ldloc(1),
+            Ldloc(11),
+            Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
             Ldloc(11),
             Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
             Stloc(12)

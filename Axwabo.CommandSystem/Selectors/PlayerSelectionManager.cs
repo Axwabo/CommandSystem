@@ -245,11 +245,11 @@ public static class PlayerSelectionManager
             "first" or "f" => stack.Pop(),
             "last" or "l" => stack.PopAt(stack.LastIndex),
             "all" or "a" or "*" => stack.PopAll(),
-            _ => ParseSpecialStackOptions(stack, options.ToLowerInvariant())
+            _ => ParseNumericStackOptions(stack, options.ToLowerInvariant())
         };
     }
 
-    private static List<ReferenceHub> ParseSpecialStackOptions(PlayerSelectionStack stack, string options)
+    private static List<ReferenceHub> ParseNumericStackOptions(PlayerSelectionStack stack, string options)
         => !int.TryParse(options, out var index) || index < 0 || index >= stack.Count
             ? HubCollection.Empty
             : stack.PopAt(index);

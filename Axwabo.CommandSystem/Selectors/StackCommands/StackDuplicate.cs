@@ -9,7 +9,7 @@ namespace Axwabo.CommandSystem.Selectors.StackCommands;
 [CommandProperties(CommandHandlerType.RaAndServer, "stackDuplicate", 1, "Duplicates the specified selections on the player stack.")]
 [Aliases("stackDup", "sDup")]
 [Usage("", "all/*", "first/f/top/t", $"indexes separated by spaces or one of{Separators}")]
-internal sealed class StackDuplicate : CommandBase, INotEnoughArguments
+internal sealed class StackDuplicate : CommandBase, INotEnoughArgumentsHandler
 {
 
     private const string Separators = " .,;_+-";
