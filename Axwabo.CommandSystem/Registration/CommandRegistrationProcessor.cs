@@ -117,7 +117,7 @@ public sealed class CommandRegistrationProcessor
 
     internal readonly List<ResolverContainer<ICommandUsageResolver, string[]>> UsageResolvers = new();
 
-    internal readonly List<ResolverContainer<IAttributeBasedPermissionCreator, IPermissionChecker>> PermissionCreators = new();
+    internal readonly List<ResolverContainer<IAttributeBasedPermissionResolver, IPermissionChecker>> PermissionCreators = new();
 
     internal readonly List<ResolverContainer<IAffectedMultiplePlayersResolver, IAffectedMultiplePlayersMessageGenerator>> TargetingMultipleMessageResolvers = new();
 

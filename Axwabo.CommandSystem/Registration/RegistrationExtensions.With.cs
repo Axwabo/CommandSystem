@@ -52,11 +52,11 @@ public static partial class RegistrationExtensions
     /// Adds a permission creator to the <see cref="CommandRegistrationProcessor"/>.
     /// </summary>
     /// <param name="processor">The processor to add the resolver to.</param>
-    /// <param name="permissionCreator">The resolver to add.</param>
+    /// <param name="permissionResolver">The resolver to add.</param>
     /// <typeparam name="T">The type of the attribute to resolve the permission from.</typeparam>
     /// <returns>The processor itself.</returns>
-    public static CommandRegistrationProcessor WithPermissionCreator<T>(this CommandRegistrationProcessor processor, IAttributeBasedPermissionCreator<T> permissionCreator) where T : Attribute
-        => WithPermissionCreator(processor, typeof(T), permissionCreator);
+    public static CommandRegistrationProcessor WithPermissionCreator<T>(this CommandRegistrationProcessor processor, IAttributeBasedPermissionResolver<T> permissionResolver) where T : Attribute
+        => WithPermissionCreator(processor, typeof(T), permissionResolver);
 
     #endregion
 

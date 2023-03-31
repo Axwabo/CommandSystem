@@ -3,8 +3,8 @@ using Axwabo.CommandSystem.Permissions;
 
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
-/// <summary>Base interface to resolve a <see cref="IPermissionChecker"/>. You must implement <see cref="IAttributeBasedPermissionCreator{TAttribute}"/> due to reflection magic.</summary>
-public interface IAttributeBasedPermissionCreator
+/// <summary>Base interface to resolve a <see cref="IPermissionChecker"/>. You must implement <see cref="IAttributeBasedPermissionResolver{TAttribute}"/> due to reflection magic.</summary>
+public interface IAttributeBasedPermissionResolver
 {
 
 }
@@ -13,7 +13,7 @@ public interface IAttributeBasedPermissionCreator
 /// An interface to resolve an <see cref="IPermissionChecker"/> based on an attribute.
 /// </summary>
 /// <typeparam name="TAttribute">The type of the attribute to resolve the permission checker from.</typeparam>
-public interface IAttributeBasedPermissionCreator<in TAttribute> : IAttributeBasedPermissionCreator where TAttribute : Attribute
+public interface IAttributeBasedPermissionResolver<in TAttribute> : IAttributeBasedPermissionResolver where TAttribute : Attribute
 {
 
     /// <summary>

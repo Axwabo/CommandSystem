@@ -100,15 +100,15 @@ public static class BaseCommandPropertyManager
     };
 
     /// <summary>
-    /// Resolves a command permission checker from an attribute that implements <see cref="IInstanceBasedPermissionCreator"/> or <see cref="IGenericCommandInstanceBasedPermissionCreator{TCommand}"/>.
+    /// Resolves a command permission checker from an attribute that implements <see cref="IInstanceBasedPermissionResolver"/> or <see cref="IGenericCommandInstanceBasedPermissionResolver{TCommand}"/>.
     /// </summary>
     /// <param name="attribute">The attribute to use.</param>
     /// <param name="command">The command to pass in as an argument.</param>
     /// <returns>The permission checker or null if it was not an instance-based attribute.</returns>
     public static IPermissionChecker ResolveInstanceBasedPermissionChecker(Attribute attribute, CommandBase command)
-        => attribute is IInstanceBasedPermissionCreator creator
-            ? creator.Create(command)
-            : GenericTypeExtensions.TryGetGenericInterface(attribute.GetType(), typeof(IGenericCommandInstanceBasedPermissionCreator<>), out var type)
+        => attribute is IInstanceBasedPermissionResolver creator
+            ? creator.CreateFromCommand(command)
+            : GenericTypeExtensions.TryGetGenericInterface(attribute.GetType(), typeof(IGenericCommandInstanceBasedPermissionResolver<>), out var type)
                 ? type.GetMethod("Create").InvokeIfSingleParameterMatchesType<IPermissionChecker>(attribute, command)
                 : null;
 

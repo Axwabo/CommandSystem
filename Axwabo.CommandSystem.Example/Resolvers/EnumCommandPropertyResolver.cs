@@ -6,7 +6,7 @@ namespace Axwabo.CommandSystem.Example.Resolvers;
 internal sealed class EnumCommandPropertyResolver :
     ICommandNameResolver<EnumCommandAttribute>,
     ICommandDescriptionResolver<EnumCommandAttribute>,
-    IAttributeBasedPermissionCreator<EnumCommandAttribute>
+    IAttributeBasedPermissionResolver<EnumCommandAttribute>
 {
 
     private readonly ExampleConfig _config;

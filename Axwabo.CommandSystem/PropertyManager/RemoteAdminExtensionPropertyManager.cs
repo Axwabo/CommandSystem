@@ -74,15 +74,15 @@ public static class RemoteAdminExtensionPropertyManager
     }
 
     /// <summary>
-    /// Resolves a RA option permission checker from an attribute that implements <see cref="IInstanceBasedPermissionCreator"/> or <see cref="IGenericRemoteAdminOptionInstanceBasedPermissionCreator{TCommand}"/>.
+    /// Resolves a RA option permission checker from an attribute that implements <see cref="IInstanceBasedPermissionResolver"/> or <see cref="IGenericRemoteAdminOptionInstanceBasedPermissionResolver{TOption}"/>.
     /// </summary>
     /// <param name="attribute">The attribute to use.</param>
     /// <param name="option">The option to pass in as an argument.</param>
     /// <returns>The permission checker or null if it was not an instance-based attribute.</returns>
     public static IPermissionChecker ResolveInstanceBasedPermissionChecker(Attribute attribute, RemoteAdminOptionBase option)
-        => attribute is IInstanceBasedPermissionCreator creator
-            ? creator.Create(option)
-            : GenericTypeExtensions.TryGetGenericInterface(attribute.GetType(), typeof(IGenericRemoteAdminOptionInstanceBasedPermissionCreator<>), out var type)
+        => attribute is IInstanceBasedPermissionResolver creator
+            ? creator.CreateFromOption(option)
+            : GenericTypeExtensions.TryGetGenericInterface(attribute.GetType(), typeof(IGenericRemoteAdminOptionInstanceBasedPermissionResolver<>), out var type)
                 ? type.GetMethod("Create").InvokeIfSingleParameterMatchesType<IPermissionChecker>(attribute, option)
                 : null;
 

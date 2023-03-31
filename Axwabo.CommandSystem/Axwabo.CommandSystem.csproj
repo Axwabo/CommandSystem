@@ -188,9 +188,9 @@
         <Compile Include="Attributes\Interfaces\IAliases.cs"/>
         <Compile Include="Attributes\Interfaces\IDescription.cs"/>
         <Compile Include="Attributes\Interfaces\ICommandName.cs"/>
-        <Compile Include="Attributes\Interfaces\IGenericCommandInstanceBasedPermissionCreator.cs"/>
-        <Compile Include="Attributes\Interfaces\IGenericRemoteAdminOptionInstanceBasedPermissionCreator.cs"/>
-        <Compile Include="Attributes\Interfaces\IInstanceBasedPermissionCreator.cs"/>
+        <Compile Include="Attributes\Interfaces\IGenericCommandInstanceBasedPermissionResolver.cs"/>
+        <Compile Include="Attributes\Interfaces\IGenericRemoteAdminOptionInstanceBasedPermissionResolver.cs"/>
+        <Compile Include="Attributes\Interfaces\IInstanceBasedPermissionResolver.cs"/>
         <Compile Include="Attributes\Interfaces\IMinArguments.cs"/>
         <Compile Include="Attributes\Interfaces\IPlayerOnlyAttribute.cs"/>
         <Compile Include="Attributes\Interfaces\IRemoteAdminOptionIdentifier.cs"/>
@@ -263,7 +263,7 @@
         <Compile Include="PropertyManager\Resolvers\ICommandAliasResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IAttributeBasedPermissionCreator.cs"/>
+        <Compile Include="PropertyManager\Resolvers\IAttributeBasedPermissionResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IOptionIconResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IRemoteAdminOptionIdResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IStaticOptionTextResolver.cs"/>
