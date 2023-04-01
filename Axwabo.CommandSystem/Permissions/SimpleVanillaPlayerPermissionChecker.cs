@@ -17,8 +17,8 @@ public sealed class SimpleVanillaPlayerPermissionChecker : IPermissionChecker
 
     /// <inheritdoc />
     public CommandResult CheckPermission(CommandSender sender)
-        => sender.FullPermissions
+        => sender.FullPermissions || sender.CheckPermission(Permissions)
             ? true
-            : new CommandResult(sender.CheckPermission(Permissions, out var response), response);
+            : $"!You don't have permissions to use this feature. Required: {Permissions}";
 
 }

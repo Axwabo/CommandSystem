@@ -66,14 +66,14 @@ public static partial class RegistrationExtensions
     }
 
     /// <summary>
-    /// Adds a permission creator to the <see cref="CommandRegistrationProcessor"/>.
+    /// Adds a permission resolver to the <see cref="CommandRegistrationProcessor"/>.
     /// </summary>
     /// <param name="processor">The processor to add the resolver to.</param>
     /// <param name="type">The type of the attribute to resolve the permission from.</param>
     /// <param name="permissionResolver">The resolver to add.</param>
     /// <returns>The processor itself.</returns>
     /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="IAttributeBasedPermissionResolver{TAttribute}"/> with the correct generic type.</exception>
-    public static CommandRegistrationProcessor WithPermissionCreator(this CommandRegistrationProcessor processor, Type type, IAttributeBasedPermissionResolver permissionResolver)
+    public static CommandRegistrationProcessor WithPermissionResolver(this CommandRegistrationProcessor processor, Type type, IAttributeBasedPermissionResolver permissionResolver)
     {
         processor.PermissionCreators.Add(type, typeof(IAttributeBasedPermissionResolver<>), permissionResolver);
         return processor;

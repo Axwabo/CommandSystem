@@ -4,6 +4,7 @@ using System.Linq;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Attributes.Containers;
 using Axwabo.CommandSystem.Commands;
+using Axwabo.CommandSystem.Permissions;
 using Axwabo.Helpers;
 
 namespace Axwabo.CommandSystem.Example.Container;
@@ -13,6 +14,7 @@ namespace Axwabo.CommandSystem.Example.Container;
 [CommandName("equip")]
 [Usage("<item>")]
 [MinArguments(1)]
+[AllVanillaPermissions(PlayerPermissions.GivingItems, PlayerPermissions.PlayersManagement)]
 public sealed class Equip : UnifiedTargetingCommand
 {
 

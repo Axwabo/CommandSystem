@@ -94,7 +94,8 @@ public static class BaseCommandPropertyManager
     public static IPermissionChecker ResolveBuiltInPermissionChecker(Attribute attribute) => attribute switch
     {
         VanillaPermissionsAttribute single => new SimpleVanillaPlayerPermissionChecker(single.Permission),
-        OneOfVanillaPermissionsAttribute oneOf => new AtLeastOneVanillaPlayerPermissionChecker(oneOf.Permissions),
+        OneOfVanillaPermissionsAttribute oneOf => new AtLeastOneVanillaPermissionChecker(oneOf.Permissions),
+        AllVanillaPermissionsAttribute all => new AllVanillaPermissionChecker(all.Permissions),
         StringPermissionsAttribute stringBased => new StringPermissionChecker(stringBased.Permission),
         _ => null
     };

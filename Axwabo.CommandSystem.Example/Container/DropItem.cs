@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
+using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.Helpers;
 
@@ -13,24 +14,32 @@ namespace Axwabo.CommandSystem.Example.Container;
 [Usage("<item>")]
 [MinArguments(1)]
 [OneOfVanillaPermissions(PlayerPermissions.GivingItems, PlayerPermissions.PlayersManagement)]
-public sealed class DropItem : UnifiedTargetingCommand
+public sealed class DropItem : SeparatedTargetingCommand, ITargetingPreExecutionFilter, ICustomResultCompiler
 {
 
-    protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
-    {
-        if (!Parse.Item(arguments.At(0), out var item))
-            return "!Invalid item id.";
-        var affected = 0;
-        foreach (var hub in targets)
-        {
-            var instance = hub.inventory.UserInventory.Items.Values.FirstOrDefault(e => e.ItemTypeId == item);
-            if (instance == null)
-                continue;
-            hub.inventory.UserCode_CmdDropItem(instance.ItemSerial, false);
-            affected++;
-        }
+    private ItemType _item;
 
-        return affected == 0 ? "!No targets had the item." : $"Dropped {item} from {"player".PluralizeWithCount(affected)}.";
+    public CommandResult? OnBeforeExecuted(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
+    {
+        if (arguments.Count < 1)
+            return CommandResult.Null; // base class will handle absence of arguments
+        if (!Parse.Item(arguments.At(0), out _item))
+            return "!Invalid item id.";
+        return CommandResult.Null; // allow execution
     }
+
+    protected override CommandResult ExecuteOn(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender)
+    {
+        var instance = target.inventory.UserInventory.Items.Values.FirstOrDefault(e => e.ItemTypeId == _item);
+        if (instance == null)
+            return false;
+        target.inventory.UserCode_CmdDropItem(instance.ItemSerial, false);
+        return true;
+    }
+
+    public CommandResult CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures)
+        => success.Count == 0
+            ? "!No targets had the item."
+            : $"Dropped {_item} from {"player".PluralizeWithCount(success.Count)}.";
 
 }

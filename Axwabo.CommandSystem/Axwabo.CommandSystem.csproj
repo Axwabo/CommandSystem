@@ -245,7 +245,9 @@
         <Compile Include="Patches\RemoteAdminExtensions\RequestDataPatch.cs"/>
         <Compile Include="Patches\RemoteAdminExtensions\RemoteAdminPlayerListPatch.cs"/>
         <Compile Include="Patches\RemoveStackTraceZeroesPatch.cs"/>
-        <Compile Include="Permissions\AtLeastOneVanillaPlayerPermissionChecker.cs"/>
+        <Compile Include="Permissions\AllVanillaPermissionChecker.cs"/>
+        <Compile Include="Permissions\AllVanillaPermissionsAttribute.cs"/>
+        <Compile Include="Permissions\AtLeastOneVanillaPermissionChecker.cs"/>
         <Compile Include="Permissions\StringPermissionChecker.cs"/>
         <Compile Include="Permissions\StringPermissionsAttribute.cs"/>
         <Compile Include="Permissions\CombinedPermissionChecker.cs"/>
