@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Axwabo.CommandSystem.Attributes.RaExt;
 
 /// <summary>
-/// An attribute to set the icon of a <see cref="RemoteAdminOptionBase"/>.
+/// An attribute to set the icon of a <see cref="RemoteAdminOptionBase"/>. This attribute is inherited.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
 public class OptionIconAttribute : Attribute, IOptionIconProvider

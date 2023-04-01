@@ -4,9 +4,9 @@ using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 namespace Axwabo.CommandSystem.Attributes.Targeting;
 
 /// <summary>
-/// Controls whether the command should affect spectators.
+/// Controls whether the command should affect spectators. This attribute is inherited.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class)]
 public sealed class ShouldAffectSpectatorsAttribute : Attribute, IShouldAffectSpectators
 {
 

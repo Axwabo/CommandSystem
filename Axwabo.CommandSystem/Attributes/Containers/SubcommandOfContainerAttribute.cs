@@ -3,10 +3,10 @@
 namespace Axwabo.CommandSystem.Attributes.Containers;
 
 /// <summary>
-/// An attribute that marks a command as a subcommand of a container command.
+/// An attribute that marks a command as a subcommand of a container command. This attribute is inherited.
 /// </summary>
 /// <seealso cref="UsesSubcommandsAttribute"/>
-[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public sealed class SubcommandOfContainerAttribute : Attribute
 {
 

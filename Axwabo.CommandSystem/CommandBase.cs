@@ -13,7 +13,8 @@ namespace Axwabo.CommandSystem;
 public abstract class CommandBase
 {
 
-    private const string MustBePlayer = "You must be a player to use this command!";
+    /// <summary>The message to display when only a player is allowed to use the command but the sender is not a player.</summary>
+    public const string MustBePlayer = "You must be a player to use this command!";
 
     /// <summary>The name of the command.</summary>
     public virtual string Name => _name;

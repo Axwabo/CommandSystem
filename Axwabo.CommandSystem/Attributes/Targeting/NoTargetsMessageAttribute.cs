@@ -4,9 +4,9 @@ using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 namespace Axwabo.CommandSystem.Attributes.Targeting;
 
 /// <summary>
-/// Supplies a static no targets found message.
+/// Supplies a static no targets found message. This attribute is inherited.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class)]
 public sealed class NoTargetsMessageAttribute : Attribute, IStaticNoTargetsFoundMessage
 {
 

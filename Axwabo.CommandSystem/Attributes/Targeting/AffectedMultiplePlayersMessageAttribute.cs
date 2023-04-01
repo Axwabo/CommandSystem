@@ -4,9 +4,9 @@ using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 namespace Axwabo.CommandSystem.Attributes.Targeting;
 
 /// <summary>
-/// Supplies a static affected multiple players message.
+/// Supplies a static affected multiple players message. This attribute is inherited.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class)]
 public sealed class AffectedMultiplePlayersMessageAttribute : Attribute, IStaticAffectedMultiplePlayersMessage
 {
 

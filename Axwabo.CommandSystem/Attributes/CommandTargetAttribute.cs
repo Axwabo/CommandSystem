@@ -3,9 +3,9 @@
 namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
-/// An attribute that specifies which default command handlers a command should be registered to.
+/// An attribute that specifies which default command handlers a command should be registered to. This attribute is inherited.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class CommandTargetAttribute : Attribute
 {
 
