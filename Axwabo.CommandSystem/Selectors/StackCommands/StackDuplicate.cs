@@ -28,6 +28,8 @@ internal sealed class StackDuplicate : CommandBase, INotEnoughArgumentsHandler
 
     private static CommandResult DuplicateFirst(PlayerSelectionStack selection)
     {
+        if (selection.CheckOverflow(1))
+            return $"!Already reached the limit of lists on the selection stack: {PlayerSelectionStack.MaxSize}.";
         var dup = selection.Peek();
         selection.Push(dup);
         return $"Duplicated the first selection on the selection stack:\n{dup.CombineNicknames()}";
@@ -35,6 +37,8 @@ internal sealed class StackDuplicate : CommandBase, INotEnoughArgumentsHandler
 
     private static CommandResult DuplicateAll(PlayerSelectionStack selection)
     {
+        if (selection.CheckOverflow(selection.Count))
+            return $"!Duplicating all selections ({selection.Count}) would overflow the maximum selection stack size of {PlayerSelectionStack.MaxSize} lists.";
         selection.DuplicateAll();
         return "Duplicated all selections on the selection stack.";
     }
@@ -50,9 +54,10 @@ internal sealed class StackDuplicate : CommandBase, INotEnoughArgumentsHandler
                     push.Add(selection.PeekAt(index));
             if (push.Count == 0)
                 return "!No valid indices were specified.";
+            if (selection.CheckOverflow(push.Count))
+                return $"!Duplicating {push.Count} lists would overflow the maximum selection stack size of {PlayerSelectionStack.MaxSize} lists.";
             foreach (var collection in push)
                 selection.Push(collection);
-
             return $"Duplicated {"selection".PluralizeWithCount(push.Count)} on the selection stack.";
         }
         finally

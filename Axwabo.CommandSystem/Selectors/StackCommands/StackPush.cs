@@ -14,6 +14,8 @@ internal sealed class StackPush : UnifiedTargetingCommand
     {
         if (!PlayerSelectionStack.PreprocessCommand(sender, out var selection, out var result, true))
             return result;
+        if (selection.CheckOverflow(1))
+            return $"!Already reached the limit of lists on the selection stack: {PlayerSelectionStack.MaxSize}.";
         selection.Push(targets);
         return $"Pushed {"player".PluralizeWithCount(targets.Count)} onto the selection stack:\n{targets.CombineNicknames()}";
     }

@@ -5,13 +5,14 @@ using E::Axwabo.Helpers;
 #else
 using Axwabo.Helpers;
 #endif
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GameCore;
 using NorthwoodLib.Pools;
 using RemoteAdmin;
 using UnityEngine;
+using Console = GameCore.Console;
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -20,6 +21,16 @@ namespace Axwabo.CommandSystem.Selectors;
 /// </summary>
 public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollection>
 {
+
+    /// <summary>The maximum amount of lists that can be stored on the selection stack.</summary>
+    public const int MaxSize = 1024;
+
+    /// <summary>
+    /// Checks if the amount of lists to add would overflow the maximum size of the stack.
+    /// </summary>
+    /// <param name="addCount">The amount of lists to add.</param>
+    /// <returns>Whether the added lists overflow the max size.</returns>
+    public bool CheckOverflow(int addCount) => Count + addCount > MaxSize;
 
     private readonly List<HubCollection> _stack = new();
 
@@ -36,7 +47,13 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// Pushes an enumerable of <see cref="ReferenceHub"/> onto the stack as one <see cref="HubCollection"/>.
     /// </summary>
     /// <param name="hubs">The hubs to push.</param>
-    public void Push(IEnumerable<ReferenceHub> hubs) => _stack.Add(hubs as HubCollection ?? new HubCollection(hubs));
+    public void Push(IEnumerable<ReferenceHub> hubs)
+    {
+        var collection = hubs as HubCollection ?? new HubCollection(hubs);
+        if (CheckOverflow(collection.Count))
+            throw new InvalidOperationException($"The stack has reached its maximum size of {MaxSize} lists");
+        _stack.Add(collection);
+    }
 
     /// <summary>
     /// Pops the topmost <see cref="HubCollection"/> from the stack.
