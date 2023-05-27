@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Attributes.Containers;
+﻿namespace Axwabo.CommandSystem.Attributes.Containers;
 
 /// <summary>
 /// An attribute that marks a command as a subcommand of a container command. This attribute is inherited.

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Exceptions;
+﻿namespace Axwabo.CommandSystem.Exceptions;
 
 /// <summary>
 /// An exception that is thrown when the actual type does not match the expected type.

@@ -1,15 +1,11 @@
 ﻿extern alias E;
-#if EXILED
-using E::Axwabo.Helpers.Harmony;
-#else
-using Axwabo.Helpers.Harmony;
-#endif
-using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+using CommandSystem;
 using HarmonyLib;
-using NorthwoodLib.Pools;
 using RemoteAdmin;
+#if EXILED
+
+#else
+#endif
 
 namespace Axwabo.CommandSystem.Patches;
 
@@ -21,9 +17,9 @@ internal static class ParseCommandsPatch
     {
         var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
         var index = list.FindIndex(i => i.opcode == OpCodes.Isinst
-                                        && i.operand as Type == typeof(global::CommandSystem.IHiddenCommand));
+                                        && i.operand as Type == typeof(IHiddenCommand));
         list.RemoveRange(index, 3);
-        list.Insert(index, InstructionHelper.Call(typeof(CommandHelpers), nameof(CommandHelpers.IsHidden)));
+        list.Insert(index, Call(typeof(CommandHelpers), nameof(CommandHelpers.IsHidden)));
         foreach (var codeInstruction in list)
             yield return codeInstruction;
         ListPool<CodeInstruction>.Shared.Return(list);

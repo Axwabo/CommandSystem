@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Selectors.Filtering;
+﻿namespace Axwabo.CommandSystem.Selectors.Filtering;
 
 /// <summary>
 /// A struct that stores a <see cref="HubFilter"/> or creates one based on a supplied value.

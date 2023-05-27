@@ -1,18 +1,10 @@
 ﻿extern alias E;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.RemoteAdminExtensions;
 using Axwabo.CommandSystem.Selectors;
-using GameCore;
 using HarmonyLib;
-using NorthwoodLib.Pools;
 using static Axwabo.CommandSystem.Selectors.PlayerSelectionManager;
-#if EXILED
-using static E::Axwabo.Helpers.Harmony.InstructionHelper;
-#else
-using static Axwabo.Helpers.Harmony.InstructionHelper;
-#endif
+using Console = GameCore.Console;
 
 namespace Axwabo.CommandSystem.Patches;
 

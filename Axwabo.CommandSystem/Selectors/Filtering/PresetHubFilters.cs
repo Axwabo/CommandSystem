@@ -1,11 +1,11 @@
-﻿#if EXILED
+﻿using PlayerRoles;
+using PlayerStatsSystem;
+#if EXILED
 extern alias E;
 using E::Axwabo.Helpers;
 #else
 using Axwabo.Helpers;
 #endif
-using PlayerRoles;
-using PlayerStatsSystem;
 
 namespace Axwabo.CommandSystem.Selectors.Filtering;
 
@@ -20,7 +20,7 @@ public static class PresetHubFilters
     /// </summary>
     /// <param name="filter">The filter to invert.</param>
     /// <returns>The inverted filter.</returns>
-    public static HubFilter Invert(this HubFilter filter) => hub => !filter(hub);
+    public static HubFilter Invert(this HubFilter filter) => filter == null ? null : hub => !filter(hub);
 
     /// <summary>
     /// Creates a simple filter from a <see cref="ParameterizedHubFilter{T}"/>.

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Permissions;
+﻿namespace Axwabo.CommandSystem.Permissions;
 
 /// <summary>
 /// A permission attribute that uses a string as the permission.

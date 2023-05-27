@@ -1,15 +1,6 @@
 ﻿extern alias E;
-#if EXILED
-using static E::Axwabo.Helpers.Harmony.InstructionHelper;
-#else
-using static Axwabo.Helpers.Harmony.InstructionHelper;
-#endif
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
 using CommandSystem.Commands.Shared;
 using HarmonyLib;
-using NorthwoodLib.Pools;
 
 namespace Axwabo.CommandSystem.Patches;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Commands.Interfaces;
+﻿namespace Axwabo.CommandSystem.Commands.Interfaces;
 
 /// <summary>
 /// A command preprocessor that can be used to prevent execution if required.

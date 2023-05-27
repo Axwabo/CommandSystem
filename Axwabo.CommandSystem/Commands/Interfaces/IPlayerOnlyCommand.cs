@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Commands.Interfaces;
+﻿namespace Axwabo.CommandSystem.Commands.Interfaces;
 
 /// <summary>
 /// A command preprocessor that is invoked when the command is executed by a non-player. A <see cref="CommandBase"/> can implement this interface.

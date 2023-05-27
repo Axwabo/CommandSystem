@@ -1,5 +1,4 @@
-﻿using System;
-using Axwabo.CommandSystem.Commands.MessageOverrides;
+﻿using Axwabo.CommandSystem.Commands.MessageOverrides;
 
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 

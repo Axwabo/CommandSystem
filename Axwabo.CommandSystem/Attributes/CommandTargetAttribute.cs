@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Attributes;
+﻿namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
 /// An attribute that specifies which default command handlers a command should be registered to. This attribute is inherited.

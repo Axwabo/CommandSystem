@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-
-namespace Axwabo.CommandSystem.Registration;
+﻿namespace Axwabo.CommandSystem.Registration;
 
 internal sealed class ResolverContainer<TResolver, TResult>
 {

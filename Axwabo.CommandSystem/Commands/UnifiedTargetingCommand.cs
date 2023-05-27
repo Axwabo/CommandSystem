@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
+﻿using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.PropertyManager;

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Axwabo.CommandSystem.Attributes;
+﻿using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
-using Axwabo.CommandSystem.Permissions;
 using Axwabo.Helpers;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
@@ -14,7 +10,6 @@ namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 [CommandProperties(CommandHandlerType.RemoteAdmin, "remoteAdminOption", "Controls Remote Admin extensions.")]
 [Aliases("raOption", "raOpt")]
 [PlayerOnlyCommand]
-[VanillaPermissions(PlayerPermissions.GameplayData)]
 public sealed class OptionPreferencesContainer : ContainerCommand
 {
 

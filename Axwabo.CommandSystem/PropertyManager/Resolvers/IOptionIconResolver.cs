@@ -1,5 +1,4 @@
-﻿using System;
-using Axwabo.CommandSystem.RemoteAdminExtensions;
+﻿using Axwabo.CommandSystem.RemoteAdminExtensions;
 
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using RemoteAdmin;
+﻿using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Selectors;
 

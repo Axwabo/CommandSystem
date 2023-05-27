@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Selectors.Filtering;
 using PlayerRoles;
 using PlayerRoles.FirstPersonControl;
 using RemoteAdmin;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Axwabo.CommandSystem.Selectors;
@@ -69,8 +66,8 @@ public static class AtSelectorProcessor
             EndIndex = 3
         };
 
-        int i;
-        for (i = 2; i < formatted.Length; i++)
+        var i = 2;
+        for (; i < formatted.Length; i++)
         {
             var processChar = ProcessChar(i, state);
             if (processChar)

@@ -1,5 +1,3 @@
-using System;
-
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve the command description You must implement <see cref="ICommandDescriptionResolver{TAttribute}"/> due to reflection magic.</summary>

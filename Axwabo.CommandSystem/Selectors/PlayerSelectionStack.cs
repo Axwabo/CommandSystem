@@ -1,18 +1,12 @@
 ﻿extern alias E;
-
+using System.Collections;
+using RemoteAdmin;
+using Console = GameCore.Console;
 #if EXILED
 using E::Axwabo.Helpers;
 #else
 using Axwabo.Helpers;
 #endif
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using NorthwoodLib.Pools;
-using RemoteAdmin;
-using UnityEngine;
-using Console = GameCore.Console;
 
 namespace Axwabo.CommandSystem.Selectors;
 

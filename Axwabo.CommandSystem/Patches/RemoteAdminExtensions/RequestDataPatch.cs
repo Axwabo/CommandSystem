@@ -1,14 +1,6 @@
 ﻿extern alias E;
-#if EXILED
-using static E::Axwabo.Helpers.Harmony.InstructionHelper;
-#else
-using static Axwabo.Helpers.Harmony.InstructionHelper;
-#endif
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using Axwabo.CommandSystem.RemoteAdminExtensions;
 using HarmonyLib;
-using NorthwoodLib.Pools;
 using RemoteAdmin.Communication;
 
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;

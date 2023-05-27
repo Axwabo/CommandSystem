@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Axwabo.CommandSystem.Exceptions;
+﻿using Axwabo.CommandSystem.Exceptions;
 using PlayerRoles;
 using PlayerRoles.Spectating;
 using RemoteAdmin;
@@ -55,7 +52,7 @@ public static class PlayerSelectionManager
 #if EXILED
         Exiled.API.Features.Server.PlayerCount;
 #else
-        PluginAPI.Core.Player.Count;
+        Player.Count;
 #endif
 
     /// <summary>
@@ -182,7 +179,7 @@ public static class PlayerSelectionManager
 
     private static void GetSpectated(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs)
     {
-        if (CurrentSender is not PlayerCommandSender {ReferenceHub: {roleManager.CurrentRole: SpectatorRole} hub})
+        if (CurrentSender is not PlayerCommandSender {ReferenceHub: var hub} || !hub.IsAlive())
         {
             targets = HubCollection.Empty;
             newArgs = Split(formatted, keepEmptyEntries, true);

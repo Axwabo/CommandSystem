@@ -33,7 +33,7 @@ public sealed class DropItem : SeparatedTargetingCommand, ITargetingPreExecution
         var instance = target.inventory.UserInventory.Items.Values.FirstOrDefault(e => e.ItemTypeId == _item);
         if (instance == null)
             return false;
-        target.inventory.UserCode_CmdDropItem(instance.ItemSerial, false);
+        target.inventory.UserCode_CmdDropItem__UInt16__Boolean(instance.ItemSerial, false);
         return true;
     }
 

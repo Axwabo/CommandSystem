@@ -1,5 +1,6 @@
 ﻿#if EXILED
 using Exiled.Permissions.Extensions;
+
 #else
 using NWAPIPermissionSystem;
 #endif
@@ -22,6 +23,7 @@ public sealed class StringPermissionChecker : IPermissionChecker
     /// Initializes a new instance of the <see cref="StringPermissionChecker"/> class.
     /// </summary>
     /// <param name="permission">The required permission.</param>
+    /// <remarks>Supplying a <see cref="string.IsNullOrWhiteSpace">null, whitespace or empty</see> string will always result in a true permission check.</remarks>
     public StringPermissionChecker(string permission) => Permission = permission;
 
     /// <inheritdoc />
@@ -37,6 +39,7 @@ public sealed class StringPermissionChecker : IPermissionChecker
     /// <param name="sender">The sender to check.</param>
     /// <param name="permission">The permission to check.</param>
     /// <returns>Whether the sender has the permission.</returns>
-    public static bool Check(CommandSender sender, string permission) => sender.CheckPermission(permission);
+    /// <remarks>If the given permission is <see cref="string.IsNullOrWhiteSpace">null, whitespace or empty</see>, it will return true.</remarks>
+    public static bool Check(CommandSender sender, string permission) => string.IsNullOrWhiteSpace(permission) || sender.CheckPermission(permission);
 
 }

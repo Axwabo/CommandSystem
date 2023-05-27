@@ -72,31 +72,31 @@
             <Aliases>E</Aliases>
         </Reference>
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\CommandSystem.Core.dll</HintPath>
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\CommandSystem.Core.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.API, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.API.dll</HintPath>
+        <Reference Include="Exiled.API, Version=7.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.API.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.CreditTags, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CreditTags.dll</HintPath>
+        <Reference Include="Exiled.CreditTags, Version=7.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.CreditTags.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.CustomItems, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CustomItems.dll</HintPath>
+        <Reference Include="Exiled.CustomItems, Version=7.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.CustomItems.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.CustomRoles, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CustomRoles.dll</HintPath>
+        <Reference Include="Exiled.CustomRoles, Version=7.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.CustomRoles.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.Events, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Events.dll</HintPath>
+        <Reference Include="Exiled.Events, Version=7.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.Events.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.Loader, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Loader.dll</HintPath>
+        <Reference Include="Exiled.Loader, Version=7.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.Loader.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.Permissions, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Permissions.dll</HintPath>
+        <Reference Include="Exiled.Permissions, Version=7.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.Permissions.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Updater.dll</HintPath>
+        <Reference Include="Exiled.Updater, Version=3.1.2.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.Updater.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis, Version=3.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
             <HintPath>..\packages\Microsoft.CodeAnalysis.Common.3.3.1\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
@@ -112,16 +112,13 @@
         </Reference>
         <Reference Include="mscorlib"/>
         <Reference Include="NorthwoodLib">
-            <HintPath>..\..\assemblies\NorthwoodLib.dll</HintPath>
-        </Reference>
-        <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\NorthwoodLib.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\NorthwoodLib.dll</HintPath>
         </Reference>
         <Reference Include="NWAPIPermissionSystem">
             <HintPath>$(NW-ASSEMBLIES)\NWAPIPermissionSystem.dll</HintPath>
         </Reference>
         <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\PluginAPI.dll</HintPath>
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\PluginAPI.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -155,7 +152,7 @@
             <HintPath>$(NW-ASSEMBLIES)\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-            <HintPath>..\packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
+            <HintPath>..\packages\EXILED.7.0.0-rc.3-1\lib\net48\YamlDotNet.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
@@ -303,6 +300,8 @@
         <Compile Include="Selectors\StackCommands\StackPop.cs"/>
         <Compile Include="Selectors\StackCommands\StackPush.cs"/>
         <Compile Include="Selectors\StackCommands\StackReverse.cs"/>
+        <Compile Include="Translations\CommandResultTranslationAttribute.cs"/>
+        <Compile Include="Translations\CommandResultTranslationSuccessManager.cs"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config"/>
@@ -318,7 +317,7 @@
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
-            <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+            <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them. For more information, see https://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
         </PropertyGroup>
         <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.8\build\Microsoft.CodeAnalysis.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.8\build\Microsoft.CodeAnalysis.Analyzers.props'))"/>
     </Target>

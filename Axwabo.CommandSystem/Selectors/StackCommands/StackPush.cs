@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Axwabo.CommandSystem.Attributes;
+﻿using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;

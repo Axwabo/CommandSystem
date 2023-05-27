@@ -1,5 +1,4 @@
 ﻿#if EXILED
-using System;
 using System.IO;
 using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;

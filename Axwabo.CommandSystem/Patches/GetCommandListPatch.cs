@@ -1,11 +1,4 @@
 ﻿extern alias E;
-#if EXILED
-using E::Axwabo.Helpers.Harmony;
-#else
-using Axwabo.Helpers.Harmony;
-#endif
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using CommandSystem.Commands.Shared;
 using HarmonyLib;
 
@@ -19,7 +12,7 @@ internal static class GetCommandListPatch
     {
         foreach (var codeInstruction in instructions)
             yield return codeInstruction.opcode == OpCodes.Isinst
-                ? InstructionHelper.Call(typeof(CommandHelpers), nameof(CommandHelpers.IsHidden))
+                ? Call(typeof(CommandHelpers), nameof(CommandHelpers.IsHidden))
                 : codeInstruction;
     }
 

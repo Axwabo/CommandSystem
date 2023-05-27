@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
+﻿namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve command aliases. You must implement <see cref="ICommandAliasResolver{TAttribute}"/> due to reflection magic.</summary>
 public interface ICommandAliasResolver

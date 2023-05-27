@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Attributes.Containers;
+﻿namespace Axwabo.CommandSystem.Attributes.Containers;
 
 /// <summary>
 /// Specifies that the given types should be subcommands of the container command.

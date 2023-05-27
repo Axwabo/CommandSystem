@@ -1,5 +1,4 @@
-﻿using System;
-using Axwabo.CommandSystem.Permissions;
+﻿using Axwabo.CommandSystem.Permissions;
 
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 

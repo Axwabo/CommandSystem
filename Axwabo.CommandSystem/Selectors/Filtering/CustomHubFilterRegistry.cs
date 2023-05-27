@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Axwabo.CommandSystem.Selectors.Filtering;
+﻿namespace Axwabo.CommandSystem.Selectors.Filtering;
 
 /// <summary>Stores custom filters that can be used in advanced player selectors.</summary>
 public static class CustomHubFilterRegistry

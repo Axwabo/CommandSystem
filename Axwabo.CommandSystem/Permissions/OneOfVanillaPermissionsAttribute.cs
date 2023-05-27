@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Permissions;
+﻿namespace Axwabo.CommandSystem.Permissions;
 
 /// <summary>
 /// An attribute specifying that at least one of the given permissions is required.

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Axwabo.CommandSystem.Commands.Interfaces;
+﻿namespace Axwabo.CommandSystem.Commands.Interfaces;
 
 /// <summary>
 /// An interface used by <see cref="SeparatedTargetingCommand"/>

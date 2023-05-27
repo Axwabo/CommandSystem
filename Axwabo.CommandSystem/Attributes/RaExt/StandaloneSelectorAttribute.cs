@@ -1,5 +1,4 @@
-﻿using System;
-using Axwabo.CommandSystem.Attributes.Interfaces;
+﻿using Axwabo.CommandSystem.Attributes.Interfaces;
 
 namespace Axwabo.CommandSystem.Attributes.RaExt;
 

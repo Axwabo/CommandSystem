@@ -1,5 +1,4 @@
-﻿using System;
-using Axwabo.CommandSystem.Selectors;
+﻿using Axwabo.CommandSystem.Selectors;
 using static Axwabo.CommandSystem.Selectors.PlayerSelectionManager;
 
 namespace Axwabo.CommandSystem.Exceptions;

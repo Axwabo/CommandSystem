@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Attributes;
+﻿namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
 /// Defines the types of default command handlers.

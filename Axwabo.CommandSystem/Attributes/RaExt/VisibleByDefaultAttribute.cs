@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Axwabo.CommandSystem.Attributes.RaExt;
+﻿namespace Axwabo.CommandSystem.Attributes.RaExt;
 
 /// <summary>
 /// Specifies that the Remote Admin option should be visible to all users by default.

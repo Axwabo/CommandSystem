@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Axwabo.CommandSystem.Translations;
+using Axwabo.Helpers.Config.Translations;
 
 namespace Axwabo.CommandSystem;
 
@@ -114,6 +115,29 @@ public readonly struct CommandResult
     /// <seealso cref="IsEmpty"/>
     /// <seealso cref="Response"/>
     public static implicit operator string(CommandResult result) => result.Response;
+
+    /// <summary>
+    /// Converts the given translatable enum to a <see cref="CommandResult"/> with the translated response.
+    /// </summary>
+    /// <param name="translation">The response to translate.</param>
+    /// <returns>A new <see cref="CommandResult"/>.</returns>
+    /// <seealso cref="CommandResultTranslationSuccessManager.TranslateResultRaw"/>
+    /// <seealso cref="TranslationHelper.TranslateRaw"/>
+    /// <seealso cref="CommandResultTranslationAttribute"/>
+    /// <seealso cref="TranslationAttribute"/>
+    public static implicit operator CommandResult(Enum translation) => translation.TranslateResultRaw();
+
+    /// <inheritdoc cref="op_Implicit(Enum)"/>
+    public static implicit operator CommandResult((Enum, object) translation) => translation.Item1.TranslateResultRaw(translation.Item2);
+
+    /// <inheritdoc cref="op_Implicit(Enum)"/>
+    public static implicit operator CommandResult((Enum, object, object) translation) => translation.Item1.TranslateResultRaw(translation.Item2, translation.Item3);
+
+    /// <inheritdoc cref="op_Implicit(Enum)"/>
+    public static implicit operator CommandResult((Enum, object, object, object) translation) => translation.Item1.TranslateResultRaw(translation.Item2, translation.Item3, translation.Item4);
+
+    /// <inheritdoc cref="op_Implicit(Enum)"/>
+    public static implicit operator CommandResult((Enum, object, object, object, object) translation) => translation.Item1.TranslateResultRaw(translation.Item2, translation.Item3, translation.Item4, translation.Item5);
 
     #endregion
 

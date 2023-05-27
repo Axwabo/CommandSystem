@@ -1,5 +1,4 @@
-﻿using System;
-using Axwabo.CommandSystem.Registration;
+﻿using Axwabo.CommandSystem.Registration;
 
 namespace Axwabo.CommandSystem.Attributes;
 

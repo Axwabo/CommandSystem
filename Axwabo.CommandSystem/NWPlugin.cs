@@ -1,9 +1,9 @@
 ﻿#if !EXILED
-using System;
 using System.IO;
 using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using HarmonyLib;
+using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Helpers;
@@ -17,7 +17,7 @@ public sealed class Plugin
 {
 
     /// <summary>Gets the plugin's config directory.</summary>
-    public static string PluginDirectory => Path.Combine(Paths.Plugins, "Axwabo.CommandSystem");
+    public static string PluginDirectory { get; private set; }
 
     /// <summary>The current plugin instance.</summary>
     public static Plugin Instance { get; private set; }
@@ -33,6 +33,7 @@ public sealed class Plugin
     private void OnEnable()
     {
         Instance = this;
+        PluginDirectory = PluginHandler.Get(this).PluginDirectoryPath;
         _harmony = new Harmony("Axwabo.CommandSystem");
         try
         {
