@@ -83,6 +83,10 @@
         <Compile Include="Resolvers\FlashCommand.cs"/>
         <Compile Include="Resolvers\SendHintCommand.cs"/>
         <Compile Include="SimpleCommand.cs"/>
+        <Compile Include="Translations\GreetCommand.cs"/>
+        <Compile Include="Translations\GreetingTranslationAttribute.cs"/>
+        <Compile Include="Translations\GreetingTranslations.cs"/>
+        <Compile Include="Translations\GreetingType.cs"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="packages.config"/>

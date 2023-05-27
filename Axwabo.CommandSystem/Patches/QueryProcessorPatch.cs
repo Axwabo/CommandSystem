@@ -1,5 +1,4 @@
-﻿extern alias E;
-using Axwabo.CommandSystem.Exceptions;
+﻿using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.RemoteAdminExtensions;
 using Axwabo.CommandSystem.Selectors;
 using HarmonyLib;

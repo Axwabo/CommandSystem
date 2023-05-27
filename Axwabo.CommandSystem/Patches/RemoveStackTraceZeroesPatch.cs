@@ -1,5 +1,4 @@
-﻿extern alias E;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using HarmonyLib;
 
 namespace Axwabo.CommandSystem.Patches;

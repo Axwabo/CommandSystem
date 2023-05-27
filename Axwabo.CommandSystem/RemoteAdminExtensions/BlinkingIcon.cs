@@ -1,5 +1,5 @@
-﻿extern alias E;
-#if EXILED
+﻿#if EXILED
+extern alias E;
 using E::Axwabo.Helpers;
 
 #else

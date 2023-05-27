@@ -1,5 +1,4 @@
-﻿extern alias E;
-using Axwabo.CommandSystem.RemoteAdminExtensions;
+﻿using Axwabo.CommandSystem.RemoteAdminExtensions;
 using HarmonyLib;
 using RemoteAdmin;
 using RemoteAdmin.Communication;

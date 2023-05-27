@@ -1,5 +1,4 @@
-﻿extern alias E;
-using CommandSystem.Commands.Shared;
+﻿using CommandSystem.Commands.Shared;
 using HarmonyLib;
 
 namespace Axwabo.CommandSystem.Patches;

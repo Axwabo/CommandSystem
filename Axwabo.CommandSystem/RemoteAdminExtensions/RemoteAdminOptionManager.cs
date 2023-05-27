@@ -1,15 +1,15 @@
-﻿extern alias E;
+﻿#if EXILED
+extern alias E;
+using E::Axwabo.Helpers;
+#else
+using Axwabo.Helpers;
+#endif
 using System.Text;
 using Axwabo.CommandSystem.Attributes.RaExt;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 using RemoteAdmin;
 using RemoteAdmin.Interfaces;
-#if EXILED
-using E::Axwabo.Helpers;
-#else
-using Axwabo.Helpers;
-#endif
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 

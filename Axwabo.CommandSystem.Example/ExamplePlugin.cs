@@ -1,30 +1,32 @@
 ﻿using Axwabo.CommandSystem.Example.Resolvers;
+using Axwabo.CommandSystem.Example.Translations;
 using Axwabo.CommandSystem.Registration;
+using Axwabo.Helpers.Config.Translations;
 using PluginAPI.Core.Attributes;
 
 namespace Axwabo.CommandSystem.Example;
 
+[EnumCommandPropertyResolver]
 public sealed class ExamplePlugin
 {
 
     [PluginConfig]
-    private ExampleConfig _config = new();
+    public static ExampleConfig Config = new(); // expose the config to the property resolver
 
     [PluginEntryPoint("CommandSystemExample", "1.0.0", "Example plugin for the command system.", "Axwabo")]
     private void OnEnabled()
     {
-        // register all commands and Remote Admin options in this assembly
-        var resolver = new EnumCommandPropertyResolver(_config);
-        CommandRegistrationProcessor.Create(this)
-            // you could make the EnumCommandPropertyResolver an attribute and apply it to the plugin class if you can expose the plugin instance
-            .WithMultiplexResolverObject(resolver)
-            .Execute();
+        // register all commands in the assembly; the EnumCommandPropertyResolver will be used to resolve custom command properties
+        CommandRegistrationProcessor.RegisterAll(this);
+        // register all translations in the config
+        TranslationHelper.RegisterAllTranslations(Config.Translations);
     }
 
     [PluginUnload]
     private void OnDisabled()
     {
         CommandRegistrationProcessor.UnregisterAll(this);
+        TranslationHelper.UnregisterAllTranslations<GreetingType>();
     }
 
 }

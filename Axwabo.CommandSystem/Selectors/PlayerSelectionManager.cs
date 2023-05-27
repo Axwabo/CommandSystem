@@ -52,7 +52,7 @@ public static class PlayerSelectionManager
 #if EXILED
         Exiled.API.Features.Server.PlayerCount;
 #else
-        Player.Count;
+        PluginAPI.Core.Player.Count;
 #endif
 
     /// <summary>

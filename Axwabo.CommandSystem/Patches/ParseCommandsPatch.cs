@@ -1,11 +1,6 @@
-﻿extern alias E;
-using CommandSystem;
+﻿using CommandSystem;
 using HarmonyLib;
 using RemoteAdmin;
-#if EXILED
-
-#else
-#endif
 
 namespace Axwabo.CommandSystem.Patches;
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Axwabo.CommandSystem.Example.Resolvers;
+using Axwabo.CommandSystem.Example.Translations;
 
 namespace Axwabo.CommandSystem.Example;
 
@@ -12,5 +13,7 @@ public sealed class ExampleConfig
         {CustomCommandType.SendHint, "example.sendhint"},
         {CustomCommandType.DiscordBroadcast, "example.discordbroadcast"}
     };
+
+    public GreetingTranslations Translations { get; set; } = new();
 
 }

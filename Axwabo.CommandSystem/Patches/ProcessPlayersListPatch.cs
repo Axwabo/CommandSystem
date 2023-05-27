@@ -1,13 +1,13 @@
-﻿extern alias E;
-using Axwabo.CommandSystem.Selectors;
-using HarmonyLib;
-using UnityEngine.SceneManagement;
-using Utils;
-#if EXILED
+﻿#if EXILED
+extern alias E;
 using E::Axwabo.Helpers;
 #else
 using Axwabo.Helpers;
 #endif
+using Axwabo.CommandSystem.Selectors;
+using HarmonyLib;
+using UnityEngine.SceneManagement;
+using Utils;
 
 namespace Axwabo.CommandSystem.Patches;
 

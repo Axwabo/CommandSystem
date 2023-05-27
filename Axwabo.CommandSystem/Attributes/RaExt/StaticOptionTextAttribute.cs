@@ -1,10 +1,10 @@
-﻿extern alias E;
-using Axwabo.CommandSystem.Attributes.Interfaces;
-#if EXILED
+﻿#if EXILED
+extern alias E;
 using E::Axwabo.Helpers;
 #else
 using Axwabo.Helpers;
 #endif
+using Axwabo.CommandSystem.Attributes.Interfaces;
 
 namespace Axwabo.CommandSystem.Attributes.RaExt;
 

@@ -1,11 +1,11 @@
-﻿using PlayerRoles;
-using PlayerStatsSystem;
-#if EXILED
+﻿#if EXILED
 extern alias E;
 using E::Axwabo.Helpers;
 #else
 using Axwabo.Helpers;
 #endif
+using PlayerRoles;
+using PlayerStatsSystem;
 
 namespace Axwabo.CommandSystem.Selectors.Filtering;
 
