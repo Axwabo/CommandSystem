@@ -1,4 +1,5 @@
-﻿using Axwabo.CommandSystem.Attributes;
+﻿using System.IO;
+using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.Helpers;
 
@@ -12,6 +13,8 @@ namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 [PlayerOnlyCommand]
 public sealed class OptionPreferencesContainer : ContainerCommand
 {
+
+    private static string FolderPath => Path.Combine(Plugin.PluginDirectory, "Preferences");
 
     private static readonly Dictionary<string, HashSet<string>> HiddenCommandsByType = new();
 
@@ -47,5 +50,46 @@ public sealed class OptionPreferencesContainer : ContainerCommand
         => HiddenCommandsByType.TryGetValue(userId, out var set)
             ? set.Contains(option.GetType().FullName)
             : !option.IsVisibleByDefault;
+
+    /// <summary>
+    /// Stores the current state of the option preferences on the disk.
+    /// </summary>
+    public static void SaveState()
+    {
+        try
+        {
+            var path = FolderPath;
+            Directory.CreateDirectory(path);
+            foreach (var kvp in HiddenCommandsByType)
+                File.WriteAllLines(Path.Combine(path, kvp.Key), kvp.Value);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e);
+        }
+    }
+
+    /// <summary>
+    /// Loads the option preferences from the disk.
+    /// </summary>
+    public static void LoadState()
+    {
+        try
+        {
+            Directory.CreateDirectory(FolderPath);
+            var files = Directory.GetFiles(FolderPath);
+            foreach (var file in files)
+            {
+                var userId = Path.GetFileName(file);
+                var lines = File.ReadAllLines(file);
+                if (lines.Length != 0)
+                    HiddenCommandsByType[userId] = new HashSet<string>(lines);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error(e);
+        }
+    }
 
 }

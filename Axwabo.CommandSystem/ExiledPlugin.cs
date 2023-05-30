@@ -2,6 +2,7 @@
 using System.IO;
 using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
+using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using HarmonyLib;
@@ -38,6 +39,8 @@ public sealed class Plugin : Plugin<Config>
         }
 
         CommandRegistrationProcessor.RegisterAll(this);
+        OptionPreferencesContainer.LoadState();
+        Shutdown.OnQuit += OptionPreferencesContainer.SaveState;
         Log.Info("Axwabo.CommandSystem has been enabled!");
     }
 
@@ -48,6 +51,9 @@ public sealed class Plugin : Plugin<Config>
         Instance = this;
         CommandRegistrationProcessor.UnregisterAll(this);
         _harmony.UnpatchAll();
+        _harmony = null;
+        OptionPreferencesContainer.SaveState();
+        Shutdown.OnQuit -= OptionPreferencesContainer.SaveState;
         Log.Info("Axwabo.CommandSystem has been disabled!");
     }
 

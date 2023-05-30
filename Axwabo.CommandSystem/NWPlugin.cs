@@ -2,6 +2,7 @@
 using System.IO;
 using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
+using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 using HarmonyLib;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
@@ -33,7 +34,7 @@ public sealed class Plugin
     private void OnEnable()
     {
         Instance = this;
-        PluginDirectory = PluginHandler.Get(this).PluginDirectoryPath;
+        PluginDirectory = Path.Combine(Paths.Plugins, Server.Port.ToString(), "Axwabo.CommandSystem");
         _harmony = new Harmony("Axwabo.CommandSystem");
         try
         {
@@ -46,6 +47,8 @@ public sealed class Plugin
         }
 
         CommandRegistrationProcessor.RegisterAll(this);
+        OptionPreferencesContainer.LoadState();
+        Shutdown.OnQuit += OptionPreferencesContainer.SaveState;
         Log.Info("Axwabo.CommandSystem has been enabled!");
     }
 
@@ -56,6 +59,9 @@ public sealed class Plugin
         Instance = null;
         CommandRegistrationProcessor.UnregisterAll(this);
         _harmony.UnpatchAll();
+        _harmony = null;
+        OptionPreferencesContainer.SaveState();
+        Shutdown.OnQuit -= OptionPreferencesContainer.SaveState;
         Log.Info("Axwabo.CommandSystem has been disabled!");
     }
 
