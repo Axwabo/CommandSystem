@@ -6,6 +6,7 @@ using Axwabo.Helpers;
 #endif
 using PlayerRoles;
 using PlayerStatsSystem;
+using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Selectors.Filtering;
 
@@ -132,6 +133,19 @@ public static class PresetHubFilters
     /// <returns>The filter.</returns>
     public static HubFilter HumeShield(string value)
         => FromParameterized(HumeShield, ValueRange<float>.Parse(value.EnsureNotEmpty("Hume shield must not be empty"), Parse.Float));
+
+    /// <summary>
+    /// Gets a <see cref="HubFilter"/> for checking if the player is within the given distance of the current sender.
+    /// </summary>
+    /// <param name="value">The distance to check for.</param>
+    /// <returns>The filter.</returns>
+    public static HubFilter Distance(string value)
+    {
+        var range = ValueRange<float>.Parse(value.EnsureNotEmpty("Distance must not be empty"), Parse.Float);
+        return PlayerSelectionManager.CurrentSender is not PlayerCommandSender {ReferenceHub: var sender}
+            ? null
+            : hub => range.IsWithinRange(Vector3.Distance(sender.transform.position, hub.transform.position));
+    }
 
     #endregion
 

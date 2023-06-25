@@ -1,4 +1,6 @@
-﻿using CommandSystem;
+﻿using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.RemoteAdminExtensions;
+using CommandSystem;
 
 namespace Axwabo.CommandSystem;
 
@@ -41,7 +43,18 @@ internal sealed class CommandWrapper : ICommand, IUsageProvider
             return false;
         }
 
-        var result = BackingCommand.ExecuteBase(arguments, s);
+        CommandResult result;
+        try
+        {
+            result = BackingCommand.ExecuteBase(arguments, s);
+        }
+        catch (Exception e)
+        {
+            DeveloperMode.OnExceptionThrown(sender, arguments.Array, e);
+            response = PlayerListProcessorException.CreateMessage(e);
+            return false;
+        }
+
         response = result.IsEmpty ? "[no response]" : result;
         return result.Success;
     }

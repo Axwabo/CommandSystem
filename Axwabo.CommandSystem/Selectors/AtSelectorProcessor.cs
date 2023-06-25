@@ -114,6 +114,7 @@ public static class AtSelectorProcessor
             "health" or "hp" => PresetHubFilters.Health(value),
             "artificalhealth" or "ahp" => PresetHubFilters.ArtificialHealth(value),
             "humeshield" or "hs" => PresetHubFilters.HumeShield(value),
+            "distance" or "dist" => PresetHubFilters.Distance(value),
             _ => CustomHubFilterRegistry.Get(alias, value) ?? throw new PlayerListProcessorException($"Unknown player filter: {name}")
         };
         return inverted ? filter.Invert() : filter;

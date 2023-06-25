@@ -143,19 +143,11 @@ public static class BaseCommandPropertyManager
         if (attribute is IDescription d)
             description = d.Description;
 
-        if (attribute is IAliases a)
-        {
-            var list = a.Aliases;
-            if (list != null)
-                aliases.AddRange(list);
-        }
+        if (attribute is IAliases {Aliases: { } aliasList})
+            aliases.AddRange(aliasList);
 
-        if (attribute is IUsage u)
-        {
-            var list = u.Usage;
-            if (list != null)
-                usage.AddRange(list);
-        }
+        if (attribute is IUsage {Usage: { } usageList})
+            usage.AddRange(usageList);
 
         if (attribute is IMinArguments m)
             minArguments = m.MinArguments;

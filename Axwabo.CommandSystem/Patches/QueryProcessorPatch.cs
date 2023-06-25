@@ -7,7 +7,7 @@ using static Axwabo.CommandSystem.Selectors.PlayerSelectionManager;
 
 namespace Axwabo.CommandSystem.Patches;
 
-// [HarmonyPatch(typeof(QueryProcessor), nameof(QueryProcessor.ProcessGameConsoleQuery))]
+[HarmonyPatch(typeof(QueryProcessor), nameof(QueryProcessor.ProcessGameConsoleQuery))]
 internal static class QueryProcessorPatch
 {
 
@@ -34,7 +34,8 @@ internal static class QueryProcessorPatch
         });
 
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
-        list.RemoveRange(failedIndex, 4);
+        var failEnd = list.FindCode(OpCodes.Stloc_S, start: failedIndex);
+        list.RemoveRange(failedIndex, failEnd - failedIndex);
         list.InsertRange(failedIndex, new[]
         {
             Null,
@@ -45,8 +46,7 @@ internal static class QueryProcessorPatch
             Ldloc(4),
             Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
             Ldloc(4),
-            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
-            Stloc(5)
+            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage))
         });
         foreach (var codeInstruction in list)
             yield return codeInstruction;

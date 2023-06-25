@@ -53,8 +53,8 @@
         <Reference Include="Mirror.Components">
             <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
         </Reference>
-        <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\Northwood.PluginAPI.12.0.0\lib\net48\PluginAPI.dll</HintPath>
+        <Reference Include="PluginAPI">
+            <HintPath>$(NW-ASSEMBLIES)\PluginAPI.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="UnityEngine.CoreModule">
@@ -89,6 +89,7 @@
         <Compile Include="Translations\GreetingType.cs"/>
     </ItemGroup>
     <ItemGroup>
+        <None Include="App.config"/>
         <None Include="packages.config"/>
     </ItemGroup>
     <ItemGroup>
