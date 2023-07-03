@@ -53,8 +53,8 @@
         <Reference Include="Mirror.Components">
             <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
         </Reference>
-        <Reference Include="PluginAPI">
-            <HintPath>$(NW-ASSEMBLIES)\PluginAPI.dll</HintPath>
+        <Reference Include="PluginAPI, Version=13.1.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\Northwood.PluginAPI.13.1.0\lib\net48\PluginAPI.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="UnityEngine.CoreModule">
