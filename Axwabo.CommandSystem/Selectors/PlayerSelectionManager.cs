@@ -39,7 +39,7 @@ public static class PlayerSelectionManager
                 ? throw new PlayerListProcessorException()
                 : throw new PlayerListProcessorException(message);
 
-    private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || Plugin.Instance.Config.Debug;
+    private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || Plugin.Instance.Config.AllowSelectingHost;
 
     /// <summary>Gets all players.</summary>
     public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(NonHost).ToList();
