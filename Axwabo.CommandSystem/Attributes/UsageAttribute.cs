@@ -6,7 +6,7 @@ namespace Axwabo.CommandSystem.Attributes;
 /// An attribute that defines usages of a command.
 /// </summary>
 /// <remarks>Usage strings should not contain the command name.</remarks>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class UsageAttribute : Attribute, IUsage
 {
 

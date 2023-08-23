@@ -222,6 +222,7 @@
         <Compile Include="Commands\UnifiedTargetingCommand.cs"/>
         <Compile Include="Commands\Wrappers\CommandWrapper.cs"/>
         <Compile Include="Commands\Wrappers\MethodBasedCommand.cs"/>
+        <Compile Include="Commands\Wrappers\MethodBasedTargetingCommand.cs"/>
         <Compile Include="CompilerHacks.cs"/>
         <Compile Include="Exceptions\PlayerListProcessorException.cs"/>
         <Compile Include="Exceptions\TypeMismatchException.cs"/>

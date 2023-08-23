@@ -110,6 +110,26 @@ public abstract class ContainerCommand : CommandBase
         return isSubcommand;
     }
 
+    private static bool HasValidParameters(MethodInfo methodInfo, out bool isTargetingCommand)
+    {
+        var parameters = methodInfo.GetParameters();
+        isTargetingCommand = false;
+        if (methodInfo.ReturnType != typeof(CommandResult))
+            return false;
+        switch (parameters.Length)
+        {
+            case 2:
+                return parameters[0].ParameterType == typeof(ArraySegment<string>) && parameters[1].ParameterType == typeof(CommandSender);
+            case 3:
+                isTargetingCommand = true;
+                return parameters[0].ParameterType == typeof(List<ReferenceHub>)
+                       && parameters[1].ParameterType == typeof(ArraySegment<string>)
+                       && parameters[2].ParameterType == typeof(CommandSender);
+            default:
+                return false;
+        }
+    }
+
     /// <summary>
     /// Creates a new <see cref="ContainerCommand"/> instance.
     /// </summary>
@@ -120,22 +140,27 @@ public abstract class ContainerCommand : CommandBase
         {
             if (!ShouldRegisterSubcommand(methodInfo))
                 continue;
-            var parameters = methodInfo.GetParameters();
-            if (methodInfo.ReturnType != typeof(CommandResult)
-                || parameters.Length != 2
-                || parameters[0].ParameterType != typeof(ArraySegment<string>)
-                || parameters[1].ParameterType != typeof(CommandSender))
-            {
+            if (HasValidParameters(methodInfo, out var isTargetingCommand))
+                RegisterMethodBasedSubcommand(methodInfo, isTargetingCommand);
+            else
                 Log.Warn($"Method \"{methodInfo.Name}\" in type \"{thisType.FullName}\" is marked as a subcommand but does not match the signature of a command method. Ignoring registration.");
-                continue;
-            }
-
-            if (!BaseCommandPropertyManager.TryResolveProperties(null, out var name, out var description, out var aliases, out var usage, out var minArguments, out var playerOnly, methodInfo))
-                name = methodInfo.Name;
-            var permissions = BaseCommandPropertyManager.ResolvePermissionChecker(this, methodInfo);
-            MethodBasedCommand.SetNextCommandName(name);
-            RegisterSubcommand(new MethodBasedCommand(description, aliases, usage, minArguments, permissions, playerOnly, methodInfo, this));
         }
+    }
+
+    private void RegisterMethodBasedSubcommand(MethodInfo methodInfo, bool isTargetingCommand)
+    {
+        if (!BaseCommandPropertyManager.TryResolveProperties(null, out var name, out var description, out var aliases, out var usage, out var minArguments, out var playerOnly, methodInfo))
+            name = methodInfo.Name;
+        var permissions = BaseCommandPropertyManager.ResolvePermissionChecker(this, methodInfo);
+        if (isTargetingCommand)
+            MethodBasedTargetingCommand.SetNextCommandName(name);
+        else
+            MethodBasedCommand.SetNextCommandName(name);
+        RegisterSubcommand(
+            isTargetingCommand
+                ? new MethodBasedTargetingCommand(description, aliases, usage, minArguments, permissions, playerOnly, methodInfo, this)
+                : new MethodBasedCommand(description, aliases, usage, minArguments, permissions, playerOnly, methodInfo, this)
+        );
     }
 
     /// <summary>

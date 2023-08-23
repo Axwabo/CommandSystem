@@ -55,9 +55,12 @@ public abstract class UnifiedTargetingCommand : CommandBase
     protected virtual int MinArgumentsWithoutTargets => base.MinArguments;
 
     /// <inheritdoc />
-    public override string[] Usage => base.Usage is {Length: not 0} usage
+    public sealed override string[] Usage => UsageWithoutPlayers is {Length: not 0} usage
         ? usage.Select(e => $"<players> {e}").ToArray()
         : Players;
+
+    /// <summary>The usage without the "&lt;players&gt;" prefixes.</summary>
+    protected virtual string[] UsageWithoutPlayers => base.Usage;
 
     private bool ShouldBeAffected(ReferenceHub hub)
         => (ShouldAffectSpectators || hub.IsAlive())

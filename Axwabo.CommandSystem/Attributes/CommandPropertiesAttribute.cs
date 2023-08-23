@@ -5,7 +5,7 @@ namespace Axwabo.CommandSystem.Attributes;
 /// <summary>
 /// Specifies multiple properties of a command.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class CommandPropertiesAttribute : CommandTargetAttribute, ICommandName, IDescription, IAliases, IMinArguments
 {
 

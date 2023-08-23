@@ -5,7 +5,7 @@ namespace Axwabo.CommandSystem.Attributes;
 /// <summary>
 /// Sets a static description for the command.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class DescriptionAttribute : Attribute, IDescription
 {
 
