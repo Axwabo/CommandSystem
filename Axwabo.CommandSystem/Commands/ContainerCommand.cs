@@ -1,4 +1,8 @@
-﻿using Axwabo.CommandSystem.Commands.Interfaces;
+﻿using Axwabo.CommandSystem.Attributes;
+using Axwabo.CommandSystem.Attributes.Containers;
+using Axwabo.CommandSystem.Commands.Interfaces;
+using Axwabo.CommandSystem.Commands.Wrappers;
+using Axwabo.CommandSystem.PropertyManager;
 
 namespace Axwabo.CommandSystem.Commands;
 
@@ -28,15 +32,9 @@ public abstract class ContainerCommand : CommandBase
     {
         if (command == null)
             throw new ArgumentNullException(nameof(command));
-        if (!TryGetSubcommand(command.Name, out var existing, true))
-        {
-            Subcommands.Add(command);
-            return;
-        }
-
-        if (command.GetType() == existing.GetType())
-            throw new InvalidOperationException($"Duplicate registration of subcommand \"{command.GetType().FullName}\" in container command \"{GetType().FullName}\"");
-        throw new InvalidOperationException($"Subcommand \"{command.GetType().FullName}\" already exists in container command \"{GetType().FullName}\"; conflict with \"{existing.GetType().FullName}\"");
+        if (TryGetSubcommand(command.Name, out var existing, true))
+            throw new InvalidOperationException($"Subcommand \"{command.Name}\" already exists in container command \"{GetType().FullName}\"; conflict with \"{existing.GetType().FullName}\"");
+        Subcommands.Add(command);
     }
 
     /// <summary>
@@ -95,6 +93,48 @@ public abstract class ContainerCommand : CommandBase
             }
 
             return list;
+        }
+    }
+
+    private static bool ShouldRegisterSubcommand(MemberInfo methodInfo)
+    {
+        var isSubcommand = false;
+        foreach (var attr in methodInfo.GetCustomAttributes())
+        {
+            if (attr is MethodBasedSubcommandAttribute)
+                isSubcommand = true;
+            if (attr is DoNotAutoRegister {AllowRegistration: false})
+                return false;
+        }
+
+        return isSubcommand;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="ContainerCommand"/> instance.
+    /// </summary>
+    protected ContainerCommand()
+    {
+        var thisType = GetType();
+        foreach (var methodInfo in thisType.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+        {
+            if (!ShouldRegisterSubcommand(methodInfo))
+                continue;
+            var parameters = methodInfo.GetParameters();
+            if (methodInfo.ReturnType != typeof(CommandResult)
+                || parameters.Length != 2
+                || parameters[0].ParameterType != typeof(ArraySegment<string>)
+                || parameters[1].ParameterType != typeof(CommandSender))
+            {
+                Log.Warn($"Method \"{methodInfo.Name}\" in type \"{thisType.FullName}\" is marked as a subcommand but does not match the signature of a command method. Ignoring registration.");
+                continue;
+            }
+
+            if (!BaseCommandPropertyManager.TryResolveProperties(null, out var name, out var description, out var aliases, out var usage, out var minArguments, out var playerOnly, methodInfo))
+                name = methodInfo.Name;
+            var permissions = BaseCommandPropertyManager.ResolvePermissionChecker(this, methodInfo);
+            MethodBasedCommand.SetNextCommandName(name);
+            RegisterSubcommand(new MethodBasedCommand(description, aliases, usage, minArguments, permissions, playerOnly, methodInfo, this));
         }
     }
 

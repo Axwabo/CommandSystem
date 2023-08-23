@@ -2,6 +2,7 @@
 using Axwabo.CommandSystem.Attributes.Containers;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
+using Axwabo.CommandSystem.Commands.Wrappers;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
@@ -216,7 +217,11 @@ public sealed class CommandRegistrationProcessor
         RemoteAdminOptionManager.RegisterOption((RemoteAdminOptionBase) Activator.CreateInstance(type));
     }
 
-    private static void LogSkippedCommand(Type type) => Log.Warn($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
+    private static void LogSkippedCommand(Type type)
+    {
+        if (type.Assembly != typeof(CommandRegistrationProcessor).Assembly)
+            Log.Warn($"Type \"{type.FullName}\" extends CommandBase but does not specify the command handler types in its attributes.");
+    }
 
     private void CreateCommandWrapperAndRegister(Type commandType, CommandHandlerType targets)
     {

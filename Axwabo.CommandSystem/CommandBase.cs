@@ -107,7 +107,7 @@ public abstract class CommandBase
         => sender is PlayerCommandSender
             ? CommandResult.Null
             : this is IPlayerOnlyCommand playerOnly
-                ? playerOnly.OnNotPlayer(arguments, sender) ?? CommandResult.Failed(MustBePlayer)
+                ? playerOnly.OnNotPlayer(arguments, sender)
                 : _playerOnly
                     ? CommandResult.Failed(MustBePlayer)
                     : CommandResult.Null;

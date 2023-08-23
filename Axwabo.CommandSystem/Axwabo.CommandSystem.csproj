@@ -156,6 +156,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Attributes\Containers\MethodBasedSubcommandAttribute.cs"/>
         <Compile Include="Attributes\DoNotAutoRegister.cs"/>
         <Compile Include="Attributes\Interfaces\IOptionIconProvider.cs"/>
         <Compile Include="Attributes\Containers\SubcommandOfContainerAttribute.cs"/>
@@ -219,7 +220,8 @@
         <Compile Include="Commands\ContainerCommand.cs"/>
         <Compile Include="Commands\SeparatedTargetingCommand.cs"/>
         <Compile Include="Commands\UnifiedTargetingCommand.cs"/>
-        <Compile Include="CommandWrapper.cs"/>
+        <Compile Include="Commands\Wrappers\CommandWrapper.cs"/>
+        <Compile Include="Commands\Wrappers\MethodBasedCommand.cs"/>
         <Compile Include="CompilerHacks.cs"/>
         <Compile Include="Exceptions\PlayerListProcessorException.cs"/>
         <Compile Include="Exceptions\TypeMismatchException.cs"/>

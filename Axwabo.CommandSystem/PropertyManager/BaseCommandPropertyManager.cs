@@ -22,6 +22,7 @@ public static class BaseCommandPropertyManager
     /// <param name="usage">Usage examples for the command.</param>
     /// <param name="minArguments">The minimum number of arguments required to execute the command.</param>
     /// <param name="playerOnly">Whether the command can only be executed by a player.</param>
+    /// <param name="member">The member to resolve attributes for. If null, the command's type will be used.</param>
     /// <returns>Whether the command name was successfully resolved.</returns>
     public static bool TryResolveProperties(
         CommandBase command,
@@ -30,7 +31,8 @@ public static class BaseCommandPropertyManager
         out string[] aliases,
         out string[] usage,
         out int minArguments,
-        out bool playerOnly
+        out bool playerOnly,
+        MemberInfo member = null
     )
     {
         name = null;
@@ -39,9 +41,10 @@ public static class BaseCommandPropertyManager
         var usageList = new List<string>();
         minArguments = 0;
         playerOnly = false;
-        foreach (var attribute in command.GetType().GetCustomAttributes())
+        member ??= command.GetType();
+        foreach (var attribute in member.GetCustomAttributes())
         {
-            ResolveBaseAttribute(command, attribute, ref name, ref description, aliasList, usageList, ref minArguments, ref playerOnly);
+            ResolveBaseAttribute(member, attribute, ref name, ref description, aliasList, usageList, ref minArguments, ref playerOnly);
             if (CurrentProcessor == null)
                 continue;
             var type = attribute.GetType();
@@ -127,7 +130,7 @@ public static class BaseCommandPropertyManager
     }
 
     private static void ResolveBaseAttribute(
-        CommandBase command,
+        MemberInfo member,
         Attribute attribute,
         ref string name,
         ref string description,
@@ -138,7 +141,7 @@ public static class BaseCommandPropertyManager
     )
     {
         if (attribute is ICommandName n)
-            name = n.Name ?? throw new InvalidNameException($"Null command name provided by attribute {attribute.GetType().FullName} on type {command.GetType().FullName}.");
+            name = n.Name ?? throw new InvalidNameException($"Null command name provided by attribute {attribute.GetType().FullName} {(member is Type t ? "on type " + t.FullName : $"in member \"{member.Name}\" of type {member.DeclaringType!.FullName}")}");
 
         if (attribute is IDescription d)
             description = d.Description;

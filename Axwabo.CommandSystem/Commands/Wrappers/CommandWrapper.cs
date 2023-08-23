@@ -2,7 +2,7 @@
 using Axwabo.CommandSystem.RemoteAdminExtensions;
 using CommandSystem;
 
-namespace Axwabo.CommandSystem;
+namespace Axwabo.CommandSystem.Commands.Wrappers;
 
 internal sealed class CommandWrapper : ICommand, IUsageProvider
 {
