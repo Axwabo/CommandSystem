@@ -61,7 +61,7 @@ public sealed class CommandRegistrationProcessor
     private static void UnregisterFromHandler(Assembly assembly, ICommandHandler handler)
     {
         foreach (var cmd in handler.AllCommands.ToList())
-            if (cmd is CommandWrapper wrapper && wrapper.BackingCommand.GetType().Assembly == assembly)
+            if (cmd.TryGetUnderlyingCommand(out var underlyingCommand) && underlyingCommand.GetType().Assembly == assembly)
                 handler.UnregisterCommand(cmd);
     }
 

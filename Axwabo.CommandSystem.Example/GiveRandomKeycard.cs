@@ -21,10 +21,10 @@ public sealed class GiveRandomKeycard : SeparatedTargetingCommand, IAffectedMult
         ItemType.KeycardResearchCoordinator,
         ItemType.KeycardZoneManager,
         ItemType.KeycardGuard,
-        ItemType.KeycardNTFOfficer,
+        ItemType.KeycardMTFPrivate,
         ItemType.KeycardContainmentEngineer,
-        ItemType.KeycardNTFLieutenant,
-        ItemType.KeycardNTFCommander,
+        ItemType.KeycardMTFOperative,
+        ItemType.KeycardMTFCaptain,
         ItemType.KeycardFacilityManager,
         ItemType.KeycardChaosInsurgency,
         ItemType.KeycardO5

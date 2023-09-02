@@ -4,60 +4,91 @@ using E::Axwabo.Helpers;
 #else
 using Axwabo.Helpers;
 #endif
+using System.Text.RegularExpressions;
 using Axwabo.CommandSystem.Selectors;
 using HarmonyLib;
 using UnityEngine.SceneManagement;
 using Utils;
 
+#pragma warning disable CS1591
+
 namespace Axwabo.CommandSystem.Patches;
 
 [HarmonyPatch(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList))]
-internal static class ProcessPlayersListPatch
+public static class ProcessPlayersListPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    private static readonly Regex QuotedNicknameRegex = new("@\"(.*?)\".|@[^\\s.]+\\.");
+
+    public static List<ReferenceHub> ProcessPlayerIdOrNamesList(ArraySegment<string> args, int startIndex, out string[] newArgs, bool keepEmptyEntries)
     {
-        var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
-        var targets = generator.DeclareLocal(typeof(List<ReferenceHub>));
-        var label = generator.DefineLabel();
-        list[0].labels.Add(label);
-        list.InsertRange(0, new[]
+        if (PlayerSelectionManager.TryProcessPlayersCustom(args, startIndex, keepEmptyEntries, out var targets, out newArgs))
+            return targets;
+        try
         {
-            Ldarg(0),
-            Ldarg(1),
-            Ldarg(3),
-            targets.LoadAddress(),
-            Ldarg(2),
-            Call(typeof(PlayerSelectionManager), nameof(PlayerSelectionManager.TryProcessPlayersCustom)),
-            label.False(),
-            targets.Load(),
-            Return
-        });
+            var formatted = RAUtils.FormatArguments(args, startIndex);
+            var referenceHubList = new HashSet<ReferenceHub>();
+            if (formatted.StartsWith("@", StringComparison.Ordinal)) // does this even work? lmao NW
+            {
+                foreach (Match match in QuotedNicknameRegex.Matches(formatted))
+                {
+                    formatted = RAUtils.ReplaceFirst(formatted, match.Value, "");
+                    var name = match.Value.Substring(1).Replace("\"", "").Replace(".", "");
+                    var list = ReferenceHub.AllHubs.Where(ply => ply.nicknameSync.MyNick.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
+                    if (list.Count == 1)
+                        referenceHubList.Add(list[0]);
+                }
 
-        var atProcessor = list.FindCode(OpCodes.Ldstr) - 1;
-        var atEnd = list.FindCode(OpCodes.Leave, start: list.FindCode(OpCodes.Newarr));
-        list.RemoveRange(atProcessor, atEnd - atProcessor + 1);
+                newArgs = formatted.Split(new[] {' '}, (StringSplitOptions) (keepEmptyEntries ? 0 : 1));
+                return referenceHubList.ToList();
+            }
 
-        var digitCheck = list.FindCode(OpCodes.Ble_S) + 1;
-        list.RemoveRange(digitCheck, list.FindCode(OpCodes.Brfalse_S, start: digitCheck) - digitCheck + 1);
-
-        var parseSingle = list.FindIndex(i => i.operand is MethodInfo {Name: nameof(int.TryParse)}) - 4;
-        var loopStart = Ldloc(1).MoveLabelsFrom(list[parseSingle]).MoveBlocksFrom(list[parseSingle]);
-        list.RemoveRange(parseSingle, 17);
-        list.InsertRange(parseSingle, new[]
+            AddSeparatedPlayers(args, startIndex, referenceHubList);
+            newArgs = args.Count <= 1 ? null : RAUtils.FormatArguments(args, startIndex + 1).Split(new[] {' '}, (StringSplitOptions) (keepEmptyEntries ? 0 : 1));
+            return referenceHubList.ToList();
+        }
+        catch (Exception ex)
         {
-            loopStart,
-            Ldloc(8),
-            Ldloc(9),
-            LdelemRef,
-            Ldloc(1),
-            Call(typeof(PlayerSelectionManager), nameof(PlayerSelectionManager.ParseSingleQuery)),
-        });
-        foreach (var codeInstruction in list)
-            yield return codeInstruction;
-
-        ListPool<CodeInstruction>.Shared.Return(list);
+            Debug.LogException(ex);
+            newArgs = null;
+            return null;
+        }
     }
+
+    private static void AddSeparatedPlayers(ArraySegment<string> args, int startIndex, HashSet<ReferenceHub> referenceHubList)
+    {
+        if (args.At(startIndex).Length <= 0)
+            return;
+        if (char.IsDigit(args.At(startIndex)[0]))
+            AddPlayersBasedOnIdList(args, startIndex, referenceHubList);
+        else if (char.IsLetter(args.At(startIndex)[0]))
+            AddPlayersBasedOnNicknameList(args, startIndex, referenceHubList);
+    }
+
+    private static void AddPlayersBasedOnNicknameList(ArraySegment<string> args, int startIndex, HashSet<ReferenceHub> referenceHubList)
+    {
+        foreach (var s in args.At(startIndex).Split(new[] {'.'}, StringSplitOptions.None))
+        foreach (var hub in ReferenceHub.AllHubs)
+            if (hub.nicknameSync.MyNick.Equals(s, StringComparison.OrdinalIgnoreCase))
+                referenceHubList.Add(hub);
+    }
+
+    private static void AddPlayersBasedOnIdList(ArraySegment<string> args, int startIndex, HashSet<ReferenceHub> referenceHubList)
+    {
+        foreach (var s in args.At(startIndex).Split(new[] {'.'}, StringSplitOptions.None))
+            if (int.TryParse(s, out var result) && ReferenceHub.TryGetHub(result, out var hub))
+                referenceHubList.Add(hub);
+    }
+
+    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => new[]
+    {
+        Ldarg(0),
+        Ldarg(1),
+        Ldarg(2),
+        Ldarg(3),
+        Call(ProcessPlayerIdOrNamesList),
+        Return
+    };
 
     private static bool _alreadyTriedToUnpatch;
 

@@ -20,7 +20,7 @@ public static class CommandHelpers
     /// <param name="command">The command to get the implementation location of.</param>
     /// <returns>The full implementation path.</returns>
     public static string GetImplementationLocation(ICommand command)
-        => GetTypeInfo(command is CommandWrapper wrapper ? wrapper.BackingCommand.GetType() : command.GetType());
+        => GetTypeInfo(command.TryGetUnderlyingCommand(out var underlyingCommand) ? underlyingCommand.GetType() : command.GetType());
 
     /// <summary>
     /// Gets the assembly name combined with the type's full name.
@@ -46,8 +46,8 @@ public static class CommandHelpers
     /// </summary>
     /// <param name="command">The command to check.</param>
     /// <returns><see langword="true"/> if the command is hidden; otherwise, <see langword="false"/>.</returns>
-    public static bool IsHidden(ICommand command) => command is CommandWrapper wrapper
-        ? wrapper.BackingCommand is IHiddenCommand {IsHidden: true}
+    public static bool IsHidden(ICommand command) => command.TryGetUnderlyingCommand(out var underlyingCommand)
+        ? underlyingCommand is IHiddenCommand {IsHidden: true}
         : command is global::CommandSystem.IHiddenCommand;
 
     /// <summary>
@@ -87,7 +87,7 @@ public static class CommandHelpers
         if (command == null)
             throw new ArgumentNullException(nameof(command));
         var args = arguments.Count < 2 ? new ArraySegment<string>(Array.Empty<string>()) : arguments.Segment(1);
-        return command is CommandWrapper {BackingCommand: { } backingCommand}
+        return command.TryGetUnderlyingCommand(out var backingCommand)
             ? GetHelpForCustomCommand(backingCommand, args)
             : GetHelpForVanillaCommand(command, args);
     }
@@ -162,7 +162,7 @@ public static class CommandHelpers
     /// <param name="builder">The <see cref="StringBuilder"/> to append the list to.</param>
     public static void GetCommandList(ICommand command, string header, StringBuilder builder)
     {
-        if (command is CommandWrapper {BackingCommand: ContainerCommand container})
+        if (command.TryGetUnderlyingCommand(out ContainerCommand container))
         {
             builder.Append(header);
             GetCustomCommandList(container, builder);
@@ -210,6 +210,33 @@ public static class CommandHelpers
             if (subcommand.Aliases is {Length: not 0})
                 builder.Append(" - Aliases: ").Append(string.Join(", ", subcommand.Aliases));
         }
+    }
+
+    /// <summary>
+    /// Attempts to get the backing <see cref="CommandBase"/> of an <see cref="ICommand"/>.
+    /// </summary>
+    /// <param name="command">The command to get the backing command of.</param>
+    /// <param name="underlyingCommand">The backing command.</param>
+    /// <returns>Whether the command has a backing <see cref="CommandBase"/>.</returns>
+    public static bool TryGetUnderlyingCommand(this ICommand command, out CommandBase underlyingCommand)
+        => command.TryGetUnderlyingCommand<CommandBase>(out underlyingCommand);
+
+    /// <summary>
+    /// Attempts to get the backing type <typeparamref name="T"/> <see cref="CommandBase"/> of an <see cref="ICommand"/>.
+    /// </summary>
+    /// <param name="command">The command to get the backing command of.</param>
+    /// <param name="underlyingCommand">The backing command.</param>
+    /// <returns>Whether the command has a backing <see cref="CommandBase"/> of type <typeparamref name="T"/>.</returns>
+    public static bool TryGetUnderlyingCommand<T>(this ICommand command, out T underlyingCommand) where T : CommandBase
+    {
+        if (command is not CommandWrapper {BackingCommand: var backingCommand})
+        {
+            underlyingCommand = null;
+            return false;
+        }
+
+        underlyingCommand = backingCommand as T;
+        return underlyingCommand != null;
     }
 
 }
