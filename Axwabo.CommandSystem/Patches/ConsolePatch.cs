@@ -13,7 +13,7 @@ internal static class ConsolePatch
 
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
-        var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
+        var list = new List<CodeInstruction>(instructions);
         var pre = list.FindCode(OpCodes.Ldloc_2);
 
         list.InsertRange(pre, new[]
@@ -28,8 +28,8 @@ internal static class ConsolePatch
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
             Ldarg(2),
             Ldloc(1),
-            Ldloc(7),
-            Ldloc(6),
+            Ldloc(10),
+            Ldloc(9),
             Call<DeveloperMode>(nameof(DeveloperMode.OnCommandExecuted))
         });
 
@@ -41,15 +41,13 @@ internal static class ConsolePatch
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
             Ldarg(2),
             Ldloc(1),
-            Ldloc(9),
+            Ldloc(12),
             Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
-            Ldloc(9),
+            Ldloc(12),
             Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
-            Stloc(10)
+            Stloc(13)
         });
-        foreach (var codeInstruction in list)
-            yield return codeInstruction;
-        ListPool<CodeInstruction>.Shared.Return(list);
+        return list;
     }
 
 }

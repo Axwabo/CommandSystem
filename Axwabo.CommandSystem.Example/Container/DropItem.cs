@@ -37,7 +37,7 @@ public sealed class DropItem : SeparatedTargetingCommand, ITargetingPreExecution
         return true;
     }
 
-    public CommandResult CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures)
+    public CommandResult? CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures)
         => success.Count == 0
             ? "!No targets had the item."
             : $"Dropped {_item} from {"player".PluralizeWithCount(success.Count)}.";

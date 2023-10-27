@@ -32,7 +32,7 @@ public static class Extensions
     /// <param name="results">The results to concatenate.</param>
     /// <param name="separator">The string to use as a separator.<paramref name="separator" /> is included in the returned string only if <paramref name="results" /> has more than one element.</param>
     /// <returns>The concatenated string.</returns>
-    public static string JoinResults(this IEnumerable<CommandResult> results, string separator = ", ")
+    public static string JoinResults(this IEnumerable<CommandResult> results, string separator = "\n")
         => string.Join(separator, results.Select(p => p.Response));
 
     /// <summary>
@@ -40,9 +40,10 @@ public static class Extensions
     /// </summary>
     /// <param name="results">The results to concatenate.</param>
     /// <param name="separator">The string to use as a separator.<paramref name="separator" /> is included in the returned string only if <paramref name="results" /> has more than one element.</param>
+    /// <param name="includeNicknames">Whether the response should be prepended with the target's nickname.</param>
     /// <returns>The concatenated string.</returns>
-    public static string JoinResults(this IEnumerable<CommandResultOnTarget> results, string separator = ", ")
-        => string.Join(separator, results.Select(p => p.Response));
+    public static string JoinResults(this IEnumerable<CommandResultOnTarget> results, string separator = "\n", bool includeNicknames = true)
+        => string.Join(separator, results.Select(p => (includeNicknames ? p.Nick + ": " : "") + p.Response));
 
     /// <summary>
     /// Concatenates the members of a string array segment starting from the given index using the specified separator between each member.

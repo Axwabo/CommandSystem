@@ -26,9 +26,8 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand
 
         return succeeded.Count == 0 && failed.Count == 0
             ? CommandResult.Failed(NoPlayersAffected)
-            : this is ICustomResultCompiler custom
-                ? custom.CompileResultCustom(succeeded, failed)
-                : CompileResult(succeeded);
+            : (this as ICustomResultCompiler)?.CompileResultCustom(succeeded, failed)
+              ?? CompileResult(succeeded);
     }
 
     /// <summary>

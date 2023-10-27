@@ -73,20 +73,14 @@ public abstract class UnifiedTargetingCommand : CommandBase
             return OnNotEnoughArguments(arguments, sender, MinArguments);
         var targets = arguments.GetTargets(out var newArgs)?.Where(ShouldBeAffected).ToList();
         var args = new ArraySegment<string>(newArgs ?? Array.Empty<string>());
-        if (this is ITargetingPreExecutionFilter filter)
-        {
-            var result = filter.OnBeforeExecuted(targets, args, sender);
-            if (result is not null)
-                return result.Value;
-        }
-
-        if (targets is not {Count: not 0})
-            return OnNoTargetsFound(arguments, args, sender);
-        return args.Count < MinArgumentsWithoutTargets
-            ? OnNotEnoughArguments(args, sender, MinArguments)
-            : targets.Count == 1
-                ? ExecuteOnSingleTarget(targets[0], args, sender)
-                : ExecuteOnTargets(targets, args, sender);
+        return (this as ITargetingPreExecutionFilter)?.OnBeforeExecuted(targets, args, sender)
+               ?? (targets is not {Count: not 0}
+                   ? OnNoTargetsFound(arguments, args, sender)
+                   : args.Count < MinArgumentsWithoutTargets
+                       ? OnNotEnoughArguments(args, sender, MinArguments)
+                       : targets.Count == 1
+                           ? ExecuteOnSingleTarget(targets[0], args, sender)
+                           : ExecuteOnTargets(targets, args, sender));
     }
 
     /// <summary>

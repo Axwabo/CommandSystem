@@ -25,7 +25,7 @@ public sealed class FlashCommand : SeparatedTargetingCommand, ITargetSelectionMa
         return true;
     }
 
-    public CommandResult CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures)
+    public CommandResult? CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures)
     {
         var successes = success.Count > 0 ? $"Flashed the following players for 10 seconds: {success.CombineNicknames()}" : "";
         var failed = failures.Count > 0 ? $"Unaffected: {failures.CombineNicknames()}" : "";

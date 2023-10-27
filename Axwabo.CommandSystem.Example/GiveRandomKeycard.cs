@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Attributes.Targeting;
 using Axwabo.CommandSystem.Commands;
+using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.Permissions;
 using InventorySystem;
@@ -11,7 +13,7 @@ namespace Axwabo.CommandSystem.Example;
 
 [RemoteAdminCommand]
 [AffectedOnePlayerMessage("{0} has received a random keycard")] // {0} will be replaced with the player's name using string.Format
-public sealed class GiveRandomKeycard : SeparatedTargetingCommand, IAffectedMultiplePlayersMessageGenerator
+public sealed class GiveRandomKeycard : SeparatedTargetingCommand, IAffectedMultiplePlayersMessageGenerator, ICustomResultCompiler
 {
 
     private static readonly ItemType[] KeycardItems =
@@ -54,5 +56,18 @@ public sealed class GiveRandomKeycard : SeparatedTargetingCommand, IAffectedMult
     public string OnAffected(int players) => $"Given a random keycard to {players} players";
 
     protected override string NoPlayersAffected => "Nobody received a keycard";
+
+    public CommandResult? CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures)
+    {
+        if (failures.Count == 0)
+            return CommandResult.Null;
+        if (success.Count == 0)
+            return CommandResult.Failed(failures.JoinResults());
+        return CommandResult.Succeeded(
+            success.JoinResults()
+            + "\n"
+            + failures.JoinResults()
+        );
+    }
 
 }

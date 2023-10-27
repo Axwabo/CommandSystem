@@ -9,8 +9,7 @@ internal static class HelpCommandPatch
 
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
-        var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
+        var list = new List<CodeInstruction>(instructions);
         var start = list.FindIndex(i => i.operand is MethodInfo {Name: "get_Command"}) - 1;
         var end = list.FindLastIndex(i => i.opcode == OpCodes.Leave_S) + 1;
         var labels = list[start].ExtractLabels();
@@ -23,10 +22,7 @@ internal static class HelpCommandPatch
             Call(typeof(CommandHelpers), nameof(CommandHelpers.GetHelpForCommand)),
             StindRef
         });
-
-        foreach (var codeInstruction in list)
-            yield return codeInstruction;
-        ListPool<CodeInstruction>.Shared.Return(list);
+        return list;
     }
 
 }

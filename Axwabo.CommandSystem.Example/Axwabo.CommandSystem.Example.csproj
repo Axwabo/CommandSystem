@@ -53,15 +53,12 @@
         <Reference Include="Mirror.Components">
             <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
         </Reference>
-        <Reference Include="PluginAPI, Version=13.1.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\Northwood.PluginAPI.13.1.0\lib\net48\PluginAPI.dll</HintPath>
+        <Reference Include="PluginAPI">
+            <HintPath>$(NW-ASSEMBLIES)\PluginAPI.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="UnityEngine.CoreModule">
             <HintPath>$(NW-ASSEMBLIES)\UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-            <HintPath>..\packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
@@ -87,10 +84,6 @@
         <Compile Include="Translations\GreetingTranslationAttribute.cs"/>
         <Compile Include="Translations\GreetingTranslations.cs"/>
         <Compile Include="Translations\GreetingType.cs"/>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="App.config"/>
-        <None Include="packages.config"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Axwabo.CommandSystem\Axwabo.CommandSystem.csproj">

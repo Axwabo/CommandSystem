@@ -44,7 +44,7 @@ public sealed class DeveloperMode : ButtonBasedRemoteAdminOption
     public static void OnCommandExecuted(ICommandSender sender, string[] query, string result, bool success)
     {
         if (sender is PlayerCommandSender player)
-            LastCommands[player] = (string.Join(" ", query), new CommandResult(success, result));
+            LastCommands[player] = (string.Join(" ", query), (success, result));
     }
 
     /// <summary>

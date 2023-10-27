@@ -13,24 +13,23 @@ internal static class CommandProcessorPatch
 
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
-        var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
+        var list = new List<CodeInstruction>(instructions);
 
-        var emptyArrayFix = list.FindIndex(i => i.operand is FieldInfo {Name: "SpaceArray"}) + 5;
+        var emptyArrayFix = list.FindCode(OpCodes.Stloc_0) + 1;
         var getCommandLabel = generator.DefineLabel();
-        var labels = list[emptyArrayFix].ExtractLabels();
 
         // fixes the case where External Lookup is clicked while not selecting a target (string is empty)
         list[emptyArrayFix].labels.Add(getCommandLabel);
         list.InsertRange(emptyArrayFix, new[]
         {
-            Ldloc(1).WithLabels(labels),
+            Ldloc(0),
             Ldlen,
             getCommandLabel.True(),
             String("Command name was not specified!"),
             Return
         });
 
-        var pre = list.FindCode(OpCodes.Ldloc_2);
+        var pre = list.FindCode(OpCodes.Ldloc_1);
         list.InsertRange(pre, new[]
         {
             This.MoveBlocksFrom(list[pre]),
@@ -42,9 +41,9 @@ internal static class CommandProcessorPatch
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
             Ldarg(1),
-            Ldloc(1),
-            Ldloc(9),
-            Ldloc(8),
+            Ldloc(0),
+            Ldloc(6),
+            Ldloc(5),
             Call<DeveloperMode>(nameof(DeveloperMode.OnCommandExecuted))
         });
 
@@ -55,12 +54,12 @@ internal static class CommandProcessorPatch
             Null,
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
             Ldarg(1),
-            Ldloc(1),
-            Ldloc(11),
+            Ldloc(0),
+            Ldloc(8),
             Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
-            Ldloc(11),
+            Ldloc(8),
             Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
-            Stloc(12)
+            Stloc(9)
         });
 
         var send = list.FindIndex(failedIndex, i => i.operand is MethodInfo {Name: "ToUpperInvariant"}) - 6;
@@ -72,16 +71,13 @@ internal static class CommandProcessorPatch
             LdelemRef,
             Call<string>(nameof(string.ToUpperInvariant)),
             String("#"),
-            Ldloc(12),
+            Ldloc(9),
             Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
             Int0,
             Int1,
             String("")
         });
-
-        foreach (var codeInstruction in list)
-            yield return codeInstruction;
-        ListPool<CodeInstruction>.Shared.Return(list);
+        return list;
     }
 
 }

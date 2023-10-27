@@ -10,18 +10,13 @@ internal static class RequestDataPatch
 
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
-        var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
+        var list = new List<CodeInstruction>(instructions);
         var cfg = Plugin.Instance.Config;
         if (cfg.EnableRemoteAdminExtensions)
             PatchExtensions(list, generator);
         if (cfg.CopyNicknameInsteadOfId)
             PatchNickname(list);
-
-        foreach (var codeInstruction in list)
-            yield return codeInstruction;
-
-        ListPool<CodeInstruction>.Shared.Return(list);
+        return list;
     }
 
     private static void PatchExtensions(List<CodeInstruction> list, ILGenerator generator)

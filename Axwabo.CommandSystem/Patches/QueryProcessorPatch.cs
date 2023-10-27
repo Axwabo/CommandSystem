@@ -13,7 +13,7 @@ internal static class QueryProcessorPatch
 
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
-        var list = ListPool<CodeInstruction>.Shared.Rent(instructions);
+        var list = new List<CodeInstruction>(instructions);
         var pre = list.FindCode(OpCodes.Ldloc_1);
         list.InsertRange(pre, new[]
         {
@@ -48,9 +48,7 @@ internal static class QueryProcessorPatch
             Ldloc(4),
             Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage))
         });
-        foreach (var codeInstruction in list)
-            yield return codeInstruction;
-        ListPool<CodeInstruction>.Shared.Return(list);
+        return list;
     }
 
 }

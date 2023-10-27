@@ -11,6 +11,6 @@ public interface ICustomResultCompiler
     /// </summary>
     /// <param name="success">The list of targets that the command has been successfully executed on.</param>
     /// <param name="failures">The list of targets that the command has failed to execute on.</param>
-    CommandResult CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures);
+    CommandResult? CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures);
 
 }

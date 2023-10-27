@@ -1,5 +1,4 @@
 ﻿extern alias E;
-global using NorthwoodLib.Pools;
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
@@ -7,9 +6,10 @@ global using System.Reflection;
 global using System.Reflection.Emit;
 global using UnityEngine;
 #if EXILED
+global using E::Axwabo.Helpers.Pools;
 global using static E::Axwabo.Helpers.Harmony.InstructionHelper;
-
 #else
+global using Axwabo.Helpers.Pools;
 global using static Axwabo.Helpers.Harmony.InstructionHelper;
 #endif
 
