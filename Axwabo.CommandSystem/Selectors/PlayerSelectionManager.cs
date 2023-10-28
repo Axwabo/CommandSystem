@@ -179,7 +179,7 @@ public static class PlayerSelectionManager
 
     private static void GetSpectated(string formatted, bool keepEmptyEntries, out List<ReferenceHub> targets, out string[] newArgs)
     {
-        if (CurrentSender is not PlayerCommandSender {ReferenceHub: var hub} || !hub.IsAlive())
+        if (CurrentSender is not PlayerCommandSender {ReferenceHub.roleManager.CurrentRole: SpectatorRole {SyncedSpectatedNetId: var targetNetId}})
         {
             targets = HubCollection.Empty;
             newArgs = Split(formatted, keepEmptyEntries, true);
@@ -188,7 +188,7 @@ public static class PlayerSelectionManager
 
         foreach (var target in AllPlayers)
         {
-            if (!target.IsSpectatedBy(hub))
+            if (target.netId != targetNetId)
                 continue;
             targets = new HubCollection(target);
             newArgs = Split(formatted, keepEmptyEntries);

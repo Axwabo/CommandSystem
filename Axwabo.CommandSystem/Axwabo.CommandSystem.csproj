@@ -113,6 +113,9 @@
         <Reference Include="PluginAPI">
             <HintPath>$(NW-ASSEMBLIES)\PluginAPI.dll</HintPath>
         </Reference>
+        <Reference Include="Pooling">
+            <HintPath>$(NW-ASSEMBLIES)\Pooling.dll</HintPath>
+        </Reference>
         <Reference Include="System"/>
         <Reference Include="UnityEngine">
             <HintPath>$(NW-ASSEMBLIES)\UnityEngine.dll</HintPath>
