@@ -66,7 +66,7 @@ internal static class CommandProcessorPatch
         list.RemoveRange(send, 10);
         list.InsertRange(send, new[]
         {
-            Ldloc(1),
+            Ldloc(0),
             Int0,
             LdelemRef,
             Call<string>(nameof(string.ToUpperInvariant)),
