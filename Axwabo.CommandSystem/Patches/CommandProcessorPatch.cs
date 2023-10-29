@@ -62,7 +62,7 @@ internal static class CommandProcessorPatch
             Stloc(9)
         });
 
-        var send = list.FindIndex(failedIndex, i => i.operand is MethodInfo {Name: "ToUpperInvariant"}) - 6;
+        var send = list.FindCall("ToUpperInvariant", failedIndex) - 6;
         list.RemoveRange(send, 10);
         list.InsertRange(send, new[]
         {

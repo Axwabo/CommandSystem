@@ -20,7 +20,7 @@ public sealed class AttributeCommand : CommandBase, IHiddenCommand
 
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
     {
-        if (!Parse.Int(arguments.At(0), out var number)) // you can also use int.TryParse
+        if (!arguments.ParseInt(out var number)) // you can also use int.TryParse
             return "!Invalid number!"; // prepend ! to mark the result as failed
         if (number == 69420)
             return CommandResult.Succeeded("Nice");

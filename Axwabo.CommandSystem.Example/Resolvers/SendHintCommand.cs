@@ -19,7 +19,7 @@ public sealed class SendHintCommand : SeparatedTargetingCommand, ITargetingPreEx
     public CommandResult? OnBeforeExecuted(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
     {
         // make sure the duration is 0 or higher
-        if (!Parse.Float(arguments.At(0), ValueRange<float>.StartOnly(0), out var duration))
+        if (!arguments.ParseFloat(ValueRange<float>.StartOnly(0), out var duration))
             return "!Invalid duration - must be 0 or greater.";
         var content = arguments.Join(1);
         _hint = new TextHint(content, new HintParameter[]

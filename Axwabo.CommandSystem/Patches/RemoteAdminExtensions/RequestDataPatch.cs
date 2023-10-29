@@ -35,19 +35,19 @@ internal static class RequestDataPatch
             Equality,
             Ldloc(3),
             response.LoadAddress(),
-            Call(typeof(RemoteAdminOptionManager), nameof(RemoteAdminOptionManager.HandleCustomRequest)),
+            Call(RemoteAdminOptionManager.HandleCustomRequest),
             label.False(),
             This,
             Ldarg(1),
             response.Load(),
-            Call(typeof(RemoteAdminOptionManager), nameof(RemoteAdminOptionManager.SendReply)),
+            Call(RemoteAdminOptionManager.SendReply),
             Return
         });
     }
 
     private static void PatchNickname(List<CodeInstruction> list)
     {
-        var startIndex = list.FindCall<List<ReferenceHub>>("get_Item");
+        var startIndex = list.FindCall("get_Item");
         var combined = list.FindIndex(i => i.operand is "Nickname: ") + 3;
         list.RemoveAt(combined);
         list.InsertRange(combined, new[]
@@ -59,12 +59,11 @@ internal static class RequestDataPatch
         var playerIdStringIndex = list.FindIndex(startIndex, i => i.operand is string s && s.Contains("Player ID"));
         list[playerIdStringIndex].operand = "\nPlayer ID: {0}";
 
-        var send = list.FindCall<RaClipboard>(nameof(RaClipboard.Send), start: startIndex) - 6;
-        list.RemoveRange(send, 6);
+        var send = list.FindCall<RaClipboard>(nameof(RaClipboard.Send), start: startIndex) - 5;
+        list.RemoveRange(send, 5);
         list.InsertRange(send, new[]
         {
-            RaClipboard.RaClipBoardType.PlayerId.Load(),
-            Ldloc(9),
+            Ldloc(10),
             Get<NicknameSync>(nameof(NicknameSync.MyNick))
         });
     }

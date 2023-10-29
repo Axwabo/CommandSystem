@@ -20,12 +20,12 @@ public sealed class Equip : UnifiedTargetingCommand
 
     protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
     {
-        if (!Parse.Item(arguments.At(0), out var item))
+        if (!arguments.ParseItem(out var item, includeNone: true))
             return "!Invalid item id.";
         var affected = 0;
         foreach (var hub in targets)
         {
-            if (item is ItemType.None)
+            if (item == ItemType.None)
             {
                 affected += hub.inventory.CurItem.TypeId != ItemType.None ? 1 : 0;
                 hub.inventory.ServerSelectItem(0);
@@ -41,7 +41,9 @@ public sealed class Equip : UnifiedTargetingCommand
 
         if (affected == 0)
             return "!No players affected.";
-        return item == ItemType.None ? $"Unequipped {affected} players." : $"Equipped {item} on {affected} players.";
+        return item == ItemType.None
+            ? $"Unequipped {"player".PluralizeWithCount(affected)}."
+            : $"Equipped {item} on {"player".PluralizeWithCount(affected)}.";
     }
 
 }

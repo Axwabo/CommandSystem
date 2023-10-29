@@ -10,7 +10,7 @@ internal static class HelpCommandPatch
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var list = new List<CodeInstruction>(instructions);
-        var start = list.FindIndex(i => i.operand is MethodInfo {Name: "get_Command"}) - 1;
+        var start = list.FindCall("get_Command") - 1;
         var end = list.FindLastIndex(i => i.opcode == OpCodes.Leave_S) + 1;
         var labels = list[start].ExtractLabels();
         list.RemoveRange(start, end - start);

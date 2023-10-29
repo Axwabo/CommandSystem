@@ -35,9 +35,7 @@ public static class PlayerSelectionManager
     public static string EnsureNotEmpty(this string s, string message = null)
         => !string.IsNullOrEmpty(s)
             ? s
-            : message == null
-                ? throw new PlayerListProcessorException()
-                : throw new PlayerListProcessorException(message);
+            : throw new PlayerListProcessorException(message);
 
     private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || Plugin.Instance.Config.AllowSelectingHost;
 

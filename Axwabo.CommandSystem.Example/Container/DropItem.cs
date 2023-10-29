@@ -23,7 +23,7 @@ public sealed class DropItem : SeparatedTargetingCommand, ITargetingPreExecution
     {
         if (arguments.Count < 1)
             return CommandResult.Null; // base class will handle absence of arguments
-        if (!Parse.Item(arguments.At(0), out _item))
+        if (!arguments.ParseItem(out _item))
             return "!Invalid item id.";
         return CommandResult.Null; // allow execution
     }

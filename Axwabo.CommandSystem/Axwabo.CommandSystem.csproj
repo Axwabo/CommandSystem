@@ -60,9 +60,6 @@
         <Reference Include="Assembly-CSharp">
             <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp.dll</HintPath>
         </Reference>
-        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
-        </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
             <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
