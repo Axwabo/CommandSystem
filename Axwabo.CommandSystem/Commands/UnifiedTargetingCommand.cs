@@ -79,9 +79,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
                    ? OnNoTargetsFound(arguments, args, sender)
                    : args.Count < MinArgumentsWithoutTargets
                        ? OnNotEnoughArguments(arguments, sender, MinArguments)
-                       : targets.Count == 1
-                           ? ExecuteOnSingleTarget(targets[0], args, sender)
-                           : ExecuteOnTargets(targets, args, sender));
+                       : ExecuteOnTargets(targets, args, sender));
     }
 
     /// <summary>
@@ -92,16 +90,6 @@ public abstract class UnifiedTargetingCommand : CommandBase
     /// <param name="sender">The sender of the command.</param>
     /// <returns>The result of the command execution.</returns>
     protected abstract CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender);
-
-    /// <summary>
-    /// Executes the command on a single target. Only called when there is exactly one target.
-    /// </summary>
-    /// <param name="target">The target to execute the command on.</param>
-    /// <param name="arguments">The arguments passed to the command excluding the player list.</param>
-    /// <param name="sender">The sender of the command.</param>
-    /// <returns>The result of the command execution.</returns>
-    protected virtual CommandResult ExecuteOnSingleTarget(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender)
-        => ExecuteOnTargets(new List<ReferenceHub> {target}, arguments, sender);
 
     /// <summary>
     /// Called when no targets were found.
