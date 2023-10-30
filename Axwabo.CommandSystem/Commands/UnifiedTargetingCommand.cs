@@ -30,7 +30,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
     protected UnifiedTargetingCommand()
     {
         _shouldAffectSpectators = this is not IShouldAffectSpectators {AffectSpectators: false};
-        var affectedMultiple = "Done! The request affected {0}.";
+        var affectedMultiple = DefaultTargetingMessageGenerator.DefaultAffectedMessage;
         var affectedOne = affectedMultiple;
         TargetingCommandPropertyManager.ResolveProperties(this, ref _noTargetsFoundMessage, ref affectedMultiple, ref affectedOne, ref _noPlayersAffected, ref _shouldAffectSpectators);
         TargetingCommandPropertyManager.ResolveGenerators(this, out _affectedMultipleGenerator, out _allAffectedGenerator, out _affectedOneGenerator, out _selectionManager);
