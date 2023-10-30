@@ -50,6 +50,6 @@ internal sealed class MethodBasedCommand : CommandBase, IPlayerOnlyCommand, IMet
         => (CommandResult) ExecuteMethod.Invoke(Container, new object[] {arguments, sender});
 
     public CommandResult? OnNotPlayer(ArraySegment<string> arguments, CommandSender sender)
-        => _playerOnly ? CommandResult.Succeeded(MustBePlayer) : CommandResult.Null;
+        => _playerOnly ? CommandResult.Failed(MustBePlayer) : CommandResult.Null;
 
 }

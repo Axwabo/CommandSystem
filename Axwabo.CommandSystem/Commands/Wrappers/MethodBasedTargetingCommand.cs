@@ -50,6 +50,6 @@ internal sealed class MethodBasedTargetingCommand : UnifiedTargetingCommand, IPl
         => (CommandResult) ExecuteMethod.Invoke(Container, new object[] {targets, arguments, sender});
 
     public CommandResult? OnNotPlayer(ArraySegment<string> arguments, CommandSender sender)
-        => _playerOnly ? CommandResult.Succeeded(MustBePlayer) : CommandResult.Null;
+        => _playerOnly ? CommandResult.Failed(MustBePlayer) : CommandResult.Null;
 
 }
