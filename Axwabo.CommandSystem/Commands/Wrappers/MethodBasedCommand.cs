@@ -3,7 +3,7 @@ using Axwabo.CommandSystem.Permissions;
 
 namespace Axwabo.CommandSystem.Commands.Wrappers;
 
-internal sealed class MethodBasedCommand : CommandBase, IPlayerOnlyCommand
+internal sealed class MethodBasedCommand : CommandBase, IPlayerOnlyCommand, IMethodBasedCommand
 {
 
     private static string _nextName;
@@ -26,11 +26,11 @@ internal sealed class MethodBasedCommand : CommandBase, IPlayerOnlyCommand
 
     protected override IPermissionChecker Permissions { get; }
 
-    private bool PlayerOnly { get; }
+    public ContainerCommand Container { get; }
 
-    private MethodInfo ExecuteMethod { get; }
+    public MethodInfo ExecuteMethod { get; }
 
-    private ContainerCommand Container { get; }
+    private readonly bool _playerOnly;
 
     public MethodBasedCommand(string description, string[] aliases, string[] usage, int minArguments, IPermissionChecker permissions, bool playerOnly, MethodInfo executeMethod, ContainerCommand container)
     {
@@ -42,7 +42,7 @@ internal sealed class MethodBasedCommand : CommandBase, IPlayerOnlyCommand
         Permissions = permissions;
         ExecuteMethod = executeMethod;
         Container = container;
-        PlayerOnly = playerOnly;
+        _playerOnly = playerOnly;
         _initialized = true;
     }
 
@@ -50,6 +50,6 @@ internal sealed class MethodBasedCommand : CommandBase, IPlayerOnlyCommand
         => (CommandResult) ExecuteMethod.Invoke(Container, new object[] {arguments, sender});
 
     public CommandResult? OnNotPlayer(ArraySegment<string> arguments, CommandSender sender)
-        => PlayerOnly ? CommandResult.Succeeded(MustBePlayer) : CommandResult.Null;
+        => _playerOnly ? CommandResult.Succeeded(MustBePlayer) : CommandResult.Null;
 
 }

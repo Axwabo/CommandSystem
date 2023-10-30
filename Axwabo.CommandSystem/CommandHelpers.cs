@@ -150,9 +150,20 @@ public static class CommandHelpers
 
         if (command.Usage is {Length: not 0})
             sb.AppendLine().Append(command.CombinedUsage);
-        sb.AppendLine().Append("Implemented in: " + GetTypeInfo(command.GetType()));
+
+        sb.AppendLine().Append("Implemented in: " + GetImplementationLocation(command));
         return StringBuilderPool.Shared.ToStringReturn(sb);
     }
+
+    /// <summary>
+    /// Gets the full implementation location of a command.
+    /// </summary>
+    /// <param name="command">The command to get the implementation location of.</param>
+    /// <returns>A string containing the full implementation location.</returns>
+    public static string GetImplementationLocation(CommandBase command)
+        => command is IMethodBasedCommand mbc
+            ? GetTypeInfo(mbc.Container.GetType()) + "::" + mbc.ExecuteMethod.Name
+            : GetTypeInfo(command.GetType());
 
     /// <summary>
     /// Gets the subcommand list of a command.

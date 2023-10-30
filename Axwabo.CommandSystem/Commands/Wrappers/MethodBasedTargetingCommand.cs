@@ -3,7 +3,7 @@ using Axwabo.CommandSystem.Permissions;
 
 namespace Axwabo.CommandSystem.Commands.Wrappers;
 
-internal sealed class MethodBasedTargetingCommand : UnifiedTargetingCommand, IPlayerOnlyCommand
+internal sealed class MethodBasedTargetingCommand : UnifiedTargetingCommand, IPlayerOnlyCommand, IMethodBasedCommand
 {
 
     private static string _nextName;
@@ -26,11 +26,11 @@ internal sealed class MethodBasedTargetingCommand : UnifiedTargetingCommand, IPl
 
     protected override IPermissionChecker Permissions { get; }
 
-    private bool PlayerOnly { get; }
+    public ContainerCommand Container { get; }
 
-    private MethodInfo ExecuteMethod { get; }
+    public MethodInfo ExecuteMethod { get; }
 
-    private ContainerCommand Container { get; }
+    private readonly bool _playerOnly;
 
     public MethodBasedTargetingCommand(string description, string[] aliases, string[] usage, int minArguments, IPermissionChecker permissions, bool playerOnly, MethodInfo executeMethod, ContainerCommand container)
     {
@@ -42,7 +42,7 @@ internal sealed class MethodBasedTargetingCommand : UnifiedTargetingCommand, IPl
         Permissions = permissions;
         ExecuteMethod = executeMethod;
         Container = container;
-        PlayerOnly = playerOnly;
+        _playerOnly = playerOnly;
         _initialized = true;
     }
 
@@ -50,6 +50,6 @@ internal sealed class MethodBasedTargetingCommand : UnifiedTargetingCommand, IPl
         => (CommandResult) ExecuteMethod.Invoke(Container, new object[] {targets, arguments, sender});
 
     public CommandResult? OnNotPlayer(ArraySegment<string> arguments, CommandSender sender)
-        => PlayerOnly ? CommandResult.Succeeded(MustBePlayer) : CommandResult.Null;
+        => _playerOnly ? CommandResult.Succeeded(MustBePlayer) : CommandResult.Null;
 
 }

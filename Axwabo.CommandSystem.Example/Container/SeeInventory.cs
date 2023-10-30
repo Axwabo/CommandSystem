@@ -18,7 +18,7 @@ public sealed class SeeInventory : SeparatedTargetingCommand, ICustomResultCompi
         var items = target.inventory.UserInventory.Items.Values;
         if (items.Count == 0)
             return false;
-        return $"Inventory contents of {target.nicknameSync.MyNick}: " + string.Join(", ", items.Select(e => e.ItemTypeId));
+        return string.Join(", ", items.Select(e => e.ItemTypeId));
     }
 
     public CommandResult? CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures)
