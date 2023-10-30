@@ -48,10 +48,10 @@ public static class BaseCommandPropertyManager
             if (CurrentProcessor == null)
                 continue;
             var type = attribute.GetType();
-            ResolveName(ref name, type, attribute);
-            ResolveDescription(ref description, type, attribute);
-            ResolveAliases(aliasList, type, attribute);
-            ResolveUsage(usageList, type, attribute);
+            CurrentProcessor.NameResolvers.Resolve(ref name, type, attribute);
+            CurrentProcessor.DescriptionResolvers.Resolve(ref description, type, attribute);
+            CurrentProcessor.AliasResolvers.ResolveArray(aliasList, type, attribute);
+            CurrentProcessor.UsageResolvers.ResolveArray(usageList, type, attribute);
         }
 
         aliases = aliasList.ToArray();
@@ -159,39 +159,21 @@ public static class BaseCommandPropertyManager
             playerOnly = true;
     }
 
-    private static void ResolveName(ref string name, Type type, Attribute attribute)
+    internal static void Resolve<TResolver, TResult>(this IEnumerable<ResolverContainer<TResolver, TResult>> resolvers, ref TResult value, Type type, Attribute attribute)
     {
-        foreach (var resolver in CurrentProcessor.NameResolvers)
+        foreach (var resolver in resolvers)
             if (resolver.Takes(type))
-                name = resolver.Resolve(attribute);
+                value = resolver.Resolve(attribute);
     }
 
-    private static void ResolveDescription(ref string description, Type type, Attribute attribute)
+    internal static void ResolveArray<TResolver, TResult>(this IEnumerable<ResolverContainer<TResolver, TResult[]>> resolvers, List<TResult> list, Type type, Attribute attribute) where TResult : class
     {
-        foreach (var resolver in CurrentProcessor.DescriptionResolvers)
-            if (resolver.Takes(type))
-                description = resolver.Resolve(attribute);
-    }
-
-    private static void ResolveAliases(List<string> aliases, Type type, Attribute attribute)
-    {
-        foreach (var resolver in CurrentProcessor.AliasResolvers)
+        foreach (var resolver in resolvers)
             if (resolver.Takes(type))
             {
                 var resolved = resolver.Resolve(attribute);
                 if (resolved != null)
-                    aliases.AddRange(resolved);
-            }
-    }
-
-    private static void ResolveUsage(List<string> usage, Type type, Attribute attribute)
-    {
-        foreach (var resolver in CurrentProcessor.UsageResolvers)
-            if (resolver.Takes(type))
-            {
-                var resolved = resolver.Resolve(attribute);
-                if (resolved != null)
-                    usage.AddRange(resolved);
+                    list.AddRange(resolved);
             }
     }
 

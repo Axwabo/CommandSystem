@@ -33,9 +33,9 @@ public static class RemoteAdminExtensionPropertyManager
             if (BaseCommandPropertyManager.CurrentProcessor == null)
                 continue;
             var type = attribute.GetType();
-            ResolveIdentifier(ref id, type, attribute);
-            ResolveStaticText(ref staticText, type, attribute);
-            ResolveIcon(ref icon, type, attribute);
+            BaseCommandPropertyManager.CurrentProcessor.RemoteAdminOptionIdResolvers.Resolve(ref id, type, attribute);
+            BaseCommandPropertyManager.CurrentProcessor.StaticOptionTextResolvers.Resolve(ref staticText, type, attribute);
+            BaseCommandPropertyManager.CurrentProcessor.OptionIconResolvers.Resolve(ref icon, type, attribute);
         }
 
         return RemoteAdminOptionManager.IsValidOptionId(id);
@@ -108,27 +108,6 @@ public static class RemoteAdminExtensionPropertyManager
             1 => list[0],
             _ => new CombinedPermissionChecker(list.ToArray())
         };
-    }
-
-    private static void ResolveIdentifier(ref string id, Type type, Attribute attribute)
-    {
-        foreach (var resolver in BaseCommandPropertyManager.CurrentProcessor.RemoteAdminOptionIdResolvers)
-            if (resolver.Takes(type))
-                id = resolver.Resolve(attribute);
-    }
-
-    private static void ResolveStaticText(ref string staticText, Type type, Attribute attribute)
-    {
-        foreach (var resolver in BaseCommandPropertyManager.CurrentProcessor.StaticOptionTextResolvers)
-            if (resolver.Takes(type))
-                staticText = resolver.Resolve(attribute);
-    }
-
-    private static void ResolveIcon(ref BlinkingIcon icon, Type type, Attribute attribute)
-    {
-        foreach (var resolver in BaseCommandPropertyManager.CurrentProcessor.OptionIconResolvers)
-            if (resolver.Takes(type))
-                icon = resolver.Resolve(attribute);
     }
 
 }

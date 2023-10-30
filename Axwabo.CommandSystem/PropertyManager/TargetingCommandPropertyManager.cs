@@ -97,54 +97,34 @@ public static class TargetingCommandPropertyManager
         command.SafeCastAndSetIfNull(ref selectionManager);
     }
 
-    private static bool ProcNull(out CommandRegistrationProcessor proc)
+    private static bool ProcSet(out CommandRegistrationProcessor proc)
     {
         proc = BaseCommandPropertyManager.CurrentProcessor;
-        return proc == null;
+        return proc != null;
     }
 
     private static void ResolveMultipleAffected(Type type, Attribute attribute, ref IAffectedMultiplePlayersMessageGenerator affectedMultipleMessage)
     {
-        if (attribute.SafeCastAndSetIfNull(ref affectedMultipleMessage))
-            return;
-        if (ProcNull(out var proc))
-            return;
-        foreach (var resolver in proc.TargetingMultipleMessageResolvers)
-            if (resolver.Takes(type))
-                affectedMultipleMessage = resolver.Resolve(attribute);
+        if (!attribute.SafeCastAndSetIfNull(ref affectedMultipleMessage) && ProcSet(out var proc))
+            proc.TargetingMultipleMessageResolvers.Resolve(ref affectedMultipleMessage, type, attribute);
     }
 
     private static void ResolveSingleAffected(Type type, Attribute attribute, ref IAffectedOnePlayerMessageGenerator affectedSingle)
     {
-        if (attribute.SafeCastAndSetIfNull(ref affectedSingle))
-            return;
-        if (ProcNull(out var proc))
-            return;
-        foreach (var resolver in proc.TargetingSingleMessageResolvers)
-            if (resolver.Takes(type))
-                affectedSingle = resolver.Resolve(attribute);
+        if (!attribute.SafeCastAndSetIfNull(ref affectedSingle) && ProcSet(out var proc))
+            proc.TargetingSingleMessageResolvers.Resolve(ref affectedSingle, type, attribute);
     }
 
     private static void ResolveAllAffected(Type type, Attribute attribute, ref IAffectedAllPlayersMessageGenerator affectedAll)
     {
-        if (attribute.SafeCastAndSetIfNull(ref affectedAll))
-            return;
-        if (ProcNull(out var proc))
-            return;
-        foreach (var resolver in proc.TargetingAllMessageResolvers)
-            if (resolver.Takes(type))
-                affectedAll = resolver.Resolve(attribute);
+        if (!attribute.SafeCastAndSetIfNull(ref affectedAll) && ProcSet(out var proc))
+            proc.TargetingAllMessageResolvers.Resolve(ref affectedAll, type, attribute);
     }
 
     private static void ResolveSelectionManager(Type type, Attribute attribute, ref ITargetSelectionManager selectionManager)
     {
-        if (attribute.SafeCastAndSetIfNull(ref selectionManager))
-            return;
-        if (ProcNull(out var proc))
-            return;
-        foreach (var resolver in proc.TargetSelectionManagerResolvers)
-            if (resolver.Takes(type))
-                selectionManager = resolver.Resolve(attribute);
+        if (!attribute.SafeCastAndSetIfNull(ref selectionManager) && ProcSet(out var proc))
+            proc.TargetSelectionManagerResolvers.Resolve(ref selectionManager, type, attribute);
     }
 
 }
