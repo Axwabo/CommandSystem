@@ -17,6 +17,8 @@ public sealed class FlashCommand : SeparatedTargetingCommand, ITargetSelectionMa
 
     public bool IsEveryoneAffected(int count) => PlayerSelectionManager.AllPlayers.Count == count;
 
+    public bool FilterTarget(ReferenceHub hub) => true;
+
     protected override CommandResult ExecuteOn(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender)
     {
         if (!target.IsAlive())

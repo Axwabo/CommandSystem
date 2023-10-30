@@ -1,4 +1,4 @@
-﻿using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
+﻿using Axwabo.CommandSystem.Commands.Interfaces;
 
 namespace Axwabo.CommandSystem.Attributes.Targeting;
 

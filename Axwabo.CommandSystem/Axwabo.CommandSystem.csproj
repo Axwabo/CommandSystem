@@ -133,7 +133,6 @@
         <Compile Include="Attributes\RaExt\RemoteAdminOptionPropertiesAttribute.cs"/>
         <Compile Include="Attributes\RaExt\StandaloneSelectorAttribute.cs"/>
         <Compile Include="Attributes\Targeting\AffectedOnePlayerMessageAttribute.cs"/>
-        <Compile Include="Attributes\Targeting\Interfaces\IShouldAffectSpectators.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedMultiplePlayersMessage.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedOnePlayerMessage.cs"/>
         <Compile Include="Attributes\Targeting\Interfaces\IStaticNoPlayersAffectedMessage.cs"/>
@@ -176,6 +175,7 @@
         <Compile Include="Commands\Interfaces\INotEnoughArgumentsHandler.cs"/>
         <Compile Include="Commands\Interfaces\IPlayerOnlyCommand.cs"/>
         <Compile Include="Commands\Interfaces\IPreExecutionFilter.cs"/>
+        <Compile Include="Commands\Interfaces\IShouldAffectSpectators.cs"/>
         <Compile Include="Commands\Interfaces\ITargetFilteringPolicy.cs"/>
         <Compile Include="Commands\Interfaces\ITargetingPreExecutionFilter.cs"/>
         <Compile Include="Commands\MessageOverrides\DefaultTargetingMessageGenerator.cs"/>

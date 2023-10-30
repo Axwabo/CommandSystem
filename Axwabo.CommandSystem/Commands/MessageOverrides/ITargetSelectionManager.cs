@@ -1,4 +1,4 @@
-﻿using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
+﻿using Axwabo.CommandSystem.Commands.Interfaces;
 
 namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 
@@ -8,7 +8,7 @@ namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 /// <seealso cref="IAffectedMultiplePlayersMessageGenerator"/>
 /// <seealso cref="IAffectedAllPlayersMessageGenerator"/>
 /// <seealso cref="IAffectedOnePlayerMessageGenerator"/>
-public interface ITargetSelectionManager : IShouldAffectSpectators
+public interface ITargetSelectionManager : IShouldAffectSpectators, ITargetFilteringPolicy
 {
 
     /// <summary>

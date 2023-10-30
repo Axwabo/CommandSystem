@@ -1,5 +1,4 @@
-﻿using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
-using Axwabo.CommandSystem.Commands.Interfaces;
+﻿using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.Selectors;
@@ -63,7 +62,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
 
     private bool ShouldBeAffected(ReferenceHub hub)
         => (ShouldAffectSpectators || hub.IsAlive())
-           && (this is not ITargetFilteringPolicy policy || policy.FilterTarget(hub));
+           && ((_selectionManager ?? this as ITargetFilteringPolicy)?.FilterTarget(hub) ?? true);
 
     /// <inheritdoc />
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
