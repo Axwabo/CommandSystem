@@ -138,6 +138,19 @@ public static partial class RegistrationExtensions
         return processor;
     }
 
+    /// <summary>
+    /// Adds a targeting custom result compiler resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="type">The type of the command to resolve the compiler for.</param>
+    /// <param name="resultCompilerResolver">The resolver to add.</param>
+    /// <returns>The processor itself.</returns>
+    public static CommandRegistrationProcessor WithResultCompilerResolver(this CommandRegistrationProcessor processor, Type type, IResultCompilerResolver resultCompilerResolver)
+    {
+        processor.TargetingResultCompilerResolvers.Add(type, typeof(IResultCompilerResolver<>), resultCompilerResolver);
+        return processor;
+    }
+
     #endregion
 
     #region Remote Admin Option Properties

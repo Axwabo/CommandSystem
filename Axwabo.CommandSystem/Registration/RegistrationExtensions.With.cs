@@ -101,6 +101,16 @@ public static partial class RegistrationExtensions
     public static CommandRegistrationProcessor WithTargetingSelectionResolver<T>(this CommandRegistrationProcessor processor, ITargetSelectionResolver<T> selectionResolver) where T : Attribute
         => WithTargetingSelectionResolver(processor, typeof(T), selectionResolver);
 
+    /// <summary>
+    /// Adds a targeting custom result compiler resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="compilerResolver">The resolver to add.</param>
+    /// <typeparam name="T">The type of the attribute to resolve the compiler from.</typeparam>
+    /// <returns>The processor itself.</returns>
+    public static CommandRegistrationProcessor WithTargetingCustomResultCompilerResolver<T>(this CommandRegistrationProcessor processor, IResultCompilerResolver<T> compilerResolver) where T : Attribute
+        => WithResultCompilerResolver(processor, typeof(T), compilerResolver);
+
     #endregion
 
     #region Remote Admin Option Properties

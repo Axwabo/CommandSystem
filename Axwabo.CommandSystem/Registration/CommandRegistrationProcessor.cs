@@ -1,6 +1,7 @@
 ﻿using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Attributes.Containers;
 using Axwabo.CommandSystem.Commands;
+using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.Commands.Wrappers;
 using Axwabo.CommandSystem.Permissions;
@@ -123,6 +124,8 @@ public sealed class CommandRegistrationProcessor
     internal readonly List<ResolverContainer<IAffectedAllPlayersResolver, IAffectedAllPlayersMessageGenerator>> TargetingAllMessageResolvers = new();
 
     internal readonly List<ResolverContainer<ITargetSelectionResolver, ITargetSelectionManager>> TargetSelectionManagerResolvers = new();
+
+    internal readonly List<ResolverContainer<IResultCompilerResolver, ICustomResultCompiler>> TargetingResultCompilerResolvers = new();
 
     internal readonly List<ResolverContainer<IRemoteAdminOptionIdResolver, string>> RemoteAdminOptionIdResolvers = new();
 

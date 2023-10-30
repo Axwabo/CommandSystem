@@ -235,6 +235,7 @@
         <Compile Include="PropertyManager\Resolvers\IAttributeBasedPermissionResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IOptionIconResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IRemoteAdminOptionIdResolver.cs"/>
+        <Compile Include="PropertyManager\Resolvers\IResultCompilerResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\IStaticOptionTextResolver.cs"/>
         <Compile Include="PropertyManager\Resolvers\ITargetSelectionResolver.cs"/>
         <Compile Include="PropertyManager\TargetingCommandPropertyManager.cs"/>

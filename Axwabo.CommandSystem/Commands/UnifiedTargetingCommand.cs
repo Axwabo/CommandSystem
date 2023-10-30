@@ -27,9 +27,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
     private readonly IAffectedOnePlayerMessageGenerator _affectedOneGenerator;
     private readonly ITargetSelectionManager _selectionManager;
 
-    /// <summary>
-    /// Creates a new <see cref="UnifiedTargetingCommand"/> instance.
-    /// </summary>
+    /// <summary>Creates a new <see cref="UnifiedTargetingCommand"/> instance.</summary>
     protected UnifiedTargetingCommand()
     {
         _shouldAffectSpectators = this is not IShouldAffectSpectators {AffectSpectators: false};

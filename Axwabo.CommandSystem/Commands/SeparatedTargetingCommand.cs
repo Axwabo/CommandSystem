@@ -1,4 +1,5 @@
 ﻿using Axwabo.CommandSystem.Commands.Interfaces;
+using Axwabo.CommandSystem.PropertyManager;
 
 namespace Axwabo.CommandSystem.Commands;
 
@@ -9,6 +10,11 @@ namespace Axwabo.CommandSystem.Commands;
 /// <seealso cref="UnifiedTargetingCommand"/>
 public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand
 {
+
+    private readonly ICustomResultCompiler _customResultCompiler;
+
+    /// <summary>Creates a new <see cref="SeparatedTargetingCommand"/> instance.</summary>
+    protected SeparatedTargetingCommand() => _customResultCompiler = TargetingCommandPropertyManager.ResolveCustomResultCompiler(this);
 
     /// <inheritdoc />
     protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
@@ -26,7 +32,7 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand
 
         return succeeded.Count == 0 && failed.Count == 0
             ? CommandResult.Failed(NoPlayersAffected)
-            : (this as ICustomResultCompiler)?.CompileResultCustom(succeeded, failed)
+            : _customResultCompiler?.CompileResultCustom(succeeded, failed)
               ?? CompileResult(succeeded);
     }
 

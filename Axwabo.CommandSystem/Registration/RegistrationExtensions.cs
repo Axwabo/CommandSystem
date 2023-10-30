@@ -91,6 +91,7 @@ public static partial class RegistrationExtensions
         processor.ConsumeInstance<IAffectedOnePlayerResolver>(instance, typeof(IAffectedOnePlayerResolver<>), WithTargetingAffectedOneResolver);
         processor.ConsumeInstance<IAffectedAllPlayersResolver>(instance, typeof(IAffectedAllPlayersResolver<>), WithTargetingAffectedAllResolver);
         processor.ConsumeInstance<ITargetSelectionResolver>(instance, typeof(ITargetSelectionResolver<>), WithTargetingSelectionResolver);
+        processor.ConsumeInstance<IResultCompilerResolver>(instance, typeof(IResultCompilerResolver<>), WithResultCompilerResolver);
 
         processor.ConsumeInstance<IRemoteAdminOptionIdResolver>(instance, typeof(IRemoteAdminOptionIdResolver<>), WithRemoteAdminOptionIdResolver);
         processor.ConsumeInstance<IStaticOptionTextResolver>(instance, typeof(IStaticOptionTextResolver<>), WithRemoteAdminOptionTextResolver);

@@ -1,5 +1,6 @@
 ﻿using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
 using Axwabo.CommandSystem.Commands;
+using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.Registration;
 
@@ -95,6 +96,29 @@ public static class TargetingCommandPropertyManager
         command.SafeCastAndSetIfNull(ref affectedAll);
         command.SafeCastAndSetIfNull(ref affectedOne);
         command.SafeCastAndSetIfNull(ref selectionManager);
+    }
+
+    /// <summary>
+    /// Resolves the custom result compiler for a targeting command.
+    /// </summary>
+    /// <param name="command">The command to resolve the compiler for.</param>
+    /// <returns>The custom result compiler for the command. If none was found, returns null.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="command"/> is null.</exception>
+    public static ICustomResultCompiler ResolveCustomResultCompiler(SeparatedTargetingCommand command)
+    {
+        if (command == null)
+            throw new ArgumentNullException(nameof(command));
+        ICustomResultCompiler compiler = null;
+        foreach (var attribute in command.GetType().GetCustomAttributes())
+        {
+            if (attribute is ICustomResultCompiler ac)
+                compiler = ac;
+            if (ProcSet(out var proc))
+                proc.TargetingResultCompilerResolvers.Resolve(ref compiler, command.GetType(), attribute);
+        }
+
+        command.SafeCastAndSetIfNull(ref compiler);
+        return compiler;
     }
 
     private static bool ProcSet(out CommandRegistrationProcessor proc)
