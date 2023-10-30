@@ -1,4 +1,6 @@
-﻿namespace Axwabo.CommandSystem.Commands.MessageOverrides;
+﻿using Axwabo.CommandSystem.Attributes.Targeting.Interfaces;
+
+namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 
 /// <summary>
 /// Manages target selection for <see cref="UnifiedTargetingCommand"/>.
@@ -6,13 +8,8 @@
 /// <seealso cref="IAffectedMultiplePlayersMessageGenerator"/>
 /// <seealso cref="IAffectedAllPlayersMessageGenerator"/>
 /// <seealso cref="IAffectedOnePlayerMessageGenerator"/>
-public interface ITargetSelectionManager
+public interface ITargetSelectionManager : IShouldAffectSpectators
 {
-
-    /// <summary>
-    /// Whether the command should affect spectators.
-    /// </summary>
-    bool AffectSpectators { get; }
 
     /// <summary>
     /// Determines whether everyone was affected based on the given player count.
