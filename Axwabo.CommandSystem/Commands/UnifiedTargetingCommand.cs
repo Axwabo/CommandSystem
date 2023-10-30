@@ -129,7 +129,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
     /// <returns>Whether everyone was affected.</returns>
     protected bool IsEveryoneAffectedInternal(int affected)
         => _selectionManager?.IsEveryoneAffected(affected)
-           ?? (ShouldAffectSpectators ? PlayerSelectionManager.AllPlayers : PlayerSelectionManager.NonSpectators).Count == affected;
+           ?? (_shouldAffectSpectators ? PlayerSelectionManager.AllPlayers : PlayerSelectionManager.NonSpectators).Count(ShouldBeAffected) == affected;
 
     /// <summary>
     /// Formats the message to display when more than one player was affected.

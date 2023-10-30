@@ -43,7 +43,7 @@ public static class PlayerSelectionManager
     public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(NonHost).ToList();
 
     /// <summary>Gets all alive players.</summary>
-    public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => !h.isLocalPlayer && h.IsAlive()).ToList();
+    public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => NonHost(h) && h.IsAlive()).ToList();
 
     /// <summary>Gets the player count.</summary>
     public static int PlayerCount =>
