@@ -3,6 +3,7 @@ using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.Selectors;
+using Axwabo.Helpers;
 using PlayerRoles;
 
 namespace Axwabo.CommandSystem.Commands;
@@ -71,13 +72,13 @@ public abstract class UnifiedTargetingCommand : CommandBase
     {
         if (arguments.Count < 1)
             return OnNotEnoughArguments(arguments, sender, MinArguments);
-        var targets = arguments.GetTargets(out var newArgs)?.Where(ShouldBeAffected).ToList();
+        var targets = arguments.GetTargets(out var newArgs)?.Where(ShouldBeAffected).AsNonNullEnumerable().ToList();
         var args = new ArraySegment<string>(newArgs ?? Array.Empty<string>());
         return (this as ITargetingPreExecutionFilter)?.OnBeforeExecuted(targets, args, sender)
                ?? (targets is not {Count: not 0}
                    ? OnNoTargetsFound(arguments, args, sender)
                    : args.Count < MinArgumentsWithoutTargets
-                       ? OnNotEnoughArguments(args, sender, MinArguments)
+                       ? OnNotEnoughArguments(arguments, sender, MinArguments)
                        : targets.Count == 1
                            ? ExecuteOnSingleTarget(targets[0], args, sender)
                            : ExecuteOnTargets(targets, args, sender));
