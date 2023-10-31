@@ -1,4 +1,4 @@
-﻿namespace Axwabo.CommandSystem.Attributes.Interfaces;
+﻿namespace Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 
 /// <summary>
 /// Specifies that the attribute controls whether the RA option can be used as a standalone selector.

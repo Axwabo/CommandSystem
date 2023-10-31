@@ -36,7 +36,7 @@ public sealed class OptionPreferencesContainer : ContainerCommand
             return visible && set.Remove(option.GetType().FullName);
         }
 
-        var method = visible ? (Func<string, bool>) set.Remove : set.Add;
+        Func<string, bool> method = visible ? set.Remove : set.Add;
         return method(option.GetType().FullName);
     }
 

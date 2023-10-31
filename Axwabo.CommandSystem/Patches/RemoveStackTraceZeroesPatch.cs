@@ -10,7 +10,7 @@ namespace Axwabo.CommandSystem.Patches;
 public static class RemoveStackTraceZeroesPatch
 {
 
-    private static readonly Regex ReplaceRegex = new("\\s?\\[[0-9a-fx]+\\] in <[0-9a-f]+>:0", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+    private static readonly Regex ReplaceRegex = new(@"\s?\[[0-9a-fx]+\] in <[0-9a-f]+>:0", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     private static readonly CodeInstruction[] Instructions =
     {

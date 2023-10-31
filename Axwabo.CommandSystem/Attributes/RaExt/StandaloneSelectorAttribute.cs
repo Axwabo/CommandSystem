@@ -1,11 +1,11 @@
-﻿using Axwabo.CommandSystem.Attributes.Interfaces;
+﻿using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 
 namespace Axwabo.CommandSystem.Attributes.RaExt;
 
 /// <summary>
 /// Specifies that the Remote Admin option can also be used as a standalone selector. This attribute is inherited.
 /// </summary>
-/// <seealso cref="Axwabo.CommandSystem.RemoteAdminExtensions.RemoteAdminOptionBase.CanBeUsedAsStandaloneSelector"/>
+/// <seealso cref="Axwabo.CommandSystem.Selectors.PlayerSelectionManager"/>
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class StandaloneSelectorAttribute : Attribute, IStandaloneSelectorOption
 {

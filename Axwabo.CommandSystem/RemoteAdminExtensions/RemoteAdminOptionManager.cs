@@ -37,9 +37,9 @@ public static class RemoteAdminOptionManager
         if (option is null)
             throw new ArgumentNullException(nameof(option));
         if (TryGetOptionByType(option.GetType().FullName, out var sameType))
-            throw new InvalidOperationException($"An option with the same type \"{sameType.GetType().FullName}\" is already registered.");
+            throw new InvalidOperationException($"An option with the same type \"{sameType.GetType().FullName}\" has already been registered.");
         if (TryGetOption(option.OptionIdentifier, out var sameIdentifier))
-            throw new InvalidOperationException($"An option with the same identifier \"{sameIdentifier.OptionIdentifier}\" is already registered. Conflicting types: \"{option.GetType().FullName}\" against \"{sameIdentifier.GetType().FullName}\"");
+            throw new InvalidOperationException($"An option with the same identifier \"{sameIdentifier.OptionIdentifier}\" has already been registered. Conflicting types: \"{option.GetType().FullName}\" against \"{sameIdentifier.GetType().FullName}\"");
         Options.Add(option);
     }
 
@@ -128,7 +128,7 @@ public static class RemoteAdminOptionManager
         var success = false;
         foreach (var option in Options)
         {
-            if (!option.VisibilityPermissions.CheckSafe(sender) || preferredOnly && OptionPreferencesContainer.IsHidden(sender.SenderId, option))
+            if (!option.AccessibilityPermissions.CheckSafe(sender) || preferredOnly && OptionPreferencesContainer.IsHidden(sender.SenderId, option))
                 continue;
             var hidden = option is IOptionVisibilityController controller && !controller.IsVisibleTo(sender);
             if (hideIdentifier && hidden)
@@ -140,7 +140,8 @@ public static class RemoteAdminOptionManager
                     ? "[HIDDEN BY CONTROLLER] ".Color("#c8c8c8")
                     : "";
             var idString = hideIdentifier ? option.OptionIdentifier : option.OptionIdentifier.Color("#9696ff");
-            builder.AppendLine(hiddenString + string.Format(textToFormat, idString, option.GetText(sender)));
+            builder.Append(hiddenString);
+            builder.AppendLine(string.Format(textToFormat, idString, option.GetText(sender)));
         }
 
         return success;

@@ -15,7 +15,7 @@ public sealed class BlinkingIcon
 {
 
     /// <summary>Determines whether the global time is even.</summary>
-    public static bool IsGloballyActive => Time.unscaledTime % 2f < 1f;
+    public static bool IsGloballyActive => (int) Time.unscaledTime % 2 == 0;
 
     /// <summary>The content of this icon.</summary>
     public string Content { get; set; }

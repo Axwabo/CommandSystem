@@ -17,11 +17,6 @@ public abstract class RemoteAdminOptionBase
 
     private BlinkingIcon _icon;
 
-    /// <summary>Whether this option identifier can also be used as a standalone selector.</summary>
-    /// <seealso cref="StandaloneSelectorAttribute"/>
-    /// <seealso cref="Axwabo.CommandSystem.Selectors.PlayerSelectionManager"/>
-    protected virtual bool CanBeUsedAsStandaloneSelector => false;
-
     private InvalidNameException InvalidId => new($"Option identifier on type {GetType().FullName} is empty, numeric only or contains one of the following invalid characters: {RemoteAdminOptionManager.InvalidCharacters}");
 
     /// <summary>When overridden in a derived class, it will be used to set the <see cref="OptionIdentifier"/>.</summary>
@@ -31,7 +26,7 @@ public abstract class RemoteAdminOptionBase
     public string OptionIdentifier { get; }
 
     /// <summary>A permission checker that controls the global visibility of the option.</summary>
-    public virtual IPermissionChecker VisibilityPermissions { get; }
+    public virtual IPermissionChecker AccessibilityPermissions { get; }
 
     /// <summary>The leading icon of the option (before the generated text).</summary>
     public BlinkingIcon Icon
@@ -59,12 +54,12 @@ public abstract class RemoteAdminOptionBase
         if (derivedIsEmpty)
             id = idFromAttribute;
         if (id == AutoGenerateIdAttribute.Identifier)
-            OptionIdentifier = "-" + ++_autoId;
+            OptionIdentifier = "-" + _autoId++;
         else if (!resolved)
             throw InvalidId;
         else
-            OptionIdentifier = (standaloneSelector || CanBeUsedAsStandaloneSelector ? "@" : "$") + id;
-        VisibilityPermissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
+            OptionIdentifier = (standaloneSelector || this is IStandaloneSelectorOption {CanBeUsedAsStandaloneSelector: true} ? "@" : "$") + id;
+        AccessibilityPermissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
     }
 
     /// <summary>
@@ -89,7 +84,7 @@ public abstract class RemoteAdminOptionBase
     /// <returns>The text to display.</returns>
     public string OnClick(RequestDataButton button, PlayerCommandSender sender)
     {
-        var permissions = VisibilityPermissions.CheckSafe(sender);
+        var permissions = AccessibilityPermissions.CheckSafe(sender);
         return !permissions
             ? permissions
             : this is IOptionVisibilityController {AllowInteractionsWhenHidden: false} controller && !controller.IsVisibleTo(sender)

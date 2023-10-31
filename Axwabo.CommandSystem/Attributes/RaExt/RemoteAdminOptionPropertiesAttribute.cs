@@ -5,6 +5,7 @@ using E::Axwabo.Helpers;
 using Axwabo.Helpers;
 #endif
 using Axwabo.CommandSystem.Attributes.Interfaces;
+using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 
 namespace Axwabo.CommandSystem.Attributes.RaExt;
 
