@@ -48,8 +48,13 @@ internal static class RequestDataPatch
     private static void PatchNickname(List<CodeInstruction> list)
     {
         var startIndex = list.FindCall("get_Item");
-        var nicknameIndex = list.FindIndex(i => i.operand is string s && s.Contains("Nickname:"));
-        list[nicknameIndex].operand = "<color=white>Nickname: {0} <color=green><link=CP_ID>\uF0C5</link></color>";
+        var combined = list.FindIndex(i => i.operand is "Nickname: ") + 3;
+        list.RemoveAt(combined);
+        list.InsertRange(combined, new[]
+        {
+            String(" <color=green><link=CP_ID>\uF0C5</link></color>"),
+            Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
+        });
 
         var playerIdStringIndex = list.FindIndex(startIndex, i => i.operand is string s && s.Contains("Player ID"));
         list[playerIdStringIndex].operand = "\nPlayer ID: {0}";
