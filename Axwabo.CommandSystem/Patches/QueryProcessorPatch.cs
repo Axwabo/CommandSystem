@@ -1,8 +1,6 @@
 ﻿using Axwabo.CommandSystem.Exceptions;
-using Axwabo.CommandSystem.RemoteAdminExtensions;
 using Axwabo.CommandSystem.Selectors;
 using HarmonyLib;
-using RemoteAdmin;
 using static Axwabo.CommandSystem.Selectors.PlayerSelectionManager;
 
 namespace Axwabo.CommandSystem.Patches;
@@ -11,7 +9,7 @@ namespace Axwabo.CommandSystem.Patches;
 internal static class QueryProcessorPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var list = new List<CodeInstruction>(instructions);
         var pre = list.FindCode(OpCodes.Ldloc_1);

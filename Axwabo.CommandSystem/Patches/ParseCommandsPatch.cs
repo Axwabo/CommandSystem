@@ -1,6 +1,5 @@
 ﻿using CommandSystem;
 using HarmonyLib;
-using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Patches;
 
@@ -8,7 +7,7 @@ namespace Axwabo.CommandSystem.Patches;
 internal static class ParseCommandsPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var list = new List<CodeInstruction>(instructions);
         var index = list.FindIndex(i => i.opcode == OpCodes.Isinst && i.operand as Type == typeof(IHiddenCommand));

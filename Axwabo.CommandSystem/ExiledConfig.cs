@@ -1,5 +1,4 @@
 ﻿#pragma warning disable CS1591
-#if EXILED
 using System.ComponentModel;
 using Exiled.API.Interfaces;
 
@@ -8,6 +7,7 @@ namespace Axwabo.CommandSystem;
 /// <summary>
 /// Configuration for EXILED.
 /// </summary>
+[Serializable]
 public sealed class Config : IConfig
 {
 
@@ -28,5 +28,3 @@ public sealed class Config : IConfig
     public bool AllowSelectingHost { get; set; } = false;
 
 }
-
-#endif

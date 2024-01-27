@@ -3,7 +3,6 @@ using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
-using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 

@@ -1,11 +1,4 @@
-﻿#if EXILED
-extern alias E;
-using E::Axwabo.Helpers;
-#else
-using Axwabo.Helpers;
-#endif
-using System.Collections;
-using RemoteAdmin;
+﻿using System.Collections;
 using Console = GameCore.Console;
 
 namespace Axwabo.CommandSystem.Selectors;

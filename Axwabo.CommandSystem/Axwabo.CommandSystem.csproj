@@ -63,36 +63,8 @@
         <Reference Include="Assembly-CSharp-firstpass">
             <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
-        <Reference Include="Axwabo.Helpers.NWAPI">
-            <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
-        </Reference>
-        <Reference Include="Axwabo.Helpers">
-            <HintPath>$(EXILED-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
-            <Aliases>E</Aliases>
-        </Reference>
-        <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\CommandSystem.Core.dll</HintPath>
-        </Reference>
-        <Reference Include="Exiled.API, Version=8.3.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\Exiled.API.dll</HintPath>
-        </Reference>
-        <Reference Include="Exiled.CreditTags, Version=8.3.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\Exiled.CreditTags.dll</HintPath>
-        </Reference>
-        <Reference Include="Exiled.CustomItems, Version=8.3.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\Exiled.CustomItems.dll</HintPath>
-        </Reference>
-        <Reference Include="Exiled.CustomRoles, Version=8.3.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\Exiled.CustomRoles.dll</HintPath>
-        </Reference>
-        <Reference Include="Exiled.Events, Version=8.3.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\Exiled.Events.dll</HintPath>
-        </Reference>
-        <Reference Include="Exiled.Loader, Version=8.3.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\Exiled.Loader.dll</HintPath>
-        </Reference>
-        <Reference Include="Exiled.Permissions, Version=8.3.0.0, Culture=neutral, processorArchitecture=Amd64">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\Exiled.Permissions.dll</HintPath>
+        <Reference Include="CommandSystem.Core">
+            <HintPath>$(NW-ASSEMBLIES)\CommandSystem.Core.dll</HintPath>
         </Reference>
         <Reference Include="Mirror">
             <HintPath>$(NW-ASSEMBLIES)\Mirror.dll</HintPath>
@@ -101,17 +73,11 @@
             <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
         </Reference>
         <Reference Include="mscorlib"/>
-        <Reference Include="NorthwoodLib, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-            <HintPath>..\packages\EXILED.8.3.0\lib\net48\NorthwoodLib.dll</HintPath>
-        </Reference>
-        <Reference Include="NWAPIPermissionSystem">
-            <HintPath>$(NW-ASSEMBLIES)\NWAPIPermissionSystem.dll</HintPath>
+        <Reference Include="Pooling">
+            <HintPath>$(NW-ASSEMBLIES)\Pooling.dll</HintPath>
         </Reference>
         <Reference Include="PluginAPI">
             <HintPath>$(NW-ASSEMBLIES)\PluginAPI.dll</HintPath>
-        </Reference>
-        <Reference Include="Pooling">
-            <HintPath>$(NW-ASSEMBLIES)\Pooling.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="UnityEngine">
@@ -120,6 +86,48 @@
         <Reference Include="UnityEngine.CoreModule">
             <HintPath>$(NW-ASSEMBLIES)\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
+    </ItemGroup>
+    <ItemGroup Condition=" !$(DefineConstants.Contains('EXILED')) ">
+        <Reference Include="Axwabo.Helpers.NWAPI">
+            <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
+        </Reference>
+        <Reference Include="NWAPIPermissionSystem">
+            <HintPath>$(NW-ASSEMBLIES)\NWAPIPermissionSystem.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup Condition=" $(DefineConstants.Contains('EXILED')) ">
+        <Reference Include="Axwabo.Helpers">
+            <HintPath>$(EXILED-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.API, Version=8.7.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.8.7.0\lib\net48\Exiled.API.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CreditTags, Version=8.7.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.8.7.0\lib\net48\Exiled.CreditTags.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CustomItems, Version=8.7.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.8.7.0\lib\net48\Exiled.CustomItems.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CustomRoles, Version=8.7.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.8.7.0\lib\net48\Exiled.CustomRoles.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Events, Version=8.7.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.8.7.0\lib\net48\Exiled.Events.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Loader, Version=8.7.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.8.7.0\lib\net48\Exiled.Loader.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Permissions, Version=8.7.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.8.7.0\lib\net48\Exiled.Permissions.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup Condition=" !$(DefineConstants.Contains('EXILED')) ">
+        <Compile Include="NWConfig.cs"/>
+        <Compile Include="NWPlugin.cs"/>
+    </ItemGroup>
+    <ItemGroup Condition=" $(DefineConstants.Contains('EXILED')) ">
+        <Compile Include="ExiledConfig.cs"/>
+        <Compile Include="ExiledPlugin.cs"/>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Attributes\Containers\MethodBasedSubcommandAttribute.cs"/>
@@ -193,12 +201,9 @@
         <Compile Include="Exceptions\PlayerListProcessorException.cs"/>
         <Compile Include="Exceptions\TypeMismatchException.cs"/>
         <Compile Include="Exceptions\InvalidNameException.cs"/>
-        <Compile Include="ExiledConfig.cs"/>
-        <Compile Include="ExiledPlugin.cs"/>
         <Compile Include="Extensions.cs"/>
         <Compile Include="GenericTypeExtensions.cs"/>
         <Compile Include="Log.cs"/>
-        <Compile Include="NWConfig.cs"/>
         <Compile Include="Patches\HelpCommandPatch.cs"/>
         <Compile Include="Patches\CommandProcessorPatch.cs"/>
         <Compile Include="Patches\ConsolePatch.cs"/>
@@ -221,7 +226,6 @@
         <Compile Include="Permissions\OneOfVanillaPermissionsAttribute.cs"/>
         <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs"/>
         <Compile Include="Permissions\VanillaPermissionsAttribute.cs"/>
-        <Compile Include="NWPlugin.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="PropertyManager\BaseCommandPropertyManager.cs"/>
         <Compile Include="PropertyManager\RemoteAdminExtensionPropertyManager.cs"/>

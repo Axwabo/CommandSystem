@@ -1,10 +1,4 @@
-﻿#if EXILED
-extern alias E;
-using E::Axwabo.Helpers.Config.Translations;
-
-#else
-using Axwabo.Helpers.Config.Translations;
-#endif
+﻿using Axwabo.Helpers.Config.Translations;
 
 namespace Axwabo.CommandSystem.Translations;
 

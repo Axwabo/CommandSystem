@@ -7,9 +7,7 @@ using Axwabo.CommandSystem.Commands.Wrappers;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
-using Axwabo.CommandSystem.RemoteAdminExtensions;
 using CommandSystem;
-using RemoteAdmin;
 using Utils.NonAllocLINQ;
 using Console = GameCore.Console;
 

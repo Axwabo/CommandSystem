@@ -1,7 +1,5 @@
-﻿using Axwabo.CommandSystem.RemoteAdminExtensions;
-using CommandSystem.Commands.RemoteAdmin;
+﻿using CommandSystem.Commands.RemoteAdmin;
 using HarmonyLib;
-using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 
@@ -9,7 +7,7 @@ namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 internal static class ExternalLookupPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
         if (!Plugin.Instance.Config.EnableRemoteAdminExtensions)
             return instructions;

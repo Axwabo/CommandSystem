@@ -19,7 +19,7 @@ public static class RemoveStackTraceZeroesPatch
         Return
     };
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         => Plugin.Instance.Config.StripIntermediateLanguageOffsets ? Instructions : instructions;
 
     /// <summary>

@@ -1,6 +1,4 @@
-﻿using Axwabo.CommandSystem.RemoteAdminExtensions;
-
-namespace Axwabo.CommandSystem.Attributes.Interfaces;
+﻿namespace Axwabo.CommandSystem.Attributes.Interfaces;
 
 /// <summary>
 /// An interface to provide a Remote Admin option icon.

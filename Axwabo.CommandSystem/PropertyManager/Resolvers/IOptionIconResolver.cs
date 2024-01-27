@@ -1,6 +1,4 @@
-﻿using Axwabo.CommandSystem.RemoteAdminExtensions;
-
-namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
+﻿namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve a RA option icon from an attribute. You must implement <see cref="IOptionIconResolver{TAttribute}"/> due to reflection magic.</summary>
 public interface IOptionIconResolver

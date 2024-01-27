@@ -1,5 +1,4 @@
-﻿#if EXILED
-using System.IO;
+﻿using System.IO;
 using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
@@ -73,5 +72,3 @@ public sealed class Plugin : Plugin<Config>
     public override Version Version { get; } = new(1, 0, 0);
 
 }
-
-#endif

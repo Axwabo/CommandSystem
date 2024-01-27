@@ -1,5 +1,4 @@
 ﻿using Axwabo.CommandSystem.Attributes.RaExt;
-using RemoteAdmin;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 

@@ -1,10 +1,4 @@
-﻿#if EXILED
-extern alias E;
-using E::Axwabo.Helpers;
-#else
-using Axwabo.Helpers;
-#endif
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Axwabo.CommandSystem.Selectors;
 using HarmonyLib;
 using UnityEngine.SceneManagement;
@@ -55,7 +49,7 @@ public static class ProcessPlayersListPatch
         }
     }
 
-    private static void AddSeparatedPlayers(ArraySegment<string> args, int startIndex, HashSet<ReferenceHub> referenceHubList)
+    private static void AddSeparatedPlayers(ArraySegment<string> args, int startIndex, ISet<ReferenceHub> referenceHubList)
     {
         if (args.At(startIndex).Length <= 0)
             return;
@@ -65,7 +59,7 @@ public static class ProcessPlayersListPatch
             AddPlayersBasedOnNicknameList(args, startIndex, referenceHubList);
     }
 
-    private static void AddPlayersBasedOnNicknameList(ArraySegment<string> args, int startIndex, HashSet<ReferenceHub> referenceHubList)
+    private static void AddPlayersBasedOnNicknameList(ArraySegment<string> args, int startIndex, ISet<ReferenceHub> referenceHubList)
     {
         foreach (var s in args.At(startIndex).Split(new[] {'.'}, StringSplitOptions.None))
         foreach (var hub in ReferenceHub.AllHubs)
@@ -73,14 +67,14 @@ public static class ProcessPlayersListPatch
                 referenceHubList.Add(hub);
     }
 
-    private static void AddPlayersBasedOnIdList(ArraySegment<string> args, int startIndex, HashSet<ReferenceHub> referenceHubList)
+    private static void AddPlayersBasedOnIdList(ArraySegment<string> args, int startIndex, ISet<ReferenceHub> referenceHubList)
     {
         foreach (var s in args.At(startIndex).Split(new[] {'.'}, StringSplitOptions.None))
             if (int.TryParse(s, out var result) && ReferenceHub.TryGetHub(result, out var hub))
                 referenceHubList.Add(hub);
     }
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => new[]
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => new[]
     {
         Ldarg(0),
         Ldarg(1),
@@ -125,7 +119,7 @@ public static class ProcessPlayersListPatch
         if (method is null)
             return "CedMod player list patch was found but without the prefix method.";
         harmony.Unpatch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), method);
-        return "CedMod player list processor has been unpatched.";
+        return "Removed the CedMod player list processor patch.";
     }
 
 }

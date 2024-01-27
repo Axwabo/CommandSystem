@@ -1,5 +1,4 @@
 ﻿using Axwabo.CommandSystem.Permissions;
-using Axwabo.CommandSystem.RemoteAdminExtensions;
 
 namespace Axwabo.CommandSystem.Attributes.Interfaces;
 

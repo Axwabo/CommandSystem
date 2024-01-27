@@ -1,5 +1,4 @@
-﻿using Axwabo.CommandSystem.RemoteAdminExtensions;
-using HarmonyLib;
+﻿using HarmonyLib;
 using RemoteAdmin.Communication;
 
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
@@ -8,7 +7,7 @@ namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 internal static class RemoteAdminPlayerListPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         if (!Plugin.Instance.Config.EnableRemoteAdminExtensions)
             return instructions;

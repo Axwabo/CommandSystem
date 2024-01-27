@@ -1,6 +1,4 @@
-﻿using RemoteAdmin;
-
-namespace Axwabo.CommandSystem.Selectors;
+﻿namespace Axwabo.CommandSystem.Selectors;
 
 /// <summary>
 /// A list of <see cref="ReferenceHub"/> instances.

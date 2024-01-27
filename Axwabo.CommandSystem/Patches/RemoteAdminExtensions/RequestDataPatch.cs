@@ -1,5 +1,4 @@
-﻿using Axwabo.CommandSystem.RemoteAdminExtensions;
-using HarmonyLib;
+﻿using HarmonyLib;
 using RemoteAdmin.Communication;
 
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
@@ -8,7 +7,7 @@ namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 internal static class RequestDataPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
         var list = new List<CodeInstruction>(instructions);
         var cfg = Plugin.Instance.Config;
@@ -53,7 +52,7 @@ internal static class RequestDataPatch
         list.InsertRange(combined, new[]
         {
             String(" <color=green><link=CP_ID>\uF0C5</link></color>"),
-            Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
+            Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)})
         });
 
         var playerIdStringIndex = list.FindIndex(startIndex, i => i.operand is string s && s.Contains("Player ID"));

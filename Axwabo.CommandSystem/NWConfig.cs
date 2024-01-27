@@ -1,5 +1,4 @@
 ﻿#pragma warning disable CS1591
-#if !EXILED
 using System.ComponentModel;
 
 namespace Axwabo.CommandSystem;
@@ -7,6 +6,7 @@ namespace Axwabo.CommandSystem;
 /// <summary>
 /// Configuration for the Northwood Plugin API.
 /// </summary>
+[Serializable]
 public sealed class Config
 {
 
@@ -25,5 +25,3 @@ public sealed class Config
     public bool AllowSelectingHost { get; set; } = false;
 
 }
-
-#endif

@@ -7,7 +7,7 @@ namespace Axwabo.CommandSystem.Patches;
 internal static class GetCommandListPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         foreach (var codeInstruction in instructions)
             yield return codeInstruction.opcode == OpCodes.Isinst

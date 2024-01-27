@@ -6,7 +6,7 @@ public static class CustomHubFilterRegistry
 
     private static readonly List<FilterEntry> RegisteredFilters = new();
 
-    private static bool ValidateRegistration(string[] aliases) => aliases.Length != aliases.Count(alias => TryGetExisting(alias, out _));
+    private static bool ValidateRegistration(IReadOnlyCollection<string> aliases) => aliases.Count != aliases.Count(alias => TryGetExisting(alias, out _));
 
     /// <summary>
     /// Registers a custom hub filter.

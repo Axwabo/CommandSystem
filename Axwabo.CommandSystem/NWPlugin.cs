@@ -1,5 +1,4 @@
-﻿#if !EXILED
-using System.IO;
+﻿using System.IO;
 using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
@@ -66,5 +65,3 @@ public sealed class Plugin
     }
 
 }
-
-#endif

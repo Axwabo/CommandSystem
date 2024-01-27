@@ -1,5 +1,4 @@
 ﻿using Axwabo.CommandSystem.Exceptions;
-using Axwabo.CommandSystem.RemoteAdminExtensions;
 using CommandSystem;
 
 namespace Axwabo.CommandSystem.Commands.Wrappers;

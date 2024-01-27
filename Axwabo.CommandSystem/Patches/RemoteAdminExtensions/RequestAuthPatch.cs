@@ -1,6 +1,4 @@
-﻿using Axwabo.CommandSystem.RemoteAdminExtensions;
-using HarmonyLib;
-using RemoteAdmin;
+﻿using HarmonyLib;
 using RemoteAdmin.Communication;
 
 namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
@@ -9,7 +7,7 @@ namespace Axwabo.CommandSystem.Patches.RemoteAdminExtensions;
 internal static class RequestAuthPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
         if (!Plugin.Instance.Config.EnableRemoteAdminExtensions)
             return instructions;

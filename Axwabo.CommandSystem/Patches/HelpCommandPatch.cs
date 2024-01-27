@@ -7,7 +7,7 @@ namespace Axwabo.CommandSystem.Patches;
 internal static class HelpCommandPatch
 {
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var list = new List<CodeInstruction>(instructions);
         var start = list.FindCall("get_Command") - 1;

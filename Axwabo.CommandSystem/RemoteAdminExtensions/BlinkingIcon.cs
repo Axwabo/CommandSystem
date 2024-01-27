@@ -1,12 +1,4 @@
-﻿#if EXILED
-extern alias E;
-using E::Axwabo.Helpers;
-
-#else
-using Axwabo.Helpers;
-#endif
-
-namespace Axwabo.CommandSystem.RemoteAdminExtensions;
+﻿namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 
 /// <summary>
 /// A container for a string that will only display when the global time is even.
