@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿#pragma warning disable CS1591
+using System.Text.RegularExpressions;
 using HarmonyLib;
 
 namespace Axwabo.CommandSystem.Patches;
