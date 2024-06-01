@@ -8,7 +8,6 @@
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>Axwabo.CommandSystem</RootNamespace>
-        <AssemblyName>Axwabo.CommandSystem</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <LangVersion>10</LangVersion>
@@ -17,6 +16,7 @@
         <NoWarn>MSB3277</NoWarn>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NW-Release|AnyCPU' ">
+        <AssemblyName>Axwabo.CommandSystem</AssemblyName>
         <DebugType>pdbonly</DebugType>
         <Optimize>true</Optimize>
         <DefineConstants>TRACE</DefineConstants>
@@ -28,6 +28,7 @@
         <DocumentationFile>bin\NW-Release\Axwabo.CommandSystem.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EXILED-Dbg|AnyCPU' ">
+        <AssemblyName>Axwabo.CommandSystem.EXILED</AssemblyName>
         <OutputPath>bin\EXILED-Dbg\</OutputPath>
         <DefineConstants>EXILED;DEBUG;TRACE</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -35,6 +36,7 @@
         <DocumentationFile>bin\EXILED-Dbg\Axwabo.CommandSystem.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NW-Debug|AnyCPU' ">
+        <AssemblyName>Axwabo.CommandSystem</AssemblyName>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
@@ -47,6 +49,7 @@
         <DocumentationFile>bin\NW-Debug\Axwabo.CommandSystem.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EXILED-Rel|AnyCPU' ">
+        <AssemblyName>Axwabo.CommandSystem.EXILED</AssemblyName>
         <OutputPath>bin\EXILED-Rel\</OutputPath>
         <DefineConstants>EXILED;TRACE</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -286,12 +289,5 @@
         <Compile Include="PropertyManager\Resolvers\ICommandUsageResolver.cs"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
 
 </Project>

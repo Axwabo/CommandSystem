@@ -23,5 +23,8 @@ public sealed class Config
 
     [Description("Whether to allow selecting the host player as a target using custom selectors.")]
     public bool AllowSelectingHost { get; set; } = false;
+    
+    [Description("If enabled, rich text tag chevrons (<>) will be replaced with a similar character when sending the command response to the player.")]
+    public bool SanitizeResponses { get; set; } = true;
 
 }

@@ -58,4 +58,6 @@ internal sealed class CommandWrapper : ICommand, IUsageProvider
         return result.Success;
     }
 
+    public bool SanitizeResponse { get; }
+
 }
