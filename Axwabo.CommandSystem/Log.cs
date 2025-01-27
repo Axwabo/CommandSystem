@@ -1,14 +1,16 @@
-﻿namespace Axwabo.CommandSystem;
+﻿using Logger = LabApi.Features.Console.Logger;
+
+namespace Axwabo.CommandSystem;
 
 internal static class Log
 {
 
-    public static void Debug(object obj) => PluginAPI.Core.Log.Debug(obj?.ToString(), Plugin.Instance?.Config.Debug ?? true);
+    public static void Debug(object obj) => Logger.Debug(obj?.ToString() ?? "", CommandSystemPlugin.Instance?.Config?.Debug ?? true);
 
-    public static void Info(object obj) => PluginAPI.Core.Log.Info(obj?.ToString());
+    public static void Info(object obj) => Logger.Info(obj?.ToString() ?? "");
 
-    public static void Warn(object obj) => PluginAPI.Core.Log.Warning(obj?.ToString());
+    public static void Warn(object obj) => Logger.Warn(obj?.ToString() ?? "");
 
-    public static void Error(object obj) => PluginAPI.Core.Log.Error(obj?.ToString());
+    public static void Error(object obj) => Logger.Error(obj?.ToString() ?? "");
 
 }

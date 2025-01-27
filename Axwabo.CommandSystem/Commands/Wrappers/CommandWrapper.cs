@@ -8,7 +8,7 @@ internal sealed class CommandWrapper : ICommand, IUsageProvider
 
     private static readonly string[] MultipleChoices = {"...multiple choices"};
 
-    public readonly CommandBase BackingCommand;
+    internal readonly CommandBase BackingCommand;
 
     public CommandWrapper(CommandBase backingCommand) => BackingCommand = backingCommand;
 

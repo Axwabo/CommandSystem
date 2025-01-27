@@ -54,7 +54,7 @@ public abstract class CommandBase
     protected virtual IPermissionChecker Permissions { get; }
 
     /// <summary>Whether response rich text tag chevrons ( &lt;&gt; ) should be replaced with a similar character. Defaults to the option specified in the config.</summary>
-    public virtual bool SanitizeResponse => Plugin.Instance.Config.SanitizeResponses;
+    public virtual bool SanitizeResponse => CommandSystemPlugin.Instance.Config.SanitizeResponses;
 
     private readonly string _name;
 

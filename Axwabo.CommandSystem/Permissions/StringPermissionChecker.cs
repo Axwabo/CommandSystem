@@ -1,4 +1,4 @@
-﻿using NWAPIPermissionSystem;
+using LabApi.Features.Permissions;
 
 namespace Axwabo.CommandSystem.Permissions;
 
@@ -35,6 +35,6 @@ public sealed class StringPermissionChecker : IPermissionChecker
     /// <param name="permission">The permission to check.</param>
     /// <returns>Whether the sender has the permission.</returns>
     /// <remarks>If the given permission is <see cref="string.IsNullOrWhiteSpace">null, whitespace or empty</see>, it will return true.</remarks>
-    public static bool Check(CommandSender sender, string permission) => string.IsNullOrWhiteSpace(permission) || sender.CheckPermission(permission);
+    public static bool Check(CommandSender sender, string permission) => string.IsNullOrWhiteSpace(permission) || sender.HasAnyPermission(permission);
 
 }

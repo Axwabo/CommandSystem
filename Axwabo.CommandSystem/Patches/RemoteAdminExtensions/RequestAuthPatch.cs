@@ -9,7 +9,7 @@ internal static class RequestAuthPatch
 
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
-        if (!Plugin.Instance.Config.EnableRemoteAdminExtensions)
+        if (!CommandSystemPlugin.Instance.Config.EnableRemoteAdminExtensions)
             return instructions;
 
         var list = new List<CodeInstruction>(instructions);

@@ -10,7 +10,7 @@ internal static class RequestDataPatch
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
         var list = new List<CodeInstruction>(instructions);
-        var cfg = Plugin.Instance.Config;
+        var cfg = CommandSystemPlugin.Instance.Config;
         if (cfg.EnableRemoteAdminExtensions)
             PatchExtensions(list, generator);
         if (cfg.CopyNicknameInsteadOfId)

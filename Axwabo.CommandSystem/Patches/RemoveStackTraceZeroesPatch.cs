@@ -21,7 +21,7 @@ public static class RemoveStackTraceZeroesPatch
     };
 
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        => Plugin.Instance.Config.StripIntermediateLanguageOffsets ? Instructions : instructions;
+        => CommandSystemPlugin.Instance.Config.StripIntermediateLanguageOffsets ? Instructions : instructions;
 
     /// <summary>
     /// Removes all IL offsets from given the stack trace string.

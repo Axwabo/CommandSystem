@@ -1,5 +1,4 @@
-﻿using Axwabo.CommandSystem.Exceptions;
-using Axwabo.CommandSystem.Selectors;
+﻿using Axwabo.CommandSystem.Selectors;
 using HarmonyLib;
 using static Axwabo.CommandSystem.Selectors.PlayerSelectionManager;
 
@@ -34,31 +33,8 @@ internal static class CommandProcessorPatch
             Ldarg(1),
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
         });
-        list.InsertRange(list.FindCode(OpCodes.Stloc_S, start: pre) + 1, new[]
-        {
-            Null,
-            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
-            Ldarg(1),
-            Ldloc(0),
-            Ldloc(6),
-            Ldloc(5),
-            Call<DeveloperMode>(nameof(DeveloperMode.OnCommandExecuted))
-        });
 
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
-        list.RemoveRange(failedIndex, 6);
-        list.InsertRange(failedIndex, new[]
-        {
-            Null,
-            Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender)),
-            Ldarg(1),
-            Ldloc(0),
-            Ldloc(8),
-            Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
-            Ldloc(8),
-            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
-            Stloc(9)
-        });
 
         var send = list.FindCall("ToUpperInvariant", failedIndex) - 6;
         list.RemoveRange(send, 10);
@@ -69,7 +45,7 @@ internal static class CommandProcessorPatch
             LdelemRef,
             Call<string>(nameof(string.ToUpperInvariant)),
             String("#"),
-            Ldloc(9),
+            Ldloc(12),
             Call<string>(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
             Int0,
             Int1,

@@ -13,7 +13,7 @@ namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 public sealed class OptionPreferencesContainer : ContainerCommand
 {
 
-    private static string FolderPath => Path.Combine(Plugin.PluginDirectory, "Preferences");
+    private static string FolderPath => Path.Combine(CommandSystemPlugin.PluginDirectory, "Preferences");
 
     private static readonly Dictionary<string, HashSet<string>> HiddenCommandsByType = new();
 

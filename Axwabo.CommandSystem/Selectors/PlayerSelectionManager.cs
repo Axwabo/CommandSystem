@@ -1,7 +1,7 @@
 ﻿using Axwabo.CommandSystem.Exceptions;
+using LabApi.Features.Wrappers;
 using PlayerRoles;
 using PlayerRoles.Spectating;
-using PluginAPI.Core;
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -37,7 +37,7 @@ public static class PlayerSelectionManager
             ? s
             : throw new PlayerListProcessorException(message);
 
-    private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || Plugin.Instance.Config.AllowSelectingHost;
+    private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || CommandSystemPlugin.Instance.Config.AllowSelectingHost;
 
     /// <summary>Gets all players.</summary>
     public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(NonHost).ToList();

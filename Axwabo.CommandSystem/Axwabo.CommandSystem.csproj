@@ -45,39 +45,36 @@
             <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net48\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-            <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
-            <HintPath>$(NW-ASSEMBLIES)\Assembly-CSharp-firstpass.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="Axwabo.Helpers.NWAPI">
-            <HintPath>$(NW-ASSEMBLIES)\Axwabo.Helpers.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Axwabo.Helpers.dll</HintPath>
         </Reference>
         <Reference Include="CommandSystem.Core">
-            <HintPath>$(NW-ASSEMBLIES)\CommandSystem.Core.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\CommandSystem.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="LabApi">
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\LabApi.dll</HintPath>
         </Reference>
         <Reference Include="Mirror">
-            <HintPath>$(NW-ASSEMBLIES)\Mirror.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Mirror.dll</HintPath>
         </Reference>
         <Reference Include="Mirror.Components">
-            <HintPath>$(NW-ASSEMBLIES)\Mirror.Components.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Mirror.Components.dll</HintPath>
         </Reference>
         <Reference Include="mscorlib"/>
-        <Reference Include="NWAPIPermissionSystem">
-            <HintPath>$(NW-ASSEMBLIES)\NWAPIPermissionSystem.dll</HintPath>
-        </Reference>
         <Reference Include="Pooling">
-            <HintPath>$(NW-ASSEMBLIES)\Pooling.dll</HintPath>
-        </Reference>
-        <Reference Include="PluginAPI">
-            <HintPath>$(NW-ASSEMBLIES)\PluginAPI.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Pooling.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="UnityEngine">
-            <HintPath>$(NW-ASSEMBLIES)\UnityEngine.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-            <HintPath>$(NW-ASSEMBLIES)\UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>$(NW-ASSEMBLIES)\LabAPI\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
