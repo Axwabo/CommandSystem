@@ -9,7 +9,7 @@ internal static class RequestAuthPatch
 
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
-        if (!CommandSystemPlugin.Instance.Config.EnableRemoteAdminExtensions)
+        if (!(CommandSystemPlugin.Instance?.Config?.EnableRemoteAdminExtensions ?? true))
             return instructions;
 
         var list = new List<CodeInstruction>(instructions);
@@ -17,10 +17,9 @@ internal static class RequestAuthPatch
         var index = list.FindCode(OpCodes.Isinst) - 1;
         var instruction = list[index];
         var response = generator.Local<string>();
-        list.InsertRange(index, new[]
-        {
+        list.InsertRange(index, [
             Ldarg(2).MoveLabelsFrom(instruction),
-            Call<string>(nameof(string.Trim), Array.Empty<Type>()),
+            Call<string>(nameof(string.Trim), []),
             RequestDataButton.RequestAuth.Load(),
             Ldarg(1),
             IsInstance<PlayerCommandSender>(),
@@ -30,13 +29,13 @@ internal static class RequestAuthPatch
             Ldarg(1),
             String("PlayerInfo#<color=white>{0}</color>"),
             response.Load(),
-            Call<string>(nameof(string.Format), new[] {typeof(string), typeof(object)}),
+            Call<string>(nameof(string.Format), [typeof(string), typeof(object)]),
             Int1,
             Int1,
             String("null"),
             Call<CommandSender>(nameof(CommandSender.RaReply)),
             Return
-        });
+        ]);
         instruction.labels.Add(label);
         return list;
     }

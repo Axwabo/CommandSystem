@@ -6,15 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axwabo.CommandSystem.Exampl
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		NW-Release|Any CPU = NW-Release|Any CPU
-		NW-Debug|Any CPU = NW-Debug|Any CPU
+		LabApi|Any CPU = LabApi|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9C0DB556-5717-440F-A419-4B554BC54C7A}.NW-Release|Any CPU.ActiveCfg = NW-Release|Any CPU
-		{9C0DB556-5717-440F-A419-4B554BC54C7A}.NW-Release|Any CPU.Build.0 = NW-Release|Any CPU
-		{9C0DB556-5717-440F-A419-4B554BC54C7A}.NW-Debug|Any CPU.ActiveCfg = NW-Debug|Any CPU
-		{9C0DB556-5717-440F-A419-4B554BC54C7A}.NW-Debug|Any CPU.Build.0 = NW-Debug|Any CPU
-		{5BFC1CF9-4ABA-4D60-8E21-AE1C0E72100D}.NW-Release|Any CPU.ActiveCfg = NW-Debug|Any CPU
-		{5BFC1CF9-4ABA-4D60-8E21-AE1C0E72100D}.NW-Release|Any CPU.Build.0 = NW-Debug|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.LabApi|Any CPU.ActiveCfg = LabApi|Any CPU
+		{9C0DB556-5717-440F-A419-4B554BC54C7A}.LabApi|Any CPU.Build.0 = LabApi|Any CPU
+		{5BFC1CF9-4ABA-4D60-8E21-AE1C0E72100D}.LabApi|Any CPU.ActiveCfg = LabApi|Any CPU
+		{5BFC1CF9-4ABA-4D60-8E21-AE1C0E72100D}.LabApi|Any CPU.Build.0 = LabApi|Any CPU
 	EndGlobalSection
 EndGlobal

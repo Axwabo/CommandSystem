@@ -1,240 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{9C0DB556-5717-440F-A419-4B554BC54C7A}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Axwabo.CommandSystem</RootNamespace>
-        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
-        <LangVersion>10</LangVersion>
-        <Nullable>disable</Nullable>
-        <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-        <NoWarn>MSB3277</NoWarn>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NW-Release|AnyCPU' ">
-        <AssemblyName>Axwabo.CommandSystem</AssemblyName>
-        <DebugType>pdbonly</DebugType>
+        <LangVersion>12</LangVersion>
+        <TargetFramework>net48</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+        <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Optimize>true</Optimize>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <OutputPath>bin\NW-Release\</OutputPath>
         <PlatformTarget>x64</PlatformTarget>
-        <DocumentationFile>bin\NW-Release\Axwabo.CommandSystem.xml</DocumentationFile>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NW-Debug|AnyCPU' ">
-        <AssemblyName>Axwabo.CommandSystem</AssemblyName>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <OutputPath>bin\NW-Debug\</OutputPath>
-        <PlatformTarget>x64</PlatformTarget>
-        <DocumentationFile>bin\NW-Debug\Axwabo.CommandSystem.xml</DocumentationFile>
-    </PropertyGroup>
+
     <ItemGroup>
-        <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-            <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net48\0Harmony.dll</HintPath>
-        </Reference>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Assembly-CSharp.dll</HintPath>
-        </Reference>
-        <Reference Include="Assembly-CSharp-firstpass">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Assembly-CSharp-firstpass.dll</HintPath>
-        </Reference>
-        <Reference Include="Axwabo.Helpers.NWAPI">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Axwabo.Helpers.dll</HintPath>
-        </Reference>
-        <Reference Include="CommandSystem.Core">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\CommandSystem.Core.dll</HintPath>
-        </Reference>
-        <Reference Include="LabApi">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\LabApi.dll</HintPath>
-        </Reference>
-        <Reference Include="Mirror">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Mirror.dll</HintPath>
-        </Reference>
-        <Reference Include="Mirror.Components">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Mirror.Components.dll</HintPath>
-        </Reference>
-        <Reference Include="mscorlib"/>
-        <Reference Include="Pooling">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\Pooling.dll</HintPath>
-        </Reference>
-        <Reference Include="System"/>
-        <Reference Include="UnityEngine">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\UnityEngine.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.CoreModule">
-            <HintPath>$(NW-ASSEMBLIES)\LabAPI\UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
+        <Reference Include="Assembly-CSharp"/>
+        <Reference Include="Assembly-CSharp-firstpass"/>
+        <Reference Include="Axwabo.Helpers"/>
+        <Reference Include="CommandSystem.Core"/>
+        <Reference Include="Mirror"/>
+        <Reference Include="LabApi"/>
+        <Reference Include="Pooling"/>
+        <Reference Include="UnityEngine.CoreModule"/>
     </ItemGroup>
+
     <ItemGroup>
-        <Compile Include="NWConfig.cs"/>
-        <Compile Include="NWPlugin.cs"/>
-        <Compile Include="Attributes\Containers\MethodBasedSubcommandAttribute.cs"/>
-        <Compile Include="Attributes\DoNotAutoRegister.cs"/>
-        <Compile Include="Attributes\Interfaces\IOptionIconProvider.cs"/>
-        <Compile Include="Attributes\Containers\SubcommandOfContainerAttribute.cs"/>
-        <Compile Include="Attributes\Containers\UsesSubcommandsAttribute.cs"/>
-        <Compile Include="Attributes\RaExt\VisibleByDefaultAttribute.cs"/>
-        <Compile Include="Attributes\RaExt\OptionIconAttribute.cs"/>
-        <Compile Include="Attributes\RaExt\RemoteAdminOptionPropertiesAttribute.cs"/>
-        <Compile Include="Attributes\RaExt\StandaloneSelectorAttribute.cs"/>
-        <Compile Include="Attributes\Targeting\AffectedOnePlayerMessageAttribute.cs"/>
-        <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedMultiplePlayersMessage.cs"/>
-        <Compile Include="Attributes\Targeting\Interfaces\IStaticAffectedOnePlayerMessage.cs"/>
-        <Compile Include="Attributes\Targeting\Interfaces\IStaticNoPlayersAffectedMessage.cs"/>
-        <Compile Include="Attributes\Targeting\Interfaces\IStaticNoTargetsFoundMessage.cs"/>
-        <Compile Include="Attributes\Targeting\AffectedMultiplePlayersMessageAttribute.cs"/>
-        <Compile Include="Attributes\Targeting\NoPlayersAffectedMessageAttribute.cs"/>
-        <Compile Include="Attributes\Targeting\NoTargetsMessageAttribute.cs"/>
-        <Compile Include="Attributes\Targeting\ShouldAffectSpectatorsAttribute.cs"/>
-        <Compile Include="Attributes\Targeting\StaticTargetingMessagesAttribute.cs"/>
-        <Compile Include="Attributes\AliasesAttribute.cs"/>
-        <Compile Include="Attributes\DescriptionAttribute.cs"/>
-        <Compile Include="Attributes\CommandTargetAttribute.cs"/>
-        <Compile Include="Attributes\CommandNameAttribute.cs"/>
-        <Compile Include="Attributes\CommandPropertiesAttribute.cs"/>
-        <Compile Include="Attributes\CommandHandlerType.cs"/>
-        <Compile Include="Attributes\Interfaces\IAliases.cs"/>
-        <Compile Include="Attributes\Interfaces\IDescription.cs"/>
-        <Compile Include="Attributes\Interfaces\ICommandName.cs"/>
-        <Compile Include="Attributes\Interfaces\IGenericCommandInstanceBasedPermissionResolver.cs"/>
-        <Compile Include="Attributes\Interfaces\IGenericRemoteAdminOptionInstanceBasedPermissionResolver.cs"/>
-        <Compile Include="Attributes\Interfaces\IInstanceBasedPermissionResolver.cs"/>
-        <Compile Include="Attributes\Interfaces\IMinArguments.cs"/>
-        <Compile Include="Attributes\Interfaces\IPlayerOnlyAttribute.cs"/>
-        <Compile Include="Attributes\Interfaces\IRemoteAdminOptionIdentifier.cs"/>
-        <Compile Include="Attributes\Interfaces\IStaticOptionText.cs"/>
-        <Compile Include="Attributes\Interfaces\IUsage.cs"/>
-        <Compile Include="Attributes\MinArgumentsAttribute.cs"/>
-        <Compile Include="Attributes\PlayerOnlyCommandAttribute.cs"/>
-        <Compile Include="Attributes\PresetCommandListeners.cs"/>
-        <Compile Include="Attributes\RaExt\AutoGenerateIdAttribute.cs"/>
-        <Compile Include="Attributes\RaExt\RemoteAdminOptionIdentifierAttribute.cs"/>
-        <Compile Include="Attributes\RaExt\StaticOptionTextAttribute.cs"/>
-        <Compile Include="Attributes\UsageAttribute.cs"/>
-        <Compile Include="CommandBase.cs"/>
-        <Compile Include="CommandHelpers.cs"/>
-        <Compile Include="CommandResult.cs"/>
-        <Compile Include="CommandResultOnTarget.cs"/>
-        <Compile Include="Commands\Interfaces\ICustomResultCompiler.cs"/>
-        <Compile Include="Commands\Interfaces\IHiddenCommand.cs"/>
-        <Compile Include="Commands\Interfaces\INotEnoughArgumentsHandler.cs"/>
-        <Compile Include="Commands\Interfaces\IPlayerOnlyCommand.cs"/>
-        <Compile Include="Commands\Interfaces\IPreExecutionFilter.cs"/>
-        <Compile Include="Commands\Interfaces\IShouldAffectSpectators.cs"/>
-        <Compile Include="Commands\Interfaces\ITargetFilteringPolicy.cs"/>
-        <Compile Include="Commands\Interfaces\ITargetingPreExecutionFilter.cs"/>
-        <Compile Include="Commands\MessageOverrides\DefaultTargetingMessageGenerator.cs"/>
-        <Compile Include="Commands\MessageOverrides\IAffectedMultiplePlayersMessageGenerator.cs"/>
-        <Compile Include="Commands\MessageOverrides\IAffectedOnePlayerMessageGenerator.cs"/>
-        <Compile Include="Commands\MessageOverrides\IAffectedAllPlayersMessageGenerator.cs"/>
-        <Compile Include="Commands\MessageOverrides\ITargetSelectionManager.cs"/>
-        <Compile Include="Commands\ContainerCommand.cs"/>
-        <Compile Include="Commands\SeparatedTargetingCommand.cs"/>
-        <Compile Include="Commands\UnifiedTargetingCommand.cs"/>
-        <Compile Include="Commands\Wrappers\CommandWrapper.cs"/>
-        <Compile Include="Commands\Wrappers\IMethodBasedCommand.cs"/>
-        <Compile Include="Commands\Wrappers\MethodBasedCommand.cs"/>
-        <Compile Include="Commands\Wrappers\MethodBasedTargetingCommand.cs"/>
-        <Compile Include="CompilerHacks.cs"/>
-        <Compile Include="Exceptions\PlayerListProcessorException.cs"/>
-        <Compile Include="Exceptions\TypeMismatchException.cs"/>
-        <Compile Include="Exceptions\InvalidNameException.cs"/>
-        <Compile Include="Extensions.cs"/>
-        <Compile Include="GenericTypeExtensions.cs"/>
-        <Compile Include="Log.cs"/>
-        <Compile Include="Patches\HelpCommandPatch.cs"/>
-        <Compile Include="Patches\CommandProcessorPatch.cs"/>
-        <Compile Include="Patches\ConsolePatch.cs"/>
-        <Compile Include="Patches\GetCommandListPatch.cs"/>
-        <Compile Include="Patches\ParseCommandsPatch.cs"/>
-        <Compile Include="Patches\ProcessPlayersListPatch.cs"/>
-        <Compile Include="Patches\QueryProcessorPatch.cs"/>
-        <Compile Include="Patches\RemoteAdminExtensions\ExternalLookupPatch.cs"/>
-        <Compile Include="Patches\RemoteAdminExtensions\RequestAuthPatch.cs"/>
-        <Compile Include="Patches\RemoteAdminExtensions\RequestDataPatch.cs"/>
-        <Compile Include="Patches\RemoteAdminExtensions\RemoteAdminPlayerListPatch.cs"/>
-        <Compile Include="Patches\RemoveStackTraceZeroesPatch.cs"/>
-        <Compile Include="Permissions\AllVanillaPermissionChecker.cs"/>
-        <Compile Include="Permissions\AllVanillaPermissionsAttribute.cs"/>
-        <Compile Include="Permissions\AtLeastOneVanillaPermissionChecker.cs"/>
-        <Compile Include="Permissions\StringPermissionChecker.cs"/>
-        <Compile Include="Permissions\StringPermissionsAttribute.cs"/>
-        <Compile Include="Permissions\CombinedPermissionChecker.cs"/>
-        <Compile Include="Permissions\IPermissionChecker.cs"/>
-        <Compile Include="Permissions\OneOfVanillaPermissionsAttribute.cs"/>
-        <Compile Include="Permissions\SimpleVanillaPlayerPermissionChecker.cs"/>
-        <Compile Include="Permissions\VanillaPermissionsAttribute.cs"/>
-        <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="PropertyManager\BaseCommandPropertyManager.cs"/>
-        <Compile Include="PropertyManager\RemoteAdminExtensionPropertyManager.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IAffectedAllPlayersResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IAffectedMultiplePlayersResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IAffectedOnePlayerResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\ICommandAliasResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\ICommandDescriptionResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\ICommandNameResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IAttributeBasedPermissionResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IOptionIconResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IRemoteAdminOptionIdResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IResultCompilerResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\IStaticOptionTextResolver.cs"/>
-        <Compile Include="PropertyManager\Resolvers\ITargetSelectionResolver.cs"/>
-        <Compile Include="PropertyManager\TargetingCommandPropertyManager.cs"/>
-        <Compile Include="Registration\IRegistrationFilter.cs"/>
-        <Compile Include="Registration\RegistrationExtensions.NonGeneric.cs"/>
-        <Compile Include="Registration\RegistrationExtensions.With.cs"/>
-        <Compile Include="Registration\ResolverContainer.cs"/>
-        <Compile Include="RemoteAdminExtensions\BlinkingIcon.cs"/>
-        <Compile Include="RemoteAdminExtensions\ButtonBasedRemoteAdminOption.cs"/>
-        <Compile Include="RemoteAdminExtensions\Commands\HideOption.cs"/>
-        <Compile Include="RemoteAdminExtensions\Commands\ListOptions.cs"/>
-        <Compile Include="RemoteAdminExtensions\Commands\OptionPreferencesContainer.cs"/>
-        <Compile Include="RemoteAdminExtensions\Commands\ShowOption.cs"/>
-        <Compile Include="RemoteAdminExtensions\DeveloperMode.cs"/>
-        <Compile Include="RemoteAdminExtensions\Interfaces\IOptionVisibilityController.cs"/>
-        <Compile Include="RemoteAdminExtensions\Interfaces\IStandaloneSelectorOption.cs"/>
-        <Compile Include="RemoteAdminExtensions\RemoteAdminOptionBase.cs"/>
-        <Compile Include="RemoteAdminExtensions\RemoteAdminOptionManager.cs"/>
-        <Compile Include="RemoteAdminExtensions\RequestDataButton.cs"/>
-        <Compile Include="RemoteAdminExtensions\StackOption.cs"/>
-        <Compile Include="Selectors\Filtering\CustomHubFilterRegistry.cs"/>
-        <Compile Include="Selectors\Filtering\Delegates.cs"/>
-        <Compile Include="Selectors\Filtering\FilterEntry.cs"/>
-        <Compile Include="Selectors\Filtering\PresetHubFilters.cs"/>
-        <Compile Include="Registration\CommandRegistrationProcessor.cs"/>
-        <Compile Include="Registration\RegistrationExtensions.cs"/>
-        <Compile Include="Selectors\AtSelectorProcessor.cs"/>
-        <Compile Include="Selectors\HubCollection.cs"/>
-        <Compile Include="Selectors\PlayerSelectionManager.cs"/>
-        <Compile Include="Selectors\PlayerSelectionStack.cs"/>
-        <Compile Include="Selectors\StackCommands\StackClear.cs"/>
-        <Compile Include="Selectors\StackCommands\StackDuplicate.cs"/>
-        <Compile Include="Selectors\StackCommands\StackList.cs"/>
-        <Compile Include="Selectors\StackCommands\StackPop.cs"/>
-        <Compile Include="Selectors\StackCommands\StackPush.cs"/>
-        <Compile Include="Selectors\StackCommands\StackReverse.cs"/>
-        <Compile Include="Translations\CommandResultTranslationAttribute.cs"/>
-        <Compile Include="Translations\CommandResultTranslationSuccessManager.cs"/>
+        <PackageReference Include="Lib.Harmony" Version="2.2.2"/>
     </ItemGroup>
-    <ItemGroup>
-        <None Include="App.config"/>
-        <None Include="packages.config"/>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="PropertyManager\Resolvers\ICommandUsageResolver.cs"/>
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 
 </Project>

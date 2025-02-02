@@ -9,17 +9,16 @@ internal static class ExternalLookupPatch
 
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
-        if (!CommandSystemPlugin.Instance.Config.EnableRemoteAdminExtensions)
+        if (!(CommandSystemPlugin.Instance?.Config?.EnableRemoteAdminExtensions ?? true))
             return instructions;
         var list = new List<CodeInstruction>(instructions);
         var label = generator.DefineLabel();
         list[0].labels.Add(label);
-        list.InsertRange(0, new[]
-        {
+        list.InsertRange(0, [
             String(" "),
             Ldarg(1),
             Box<ArraySegment<string>>(),
-            Call<string>(nameof(string.Join), new[] {typeof(string), typeof(IEnumerable<string>)}),
+            Call<string>(nameof(string.Join), [typeof(string), typeof(IEnumerable<string>)]),
             RequestDataButton.ExternalLookup.Load(),
             Ldarg(2),
             IsInstance<PlayerCommandSender>(),
@@ -28,7 +27,7 @@ internal static class ExternalLookupPatch
             label.False(),
             Int1,
             Return
-        });
+        ]);
         return list;
     }
 

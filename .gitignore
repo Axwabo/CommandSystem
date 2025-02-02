@@ -7,3 +7,5 @@ riderModule.iml
 .idea/
 Axwabo.CommandSystem.sln.DotSettings.user
 GitHubUpdates/
+
+*.user

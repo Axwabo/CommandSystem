@@ -11,9 +11,9 @@ internal static class RequestDataPatch
     {
         var list = new List<CodeInstruction>(instructions);
         var cfg = CommandSystemPlugin.Instance.Config;
-        if (cfg.EnableRemoteAdminExtensions)
+        if (cfg?.EnableRemoteAdminExtensions ?? true)
             PatchExtensions(list, generator);
-        if (cfg.CopyNicknameInsteadOfId)
+        if (cfg?.CopyNicknameInsteadOfId ?? false)
             PatchNickname(list);
         return list;
     }
@@ -24,8 +24,7 @@ internal static class RequestDataPatch
         var index = list.FindCode(OpCodes.Isinst) + 2;
         var response = generator.Local<string>();
         list[index].labels.Add(label);
-        list.InsertRange(index, new[]
-        {
+        list.InsertRange(index, [
             Ldloc(0),
             Int1,
             LdelemRef,
@@ -41,7 +40,7 @@ internal static class RequestDataPatch
             response.Load(),
             Call(RemoteAdminOptionManager.SendReply),
             Return
-        });
+        ]);
     }
 
     private static void PatchNickname(List<CodeInstruction> list)
@@ -55,11 +54,10 @@ internal static class RequestDataPatch
 
         var send = list.FindCall<RaClipboard>(nameof(RaClipboard.Send), start: startIndex) - 5;
         list.RemoveRange(send, 5);
-        list.InsertRange(send, new[]
-        {
+        list.InsertRange(send, [
             Ldloc(10),
             Get<NicknameSync>(nameof(NicknameSync.MyNick))
-        });
+        ]);
     }
 
 }
