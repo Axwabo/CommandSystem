@@ -1,6 +1,7 @@
 ﻿using Axwabo.CommandSystem.Exceptions;
 using PlayerRoles;
 using PlayerRoles.Spectating;
+using PluginAPI.Core;
 
 namespace Axwabo.CommandSystem.Selectors;
 
@@ -45,12 +46,7 @@ public static class PlayerSelectionManager
     public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => NonHost(h) && h.IsAlive()).ToList();
 
     /// <summary>Gets the player count.</summary>
-    public static int PlayerCount =>
-#if EXILED
-        Exiled.API.Features.Server.PlayerCount;
-#else
-        PluginAPI.Core.Player.Count;
-#endif
+    public static int PlayerCount => Player.Count;
 
     /// <summary>
     /// Attempts to process the given argument array as a player list with the custom selectors.

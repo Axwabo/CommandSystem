@@ -1,9 +1,4 @@
-﻿#if EXILED
-using Exiled.Permissions.Extensions;
-
-#else
-using NWAPIPermissionSystem;
-#endif
+﻿using NWAPIPermissionSystem;
 
 namespace Axwabo.CommandSystem.Permissions;
 
