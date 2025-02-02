@@ -14,7 +14,7 @@ public static class PlayerSelectionManager
     /// <summary>The current <see cref="CommandSender"/> executing a command.</summary>
     public static CommandSender CurrentSender;
 
-    private static readonly char[] StackSeparators = {':', '>', '_', '-', ' '};
+    private static readonly char[] StackSeparators = [':', '>', '_', '-', ' '];
     private const string StackPrefix = "@stack";
     private const string SpectatedPrefix = "@spectated";
     private const string SpectatedPrefixShort = "@spec";
@@ -37,7 +37,7 @@ public static class PlayerSelectionManager
             ? s
             : throw new PlayerListProcessorException(message);
 
-    private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || CommandSystemPlugin.Instance.Config.AllowSelectingHost;
+    private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || (CommandSystemPlugin.Instance?.Config?.AllowSelectingHost ?? false);
 
     /// <summary>Gets all players.</summary>
     public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(NonHost).ToList();
@@ -64,7 +64,7 @@ public static class PlayerSelectionManager
         if (arguments.Count == 0)
         {
             targets = HubCollection.Empty;
-            newArgs = Array.Empty<string>();
+            newArgs = [];
             return false;
         }
 
@@ -205,7 +205,7 @@ public static class PlayerSelectionManager
         if (formatted.Length < 1)
         {
             targets = stack.IsEmpty ? HubCollection.Empty : stack.Pop();
-            newArgs = Array.Empty<string>();
+            newArgs = [];
             return;
         }
 
@@ -255,7 +255,7 @@ public static class PlayerSelectionManager
     {
         if (preTrimStart && s.Length > 0 && char.IsWhiteSpace(s[0]))
             s = s.Substring(1);
-        return s.Split(new[] {' '}, keepEmptyEntries ? StringSplitOptions.None : StringSplitOptions.RemoveEmptyEntries);
+        return s.Split([' '], keepEmptyEntries ? StringSplitOptions.None : StringSplitOptions.RemoveEmptyEntries);
     }
 
 }
