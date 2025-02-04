@@ -3,6 +3,7 @@ using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 using HarmonyLib;
+using LabApi.Events.Handlers;
 using LabApi.Features.Wrappers;
 using LabApi.Loader.Features.Paths;
 using LabApi.Loader.Features.Plugins;
@@ -46,6 +47,7 @@ public sealed class CommandSystemPlugin : Plugin<CommandSystemConfig>
         CommandRegistrationProcessor.RegisterAll(this);
         OptionPreferencesContainer.LoadState();
         Shutdown.OnQuit += OptionPreferencesContainer.SaveState;
+        ServerEvents.CommandExecuted += DeveloperMode.OnCommandExecuted;
         Log.Info("Axwabo.CommandSystem has been enabled!");
     }
 

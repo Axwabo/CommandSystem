@@ -1,6 +1,7 @@
 ﻿using Axwabo.CommandSystem.Attributes.RaExt;
 using Axwabo.CommandSystem.Patches;
 using CommandSystem;
+using LabApi.Events.Arguments.ServerEvents;
 using RemoteAdmin.Communication;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
@@ -43,6 +44,12 @@ public sealed class DeveloperMode : ButtonBasedRemoteAdminOption
     {
         if (sender is PlayerCommandSender player)
             LastCommands[player] = (string.Join(" ", query), (success, result));
+    }
+
+    internal static void OnCommandExecuted(CommandExecutedEventArgs ev)
+    {
+        if (ev.Sender != null)
+            OnCommandExecuted(ev.Sender, ev.Arguments.Array ?? [], ev.Response, ev.ExecutedSuccessfully);
     }
 
     /// <summary>
