@@ -13,8 +13,19 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand
 
     private readonly ICustomResultCompiler _customResultCompiler;
 
-    /// <summary>Creates a new <see cref="SeparatedTargetingCommand"/> instance.</summary>
-    protected SeparatedTargetingCommand() => _customResultCompiler = TargetingCommandPropertyManager.ResolveCustomResultCompiler(this);
+    /// <summary>
+    /// Creates a new <see cref="SeparatedTargetingCommand"/> instance.
+    /// Properties are resolved based on the type.
+    /// </summary>
+    protected SeparatedTargetingCommand() : this(null)
+    {
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="SeparatedTargetingCommand"/> instance based on the supplied <see cref="BaseCommandProperties">properties</see>.
+    /// If <paramref name="properties"/> is null, <see cref="BaseCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.</summary>
+    protected SeparatedTargetingCommand(BaseCommandProperties properties) : base(properties)
+        => _customResultCompiler = TargetingCommandPropertyManager.ResolveCustomResultCompiler(this);
 
     /// <inheritdoc />
     protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)

@@ -149,17 +149,13 @@ public abstract class ContainerCommand : CommandBase
 
     private void RegisterMethodBasedSubcommand(MethodInfo methodInfo, bool isTargetingCommand)
     {
-        if (!BaseCommandPropertyManager.TryResolveProperties(null, out var name, out var description, out var aliases, out var usage, out var minArguments, out var playerOnly, methodInfo))
-            name = methodInfo.Name;
+        var properties = BaseCommandPropertyManager.ResolveProperties(methodInfo);
+        properties.Name ??= methodInfo.Name;
         var permissions = BaseCommandPropertyManager.ResolvePermissionChecker(this, methodInfo);
-        if (isTargetingCommand)
-            MethodBasedTargetingCommand.SetNextCommandName(name);
-        else
-            MethodBasedCommand.SetNextCommandName(name);
         RegisterSubcommand(
             isTargetingCommand
-                ? new MethodBasedTargetingCommand(description, aliases, usage, minArguments, permissions, playerOnly, methodInfo, this)
-                : new MethodBasedCommand(description, aliases, usage, minArguments, permissions, playerOnly, methodInfo, this)
+                ? new MethodBasedTargetingCommand(properties, permissions, methodInfo, this)
+                : new MethodBasedCommand(properties, permissions, methodInfo, this)
         );
     }
 

@@ -14,20 +14,25 @@ public abstract class CommandBase
     /// <summary>The message to display when only a player is allowed to use the command but the sender is not a player.</summary>
     public const string MustBePlayer = "You must be a player to use this command!";
 
+    private readonly BaseCommandProperties _properties;
+
     /// <summary>The name of the command.</summary>
-    public virtual string Name => _name;
+    public virtual string Name => _properties.Name;
 
     /// <summary>A string that describes the command.</summary>
-    public virtual string Description => _desc;
+    public virtual string Description => _properties.Description;
 
     /// <summary>An array of aliases for the command.</summary>
-    public virtual string[] Aliases => _aliases;
+    public virtual string[] Aliases => _properties.Aliases;
 
     /// <summary>An array of usage examples for the command.</summary>
-    public virtual string[] Usage => _usage;
+    public virtual string[] Usage => _properties.Usage;
 
     /// <summary>The minimum amount of arguments required to execute the command.</summary>
-    protected virtual int MinArguments => _minArgs;
+    protected virtual int MinArguments => _properties.MinArguments;
+
+    /// <summary>Whether this command is restricted to <see cref="PlayerCommandSender"/>s.</summary>
+    protected virtual bool PlayerOnly => _properties.PlayerOnly;
 
     /// <summary>Shows all possible usages if any with a "Usage(s):" prefix.</summary>
     /// <example>
@@ -53,32 +58,27 @@ public abstract class CommandBase
     /// <summary>A permission checker for the command.</summary>
     protected virtual IPermissionChecker Permissions { get; }
 
-    /// <summary>Whether response rich text tag chevrons ( &lt;&gt; ) should be replaced with a similar character. Defaults to the option specified in the config.</summary>
-    public virtual bool SanitizeResponse => CommandSystemPlugin.Instance?.Config?.SanitizeResponses ?? true;
-
-    private readonly string _name;
-
-    private readonly string _desc;
-
-    private readonly string[] _aliases;
-
-    private readonly string[] _usage;
-
-    private readonly int _minArgs;
-
-    private readonly bool _playerOnly;
-
     // ReSharper disable VirtualMemberCallInConstructor
     /// <summary>
     /// Creates a new <see cref="CommandBase"/> instance.
+    /// Properties are resolved based on the type.
     /// </summary>
     /// <exception cref="InvalidNameException">If the <see cref="Name">command name property</see> is not overriden and is not specified by attributes on the class.</exception>
-    protected CommandBase()
+    protected CommandBase() : this(null)
     {
-        var resolved = BaseCommandPropertyManager.TryResolveProperties(this, out _name, out _desc, out _aliases, out _usage, out _minArgs, out _playerOnly);
-        if (string.IsNullOrWhiteSpace(Name) && !resolved)
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="CommandBase"/> instance based on the supplied <see cref="BaseCommandProperties">properties</see>.
+    /// If <paramref name="properties"/> is null, <see cref="BaseCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.
+    /// </summary>
+    /// <exception cref="InvalidNameException">If the <see cref="Name">command name property</see> is not overriden and is not specified in <paramref name="properties"/>.</exception>
+    protected CommandBase(BaseCommandProperties properties)
+    {
+        _properties = properties?.Clone() ?? BaseCommandPropertyManager.ResolveProperties(GetType());
+        if (string.IsNullOrWhiteSpace(Name))
             throw new InvalidNameException($"Command name on type {GetType().FullName} is not set. Are you missing an attribute or custom name resolver?");
-        Permissions ??= BaseCommandPropertyManager.ResolvePermissionChecker(this);
+        Permissions = BaseCommandPropertyManager.ResolvePermissionChecker(this);
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ public abstract class CommandBase
             ? CommandResult.Null
             : this is IPlayerOnlyCommand playerOnly
                 ? playerOnly.OnNotPlayer(arguments, sender)
-                : _playerOnly
+                : PlayerOnly
                     ? CommandResult.Failed(MustBePlayer)
                     : CommandResult.Null;
 

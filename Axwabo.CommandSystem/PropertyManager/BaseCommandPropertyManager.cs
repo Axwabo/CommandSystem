@@ -15,48 +15,36 @@ public static class BaseCommandPropertyManager
     /// <summary>
     /// Attempts to resolve the basic properties of a command.
     /// </summary>
-    /// <param name="command">The command to resolve properties for.</param>
-    /// <param name="name">The name of the command.</param>
-    /// <param name="description">The description of the command.</param>
-    /// <param name="aliases">Aliases for the command.</param>
-    /// <param name="usage">Usage examples for the command.</param>
-    /// <param name="minArguments">The minimum number of arguments required to execute the command.</param>
-    /// <param name="playerOnly">Whether the command can only be executed by a player.</param>
-    /// <param name="member">The member to resolve attributes for. If null, the command's type will be used.</param>
-    /// <returns>Whether the command name was successfully resolved.</returns>
-    public static bool TryResolveProperties(
-        CommandBase command,
-        out string name,
-        out string description,
-        out string[] aliases,
-        out string[] usage,
-        out int minArguments,
-        out bool playerOnly,
-        MemberInfo member = null
-    )
+    /// <param name="member">The member to resolve attributes for.</param>
+    /// <returns>A <see cref="BaseCommandProperties"/> class containing the resolved information.</returns>
+    public static BaseCommandProperties ResolveProperties(MemberInfo member)
     {
-        name = null;
-        description = null;
+        var properties = new BaseCommandProperties();
         var aliasList = new List<string>();
         var usageList = new List<string>();
-        minArguments = 0;
-        playerOnly = false;
-        member ??= command.GetType();
         foreach (var attribute in member.GetCustomAttributes())
         {
-            ResolveBaseAttribute(member, attribute, ref name, ref description, aliasList, usageList, ref minArguments, ref playerOnly);
+            ResolveBaseAttribute(member,
+                attribute,
+                ref properties.Name,
+                ref properties.Description,
+                aliasList,
+                usageList,
+                ref properties.MinArguments,
+                ref properties.PlayerOnly
+            );
             if (CurrentProcessor == null)
                 continue;
             var type = attribute.GetType();
-            CurrentProcessor.NameResolvers.Resolve(ref name, type, attribute);
-            CurrentProcessor.DescriptionResolvers.Resolve(ref description, type, attribute);
+            CurrentProcessor.NameResolvers.Resolve(ref properties.Name, type, attribute);
+            CurrentProcessor.DescriptionResolvers.Resolve(ref properties.Description, type, attribute);
             CurrentProcessor.AliasResolvers.ResolveArray(aliasList, type, attribute);
             CurrentProcessor.UsageResolvers.ResolveArray(usageList, type, attribute);
         }
 
-        aliases = aliasList.ToArray();
-        usage = usageList.Count == 0 ? null : usageList.ToArray();
-        return !string.IsNullOrEmpty(name);
+        properties.Aliases = aliasList.ToArray();
+        properties.Usage = usageList.Count == 0 ? null : usageList.ToArray();
+        return properties;
     }
 
     /// <summary>

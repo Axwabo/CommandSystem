@@ -25,8 +25,19 @@ public abstract class UnifiedTargetingCommand : CommandBase
     private readonly IAffectedOnePlayerMessageGenerator _affectedOneGenerator;
     private readonly ITargetSelectionManager _selectionManager;
 
-    /// <summary>Creates a new <see cref="UnifiedTargetingCommand"/> instance.</summary>
-    protected UnifiedTargetingCommand()
+    /// <summary>
+    /// Creates a new <see cref="UnifiedTargetingCommand"/> instance.
+    /// Properties are resolved based on the type.
+    /// </summary>
+    protected UnifiedTargetingCommand() : this(null)
+    {
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="UnifiedTargetingCommand"/> instance based on the supplied <see cref="BaseCommandProperties">properties</see>.
+    /// If <paramref name="properties"/> is null, <see cref="BaseCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.
+    /// </summary>
+    protected UnifiedTargetingCommand(BaseCommandProperties properties) : base(properties)
     {
         _shouldAffectSpectators = this is not IShouldAffectSpectators {AffectSpectators: false};
         var affectedMultiple = DefaultTargetingMessageGenerator.DefaultAffectedMessage;
@@ -69,7 +80,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
         if (arguments.Count < 1)
             return OnNotEnoughArguments(arguments, sender, MinArguments);
         var targets = (arguments.GetTargets(out var newArgs)?.Where(ShouldBeAffected)).AsNonNullEnumerable().ToList();
-        var args = new ArraySegment<string>(newArgs ?? Array.Empty<string>());
+        var args = new ArraySegment<string>(newArgs ?? []);
         return (this as ITargetingPreExecutionFilter)?.OnBeforeExecuted(targets, args, sender)
                ?? (targets is not {Count: not 0}
                    ? OnNoTargetsFound(arguments, args, sender)
