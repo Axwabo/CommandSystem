@@ -48,6 +48,16 @@ public static partial class RegistrationExtensions
         => WithUsageResolver(processor, typeof(T), usageResolver);
 
     /// <summary>
+    /// Adds a player-only status resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="playerOnlyResolver">The resolver to add.</param>
+    /// <typeparam name="T">The type of the attribute to resolve the usage from.</typeparam>
+    /// <returns>The processor itself.</returns>
+    public static CommandRegistrationProcessor WithPlayerOnlyResolver<T>(this CommandRegistrationProcessor processor, IPlayerOnlyResolver<T> playerOnlyResolver) where T : Attribute
+        => WithPlayerOnlyResolver(processor, typeof(T), playerOnlyResolver);
+
+    /// <summary>
     /// Adds a permission resolve to the <see cref="CommandRegistrationProcessor"/>.
     /// </summary>
     /// <param name="processor">The processor to add the resolver to.</param>

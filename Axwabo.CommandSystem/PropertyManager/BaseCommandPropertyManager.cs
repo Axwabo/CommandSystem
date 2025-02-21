@@ -40,6 +40,7 @@ public static class BaseCommandPropertyManager
             CurrentProcessor.DescriptionResolvers.Resolve(ref properties.Description, type, attribute);
             CurrentProcessor.AliasResolvers.ResolveArray(aliasList, type, attribute);
             CurrentProcessor.UsageResolvers.ResolveArray(usageList, type, attribute);
+            CurrentProcessor.PlayerOnlyResolvers.Resolve(ref properties.PlayerOnly, type, attribute);
         }
 
         properties.Aliases = aliasList.ToArray();

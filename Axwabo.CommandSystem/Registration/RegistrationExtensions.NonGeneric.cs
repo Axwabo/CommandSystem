@@ -65,6 +65,20 @@ public static partial class RegistrationExtensions
     }
 
     /// <summary>
+    /// Adds a player-only status resolver to the <see cref="CommandRegistrationProcessor"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the resolver to.</param>
+    /// <param name="type">The type of the attribute to resolve the usage from.</param>
+    /// <param name="playerOnlyResolver">The resolver to add.</param>
+    /// <returns>The processor itself.</returns>
+    /// <exception cref="TypeMismatchException">Thrown when the resolver does not implement <see cref="IPlayerOnlyResolver{T}"/> with the correct generic type.</exception>
+    public static CommandRegistrationProcessor WithPlayerOnlyResolver(this CommandRegistrationProcessor processor, Type type, IPlayerOnlyResolver playerOnlyResolver)
+    {
+        processor.PlayerOnlyResolvers.Add(type, typeof(IPlayerOnlyResolver<>), playerOnlyResolver);
+        return processor;
+    }
+
+    /// <summary>
     /// Adds a permission resolver to the <see cref="CommandRegistrationProcessor"/>.
     /// </summary>
     /// <param name="processor">The processor to add the resolver to.</param>

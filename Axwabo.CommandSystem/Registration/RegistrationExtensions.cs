@@ -85,6 +85,7 @@ public static partial class RegistrationExtensions
         processor.ConsumeInstance<ICommandDescriptionResolver>(instance, typeof(ICommandDescriptionResolver<>), WithDescriptionResolver);
         processor.ConsumeInstance<ICommandAliasResolver>(instance, typeof(ICommandAliasResolver<>), WithAliasResolver);
         processor.ConsumeInstance<ICommandUsageResolver>(instance, typeof(ICommandUsageResolver<>), WithUsageResolver);
+        processor.ConsumeInstance<IPlayerOnlyResolver>(instance, typeof(IPlayerOnlyResolver<>), WithPlayerOnlyResolver);
         processor.ConsumeInstance<IAttributeBasedPermissionResolver>(instance, typeof(IAttributeBasedPermissionResolver<>), WithPermissionResolver);
 
         processor.ConsumeInstance<IAffectedMultiplePlayersResolver>(instance, typeof(IAffectedMultiplePlayersResolver<>), WithTargetingAffectedMultipleResolver);
