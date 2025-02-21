@@ -64,7 +64,7 @@ public sealed class DeveloperMode : ButtonBasedRemoteAdminOption
             return "You have not yet executed a command.".Color("red");
         RaClipboard.Send(sender, RaClipboard.RaClipBoardType.PlayerId, data.Item1);
         RaClipboard.Send(sender, RaClipboard.RaClipBoardType.UserId, data.Item2);
-        return $"{CopyPlayerId} {data.Item1.Color(data.Item2 ? "green" : "orange")}\n{CopyUserId} {(string) data.Item2}";
+        return $"{CopyPlayerId} <font=RobotoMono>{data.Item1.Color(data.Item2 ? "green" : "orange")}</font>\n{CopyUserId} {(string) data.Item2}";
     }
 
     /// <summary>
