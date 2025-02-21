@@ -60,6 +60,7 @@ public sealed class CommandSystemPlugin : Plugin<CommandSystemConfig>
         _harmony = null;
         OptionPreferencesContainer.SaveState();
         Shutdown.OnQuit -= OptionPreferencesContainer.SaveState;
+        ServerEvents.CommandExecuted -= DeveloperMode.OnCommandExecuted;
         Log.Info("Axwabo.CommandSystem has been disabled!");
     }
 
