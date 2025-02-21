@@ -28,7 +28,7 @@ public sealed class OptionPreferencesContainer : ContainerCommand
     {
         if (!HiddenCommandsByType.TryGetValue(userId, out var set))
         {
-            HiddenCommandsByType[userId] = set = new HashSet<string>();
+            HiddenCommandsByType[userId] = set = [];
             set.AddRange(RemoteAdminOptionManager.AllOptions
                 .Where(e => !e.IsVisibleByDefault)
                 .Select(e => e.GetType().FullName));
@@ -82,7 +82,7 @@ public sealed class OptionPreferencesContainer : ContainerCommand
                 var userId = Path.GetFileName(file);
                 var lines = File.ReadAllLines(file);
                 if (lines.Length != 0)
-                    HiddenCommandsByType[userId] = new HashSet<string>(lines);
+                    HiddenCommandsByType[userId] = [..lines];
             }
         }
         catch (Exception e)

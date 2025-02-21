@@ -3,10 +3,7 @@
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve an <see cref="ITargetSelectionManager"/>. You must implement <see cref="ITargetSelectionResolver{TAttribute}"/> due to reflection magic.</summary>
-public interface ITargetSelectionResolver
-{
-
-}
+public interface ITargetSelectionResolver;
 
 /// <summary>
 /// An interface to resolve an <see cref="ITargetSelectionManager"/> based on an attribute.

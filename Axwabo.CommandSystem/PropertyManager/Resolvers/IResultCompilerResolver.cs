@@ -3,10 +3,7 @@ using Axwabo.CommandSystem.Commands.Interfaces;
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve an <see cref="ICustomResultCompiler"/>. You must implement <see cref="IResultCompilerResolver{TAttribute}"/> due to reflection magic.</summary>
-public interface IResultCompilerResolver
-{
-
-}
+public interface IResultCompilerResolver;
 
 /// <summary>
 /// An interface to resolve an <see cref="ICustomResultCompiler"/> based on an attribute.

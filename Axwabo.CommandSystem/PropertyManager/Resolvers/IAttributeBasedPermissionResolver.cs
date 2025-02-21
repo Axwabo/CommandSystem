@@ -3,10 +3,7 @@
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve a <see cref="IPermissionChecker"/>. You must implement <see cref="IAttributeBasedPermissionResolver{TAttribute}"/> due to reflection magic.</summary>
-public interface IAttributeBasedPermissionResolver
-{
-
-}
+public interface IAttributeBasedPermissionResolver;
 
 /// <summary>
 /// An interface to resolve an <see cref="IPermissionChecker"/> based on an attribute.

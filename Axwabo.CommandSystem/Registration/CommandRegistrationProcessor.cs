@@ -105,31 +105,31 @@ public sealed class CommandRegistrationProcessor
 
     private CommandRegistrationProcessor(Assembly assembly) => TargetAssembly = assembly;
 
-    internal readonly List<ResolverContainer<ICommandNameResolver, string>> NameResolvers = new();
+    internal readonly List<ResolverContainer<ICommandNameResolver, string>> NameResolvers = [];
 
-    internal readonly List<ResolverContainer<ICommandDescriptionResolver, string>> DescriptionResolvers = new();
+    internal readonly List<ResolverContainer<ICommandDescriptionResolver, string>> DescriptionResolvers = [];
 
-    internal readonly List<ResolverContainer<ICommandAliasResolver, string[]>> AliasResolvers = new();
+    internal readonly List<ResolverContainer<ICommandAliasResolver, string[]>> AliasResolvers = [];
 
-    internal readonly List<ResolverContainer<ICommandUsageResolver, string[]>> UsageResolvers = new();
+    internal readonly List<ResolverContainer<ICommandUsageResolver, string[]>> UsageResolvers = [];
 
-    internal readonly List<ResolverContainer<IAttributeBasedPermissionResolver, IPermissionChecker>> PermissionCreators = new();
+    internal readonly List<ResolverContainer<IAttributeBasedPermissionResolver, IPermissionChecker>> PermissionCreators = [];
 
-    internal readonly List<ResolverContainer<IAffectedMultiplePlayersResolver, IAffectedMultiplePlayersMessageGenerator>> TargetingMultipleMessageResolvers = new();
+    internal readonly List<ResolverContainer<IAffectedMultiplePlayersResolver, IAffectedMultiplePlayersMessageGenerator>> TargetingMultipleMessageResolvers = [];
 
-    internal readonly List<ResolverContainer<IAffectedOnePlayerResolver, IAffectedOnePlayerMessageGenerator>> TargetingSingleMessageResolvers = new();
+    internal readonly List<ResolverContainer<IAffectedOnePlayerResolver, IAffectedOnePlayerMessageGenerator>> TargetingSingleMessageResolvers = [];
 
-    internal readonly List<ResolverContainer<IAffectedAllPlayersResolver, IAffectedAllPlayersMessageGenerator>> TargetingAllMessageResolvers = new();
+    internal readonly List<ResolverContainer<IAffectedAllPlayersResolver, IAffectedAllPlayersMessageGenerator>> TargetingAllMessageResolvers = [];
 
-    internal readonly List<ResolverContainer<ITargetSelectionResolver, ITargetSelectionManager>> TargetSelectionManagerResolvers = new();
+    internal readonly List<ResolverContainer<ITargetSelectionResolver, ITargetSelectionManager>> TargetSelectionManagerResolvers = [];
 
-    internal readonly List<ResolverContainer<IResultCompilerResolver, ICustomResultCompiler>> TargetingResultCompilerResolvers = new();
+    internal readonly List<ResolverContainer<IResultCompilerResolver, ICustomResultCompiler>> TargetingResultCompilerResolvers = [];
 
-    internal readonly List<ResolverContainer<IRemoteAdminOptionIdResolver, string>> RemoteAdminOptionIdResolvers = new();
+    internal readonly List<ResolverContainer<IRemoteAdminOptionIdResolver, string>> RemoteAdminOptionIdResolvers = [];
 
-    internal readonly List<ResolverContainer<IStaticOptionTextResolver, string>> StaticOptionTextResolvers = new();
+    internal readonly List<ResolverContainer<IStaticOptionTextResolver, string>> StaticOptionTextResolvers = [];
 
-    internal readonly List<ResolverContainer<IOptionIconResolver, BlinkingIcon>> OptionIconResolvers = new();
+    internal readonly List<ResolverContainer<IOptionIconResolver, BlinkingIcon>> OptionIconResolvers = [];
 
     #endregion
 
@@ -141,7 +141,7 @@ public sealed class CommandRegistrationProcessor
 
     private readonly Dictionary<Type, CommandHandlerType> _standaloneCommands = new();
 
-    private readonly HashSet<Type> _skippedCommands = new();
+    private readonly HashSet<Type> _skippedCommands = [];
 
     /// <summary>Executes the processor, registering all commands and Remote Admin extensions in the assembly.</summary>
     public void Execute()
@@ -196,10 +196,10 @@ public sealed class CommandRegistrationProcessor
                 return true;
             case SubcommandOfContainerAttribute subOf when !subOf.ContainerType.IsAbstract && typeof(ContainerCommand).IsAssignableFrom(subOf.ContainerType):
                 isSubcommand = true;
-                _subcommandsToRegister.GetOrAdd(subOf.ContainerType, () => new List<Type>()).Add(type);
+                _subcommandsToRegister.GetOrAdd(subOf.ContainerType, () => []).Add(type);
                 return false;
             case UsesSubcommandsAttribute {SubcommandTypes: {Length: not 0} types} when typeof(ContainerCommand).IsAssignableFrom(type):
-                _subcommandsToRegister.GetOrAdd(type, () => new List<Type>())
+                _subcommandsToRegister.GetOrAdd(type, () => [])
                     .AddRange(types.Where(t => !t.IsAbstract && typeof(CommandBase).IsAssignableFrom(t)));
                 return false;
             case CommandTargetAttribute targetAttribute:

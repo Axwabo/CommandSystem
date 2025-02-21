@@ -14,14 +14,13 @@ internal static class HelpCommandPatch
         var end = list.FindLastIndex(i => i.opcode == OpCodes.Leave_S) + 1;
         var labels = list[start].ExtractLabels();
         list.RemoveRange(start, end - start);
-        list.InsertRange(start, new[]
-        {
+        list.InsertRange(start, [
             Ldarg(3).WithLabels(labels),
             Ldloc(0),
             Ldarg(1),
             Call(typeof(CommandHelpers), nameof(CommandHelpers.GetHelpForCommand)),
             StindRef
-        });
+        ]);
         return list;
     }
 

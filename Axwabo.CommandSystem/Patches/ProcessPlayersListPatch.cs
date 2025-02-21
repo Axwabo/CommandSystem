@@ -33,12 +33,12 @@ public static class ProcessPlayersListPatch
                         referenceHubList.Add(list[0]);
                 }
 
-                newArgs = formatted.Split(new[] {' '}, (StringSplitOptions) (keepEmptyEntries ? 0 : 1));
+                newArgs = formatted.Split([' '], (StringSplitOptions) (keepEmptyEntries ? 0 : 1));
                 return referenceHubList.ToList();
             }
 
             AddSeparatedPlayers(args, startIndex, referenceHubList);
-            newArgs = args.Count <= 1 ? null : RAUtils.FormatArguments(args, startIndex + 1).Split(new[] {' '}, (StringSplitOptions) (keepEmptyEntries ? 0 : 1));
+            newArgs = args.Count <= 1 ? null : RAUtils.FormatArguments(args, startIndex + 1).Split([' '], (StringSplitOptions) (keepEmptyEntries ? 0 : 1));
             return referenceHubList.ToList();
         }
         catch (Exception ex)
@@ -61,7 +61,7 @@ public static class ProcessPlayersListPatch
 
     private static void AddPlayersBasedOnNicknameList(ArraySegment<string> args, int startIndex, ISet<ReferenceHub> referenceHubList)
     {
-        foreach (var s in args.At(startIndex).Split(new[] {'.'}, StringSplitOptions.None))
+        foreach (var s in args.At(startIndex).Split(['.'], StringSplitOptions.None))
         foreach (var hub in ReferenceHub.AllHubs)
             if (hub.nicknameSync.MyNick.Equals(s, StringComparison.OrdinalIgnoreCase))
                 referenceHubList.Add(hub);
@@ -69,20 +69,20 @@ public static class ProcessPlayersListPatch
 
     private static void AddPlayersBasedOnIdList(ArraySegment<string> args, int startIndex, ISet<ReferenceHub> referenceHubList)
     {
-        foreach (var s in args.At(startIndex).Split(new[] {'.'}, StringSplitOptions.None))
+        foreach (var s in args.At(startIndex).Split(['.'], StringSplitOptions.None))
             if (int.TryParse(s, out var result) && ReferenceHub.TryGetHub(result, out var hub))
                 referenceHubList.Add(hub);
     }
 
-    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => new[]
-    {
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) =>
+    [
         Ldarg(0),
         Ldarg(1),
         Ldarg(2),
         Ldarg(3),
         Call(ProcessPlayerIdOrNamesList),
         Return
-    };
+    ];
 
     private static bool _alreadyTriedToUnpatch;
 

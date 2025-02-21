@@ -30,7 +30,7 @@ internal static class ConsolePatch
             Ldloc(15),
             Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
             Ldloc(15),
-            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
+            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage))
         ]);
         return list;
     }

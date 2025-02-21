@@ -18,8 +18,6 @@ internal static class QueryProcessorPatch
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
         ]);
 
-        // TODO: on success to event
-
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
         var failEnd = list.FindCode(OpCodes.Stloc_S, start: failedIndex);
         list.RemoveRange(failedIndex, failEnd - failedIndex);

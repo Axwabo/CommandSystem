@@ -1,10 +1,7 @@
 ﻿namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve a RA option id. You must implement <see cref="IRemoteAdminOptionIdResolver{TAttribute}"/> due to reflection magic.</summary>
-public interface IRemoteAdminOptionIdResolver
-{
-
-}
+public interface IRemoteAdminOptionIdResolver;
 
 /// <summary>
 /// An interface to resolve a Remote Admin option identifier based on an attribute.

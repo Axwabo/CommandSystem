@@ -15,7 +15,7 @@ public static class RemoteAdminOptionManager
 
     private static readonly char[] InvalidCharactersArray = InvalidCharacters.ToCharArray();
 
-    private static readonly List<RemoteAdminOptionBase> Options = new();
+    private static readonly List<RemoteAdminOptionBase> Options = [];
 
     /// <summary>Retrieves the list of registered options.</summary>
     public static IReadOnlyList<RemoteAdminOptionBase> AllOptions => Options.AsReadOnly();
@@ -121,7 +121,7 @@ public static class RemoteAdminOptionManager
         var success = false;
         foreach (var option in Options)
         {
-            if (!option.AccessibilityPermissions.CheckSafe(sender) || preferredOnly && OptionPreferencesContainer.IsHidden(sender.SenderId, option))
+            if (!option.VisibilityPermissions.CheckSafe(sender) || preferredOnly && OptionPreferencesContainer.IsHidden(sender.SenderId, option))
                 continue;
             var hidden = option is IOptionVisibilityController controller && !controller.IsVisibleTo(sender);
             if (hideIdentifier && hidden)
@@ -151,9 +151,9 @@ public static class RemoteAdminOptionManager
     {
         if (s == null)
             return false;
+        s = s.Trim();
         if (s is AutoGenerateIdAttribute.Identifier)
             return true;
-        s = s.Trim();
         return s.Length > 0 && s.IndexOfAny(InvalidCharactersArray) == -1 && s.Any(NonDigit);
     }
 

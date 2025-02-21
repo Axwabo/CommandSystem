@@ -27,7 +27,7 @@ internal static class CommandProcessorPatch
             Ldloc(11),
             Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
             Ldloc(11),
-            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage)),
+            Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage))
         ]);
         return list;
     }

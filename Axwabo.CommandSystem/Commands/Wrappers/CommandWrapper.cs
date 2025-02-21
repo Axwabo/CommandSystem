@@ -6,7 +6,7 @@ namespace Axwabo.CommandSystem.Commands.Wrappers;
 internal sealed class CommandWrapper : ICommand, IUsageProvider
 {
 
-    private static readonly string[] MultipleChoices = {"...multiple choices"};
+    private static readonly string[] MultipleChoices = ["...multiple choices"];
 
     internal readonly CommandBase BackingCommand;
 

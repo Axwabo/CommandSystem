@@ -13,7 +13,7 @@ public abstract class ContainerCommand : CommandBase
 {
 
     /// <summary>The list of subcommands.</summary>
-    protected readonly List<CommandBase> Subcommands = new();
+    protected readonly List<CommandBase> Subcommands = [];
 
     /// <summary>The subcommands as a read-only list.</summary>
     public IReadOnlyList<CommandBase> AllSubcommands => Subcommands.AsReadOnly();

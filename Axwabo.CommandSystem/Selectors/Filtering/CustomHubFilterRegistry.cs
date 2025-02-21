@@ -4,7 +4,7 @@
 public static class CustomHubFilterRegistry
 {
 
-    private static readonly List<FilterEntry> RegisteredFilters = new();
+    private static readonly List<FilterEntry> RegisteredFilters = [];
 
     private static bool ValidateRegistration(IReadOnlyCollection<string> aliases) => aliases.Count != aliases.Count(alias => TryGetExisting(alias, out _));
 

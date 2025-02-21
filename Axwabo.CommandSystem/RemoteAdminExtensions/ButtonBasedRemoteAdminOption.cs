@@ -9,7 +9,7 @@ namespace Axwabo.CommandSystem.RemoteAdminExtensions;
 public abstract class ButtonBasedRemoteAdminOption : RemoteAdminOptionBase
 {
 
-    private static readonly RequestDataButton[] RequestDataButtonValues = {RequestDataButton.BasicInfo, RequestDataButton.RequestIP, RequestDataButton.RequestAuth, RequestDataButton.ExternalLookup};
+    private static readonly RequestDataButton[] RequestDataButtonValues = [RequestDataButton.BasicInfo, RequestDataButton.RequestIP, RequestDataButton.RequestAuth, RequestDataButton.ExternalLookup];
 
     private readonly Dictionary<RequestDataButton, IPermissionChecker> _buttonPermissions = new();
 

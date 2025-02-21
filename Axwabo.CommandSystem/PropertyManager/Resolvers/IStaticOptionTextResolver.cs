@@ -1,10 +1,7 @@
 ﻿namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve a static RA option text. You must implement <see cref="IStaticOptionTextResolver{TAttribute}"/> due to reflection magic.</summary>
-public interface IStaticOptionTextResolver
-{
-
-}
+public interface IStaticOptionTextResolver;
 
 /// <summary>
 /// An interface to resolve a static Remote Admin option text based on an attribute.

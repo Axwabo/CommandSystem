@@ -14,7 +14,7 @@ namespace Axwabo.CommandSystem.Commands;
 public abstract class UnifiedTargetingCommand : CommandBase
 {
 
-    private static readonly string[] Players = {"<players>"};
+    private static readonly string[] Players = ["<players>"];
 
     private readonly string _noTargetsFoundMessage = "No targets were found.";
     private readonly string _noPlayersAffected = "No players were affected.";

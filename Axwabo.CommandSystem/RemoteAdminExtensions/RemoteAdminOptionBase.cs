@@ -25,7 +25,7 @@ public abstract class RemoteAdminOptionBase
     public string OptionIdentifier { get; }
 
     /// <summary>A permission checker that controls the global visibility of the option.</summary>
-    public virtual IPermissionChecker AccessibilityPermissions { get; }
+    public virtual IPermissionChecker VisibilityPermissions { get; }
 
     /// <summary>The leading icon of the option (before the generated text).</summary>
     public BlinkingIcon Icon
@@ -58,7 +58,7 @@ public abstract class RemoteAdminOptionBase
             throw InvalidId;
         else
             OptionIdentifier = (standaloneSelector || this is IStandaloneSelectorOption {CanBeUsedAsStandaloneSelector: true} ? "@" : "$") + id;
-        AccessibilityPermissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
+        VisibilityPermissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public abstract class RemoteAdminOptionBase
     /// <returns>The text to display.</returns>
     public string OnClick(RequestDataButton button, PlayerCommandSender sender)
     {
-        var permissions = AccessibilityPermissions.CheckSafe(sender);
+        var permissions = VisibilityPermissions.CheckSafe(sender);
         return !permissions
             ? permissions
             : this is IOptionVisibilityController {AllowInteractionsWhenHidden: false} controller && !controller.IsVisibleTo(sender)

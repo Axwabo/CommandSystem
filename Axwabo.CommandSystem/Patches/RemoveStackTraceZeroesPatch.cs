@@ -14,11 +14,11 @@ public static class RemoveStackTraceZeroesPatch
     private static readonly Regex ReplaceRegex = new(@"\s?\[[0-9a-fx]+\] in <[0-9a-f]+>:0", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     private static readonly CodeInstruction[] Instructions =
-    {
+    [
         Ldarg(0),
         Call(typeof(RemoveStackTraceZeroesPatch), nameof(StripILOffsets)),
         Return
-    };
+    ];
 
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         => CommandSystemPlugin.Instance?.Config?.StripIntermediateLanguageOffsets ?? false ? Instructions : instructions;

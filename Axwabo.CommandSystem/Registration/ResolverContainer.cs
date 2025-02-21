@@ -18,6 +18,6 @@ internal sealed class ResolverContainer<TResolver, TResult>
 
     public bool Takes(Type type) => _parameter.IsAssignableFrom(type);
 
-    public TResult Resolve(Attribute attribute) => (TResult) _method.Invoke(_instance, new object[] {attribute});
+    public TResult Resolve(Attribute attribute) => (TResult) _method.Invoke(_instance, [attribute]);
 
 }

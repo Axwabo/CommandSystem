@@ -13,7 +13,7 @@ namespace Axwabo.CommandSystem.Selectors;
 public static class AtSelectorProcessor
 {
 
-    private static readonly char[] ValidChars = {'a', 'r', 's', 'o', 'A', 'R', 'S', 'O'};
+    private static readonly char[] ValidChars = ['a', 'r', 's', 'o', 'A', 'R', 'S', 'O'];
 
     /// <summary>
     /// Processes the specified string.
@@ -38,7 +38,7 @@ public static class AtSelectorProcessor
         if (formatted.Length < 3)
         {
             targets = ExecuteSelector(selectorChar, null, -1);
-            newArgs = Array.Empty<string>();
+            newArgs = [];
             return true;
         }
 
@@ -78,7 +78,7 @@ public static class AtSelectorProcessor
 
         targets = ExecuteSelector(selectorChar, state.Filters, state.Limit);
         newArgs = state.EndIndex >= formatted.Length
-            ? Array.Empty<string>()
+            ? []
             : PlayerSelectionManager.Split(formatted.Substring(state.EndIndex + 1), keepEmptyEntries, true);
         return true;
     }
@@ -288,7 +288,7 @@ public static class AtSelectorProcessor
 
         public readonly StringBuilder Builder = new();
 
-        public readonly List<HubFilter> Filters = new();
+        public readonly List<HubFilter> Filters = [];
 
         public int EndIndex;
 

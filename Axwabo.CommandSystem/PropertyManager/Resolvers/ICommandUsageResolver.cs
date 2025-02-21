@@ -1,10 +1,7 @@
 ﻿namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve command usages. You must implement <see cref="ICommandUsageResolver{TAttribute}"/> due to reflection magic.</summary>
-public interface ICommandUsageResolver
-{
-
-}
+public interface ICommandUsageResolver;
 
 /// <summary>
 /// An interface to resolve usages for a command based on an attribute.

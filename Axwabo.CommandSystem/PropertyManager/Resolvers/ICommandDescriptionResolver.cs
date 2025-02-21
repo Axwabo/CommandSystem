@@ -1,10 +1,7 @@
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve the command description You must implement <see cref="ICommandDescriptionResolver{TAttribute}"/> due to reflection magic.</summary>
-public interface ICommandDescriptionResolver
-{
-
-}
+public interface ICommandDescriptionResolver;
 
 /// <summary>
 /// An interface to resolve the command description based on an attribute.

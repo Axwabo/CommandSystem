@@ -85,7 +85,7 @@ public static class CommandHelpers
     {
         if (command == null)
             throw new ArgumentNullException(nameof(command));
-        var args = arguments.Count < 2 ? new ArraySegment<string>(Array.Empty<string>()) : arguments.Segment(1);
+        var args = arguments.Count < 2 ? new ArraySegment<string>([]) : arguments.Segment(1);
         return command.TryGetUnderlyingCommand(out var backingCommand)
             ? GetHelpForCustomCommand(backingCommand, args)
             : GetHelpForVanillaCommand(command, args);

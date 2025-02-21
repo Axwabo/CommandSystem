@@ -77,7 +77,7 @@ public static class Extensions
     public static string Pluralize(this string phrase, int count) => count == 1 ? phrase : phrase + "s";
 
     /// <summary>
-    /// Returns a substring of the given string until the first occurrence of any of the given separators.
+    /// Returns a substring of the given string until the first occurrence of the given separators.
     /// </summary>
     /// <param name="s">The string to get the substring from.</param>
     /// <param name="searchStart">The index to start searching from.</param>
@@ -90,7 +90,7 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Returns a substring of the given string until the first occurrence of any of the given separators.
+    /// Returns a substring of the given string until the first occurrence of the given separators.
     /// </summary>
     /// <param name="s">The string to get the substring from.</param>
     /// <param name="separators">The separators to search for.</param>
@@ -185,12 +185,12 @@ public static class Extensions
             return null;
         var parameters = method.GetParameters();
         return parameters is {Length: 1} && parameters[0].ParameterType.IsInstanceOfType(argument)
-            ? method.Invoke(instance, new[] {argument})
+            ? method.Invoke(instance, [argument])
             : null;
     }
 
     /// <summary>
-    /// Invokes the instance method if the method has a single parameter and the argument can be assigned to that parameter and casts the result to <typeparamref name="TReturn"/>.
+    /// Invokes the instance method if the method has a single parameter and the argument can be assigned to that parameter, then casts the result to <typeparamref name="TReturn"/>.
     /// </summary>
     /// <param name="method">The method to invoke.</param>
     /// <param name="instance">The instance to invoke the method on.</param>

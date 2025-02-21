@@ -7,7 +7,7 @@ public sealed class HubCollection : List<ReferenceHub>
 {
 
     /// <summary>Gets a new empty <see cref="HubCollection"/>.</summary>
-    public static HubCollection Empty => new();
+    public static HubCollection Empty => [];
 
     /// <summary>Creates a new <see cref="HubCollection"/> instance.</summary>
     public HubCollection()

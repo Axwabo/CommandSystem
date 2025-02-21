@@ -3,10 +3,7 @@
 namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>Base interface to resolve an <see cref="IAffectedOnePlayerMessageGenerator"/>. You must implement <see cref="IAffectedOnePlayerResolver{TAttribute}"/> due to reflection magic.</summary>
-public interface IAffectedOnePlayerResolver
-{
-
-}
+public interface IAffectedOnePlayerResolver;
 
 /// <summary>
 /// An interface to resolve an <see cref="IAffectedOnePlayerMessageGenerator"/> based on an attribute.

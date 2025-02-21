@@ -19,7 +19,7 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     /// <returns>Whether the added lists overflow the max size.</returns>
     public bool CheckOverflow(int addCount) => Count + addCount > MaxSize;
 
-    private readonly List<HubCollection> _stack = new();
+    private readonly List<HubCollection> _stack = [];
 
     /// <summary>The last index of the underlying list.</summary>
     public int LastIndex => _stack.Count - 1;
