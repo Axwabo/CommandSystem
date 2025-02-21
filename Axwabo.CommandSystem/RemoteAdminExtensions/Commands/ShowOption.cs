@@ -1,5 +1,6 @@
 ﻿using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Attributes.Containers;
+using Axwabo.CommandSystem.Commands;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 

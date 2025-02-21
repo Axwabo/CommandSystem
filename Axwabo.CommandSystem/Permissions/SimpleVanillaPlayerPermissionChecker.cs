@@ -1,4 +1,6 @@
-﻿namespace Axwabo.CommandSystem.Permissions;
+﻿using Axwabo.CommandSystem.Commands;
+
+namespace Axwabo.CommandSystem.Permissions;
 
 /// <summary>
 /// A simple permission checker based on a single <see cref="PlayerPermissions"/> value.

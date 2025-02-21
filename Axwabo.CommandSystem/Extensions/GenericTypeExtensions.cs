@@ -1,6 +1,6 @@
 ﻿using Axwabo.CommandSystem.Exceptions;
 
-namespace Axwabo.CommandSystem;
+namespace Axwabo.CommandSystem.Extensions;
 
 /// <summary>
 /// Provides methods for working with generic types.

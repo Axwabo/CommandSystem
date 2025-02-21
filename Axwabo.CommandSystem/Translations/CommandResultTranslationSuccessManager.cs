@@ -1,4 +1,5 @@
-﻿using Axwabo.Helpers.Config.Translations;
+﻿using Axwabo.CommandSystem.Commands;
+using Axwabo.Helpers.Config.Translations;
 
 namespace Axwabo.CommandSystem.Translations;
 

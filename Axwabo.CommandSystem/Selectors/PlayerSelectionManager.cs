@@ -1,4 +1,5 @@
 ﻿using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.Extensions;
 using LabApi.Features.Wrappers;
 using PlayerRoles;
 using PlayerRoles.Spectating;

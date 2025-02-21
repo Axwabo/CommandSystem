@@ -1,5 +1,6 @@
 ﻿using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 namespace Axwabo.CommandSystem.Registration;

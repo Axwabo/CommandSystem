@@ -1,4 +1,5 @@
 ﻿using Axwabo.CommandSystem.Attributes.RaExt;
+using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;

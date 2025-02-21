@@ -1,3 +1,5 @@
+using Axwabo.CommandSystem.Commands;
+
 namespace Axwabo.CommandSystem.Permissions;
 
 /// <summary>

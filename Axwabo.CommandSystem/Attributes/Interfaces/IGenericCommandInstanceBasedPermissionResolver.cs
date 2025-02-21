@@ -1,4 +1,5 @@
-﻿using Axwabo.CommandSystem.Permissions;
+﻿using Axwabo.CommandSystem.Commands;
+using Axwabo.CommandSystem.Permissions;
 
 namespace Axwabo.CommandSystem.Attributes.Interfaces;
 

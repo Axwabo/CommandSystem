@@ -1,6 +1,7 @@
 ﻿using Axwabo.CommandSystem.Attributes.Interfaces;
 using Axwabo.CommandSystem.Attributes.RaExt;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 

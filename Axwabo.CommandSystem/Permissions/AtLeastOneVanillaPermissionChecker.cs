@@ -1,4 +1,6 @@
-﻿namespace Axwabo.CommandSystem.Permissions;
+﻿using Axwabo.CommandSystem.Commands;
+
+namespace Axwabo.CommandSystem.Permissions;
 
 /// <summary>
 /// A permission checker that ensures that at least one of the given permissions is sufficient.

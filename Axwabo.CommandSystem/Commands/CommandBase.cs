@@ -1,9 +1,10 @@
 ﻿using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Exceptions;
+using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager;
 
-namespace Axwabo.CommandSystem;
+namespace Axwabo.CommandSystem.Commands;
 
 /// <summary>
 /// Base class for creating commands.

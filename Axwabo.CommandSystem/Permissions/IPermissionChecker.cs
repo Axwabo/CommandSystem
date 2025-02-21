@@ -1,4 +1,6 @@
-﻿namespace Axwabo.CommandSystem.Permissions;
+﻿using Axwabo.CommandSystem.Commands;
+
+namespace Axwabo.CommandSystem.Permissions;
 
 /// <summary>
 /// An interface for checking permissions.

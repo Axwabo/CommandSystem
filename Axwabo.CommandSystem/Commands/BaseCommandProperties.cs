@@ -1,4 +1,4 @@
-﻿namespace Axwabo.CommandSystem;
+﻿namespace Axwabo.CommandSystem.Commands;
 
 /// <summary>Stores basic information about a <see cref="CommandBase"/>.</summary>
 public sealed class BaseCommandProperties

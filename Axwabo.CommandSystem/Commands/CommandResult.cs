@@ -1,7 +1,7 @@
 ﻿using Axwabo.CommandSystem.Translations;
 using Axwabo.Helpers.Config.Translations;
 
-namespace Axwabo.CommandSystem;
+namespace Axwabo.CommandSystem.Commands;
 
 /// <summary>
 /// Represents the result of a command execution.

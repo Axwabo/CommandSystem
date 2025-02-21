@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Axwabo.CommandSystem.Attributes.RaExt;
+using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 using RemoteAdmin.Interfaces;

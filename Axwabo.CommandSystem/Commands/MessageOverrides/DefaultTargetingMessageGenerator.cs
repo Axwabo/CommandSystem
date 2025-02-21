@@ -1,4 +1,6 @@
-﻿namespace Axwabo.CommandSystem.Commands.MessageOverrides;
+﻿using Axwabo.CommandSystem.Extensions;
+
+namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 
 internal sealed class DefaultTargetingMessageGenerator :
     IAffectedMultiplePlayersMessageGenerator,

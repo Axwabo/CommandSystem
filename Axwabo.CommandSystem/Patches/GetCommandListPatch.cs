@@ -1,4 +1,5 @@
-﻿using CommandSystem.Commands.Shared;
+﻿using Axwabo.CommandSystem.Commands;
+using CommandSystem.Commands.Shared;
 using HarmonyLib;
 
 namespace Axwabo.CommandSystem.Patches;

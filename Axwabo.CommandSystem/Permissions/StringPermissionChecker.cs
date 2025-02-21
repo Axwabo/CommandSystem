@@ -1,3 +1,4 @@
+using Axwabo.CommandSystem.Commands;
 using LabApi.Features.Permissions;
 
 namespace Axwabo.CommandSystem.Permissions;

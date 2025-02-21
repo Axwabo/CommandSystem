@@ -1,11 +1,10 @@
 ﻿using System.Text;
-using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Commands.Wrappers;
 using Axwabo.CommandSystem.Permissions;
 using CommandSystem;
 using IHiddenCommand = Axwabo.CommandSystem.Commands.Interfaces.IHiddenCommand;
 
-namespace Axwabo.CommandSystem;
+namespace Axwabo.CommandSystem.Commands;
 
 /// <summary>
 /// Helper methods for commands.

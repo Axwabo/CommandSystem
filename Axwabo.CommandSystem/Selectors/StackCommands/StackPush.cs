@@ -1,5 +1,6 @@
 ﻿using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
+using Axwabo.CommandSystem.Extensions;
 
 namespace Axwabo.CommandSystem.Selectors.StackCommands;
 
