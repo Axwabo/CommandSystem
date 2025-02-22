@@ -6,16 +6,16 @@ namespace Axwabo.CommandSystem.Attributes;
 /// Sets a static description for the command.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
-public sealed class DescriptionAttribute : Attribute, IDescription
+public sealed class CommandDescriptionAttribute : Attribute, IDescription
 {
 
     /// <inheritdoc />
     public string Description { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DescriptionAttribute"/> class.
+    /// Initializes a new instance of the <see cref="CommandDescriptionAttribute"/> class.
     /// </summary>
     /// <param name="description">The description of the command.</param>
-    public DescriptionAttribute(string description) => Description = description;
+    public CommandDescriptionAttribute(string description) => Description = description;
 
 }
