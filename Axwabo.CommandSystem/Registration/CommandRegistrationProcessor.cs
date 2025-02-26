@@ -145,6 +145,9 @@ public sealed class CommandRegistrationProcessor
 
     private readonly HashSet<Type> _skippedCommands = [];
 
+    /// <summary>The type of the command that is currently being registered..</summary>
+    public Type RegisteringCommandType { get; private set; }
+
     /// <summary>Executes the processor, registering all commands and Remote Admin extensions in the assembly.</summary>
     public void Execute()
     {
@@ -228,18 +231,26 @@ public sealed class CommandRegistrationProcessor
 
     private void CreateCommandWrapperAndRegister(Type commandType, CommandHandlerType targets)
     {
-        var commandBase = (CommandBase) Activator.CreateInstance(commandType);
-        if (commandBase is IRegistrationFilter {AllowRegistration: false})
-            return;
-        if (commandBase is ContainerCommand container)
-            _registeredContainerCommands.Add(commandType, container);
-        var wrapper = new CommandWrapper(commandBase);
-        if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
-            RegisterRemoteAdminCommand(wrapper);
-        if (targets.HasFlagFast(CommandHandlerType.ServerConsole))
-            RegisterServerConsoleCommand(wrapper);
-        if (targets.HasFlagFast(CommandHandlerType.Client))
-            RegisterClientCommand(wrapper);
+        RegisteringCommandType = commandType;
+        try
+        {
+            var commandBase = (CommandBase) Activator.CreateInstance(commandType);
+            if (commandBase is IRegistrationFilter {AllowRegistration: false})
+                return;
+            if (commandBase is ContainerCommand container)
+                _registeredContainerCommands.Add(commandType, container);
+            var wrapper = new CommandWrapper(commandBase);
+            if (targets.HasFlagFast(CommandHandlerType.RemoteAdmin))
+                RegisterRemoteAdminCommand(wrapper);
+            if (targets.HasFlagFast(CommandHandlerType.ServerConsole))
+                RegisterServerConsoleCommand(wrapper);
+            if (targets.HasFlagFast(CommandHandlerType.Client))
+                RegisterClientCommand(wrapper);
+        }
+        finally
+        {
+            RegisteringCommandType = null;
+        }
     }
 
     private void RegisterSubcommands()
@@ -256,11 +267,22 @@ public sealed class CommandRegistrationProcessor
 
             _skippedCommands.Remove(pair.Key);
             foreach (var type in pair.Value)
-            {
-                var commandBase = (CommandBase) Activator.CreateInstance(type);
-                if (commandBase is not IRegistrationFilter {AllowRegistration: false})
-                    container.RegisterSubcommand(commandBase);
-            }
+                RegisterSubcommand(type, container);
+        }
+    }
+
+    private void RegisterSubcommand(Type type, ContainerCommand container)
+    {
+        RegisteringCommandType = type;
+        try
+        {
+            var commandBase = (CommandBase) Activator.CreateInstance(type);
+            if (commandBase is not IRegistrationFilter {AllowRegistration: false})
+                container.RegisterSubcommand(commandBase);
+        }
+        finally
+        {
+            RegisteringCommandType = null;
         }
     }
 
