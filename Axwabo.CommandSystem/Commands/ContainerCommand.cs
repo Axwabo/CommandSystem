@@ -132,42 +132,18 @@ public abstract class ContainerCommand : CommandBase
 
     /// <summary>
     /// Creates a new <see cref="ContainerCommand"/> instance.
-    /// Properties are resolved based on the type.
     /// </summary>
-    protected ContainerCommand() : this(null)
+    protected ContainerCommand()
     {
-    }
-
-    /// <summary>
-    /// Creates a new <see cref="ContainerCommand"/> instance based on the supplied <see cref="BaseCommandProperties">properties</see>.
-    /// If <paramref name="properties"/> is null, <see cref="BaseCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.
-    /// </summary>
-    protected ContainerCommand(BaseCommandProperties properties) : base(properties)
-    {
-        var type = GetType();
-        if (type.GetCustomAttribute<RegisterInheritedSubcommandsAttribute>() == null)
-        {
-            RegisterMethodBasedSubcommands(type);
-            return;
-        }
-
-        while (type != null && type != typeof(ContainerCommand))
-        {
-            RegisterMethodBasedSubcommands(type);
-            type = type.BaseType;
-        }
-    }
-
-    private void RegisterMethodBasedSubcommands(Type type)
-    {
-        foreach (var methodInfo in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+        var thisType = GetType();
+        foreach (var methodInfo in thisType.GetMethods(BindingFlags.Public | BindingFlags.Instance))
         {
             if (!ShouldRegisterSubcommand(methodInfo))
                 continue;
             if (HasValidParameters(methodInfo, out var isTargetingCommand))
                 RegisterMethodBasedSubcommand(methodInfo, isTargetingCommand);
             else
-                Log.Warn($"Method \"{methodInfo.Name}\" in type \"{type.FullName}\" is marked as a subcommand but does not match the signature of a command method. Ignoring registration.");
+                Log.Warn($"Method \"{methodInfo.Name}\" in type \"{thisType.FullName}\" is marked as a subcommand but does not match the signature of a command method. Ignoring registration.");
         }
     }
 
