@@ -4,6 +4,7 @@ namespace Axwabo.CommandSystem.Attributes.RaExt;
 
 /// <summary>
 /// Specifies the identifier of a Remote Admin option. Must not contain any of the <see cref="RemoteAdminOptionManager.InvalidCharacters"/>. Must not be numeric-only, including a leading hyphen.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 /// <seealso cref="RemoteAdminOptionManager.IsValidOptionId"/>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]

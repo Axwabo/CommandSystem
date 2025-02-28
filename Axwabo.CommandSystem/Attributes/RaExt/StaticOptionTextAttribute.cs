@@ -4,6 +4,7 @@ namespace Axwabo.CommandSystem.Attributes.RaExt;
 
 /// <summary>
 /// Attribute to set the text of a option to a specified string.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class StaticOptionTextAttribute : Attribute, IStaticOptionText

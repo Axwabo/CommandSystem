@@ -3,7 +3,8 @@
 namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
-/// An attribute to specify that a command or Remote Admin option should not be automatically registered. 
+/// An attribute to specify that a command or Remote Admin option should not be automatically registered.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class DoNotAutoRegister : Attribute, IRegistrationFilter

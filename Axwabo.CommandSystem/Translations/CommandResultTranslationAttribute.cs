@@ -3,7 +3,7 @@
 namespace Axwabo.CommandSystem.Translations;
 
 /// <summary>
-/// A <see cref="TranslationAttribute"/> storing the success state of the command result.
+/// A <see cref="TranslationAttribute"/> storing the success state of the command result. This attribute is inherited.
 /// </summary>
 /// <seealso cref="CommandResultTranslationSuccessManager"/>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]

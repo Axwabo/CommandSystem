@@ -4,6 +4,7 @@ namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
 /// Attribute to set the minimum number of arguments required to execute the command.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class MinArgumentsAttribute : Attribute, IMinArguments

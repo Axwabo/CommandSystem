@@ -2,6 +2,7 @@
 
 /// <summary>
 /// Specifies that the given types should be subcommands of the container command.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 /// <seealso cref="SubcommandOfContainerAttribute"/>
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]

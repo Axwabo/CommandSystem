@@ -1,7 +1,7 @@
 ﻿namespace Axwabo.CommandSystem.Permissions;
 
 /// <summary>
-/// An attribute specifying that at least one of the given permissions is required.
+/// An attribute specifying that at least one of the given permissions is required. This attribute is inherited.
 /// </summary>
 /// <seealso cref="VanillaPermissionsAttribute"/>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]

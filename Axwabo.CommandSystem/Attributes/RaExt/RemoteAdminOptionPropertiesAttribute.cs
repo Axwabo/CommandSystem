@@ -5,6 +5,7 @@ namespace Axwabo.CommandSystem.Attributes.RaExt;
 
 /// <summary>
 /// Specifies multiple properties of a RA option.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class RemoteAdminOptionPropertiesAttribute : OptionIconAttribute, IRemoteAdminOptionIdentifier, IStaticOptionText, IStandaloneSelectorOption

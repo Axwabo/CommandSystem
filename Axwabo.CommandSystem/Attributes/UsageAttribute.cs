@@ -4,6 +4,7 @@ namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
 /// An attribute that defines usages of a command.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 /// <remarks>Usage strings should not contain the command name.</remarks>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]

@@ -4,6 +4,7 @@ namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
 /// Sets a static description for the command.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class CommandDescriptionAttribute : Attribute, IDescription

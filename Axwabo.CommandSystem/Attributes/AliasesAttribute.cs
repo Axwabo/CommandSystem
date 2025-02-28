@@ -4,6 +4,7 @@ namespace Axwabo.CommandSystem.Attributes;
 
 /// <summary>
 /// Attribute for defining aliases for a command.
+/// This attribute is <b>not</b> inherited.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
 public sealed class AliasesAttribute : Attribute, IAliases
