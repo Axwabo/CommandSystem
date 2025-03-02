@@ -8,6 +8,10 @@
         <Optimize>true</Optimize>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <!--
+         set ReferencePath in your .csproj.user file along with
+         <AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath)</AssemblySearchPaths>
+        -->
     </PropertyGroup>
 
     <ItemGroup>
