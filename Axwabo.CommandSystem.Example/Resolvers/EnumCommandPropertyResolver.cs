@@ -17,7 +17,8 @@ internal sealed class EnumCommandPropertyResolver :
 
     public IPermissionChecker CreatePermissionCheckerInstance(EnumCommandAttribute attribute)
     {
-        if (!ExamplePlugin.Config.Permissions.TryGetValue(attribute.Command, out var permissions))
+        var config = ExamplePlugin.Instance?.Config;
+        if (config == null || !config.Permissions.TryGetValue(attribute.Command, out var permissions))
             permissions = ""; // no permissions required
         return new StringPermissionChecker(permissions);
     }

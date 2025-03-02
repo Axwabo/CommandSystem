@@ -6,8 +6,10 @@ using Axwabo.CommandSystem.Attributes.Targeting;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
+using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.Permissions;
 using InventorySystem;
+using InventorySystem.Items;
 
 namespace Axwabo.CommandSystem.Example;
 
@@ -17,7 +19,7 @@ public sealed class GiveRandomKeycard : SeparatedTargetingCommand, IAffectedMult
 {
 
     private static readonly ItemType[] KeycardItems =
-    {
+    [
         ItemType.KeycardJanitor,
         ItemType.KeycardScientist,
         ItemType.KeycardResearchCoordinator,
@@ -30,7 +32,7 @@ public sealed class GiveRandomKeycard : SeparatedTargetingCommand, IAffectedMult
         ItemType.KeycardFacilityManager,
         ItemType.KeycardChaosInsurgency,
         ItemType.KeycardO5
-    };
+    ];
 
     // you can also override basic command properties instead of using attributes
     // targets are still required to be specified with attributes
@@ -47,7 +49,7 @@ public sealed class GiveRandomKeycard : SeparatedTargetingCommand, IAffectedMult
     {
         if (target.inventory.UserInventory.Items.Values.Any(i => i.Category == ItemCategory.Keycard))
             return "!Player already has a keycard";
-        if (!target.inventory.ServerAddItem(KeycardItems.RandomItem())) // implicit null-check
+        if (!target.inventory.ServerAddItem(KeycardItems.RandomItem(), ItemAddReason.AdminCommand)) // implicit null-check
             return "!Failed to add item to player's inventory";
         return "Keycard added";
     }

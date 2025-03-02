@@ -1,6 +1,7 @@
 ﻿using System;
+using Axwabo.CommandSystem.Commands;
 using Axwabo.Helpers;
-using PluginAPI.Core;
+using LabApi.Features.Wrappers;
 
 namespace Axwabo.CommandSystem.Example.Resolvers;
 

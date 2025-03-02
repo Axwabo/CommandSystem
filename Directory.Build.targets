@@ -1,8 +1,7 @@
 <Project>
     <PropertyGroup>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <DocumentationFile>$(OutDir)$(AssemblyName).xml</DocumentationFile>
         <AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath)</AssemblySearchPaths>
+        <DocumentationFile Condition="'$(GenerateGenerateDocumentationFile)' == 'true'">$(OutDir)$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <Import Project="Directory.Build.targets.user" Condition="Exists('Directory.Build.targets.user')"/>
 </Project>

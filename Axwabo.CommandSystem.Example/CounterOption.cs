@@ -23,7 +23,7 @@ public sealed class CounterOption : RemoteAdminOptionBase
                 Counter.Remove(sender);
                 return "Counter has been reset";
             case RequestDataButton.ExternalLookup:
-                Counter[sender] = 69420;
+                Counter[sender] = 420;
                 return "Nice";
             default:
                 return null;

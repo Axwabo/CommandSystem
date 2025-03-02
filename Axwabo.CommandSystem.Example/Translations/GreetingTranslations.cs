@@ -7,7 +7,7 @@ public sealed class GreetingTranslations
     public string Hi { get; set; } = "Hi!";
 
     [GreetingTranslation(GreetingType.HelloName)]
-    public string Hello { get; set; } = "Hello, {0}!"; // string interpolation is supported
+    public string Hello { get; set; } = "Hello, {0}!"; // string formatting is supported
 
     [GreetingTranslation(GreetingType.Welcome)]
     public string Welcome { get; set; } = "Welcome to the server!";

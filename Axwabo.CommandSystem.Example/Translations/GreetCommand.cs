@@ -1,5 +1,6 @@
 ﻿using System;
 using Axwabo.CommandSystem.Attributes;
+using Axwabo.CommandSystem.Commands;
 
 namespace Axwabo.CommandSystem.Example.Translations;
 

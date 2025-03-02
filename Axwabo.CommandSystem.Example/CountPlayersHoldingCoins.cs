@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
+using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.Permissions;
 using Utils.NonAllocLINQ;
 
