@@ -33,7 +33,7 @@ public abstract class ContainerCommand : CommandBase
         if (command == null)
             throw new ArgumentNullException(nameof(command));
         if (TryGetSubcommand(command.Name, out var existing, true))
-            throw new InvalidOperationException($"Subcommand \"{command.Name}\" already exists in container command \"{GetType().FullName}\"; conflict with \"{existing.GetType().FullName}\"");
+            throw new InvalidOperationException($"Subcommand \"{command.Name}\" already exists in container command \"{GetType().FullName}\"; conflict with \"{CommandHelpers.GetImplementationLocation(existing)}\"");
         Subcommands.Add(command);
     }
 

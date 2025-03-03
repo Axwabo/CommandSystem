@@ -18,7 +18,9 @@ public static class CommandHelpers
     /// <param name="command">The command to get the implementation location of.</param>
     /// <returns>The full implementation path.</returns>
     public static string GetImplementationLocation(ICommand command)
-        => GetTypeInfo(command.TryGetUnderlyingCommand(out var underlyingCommand) ? underlyingCommand.GetType() : command.GetType());
+        => command.TryGetUnderlyingCommand(out var underlyingCommand)
+            ? GetImplementationLocation(underlyingCommand)
+            : GetTypeInfo(command.GetType());
 
     /// <summary>
     /// Gets the assembly name combined with the type's full name.
