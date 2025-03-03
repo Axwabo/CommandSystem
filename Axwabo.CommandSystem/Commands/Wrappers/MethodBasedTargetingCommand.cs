@@ -11,7 +11,7 @@ internal sealed class MethodBasedTargetingCommand : UnifiedTargetingCommand, IMe
 
     public MethodInfo ExecuteMethod { get; }
 
-    public MethodBasedTargetingCommand(BaseCommandProperties properties, IPermissionChecker permissions, MethodInfo executeMethod, ContainerCommand container) : base(properties)
+    public MethodBasedTargetingCommand(TargetingCommandProperties properties, IPermissionChecker permissions, MethodInfo executeMethod, ContainerCommand container) : base(properties)
     {
         Permissions = permissions;
         ExecuteMethod = executeMethod;

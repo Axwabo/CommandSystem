@@ -152,11 +152,15 @@ public abstract class ContainerCommand : CommandBase
         var properties = BaseCommandPropertyManager.ResolveProperties(methodInfo);
         properties.Name ??= methodInfo.Name;
         var permissions = BaseCommandPropertyManager.ResolvePermissionChecker(this, methodInfo);
-        RegisterSubcommand(
-            isTargetingCommand
-                ? new MethodBasedTargetingCommand(properties, permissions, methodInfo, this)
-                : new MethodBasedCommand(properties, permissions, methodInfo, this)
-        );
+        if (!isTargetingCommand)
+        {
+            RegisterSubcommand(new MethodBasedCommand(properties, permissions, methodInfo, this));
+            return;
+        }
+
+        var targetingProperties = TargetingCommandPropertyManager.ResolveProperties(methodInfo);
+        targetingProperties.BaseProperties = properties;
+        RegisterSubcommand(new MethodBasedTargetingCommand(targetingProperties, permissions, methodInfo, this));
     }
 
     /// <summary>

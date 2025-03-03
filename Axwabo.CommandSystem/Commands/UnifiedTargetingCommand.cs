@@ -17,14 +17,11 @@ public abstract class UnifiedTargetingCommand : CommandBase
 
     private static readonly string[] Players = ["<players>"];
 
-    private readonly string _noTargetsFoundMessage = "No targets were found.";
-    private readonly string _noPlayersAffected = "No players were affected.";
-    private readonly bool _shouldAffectSpectators;
+    private readonly TargetingCommandProperties _properties;
 
-    private readonly IAffectedMultiplePlayersMessageGenerator _affectedMultipleGenerator;
-    private readonly IAffectedAllPlayersMessageGenerator _allAffectedGenerator;
     private readonly IAffectedOnePlayerMessageGenerator _affectedOneGenerator;
-    private readonly ITargetSelectionManager _selectionManager;
+    private readonly IAffectedMultiplePlayersMessageGenerator _affectedMultipleGenerator;
+    private readonly IAffectedAllPlayersMessageGenerator _affectedAllGenerator;
 
     /// <summary>
     /// Creates a new <see cref="UnifiedTargetingCommand"/> instance.
@@ -35,26 +32,18 @@ public abstract class UnifiedTargetingCommand : CommandBase
     }
 
     /// <summary>
-    /// Creates a new <see cref="UnifiedTargetingCommand"/> instance based on the supplied <see cref="BaseCommandProperties">properties</see>.
-    /// If <paramref name="properties"/> is null, <see cref="BaseCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.
+    /// Creates a new <see cref="UnifiedTargetingCommand"/> instance based on the supplied <see cref="TargetingCommandProperties">properties</see>.
+    /// If <paramref name="properties"/> is null, <see cref="TargetingCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.
+    /// If the <see cref="TargetingCommandProperties.BaseProperties"/> pf <paramref name="properties"/> is null, <see cref="BaseCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.
     /// </summary>
-    protected UnifiedTargetingCommand(BaseCommandProperties properties) : base(properties)
+    protected UnifiedTargetingCommand(TargetingCommandProperties properties) : base(properties?.BaseProperties)
     {
-        _shouldAffectSpectators = this is not IShouldAffectSpectators {AffectSpectators: false};
-        var affectedMultiple = DefaultTargetingMessageGenerator.DefaultAffectedMessage;
-        var affectedOne = affectedMultiple;
-        TargetingCommandPropertyManager.ResolveProperties(this, ref _noTargetsFoundMessage, ref affectedMultiple, ref affectedOne, ref _noPlayersAffected, ref _shouldAffectSpectators);
-        TargetingCommandPropertyManager.ResolveGenerators(this, out _affectedMultipleGenerator, out _allAffectedGenerator, out _affectedOneGenerator, out _selectionManager);
-        if (_affectedMultipleGenerator is not null && _allAffectedGenerator is not null && _affectedOneGenerator is not null)
-            return;
-        var generator = new DefaultTargetingMessageGenerator
-        {
-            AffectedMultipleMessage = affectedMultiple,
-            AffectedOneMessage = affectedOne
-        };
-        _affectedMultipleGenerator ??= generator;
-        _allAffectedGenerator ??= generator;
-        _affectedOneGenerator ??= generator;
+        _properties = properties?.Clone() ?? TargetingCommandPropertyManager.ResolveProperties(GetType(), this);
+        _properties.SelectionManager.SafeCastAndSetIfNull(ref _properties.FilteringPolicy);
+        var defaultGenerator = new DefaultTargetingMessageGenerator(_properties.AffectedOneMessage, _properties.AffectedMultipleMessage);
+        _affectedOneGenerator = _properties.AffectedOneGenerator ?? defaultGenerator;
+        _affectedMultipleGenerator = _properties.AffectedMultipleGenerator ?? defaultGenerator;
+        _affectedAllGenerator = _properties.AffectedAllGenerator ?? defaultGenerator;
     }
 
     /// <inheritdoc />
@@ -73,7 +62,7 @@ public abstract class UnifiedTargetingCommand : CommandBase
 
     private bool ShouldBeAffected(ReferenceHub hub)
         => (ShouldAffectSpectators || hub.IsAlive())
-           && ((_selectionManager ?? this as ITargetFilteringPolicy)?.FilterTarget(hub) ?? true);
+           && (_properties.FilteringPolicy?.FilterTarget(hub) ?? true);
 
     /// <inheritdoc />
     protected override CommandResult Execute(ArraySegment<string> arguments, CommandSender sender)
@@ -110,13 +99,13 @@ public abstract class UnifiedTargetingCommand : CommandBase
         => CommandResult.Failed(NoTargetsFoundMessage);
 
     /// <summary>Gets the raw message to display when no targets were found without formatting.</summary>
-    protected virtual string NoTargetsFoundMessage => _noTargetsFoundMessage;
+    protected virtual string NoTargetsFoundMessage => _properties.NoTargetsFoundMessage;
 
     /// <summary>Gets the raw message to display when no players were affected without formatting.</summary>
-    protected virtual string NoPlayersAffected => _noPlayersAffected;
+    protected virtual string NoPlayersAffected => _properties.NoPlayersAffectedMessage;
 
     /// <summary>Whether the command should affect spectators.</summary>
-    protected bool ShouldAffectSpectators => _selectionManager?.AffectSpectators ?? _shouldAffectSpectators;
+    protected bool ShouldAffectSpectators => _properties.SelectionManager?.AffectSpectators ?? _properties.ShouldAffectSpectators;
 
     /// <summary>
     /// Checks if everyone was affected based on the number of affected players.
@@ -124,15 +113,8 @@ public abstract class UnifiedTargetingCommand : CommandBase
     /// <param name="affected">The number of affected players.</param>
     /// <returns>Whether everyone was affected.</returns>
     protected bool IsEveryoneAffectedInternal(int affected)
-        => _selectionManager?.IsEveryoneAffected(affected)
-           ?? (_shouldAffectSpectators ? PlayerSelectionManager.AllPlayers : PlayerSelectionManager.NonSpectators).Count(ShouldBeAffected) == affected;
-
-    /// <summary>
-    /// Formats the message to display when more than one player was affected.
-    /// </summary>
-    /// <param name="players">The number of affected players.</param>
-    /// <returns>The formatted message.</returns>
-    protected string GetAffectedMessage(int players) => _affectedMultipleGenerator.OnAffected(players);
+        => _properties.SelectionManager?.IsEveryoneAffected(affected)
+           ?? (_properties.ShouldAffectSpectators ? PlayerSelectionManager.AllPlayers : PlayerSelectionManager.NonSpectators).Count(ShouldBeAffected) == affected;
 
     /// <summary>
     /// Formats the message to display when a single player was affected.
@@ -142,10 +124,17 @@ public abstract class UnifiedTargetingCommand : CommandBase
     protected string GetAffectedMessageSingle(ReferenceHub target) => _affectedOneGenerator.OnAffected(target);
 
     /// <summary>
+    /// Formats the message to display when more than one player was affected.
+    /// </summary>
+    /// <param name="players">The number of affected players.</param>
+    /// <returns>The formatted message.</returns>
+    protected string GetAffectedMessage(int players) => _affectedMultipleGenerator.OnAffected(players);
+
+    /// <summary>
     /// Formats the message to display when everyone was affected.
     /// </summary>
     /// <param name="players">The number of affected players.</param>
     /// <returns>The formatted message.</returns>
-    protected string GetAffectedMessageAll(int players) => _allAffectedGenerator.OnEveryoneAffected(players);
+    protected string GetAffectedMessageAll(int players) => _affectedAllGenerator.OnEveryoneAffected(players);
 
 }

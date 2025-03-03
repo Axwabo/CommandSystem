@@ -2,35 +2,44 @@
 
 namespace Axwabo.CommandSystem.Commands.MessageOverrides;
 
-internal sealed class DefaultTargetingMessageGenerator :
+/// <summary>
+/// Implements all three affected players message generators.
+/// </summary>
+public sealed class DefaultTargetingMessageGenerator :
+    IAffectedOnePlayerMessageGenerator,
     IAffectedMultiplePlayersMessageGenerator,
-    IAffectedAllPlayersMessageGenerator,
-    IAffectedOnePlayerMessageGenerator
+    IAffectedAllPlayersMessageGenerator
 {
 
+    /// <summary>The default format used in all methods.</summary>
     public const string DefaultAffectedMessage = "Done! The request affected {0}.";
 
-    private readonly bool _affectedMultipleIsCustom;
-    private readonly string _affectedMultipleMessage = DefaultAffectedMessage;
+    private readonly string _affectedOneMessage;
 
-    public string AffectedMultipleMessage
+    private readonly string _affectedMultipleMessage;
+
+    /// <summary>
+    /// Creates a new <see cref="DefaultTargetingMessageGenerator"/> instance.
+    /// </summary>
+    /// <param name="affectedOneMessage">The message to format when one player was affected.</param>
+    /// <param name="affectedMultipleMessage">The message to format when multiple players were affected.</param>
+    public DefaultTargetingMessageGenerator(string affectedOneMessage, string affectedMultipleMessage)
     {
-        get => _affectedMultipleMessage;
-        init
-        {
-            _affectedMultipleMessage = value;
-            _affectedMultipleIsCustom |= value is not DefaultAffectedMessage;
-        }
+        _affectedMultipleMessage = affectedMultipleMessage ?? DefaultAffectedMessage;
+        _affectedOneMessage = affectedOneMessage ?? DefaultAffectedMessage;
     }
 
-    public string AffectedOneMessage { get; init; } = DefaultAffectedMessage;
+    /// <inheritdoc />
+    /// <returns>The affected one message formatted with the target's nickname.</returns>
+    public string OnAffected(ReferenceHub target) => string.Format(_affectedOneMessage, target.nicknameSync.MyNick);
 
-    public string OnAffected(int players) => string.Format(AffectedMultipleMessage, !_affectedMultipleIsCustom
+    /// <inheritdoc />
+    /// <returns>The affected multiple message formatted with the amount of players. The amount is prepended with "player" or "players" if the format is <see cref="DefaultAffectedMessage"/>.</returns>
+    public string OnAffected(int players) => string.Format(_affectedMultipleMessage, _affectedMultipleMessage is DefaultAffectedMessage
         ? "player".PluralizeWithCount(players)
         : players.ToString());
 
+    /// <inheritdoc cref="OnAffected(int)" />
     public string OnEveryoneAffected(int players) => OnAffected(players);
-
-    public string OnAffected(ReferenceHub target) => string.Format(AffectedOneMessage, target.nicknameSync.MyNick);
 
 }

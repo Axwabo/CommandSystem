@@ -24,7 +24,7 @@ public abstract class SeparatedTargetingCommand : UnifiedTargetingCommand
     /// <summary>
     /// Creates a new <see cref="SeparatedTargetingCommand"/> instance based on the supplied <see cref="BaseCommandProperties">properties</see>.
     /// If <paramref name="properties"/> is null, <see cref="BaseCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.</summary>
-    protected SeparatedTargetingCommand(BaseCommandProperties properties) : base(properties)
+    protected SeparatedTargetingCommand(TargetingCommandProperties properties) : base(properties)
         => _customResultCompiler = TargetingCommandPropertyManager.ResolveCustomResultCompiler(this);
 
     /// <inheritdoc />
