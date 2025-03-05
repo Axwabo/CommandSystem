@@ -1,7 +1,9 @@
-﻿using Axwabo.CommandSystem.Attributes;
+﻿using System;
+using Axwabo.CommandSystem.Attributes;
 
 namespace Axwabo.CommandSystem.Example.Resolvers;
 
+[AttributeUsage(AttributeTargets.Class)]
 internal sealed class EnumCommandAttribute : CommandTargetAttribute
 {
 

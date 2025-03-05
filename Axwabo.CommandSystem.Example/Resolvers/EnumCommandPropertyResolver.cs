@@ -4,6 +4,7 @@ using Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 namespace Axwabo.CommandSystem.Example.Resolvers;
 
+[AttributeUsage(AttributeTargets.Class)]
 internal sealed class EnumCommandPropertyResolver :
     Attribute,
     ICommandNameResolver<EnumCommandAttribute>,
