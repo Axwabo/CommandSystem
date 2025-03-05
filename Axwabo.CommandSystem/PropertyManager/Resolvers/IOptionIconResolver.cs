@@ -15,6 +15,6 @@ public interface IOptionIconResolver<in TAttribute> : IOptionIconResolver where 
     /// </summary>
     /// <param name="attribute">The attribute to create an icon from.</param>
     /// <returns>The resolved icon.</returns>
-    BlinkingIcon CreateIconFromAttribute(TAttribute attribute);
+    BlinkingIcon ResolveIcon(TAttribute attribute);
 
 }

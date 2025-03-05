@@ -17,6 +17,6 @@ public interface ITargetSelectionResolver<in TAttribute> : ITargetSelectionResol
     /// </summary>
     /// <param name="attribute">The attribute to resolve the manager from.</param>
     /// <returns>The resolved <see cref="ITargetSelectionManager"/>.</returns>
-    ITargetSelectionManager ResolveManager(TAttribute attribute);
+    ITargetSelectionManager ResolveSelectionManager(TAttribute attribute);
 
 }

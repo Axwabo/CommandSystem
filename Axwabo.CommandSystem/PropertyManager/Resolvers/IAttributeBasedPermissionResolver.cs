@@ -17,6 +17,6 @@ public interface IAttributeBasedPermissionResolver<in TAttribute> : IAttributeBa
     /// </summary>
     /// <param name="attribute">The attribute to resolve the permission checker from.</param>
     /// <returns>The resolved <see cref="IPermissionChecker"/>.</returns>
-    IPermissionChecker CreatePermissionCheckerInstance(TAttribute attribute);
+    IPermissionChecker ResolvePermissionChecker(TAttribute attribute);
 
 }

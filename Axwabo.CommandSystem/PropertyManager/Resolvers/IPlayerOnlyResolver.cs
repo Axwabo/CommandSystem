@@ -15,6 +15,6 @@ public interface IPlayerOnlyResolver<in TAttribute> : IPlayerOnlyResolver where 
     /// </summary>
     /// <param name="attribute">The attribute to resolve the status from.</param>
     /// <returns>The resolved status.</returns>
-    bool IsPlayerOnly(TAttribute attribute);
+    bool ResolvePlayerOnly(TAttribute attribute);
 
 }
