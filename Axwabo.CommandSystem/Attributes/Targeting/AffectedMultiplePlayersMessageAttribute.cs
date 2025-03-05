@@ -5,7 +5,7 @@ namespace Axwabo.CommandSystem.Attributes.Targeting;
 /// <summary>
 /// Supplies a static affected multiple players message. This attribute is inherited.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class AffectedMultiplePlayersMessageAttribute : Attribute, IStaticAffectedMultiplePlayersMessage
 {
 

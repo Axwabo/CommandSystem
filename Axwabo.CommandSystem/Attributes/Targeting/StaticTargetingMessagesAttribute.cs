@@ -5,7 +5,7 @@ namespace Axwabo.CommandSystem.Attributes.Targeting;
 /// <summary>
 /// Supplies static targeting messages. This attribute is inherited.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class StaticTargetingMessagesAttribute : Attribute,
     IStaticNoTargetsFoundMessage,
     IStaticAffectedOnePlayerMessage,
