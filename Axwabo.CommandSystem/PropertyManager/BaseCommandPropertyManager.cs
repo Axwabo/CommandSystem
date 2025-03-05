@@ -3,6 +3,7 @@ using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.Permissions;
+using Axwabo.CommandSystem.PropertyManager.Resolvers;
 using Axwabo.CommandSystem.Registration;
 
 namespace Axwabo.CommandSystem.PropertyManager;

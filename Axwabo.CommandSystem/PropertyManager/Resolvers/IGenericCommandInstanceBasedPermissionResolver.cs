@@ -1,7 +1,7 @@
 ﻿using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Permissions;
 
-namespace Axwabo.CommandSystem.Attributes.Interfaces;
+namespace Axwabo.CommandSystem.PropertyManager.Resolvers;
 
 /// <summary>
 /// An interface for attributes that create a permission checker based on the command instance.
