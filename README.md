@@ -2,29 +2,25 @@
 
 An SCP: Secret Laboratory plugin to improve player selection, command development and the Remote Admin GUI.
 
+> [!TIP]
+> Check out the [wiki](https://github.com/Axwabo/CommandSystem/wiki) for more information.
+
 # Installation
 
-## NW Plugin API
+## LabAPI
 
-### Built-in Plugin Manager
-
-1. Run `p install CedModV2/NWAPIPermissionSystem` in the server console
-2. Run `p install Axwabo/CommandSystem` in the server console
-3. Restart the server
-
-### Manual
-
-1. Install [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/) (NWAPI version) as a dependency
+1. Install [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/) (LabAPI version) as a dependency
 2. Install [Harmony](https://github.com/pardeike/Harmony) as a dependency, you need the **net4.8** version
-3. Install the [Permission System plugin](https://github.com/CedModV2/NWAPIPermissionSystem)
-4. Download the `Axwabo.CommandSystem-nw.dll` file from the releases page
-5. Place the file in the `plugins` folder: `%appdata%/SCP Secret Laboratory/PluginAPI/plugins/port/`
-6. Restart the server
+3. Download the `Axwabo.CommandSystem.dll` file from the [releases page](https://github.com/Axwabo/CommandSystem/releases)
+4. Place the file in the `plugins` folder:
+    - Windows: `%appdata%\SCP Secret Laboratory\LabAPI-Beta\plugins\`
+    - Linux: `.config/SCP Secret Laboratory/LabAPI-Beta/plugins/`
+5. Restart the server
 
 ## Development
 
 1. Download [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/) and add it as a reference
-2. Download the `Axwabo.CommandSystem-nw.dll` file from the releases page
+2. Download the `Axwabo.CommandSystem.dll` file from the [releases page](https://github.com/Axwabo/CommandSystem/releases)
 3. Add the assembly as a reference to your project
 4. Code away!
 
@@ -61,7 +57,8 @@ public sealed class MyPlugin
 2. Add the attribute `Axwabo.CommandSystem.Attributes.CommandProperties` to your class and specify the necessary properties.
 3. Override the `Execute` method.
 
-**Documentation can be found on the wiki.**
+> [!TIP]
+> Documentation can be found on the [wiki](https://github.com/Axwabo/CommandSystem/wiki/CommandBase)
 
 ## Improved Player Selectors
 
@@ -73,11 +70,13 @@ For example, if you want to forceclass yourself to Class-D, instead of `forcecla
 
 It also allows you to select a player based on a substring of their nickname, no more going to the GUI RA anymore 😉
 
-**You can read more about player selectors on the wiki.**
+> [!TIP]
+> You can read more about player selectors on the [wiki](https://github.com/Axwabo/CommandSystem/wiki/Selectors)
 
 ## Remote Admin GUI Extensions
 
-Note: this feature is not currently compatible with [CedMod](https://github.com/CedModV2/CedMod), need to merge [PR #30](https://github.com/CedModV2/CedMod/pull/30).
+> [!NOTE]
+> This feature is not currently compatible with [CedMod](https://github.com/CedModV2/CedMod)
 
 The `Axwabo.CommandSystem.RemoteAdminExtensions.RemoteAdminOptionBase` class lets you add "player entries" to the Remote Admin GUI.
 These can be interacted with through the buttons in the `Request Data` section.
@@ -90,9 +89,13 @@ The `Stack` option is built-in but hidden by default.
 It allows you to use the [players on the stack](#player-selection-stack) in the Remote Admin GUI.
 To enable it, execute the `raOpt show @stack` command.
 
-**The wiki contains more details about RA Extensions.**
+> [!TIP]
+> The [wiki](https://github.com/Axwabo/CommandSystem/wiki/Options) contains more details about RA Extensions.
 
 ## Player Selection Stack
+
+> [!NOTE]
+> This feature is not currently compatible with [CedMod](https://github.com/CedModV2/CedMod)
 
 Everyone with Remote Admin access is able to use the player selection stack. You can push a list of players, pop, duplicate, clear.
 It's incredibly useful for commands that require multiple players.
@@ -106,4 +109,10 @@ When using a command that accepts player targets, you can use `@stack` to use th
 You can also give it an index to use a specific player list from the stack, separated by one of `:>_-` characters.
 For example, `@stack:1` will use the second player list from the stack (indexes start with 0).
 
-Note: the most recently pushed player list is considered the top of the stack. To view the stack, use `stackList` and list at index 0 is the topmost player list.
+> [!NOTE]
+> The most recently pushed player list is considered the top of the stack. To view the stack, use `stackList` and list at index 0 is the topmost player list.
+
+## Config
+
+There are some miscellaneous settings that can be specified in the plugin configuration.
+Read about them on the [wiki](https://github.com/Axwabo/CommandSystem/wiki/Configuration)
