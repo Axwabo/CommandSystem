@@ -41,10 +41,10 @@ public static class PlayerSelectionManager
     private static bool NonHost(ReferenceHub h) => !h.isLocalPlayer || (CommandSystemPlugin.Instance?.Config?.AllowSelectingHost ?? false);
 
     /// <summary>Gets all players.</summary>
-    public static List<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(NonHost).ToList();
+    public static IEnumerable<ReferenceHub> AllPlayers => ReferenceHub.AllHubs.Where(NonHost);
 
     /// <summary>Gets all alive players.</summary>
-    public static List<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => NonHost(h) && h.IsAlive()).ToList();
+    public static IEnumerable<ReferenceHub> NonSpectators => ReferenceHub.AllHubs.Where(h => NonHost(h) && h.IsAlive());
 
     /// <summary>Gets the player count.</summary>
     public static int PlayerCount => Player.Count;
@@ -76,7 +76,7 @@ public static class PlayerSelectionManager
                 return formatted.StartsWith("@")
                     ? AtSelectorProcessor.ProcessString(formatted.Substring(1), keepEmptyEntries, out targets, out newArgs)
                     : TryFindPlayerByName(arguments, out targets, out newArgs);
-            targets = AllPlayers;
+            targets = AllPlayers.ToList();
             newArgs = arguments.Segment(1).ToArray();
             return true;
         }

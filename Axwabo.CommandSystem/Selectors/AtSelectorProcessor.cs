@@ -162,7 +162,7 @@ public static class AtSelectorProcessor
 
     private static List<ReferenceHub> GetAllFiltered(List<HubFilter> filters)
     {
-        var all = PlayerSelectionManager.AllPlayers;
+        var all = PlayerSelectionManager.AllPlayers.ToList();
         if (filters is not {Count: not 0})
             return all;
         for (var i = 0; i < all.Count; i++)
