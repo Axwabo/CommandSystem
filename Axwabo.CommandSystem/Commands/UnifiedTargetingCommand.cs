@@ -40,6 +40,8 @@ public abstract class UnifiedTargetingCommand : CommandBase
     {
         _properties = properties?.Clone() ?? TargetingCommandPropertyManager.ResolveProperties(GetType(), this);
         _properties.SelectionManager.SafeCastAndSetIfNull(ref _properties.FilteringPolicy);
+        _properties.NoTargetsFoundMessage ??= DefaultCommandMessages.NoTargetsFound;
+        _properties.NoPlayersAffectedMessage ??= DefaultCommandMessages.NoPlayersAffected;
         var defaultGenerator = new DefaultTargetingMessageGenerator(_properties.AffectedOneMessage, _properties.AffectedMultipleMessage);
         _affectedOneGenerator = _properties.AffectedOneGenerator ?? defaultGenerator;
         _affectedMultipleGenerator = _properties.AffectedMultipleGenerator ?? defaultGenerator;

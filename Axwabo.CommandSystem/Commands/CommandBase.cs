@@ -12,9 +12,6 @@ namespace Axwabo.CommandSystem.Commands;
 public abstract class CommandBase
 {
 
-    /// <summary>The message to display when only a player is allowed to use the command but the sender is not a player.</summary>
-    public const string MustBePlayer = "You must be a player to use this command!";
-
     private readonly BaseCommandProperties _properties;
 
     /// <summary>The name of the command.</summary>
@@ -112,7 +109,7 @@ public abstract class CommandBase
             : this is IPlayerOnlyCommand playerOnly
                 ? playerOnly.OnNotPlayer(arguments, sender)
                 : PlayerOnly
-                    ? CommandResult.Failed(MustBePlayer)
+                    ? CommandResult.Failed(DefaultCommandMessages.MustBePlayer)
                     : CommandResult.Null;
 
     /// <summary>
