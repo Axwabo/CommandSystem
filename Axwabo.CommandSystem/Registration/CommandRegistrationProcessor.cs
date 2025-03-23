@@ -243,7 +243,9 @@ public sealed class CommandRegistrationProcessor
         foreach (var attr in type.GetCustomAttributes())
             if (attr is IRegistrationFilter {AllowRegistration: false})
                 return;
-        RemoteAdminOptionManager.RegisterOption((RemoteAdminOptionBase) Activator.CreateInstance(type));
+        var option = Activator.CreateInstance(type);
+        if (option is not IRegistrationFilter {AllowRegistration: false})
+            RemoteAdminOptionManager.RegisterOption((RemoteAdminOptionBase) option);
     }
 
     private static void LogSkippedCommand(Type type)
