@@ -5,6 +5,41 @@ namespace Axwabo.CommandSystem.Registration;
 public static partial class RegistrationExtensions
 {
 
+    #region Types
+
+    /// <summary>Adds the given type to the <see cref="CommandRegistrationProcessor"/>.</summary>
+    /// <param name="processor">The processor to add the type to.</param>
+    /// <param name="type">The type to add.</param>
+    /// <returns>The processor itself.</returns>
+    /// <exception cref="ArgumentException">If the type is not from the same assembly as the <see cref="CommandRegistrationProcessor.TargetAssembly"/>, is abstract or is not a class.</exception>
+    public static CommandRegistrationProcessor WithType(this CommandRegistrationProcessor processor, Type type)
+    {
+        processor.AddType(type);
+        return processor;
+    }
+
+    /// <summary>Adds the given types to the <see cref="CommandRegistrationProcessor"/>.</summary>
+    /// <param name="processor">The processor to add the types to.</param>
+    /// <param name="types">The types to add.</param>
+    /// <returns>The processor itself.</returns>
+    /// <exception cref="ArgumentException">If a type in the enumerable is not from the same assembly as the <see cref="CommandRegistrationProcessor.TargetAssembly"/>, is abstract or is not a class.</exception>
+    public static CommandRegistrationProcessor WithTypes(this CommandRegistrationProcessor processor, IEnumerable<Type> types)
+    {
+        foreach (var type in types)
+            processor.AddType(type);
+        return processor;
+    }
+
+    /// <summary>
+    /// Adds all types to the <see cref="CommandRegistrationProcessor"/> from its <see cref="CommandRegistrationProcessor.TargetAssembly"/>.
+    /// </summary>
+    /// <param name="processor">The processor to add the types to.</param>
+    /// <returns>The processor itself.</returns>
+    public static CommandRegistrationProcessor WithTypesFromOriginalAssembly(this CommandRegistrationProcessor processor)
+        => processor.WithTypes(processor.TargetAssembly.GetTypes().Where(e => e.IsClass && !e.IsAbstract));
+
+    #endregion
+
     #region Base Properties
 
     /// <summary>

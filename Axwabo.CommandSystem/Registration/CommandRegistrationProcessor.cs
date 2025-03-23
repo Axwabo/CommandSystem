@@ -23,17 +23,20 @@ public sealed class CommandRegistrationProcessor
     /// <param name="assemblyMemberInstance">An object from the assembly.</param>
     public static void RegisterAll(object assemblyMemberInstance) => RegisterAll(assemblyMemberInstance.GetType());
 
-    /// <summary>Registers all commands in the assembly of the given type with registration attributes on the it.</summary>
+    /// <summary>Registers all commands in the assembly of the given type with registration attributes on it.</summary>
     /// <param name="typeInAssembly">A type from the assembly.</param>
     public static void RegisterAll(Type typeInAssembly)
         => Create(typeInAssembly.Assembly)
+            .WithTypesFromOriginalAssembly()
             .WithRegistrationAttributesFrom(typeInAssembly)
             .Execute();
 
     /// <summary>Registers all commands in the given assembly.</summary>
     /// <param name="assembly">The assembly to register commands from.</param>
     /// <remarks>Use <see cref="RegisterAll(object)"/> or <see cref="RegisterAll(Type)"/> to also pull the registration attributes from a type.</remarks>
-    public static void RegisterAll(Assembly assembly) => Create(assembly).Execute();
+    public static void RegisterAll(Assembly assembly) => Create(assembly)
+        .WithTypesFromOriginalAssembly()
+        .Execute();
 
     #endregion
 
@@ -103,7 +106,12 @@ public sealed class CommandRegistrationProcessor
     /// <summary>The assembly to register commands from.</summary>
     public Assembly TargetAssembly { get; }
 
+    /// <summary>The collection of types to be processed.</summary>
+    public IReadOnlyCollection<Type> Types => _types;
+
     private CommandRegistrationProcessor(Assembly assembly) => TargetAssembly = assembly;
+
+    private readonly HashSet<Type> _types = [];
 
     internal readonly List<ResolverContainer<ICommandNameResolver, string>> NameResolvers = [];
 
@@ -145,7 +153,23 @@ public sealed class CommandRegistrationProcessor
 
     private readonly HashSet<Type> _skippedCommands = [];
 
-    /// <summary>The type of the command that is currently being registered..</summary>
+    /// <summary>
+    /// Adds the given type to be processed. The type must be from the same assembly as <see cref="TargetAssembly"/>, must be a class and must not be abstract. 
+    /// </summary>
+    /// <param name="type">The type to add.</param>
+    /// <exception cref="ArgumentException">If the type is not from the same assembly, is abstract or is not a class.</exception>
+    public void AddType(Type type)
+    {
+        if (type.Assembly != TargetAssembly)
+            throw new ArgumentException($"Type must be from the same assembly as {nameof(TargetAssembly)}: {type}");
+        if (type.IsAbstract)
+            throw new ArgumentException($"Type must not be abstract: {type}");
+        if (!type.IsClass)
+            throw new ArgumentException($"Type must be a class: {type}");
+        _types.Add(type);
+    }
+
+    /// <summary>The type of the command that is currently being registered.</summary>
     public Type RegisteringCommandType { get; private set; }
 
     /// <summary>Executes the processor, registering all commands and Remote Admin extensions in the assembly.</summary>
@@ -154,9 +178,8 @@ public sealed class CommandRegistrationProcessor
         BaseCommandPropertyManager.CurrentProcessor = this;
         try
         {
-            foreach (var type in TargetAssembly.GetTypes())
-                if (!type.IsAbstract)
-                    ProcessType(type);
+            foreach (var type in _types)
+                ProcessType(type);
             foreach (var pair in _standaloneCommands)
                 CreateCommandWrapperAndRegister(pair.Key, pair.Value);
             RegisterSubcommands();
