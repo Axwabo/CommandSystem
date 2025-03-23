@@ -10,7 +10,7 @@ An SCP: Secret Laboratory plugin to improve player selection, command developmen
 ## LabAPI
 
 1. Install [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/) (LabAPI version) as a dependency
-2. Install [Harmony](https://github.com/pardeike/Harmony) as a dependency, you need the **net4.8** version
+2. Install [Harmony 2.2.2](https://github.com/pardeike/Harmony/releases/tag/v2.2.2.0) as a dependency, you need the **net4.8** version
 3. Download the `Axwabo.CommandSystem.dll` file from the [releases page](https://github.com/Axwabo/CommandSystem/releases)
 4. Place the file in the `plugins` folder:
     - Windows: `%appdata%\SCP Secret Laboratory\LabAPI-Beta\plugins\`
@@ -32,21 +32,30 @@ The command system is a simple, yet powerful system that allows you to easily cr
 
 You **will** need to reference `CommandSystem.Core` if you want to work with players; ensure that you're not using anything from the simple `CommandSystem` namespace.
 
-Call `Axwabo.CommandSystem.Registration.CommandRegistrationProcessor.RegisterAll(plugin)` in your plugin's load method
+Call `Axwabo.CommandSystem.Registration.CommandRegistrationProcessor.RegisterAll(object)` in your plugin's load method
 to register all commands from your assembly. Example:
 
 ```csharp
+using System;
 using Axwabo.CommandSystem.Registration;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
+using LabApi.Loader.Features.Plugins;
 
 public sealed class MyPlugin
 {
-    [PluginEntryPoint("Name", "Version", "Description", "Author")]
-    private void OnEnabled()
+    public override string Name => "Name";
+    public override string Description => "Description";
+    public override string Author => "Author";
+    public override Version Version => GetType().Assembly.GetName().Version;
+    public override Version RequiredApiVersion { get; } = new(1, 0, 0);
+    
+    public override void Enable()
     {
         CommandRegistrationProcessor.RegisterAll(this);
-        Log.Info("MyPlugin has been enabled.");
+    }
+    
+    public override void Disable()
+    {
+        CommandRegistrationProcessor.UnregisterAll(this);
     }
 }
 ```
@@ -58,6 +67,8 @@ public sealed class MyPlugin
 3. Override the `Execute` method.
 
 > [!TIP]
+> The `UnifiedTargetingCommand` and `SeparatedTargetingCommand` classes help to create commands that affect players.
+> 
 > Documentation can be found on the [wiki](https://github.com/Axwabo/CommandSystem/wiki/CommandBase)
 
 ## Improved Player Selectors
