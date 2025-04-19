@@ -88,7 +88,7 @@ public sealed class DeveloperMode : ButtonBasedRemoteAdminOption
         var stackTrace = includeOffsets ? data.Item2.ToString() : RemoveStackTraceZeroesPatch.StripILOffsets(data.Item2.ToString());
         RaClipboard.Send(sender, RaClipboard.RaClipBoardType.PlayerId, data.Item1);
         RaClipboard.Send(sender, RaClipboard.RaClipBoardType.UserId, stackTrace);
-        return $"{CopyPlayerId} {data.Item1.Color("orange")}\n{CopyUserId} {stackTrace}";
+        return $"{CopyPlayerId} <font=RobotoMono>{data.Item1.Color("orange")}</font>\n{CopyUserId} {stackTrace}";
     }
 
 }
