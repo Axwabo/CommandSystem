@@ -6,6 +6,7 @@ namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 
 [CommandProperties("show", 1, "Makes the given option visible to you.")]
 [SubcommandOfContainer(typeof(OptionPreferencesContainer))]
+[Usage("<id>")]
 internal sealed class ShowOption : CommandBase
 {
 

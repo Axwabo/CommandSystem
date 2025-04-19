@@ -6,6 +6,7 @@ namespace Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 
 [CommandProperties("hide", 1, "Hides the given option from your RA GUI.")]
 [SubcommandOfContainer(typeof(OptionPreferencesContainer))]
+[Usage("<id>")]
 internal sealed class HideOption : CommandBase
 {
 
@@ -14,6 +15,6 @@ internal sealed class HideOption : CommandBase
             ? "!No option found with that id."
             : OptionPreferencesContainer.SetVisibility(sender.SenderId, option, false)
                 ? "Option is no longer visible to you."
-                : "!Option already isn't visible to you.";
+                : "!Option is already hidden to you.";
 
 }
