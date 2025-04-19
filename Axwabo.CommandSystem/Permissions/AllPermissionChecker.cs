@@ -3,29 +3,27 @@ using Axwabo.CommandSystem.Extensions;
 
 namespace Axwabo.CommandSystem.Permissions;
 
-/// <summary>
-/// A multiplex permission checker ensuring all permissions are sufficient.
-/// </summary>
-public sealed class CombinedPermissionChecker : IMultiplexPermissionChecker
+/// <summary>A multiplex permission checker ensuring all permissions are sufficient.</summary>
+public sealed class AllPermissionChecker : IMultiplexPermissionChecker
 {
 
     /// <inheritdoc />
     public IReadOnlyList<IPermissionChecker> Instances { get; }
 
     /// <summary>
-    /// Initializes a <see cref="CombinedPermissionChecker"/> instance.
+    /// Initializes an <see cref="AllPermissionChecker"/> instance.
     /// </summary>
     /// <param name="instances">The permission checker instances.</param>
-    public CombinedPermissionChecker(params IPermissionChecker[] instances) : this(instances.AsEnumerable())
+    public AllPermissionChecker(params IPermissionChecker[] instances) : this(instances.AsEnumerable())
     {
     }
 
     /// <summary>
-    /// Initializes a <see cref="CombinedPermissionChecker"/> instance.
+    /// Initializes an <see cref="AllPermissionChecker"/> instance.
     /// </summary>
     /// <param name="instances">The permission checker instances.</param>
-    public CombinedPermissionChecker(IEnumerable<IPermissionChecker> instances)
-        => Instances = instances.Flatten<CombinedPermissionChecker>().ToList().AsReadOnly();
+    public AllPermissionChecker(IEnumerable<IPermissionChecker> instances)
+        => Instances = instances.Flatten<AllPermissionChecker>().ToList().AsReadOnly();
 
     /// <summary>
     /// Determines whether the specified sender has the permissions determined by all instances.

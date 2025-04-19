@@ -90,7 +90,7 @@ public static class RemoteAdminExtensionPropertyManager
     /// </summary>
     /// <param name="option">The command to resolve permission checkers for.</param>
     /// <param name="member">The member to resolve permission checkers for. If null, the command's type will be used.</param>
-    /// <returns>The permission checker for the command. If multiple were found, they will be merged into a <see cref="CombinedPermissionChecker"/>.</returns>
+    /// <returns>The permission checker for the command. If multiple were found, they will be merged into a <see cref="AllPermissionChecker"/>.</returns>
     public static IPermissionChecker ResolvePermissionChecker(RemoteAdminOptionBase option, MemberInfo member = null)
     {
         var list = new List<IPermissionChecker>();
@@ -102,12 +102,7 @@ public static class RemoteAdminExtensionPropertyManager
                 list.AddIfNotNull(BaseCommandPropertyManager.ResolveCustomPermissionChecker(attribute));
         }
 
-        return list.Count switch
-        {
-            0 => null,
-            1 => list[0],
-            _ => new CombinedPermissionChecker(list)
-        };
+        return list.CheckAll();
     }
 
 }
