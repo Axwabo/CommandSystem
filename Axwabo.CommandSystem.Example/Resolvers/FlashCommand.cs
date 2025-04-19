@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
@@ -16,7 +17,7 @@ public sealed class FlashCommand : SeparatedTargetingCommand, ITargetSelectionMa
 
     public bool AffectSpectators => true; // let's do a funny: make spectators targets but make the command fail
 
-    public bool IsEveryoneAffected(int count) => PlayerSelectionManager.AllPlayers.Count == count;
+    public bool IsEveryoneAffected(int count) => PlayerSelectionManager.AllPlayers.Count() == count;
 
     public bool FilterTarget(ReferenceHub hub) => true;
 

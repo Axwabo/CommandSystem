@@ -23,7 +23,7 @@ public static class PlayerSelectionManager
     /// <summary>The message displayed when a command throws an exception.</summary>
     public const string CommandExecutionFailedError = "Command execution failed! Error: ";
 
-    /// <summary>The message displayed when the supplied player list cannot be parse.</summary>
+    /// <summary>The message displayed when the supplied player list cannot be parsed.</summary>
     public const string FailedToParsePlayerList = "Failed to parse player list: ";
 
     /// <summary>
