@@ -56,7 +56,6 @@ public abstract class CommandBase
     /// <summary>A permission checker for the command.</summary>
     protected virtual IPermissionChecker Permissions { get; }
 
-    // ReSharper disable VirtualMemberCallInConstructor
     /// <summary>
     /// Creates a new <see cref="CommandBase"/> instance.
     /// Properties are resolved based on the type.
@@ -66,6 +65,7 @@ public abstract class CommandBase
     {
     }
 
+    // ReSharper disable VirtualMemberCallInConstructor
     /// <summary>
     /// Creates a new <see cref="CommandBase"/> instance based on the supplied <see cref="BaseCommandProperties">properties</see>.
     /// If <paramref name="properties"/> is null, <see cref="BaseCommandPropertyManager.ResolveProperties"/> will be invoked to get properties.
@@ -76,7 +76,7 @@ public abstract class CommandBase
         _properties = properties?.Clone() ?? BaseCommandPropertyManager.ResolveProperties(GetType());
         if (string.IsNullOrWhiteSpace(Name))
             throw new InvalidNameException($"Command name on type {GetType().FullName} is not set. Are you missing an attribute or custom name resolver?");
-        Permissions = BaseCommandPropertyManager.ResolvePermissionChecker(this);
+        Permissions = this as IPermissionChecker ?? BaseCommandPropertyManager.ResolvePermissionChecker(this);
     }
 
     /// <summary>

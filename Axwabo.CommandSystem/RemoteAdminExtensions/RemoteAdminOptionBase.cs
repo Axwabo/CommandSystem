@@ -59,7 +59,7 @@ public abstract class RemoteAdminOptionBase
             throw InvalidId;
         else
             OptionIdentifier = (standaloneSelector || this is IStandaloneSelectorOption {CanBeUsedAsStandaloneSelector: true} ? "@" : "$") + id;
-        Permissions ??= RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
+        Permissions = this as IPermissionChecker ?? RemoteAdminExtensionPropertyManager.ResolvePermissionChecker(this);
     }
 
     /// <summary>

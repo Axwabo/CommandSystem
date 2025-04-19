@@ -60,8 +60,6 @@ public static class BaseCommandPropertyManager
     public static IPermissionChecker ResolvePermissionChecker(CommandBase command, MemberInfo member = null)
     {
         var list = new List<IPermissionChecker>();
-        if (member is Type)
-            list.SafeCastAndAdd(command);
         foreach (var attribute in (member ?? command.GetType()).GetCustomAttributes())
         {
             if (list.AddIfNotNull(ResolveBuiltInPermissionChecker(attribute)))

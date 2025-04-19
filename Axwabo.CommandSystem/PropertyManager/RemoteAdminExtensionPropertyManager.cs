@@ -94,8 +94,6 @@ public static class RemoteAdminExtensionPropertyManager
     public static IPermissionChecker ResolvePermissionChecker(RemoteAdminOptionBase option, MemberInfo member = null)
     {
         var list = new List<IPermissionChecker>();
-        if (member is Type)
-            list.SafeCastAndAdd(option);
         foreach (var attribute in (member ?? option.GetType()).GetCustomAttributes())
         {
             if (list.AddIfNotNull(BaseCommandPropertyManager.ResolveBuiltInPermissionChecker(attribute)))
