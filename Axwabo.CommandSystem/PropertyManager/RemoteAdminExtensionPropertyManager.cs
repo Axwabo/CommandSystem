@@ -108,7 +108,7 @@ public static class RemoteAdminExtensionPropertyManager
         {
             0 => null,
             1 => list[0],
-            _ => new CombinedPermissionChecker(list.ToArray())
+            _ => new CombinedPermissionChecker(list)
         };
     }
 

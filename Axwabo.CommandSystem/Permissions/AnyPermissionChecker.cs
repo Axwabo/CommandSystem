@@ -4,46 +4,46 @@ using Axwabo.CommandSystem.Extensions;
 namespace Axwabo.CommandSystem.Permissions;
 
 /// <summary>
-/// A multiplex permission checker ensuring all permissions are sufficient.
+/// A permission checker allowing usage if any sub-checkers pass.
 /// </summary>
-public sealed class CombinedPermissionChecker : IMultiplexPermissionChecker
+public sealed class AnyPermissionChecker : IMultiplexPermissionChecker
 {
 
     /// <inheritdoc />
     public IReadOnlyList<IPermissionChecker> Instances { get; }
 
     /// <summary>
-    /// Initializes a <see cref="CombinedPermissionChecker"/> instance.
+    /// Initializes an <see cref="AnyPermissionChecker"/> instance.
     /// </summary>
     /// <param name="instances">The permission checker instances.</param>
-    public CombinedPermissionChecker(params IPermissionChecker[] instances) : this(instances.AsEnumerable())
+    public AnyPermissionChecker(params IPermissionChecker[] instances) : this(instances.AsEnumerable())
     {
     }
 
     /// <summary>
-    /// Initializes a <see cref="CombinedPermissionChecker"/> instance.
+    /// Initializes an <see cref="AnyPermissionChecker"/> instance.
     /// </summary>
     /// <param name="instances">The permission checker instances.</param>
-    public CombinedPermissionChecker(IEnumerable<IPermissionChecker> instances)
-        => Instances = instances.Flatten<CombinedPermissionChecker>().ToList().AsReadOnly();
+    public AnyPermissionChecker(IEnumerable<IPermissionChecker> instances)
+        => Instances = instances.Flatten<AnyPermissionChecker>().ToList().AsReadOnly();
 
     /// <summary>
-    /// Determines whether the specified sender has the permissions determined by all instances.
+    /// Determines whether the specified sender has permissions determined by any instance.
     /// </summary>
     /// <param name="sender">The sender to check.</param>
     /// <returns>A <see cref="CommandResult"/> indicating whether the sender has the permissions. If the <see cref="CommandResult.Success"/> field is true, the check has passed.</returns>
-    /// <remarks>If one permission checker returns a result indicating insufficient permissions, the loop exits and returns that result as failing.</remarks>
+    /// <remarks>If a permission checker returns a result indicating sufficient permissions, the loop exits and returns that result as successful.</remarks>
     /// <seealso cref="IPermissionChecker.CheckPermission"/>
     public CommandResult CheckPermission(CommandSender sender)
     {
         foreach (var instance in Instances)
         {
             var result = instance.CheckPermission(sender);
-            if (!result)
+            if (result)
                 return result;
         }
 
-        return true;
+        return false;
     }
 
 }
