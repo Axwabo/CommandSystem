@@ -122,7 +122,7 @@ public static class RemoteAdminOptionManager
         var success = false;
         foreach (var option in Options)
         {
-            if (!option.VisibilityPermissions.CheckSafe(sender) || preferredOnly && OptionPreferencesContainer.IsHidden(sender.SenderId, option))
+            if (!option.Permissions.CheckSafe(sender) || preferredOnly && OptionPreferencesContainer.IsHidden(sender.SenderId, option))
                 continue;
             var hidden = option is IOptionVisibilityController controller && !controller.IsVisibleTo(sender);
             if (hideIdentifier && hidden)

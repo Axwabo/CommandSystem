@@ -13,7 +13,7 @@ internal sealed class HideAll : CommandBase
     {
         var nowHidden = 0;
         foreach (var option in RemoteAdminOptionManager.AllOptions)
-            if (option.VisibilityPermissions.CheckSafe(sender) && OptionPreferencesContainer.SetVisibility(sender.SenderId, option, false))
+            if (option.Permissions.CheckSafe(sender) && OptionPreferencesContainer.SetVisibility(sender.SenderId, option, false))
                 nowHidden++;
         return nowHidden == 0
             ? "!All options are already hidden."
