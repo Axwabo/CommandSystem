@@ -4,6 +4,7 @@ using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.Permissions;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
+using Axwabo.CommandSystem.Registration;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
 
 namespace Axwabo.CommandSystem.PropertyManager;
@@ -32,12 +33,12 @@ public static class RemoteAdminExtensionPropertyManager
         foreach (var attribute in option.GetType().GetCustomAttributes())
         {
             ResolveBaseAttribute(option, attribute, ref id, ref staticText, ref icon, ref canBeUsedAsStandaloneSelector, ref isVisibleByDefault);
-            if (BaseCommandPropertyManager.CurrentProcessor == null)
+            if (CommandRegistrationProcessor.Current == null)
                 continue;
             var type = attribute.GetType();
-            BaseCommandPropertyManager.CurrentProcessor.RemoteAdminOptionIdResolvers.Resolve(ref id, type, attribute);
-            BaseCommandPropertyManager.CurrentProcessor.StaticOptionTextResolvers.Resolve(ref staticText, type, attribute);
-            BaseCommandPropertyManager.CurrentProcessor.OptionIconResolvers.Resolve(ref icon, type, attribute);
+            CommandRegistrationProcessor.Current.RemoteAdminOptionIdResolvers.Resolve(ref id, type, attribute);
+            CommandRegistrationProcessor.Current.StaticOptionTextResolvers.Resolve(ref staticText, type, attribute);
+            CommandRegistrationProcessor.Current.OptionIconResolvers.Resolve(ref icon, type, attribute);
         }
 
         return RemoteAdminOptionManager.IsValidOptionId(id);

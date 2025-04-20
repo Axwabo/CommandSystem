@@ -12,9 +12,6 @@ namespace Axwabo.CommandSystem.PropertyManager;
 public static class BaseCommandPropertyManager
 {
 
-    /// <summary>The current command registration processor.</summary>
-    public static CommandRegistrationProcessor CurrentProcessor { get; internal set; }
-
     /// <summary>
     /// Attempts to resolve the basic properties of a command.
     /// </summary>
@@ -36,14 +33,14 @@ public static class BaseCommandPropertyManager
                 ref properties.MinArguments,
                 ref properties.PlayerOnly
             );
-            if (CurrentProcessor == null)
+            if (CommandRegistrationProcessor.Current == null)
                 continue;
             var type = attribute.GetType();
-            CurrentProcessor.NameResolvers.Resolve(ref properties.Name, type, attribute);
-            CurrentProcessor.DescriptionResolvers.Resolve(ref properties.Description, type, attribute);
-            CurrentProcessor.AliasResolvers.ResolveArray(aliasList, type, attribute);
-            CurrentProcessor.UsageResolvers.ResolveArray(usageList, type, attribute);
-            CurrentProcessor.PlayerOnlyResolvers.Resolve(ref properties.PlayerOnly, type, attribute);
+            CommandRegistrationProcessor.Current.NameResolvers.Resolve(ref properties.Name, type, attribute);
+            CommandRegistrationProcessor.Current.DescriptionResolvers.Resolve(ref properties.Description, type, attribute);
+            CommandRegistrationProcessor.Current.AliasResolvers.ResolveArray(aliasList, type, attribute);
+            CommandRegistrationProcessor.Current.UsageResolvers.ResolveArray(usageList, type, attribute);
+            CommandRegistrationProcessor.Current.PlayerOnlyResolvers.Resolve(ref properties.PlayerOnly, type, attribute);
         }
 
         properties.Aliases = aliasList.ToArray();
@@ -102,13 +99,13 @@ public static class BaseCommandPropertyManager
     /// Resolves the permission checker from a custom attribute.
     /// </summary>
     /// <param name="attribute">The attribute to create the permission checker from.</param>
-    /// <returns>The permission checker or null if no registered resolvers were found in <see cref="CurrentProcessor"/>.</returns>
+    /// <returns>The permission checker or null if no registered resolvers were found in <see cref="CommandRegistrationProcessor.Current"/>.</returns>
     public static IPermissionChecker ResolveCustomPermissionChecker(Attribute attribute)
     {
-        if (CurrentProcessor == null)
+        if (CommandRegistrationProcessor.Current == null)
             return null;
         var attributeType = attribute.GetType();
-        foreach (var creator in CurrentProcessor.PermissionCreators)
+        foreach (var creator in CommandRegistrationProcessor.Current.PermissionCreators)
             if (creator.Takes(attributeType))
                 return creator.Resolve(attribute);
         return null;

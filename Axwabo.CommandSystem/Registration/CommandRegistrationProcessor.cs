@@ -5,7 +5,6 @@ using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Commands.MessageOverrides;
 using Axwabo.CommandSystem.Commands.Wrappers;
 using Axwabo.CommandSystem.Permissions;
-using Axwabo.CommandSystem.PropertyManager;
 using Axwabo.CommandSystem.PropertyManager.Resolvers;
 using CommandSystem;
 using Utils.NonAllocLINQ;
@@ -145,6 +144,9 @@ public sealed class CommandRegistrationProcessor
 
     #region Exec
 
+    /// <summary>The current command registration processor.</summary>
+    public static CommandRegistrationProcessor Current { get; private set; }
+
     private readonly Dictionary<Type, List<Type>> _subcommandsToRegister = new();
 
     private readonly Dictionary<Type, ContainerCommand> _registeredContainerCommands = new();
@@ -175,7 +177,7 @@ public sealed class CommandRegistrationProcessor
     /// <summary>Executes the processor, registering all commands and Remote Admin extensions in the assembly.</summary>
     public void Execute()
     {
-        BaseCommandPropertyManager.CurrentProcessor = this;
+        Current = this;
         try
         {
             foreach (var type in _types)
@@ -193,7 +195,7 @@ public sealed class CommandRegistrationProcessor
         }
         finally
         {
-            BaseCommandPropertyManager.CurrentProcessor = null;
+            Current = null;
         }
     }
 

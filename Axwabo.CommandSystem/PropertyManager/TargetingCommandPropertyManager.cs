@@ -95,7 +95,7 @@ public static class TargetingCommandPropertyManager
 
     private static bool ProcSet(out CommandRegistrationProcessor proc)
     {
-        proc = BaseCommandPropertyManager.CurrentProcessor;
+        proc = CommandRegistrationProcessor.Current;
         return proc != null;
     }
 
