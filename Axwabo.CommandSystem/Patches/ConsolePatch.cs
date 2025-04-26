@@ -1,7 +1,6 @@
 ﻿using Axwabo.CommandSystem.Exceptions;
 using Axwabo.CommandSystem.Selectors;
 using HarmonyLib;
-using LabApi.Events.Arguments.ServerEvents;
 using static Axwabo.CommandSystem.Selectors.PlayerSelectionManager;
 using Console = GameCore.Console;
 
@@ -14,7 +13,7 @@ internal static class ConsolePatch
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var list = new List<CodeInstruction>(instructions);
-        var setSender = list.FindCall<CommandExecutingEventArgs>("get_Sender") + 1;
+        var setSender = list.FindCall("get_Sender") + 1;
 
         list.InsertRange(setSender, [
             Duplicate,
@@ -27,9 +26,9 @@ internal static class ConsolePatch
         list.InsertRange(failedIndex, [
             Ldarg(2),
             Ldloc(1),
-            Ldloc(15),
+            Ldloc(13),
             Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
-            Ldloc(15),
+            Ldloc(13),
             Call<PlayerListProcessorException>(nameof(PlayerListProcessorException.CreateMessage))
         ]);
         return list;
