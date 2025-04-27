@@ -14,7 +14,7 @@ public abstract class CommandResultTranslationAttribute : TranslationAttribute, 
     /// Determines the success state of the command result.
     /// </summary>
     /// <remarks>If null, the state will be inferred from the result string (false if the string starts with an !).</remarks>
-    public bool? IsSuccess { get; init; }
+    public bool? IsSuccess { get; }
 
     /// <summary>
     /// Creates a new <see cref="CommandResultTranslationAttribute"/> instance.
