@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Axwabo.CommandSystem.Attributes;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.Permissions;
-using Utils.NonAllocLINQ;
-
-// Northwood's LINQ extension methods
 
 namespace Axwabo.CommandSystem.Example;
 
@@ -17,7 +15,7 @@ public sealed class CountPlayersHoldingCoins : UnifiedTargetingCommand
 
     protected override CommandResult ExecuteOnTargets(List<ReferenceHub> targets, ArraySegment<string> arguments, CommandSender sender)
     {
-        var count = targets.Count(p => p.inventory.CurItem.TypeId == ItemType.Coin);
+        var count = targets.ToPlayers().Count(p => p.CurrentItem?.Type == ItemType.Coin);
         return count == 0
             ? "No players holding coins found"
             // use the extension method from Axwabo.CommandSystem.Extensions

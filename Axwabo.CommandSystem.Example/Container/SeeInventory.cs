@@ -6,6 +6,7 @@ using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.Commands.Interfaces;
 using Axwabo.CommandSystem.Extensions;
 using Axwabo.CommandSystem.Permissions;
+using LabApi.Features.Wrappers;
 
 namespace Axwabo.CommandSystem.Example.Container;
 
@@ -16,10 +17,10 @@ public sealed class SeeInventory : SeparatedTargetingCommand, ICustomResultCompi
 
     protected override CommandResult ExecuteOn(ReferenceHub target, ArraySegment<string> arguments, CommandSender sender)
     {
-        var items = target.inventory.UserInventory.Items.Values;
-        if (items.Count == 0)
+        var player = Player.Get(target);
+        if (player.IsWithoutItems)
             return false;
-        return string.Join(", ", items.Select(e => e.ItemTypeId));
+        return string.Join(", ", player.Items.Select(e => e!.Type));
     }
 
     public CommandResult? CompileResultCustom(List<CommandResultOnTarget> success, List<CommandResultOnTarget> failures)

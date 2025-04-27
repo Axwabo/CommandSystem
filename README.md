@@ -44,7 +44,7 @@ using System;
 using Axwabo.CommandSystem.Registration;
 using LabApi.Loader.Features.Plugins;
 
-public sealed class MyPlugin
+public sealed class MyPlugin : Plugin<MyConfig>
 {
     public override string Name => "Name";
     public override string Description => "Description";
