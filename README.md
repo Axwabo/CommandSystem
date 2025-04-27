@@ -9,7 +9,7 @@ An SCP: Secret Laboratory plugin to improve player selection, command developmen
 
 ## LabAPI
 
-1. Install [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/) (LabAPI version) as a dependency
+1. Install [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/tree/labapi) (LabAPI version) as a dependency
 2. Install [Harmony 2.2.2](https://github.com/pardeike/Harmony/releases/tag/v2.2.2.0) as a dependency, you need the **net4.8** version
    1. Download the `Harmony.2.2.2.0.zip` asset
    2. Extract the `net48/0Harmony.dll` file from the archive to the `dependencies` folder:
@@ -23,7 +23,7 @@ An SCP: Secret Laboratory plugin to improve player selection, command developmen
 
 ## Development
 
-1. Download [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/) and add it as a reference
+1. Download [Axwabo.Helpers](https://github.com/Axwabo/SCPSL-Helpers/tree/labapi) and add it as a reference
 2. Download the `Axwabo.CommandSystem.dll` file from the [releases page](https://github.com/Axwabo/CommandSystem/releases)
 3. Add the assembly as a reference to your project
 4. Code away!
