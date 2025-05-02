@@ -1,11 +1,9 @@
-﻿using System.IO;
-using Axwabo.CommandSystem.Patches;
+﻿using Axwabo.CommandSystem.Patches;
 using Axwabo.CommandSystem.Registration;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 using HarmonyLib;
 using LabApi.Events.Handlers;
-using LabApi.Features.Wrappers;
-using LabApi.Loader.Features.Paths;
+using LabApi.Loader;
 using LabApi.Loader.Features.Plugins;
 
 #pragma warning disable CS1591
@@ -32,7 +30,7 @@ public sealed class CommandSystemPlugin : Plugin<CommandSystemConfig>
     public override void Enable()
     {
         Instance = this;
-        PluginDirectory = Path.Combine(PathManager.Plugins.ToString(), Server.Port.ToString(), "Axwabo.CommandSystem");
+        PluginDirectory = this.GetConfigDirectory().FullName;
         _harmony = new Harmony("Axwabo.CommandSystem");
         try
         {
