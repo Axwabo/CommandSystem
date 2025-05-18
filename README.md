@@ -13,12 +13,12 @@ An SCP: Secret Laboratory plugin to improve player selection, command developmen
 2. Install [Harmony 2.2.2](https://github.com/pardeike/Harmony/releases/tag/v2.2.2.0) as a dependency, you need the **net4.8** version
    1. Download the `Harmony.2.2.2.0.zip` asset
    2. Extract the `net48/0Harmony.dll` file from the archive to the `dependencies` folder:
-      - Windows: `%appdata%\SCP Secret Laboratory\LabAPI-Beta\dependencies\<port>`
-      - Linux: `.config/SCP Secret Laboratory/LabAPI-Beta/dependencies/<port>`
+      - Windows: `%appdata%\SCP Secret Laboratory\LabAPI\dependencies\<port>`
+      - Linux: `.config/SCP Secret Laboratory/LabAPI/dependencies/<port>`
 3. Download the `Axwabo.CommandSystem.dll` file from the [releases page](https://github.com/Axwabo/CommandSystem/releases)
 4. Place the file in the `plugins` folder:
-    - Windows: `%appdata%\SCP Secret Laboratory\LabAPI-Beta\plugins\<port>`
-    - Linux: `.config/SCP Secret Laboratory/LabAPI-Beta/plugins/<port>`
+    - Windows: `%appdata%\SCP Secret Laboratory\LabAPI\plugins\<port>`
+    - Linux: `.config/SCP Secret Laboratory/LabAPI/plugins/<port>`
 5. Restart the server
 
 ## Development
