@@ -17,7 +17,7 @@ public sealed class CommandSystemPlugin : Plugin<CommandSystemConfig>
     public override string Description => "Adds a sophisticated command system to the game.";
     public override string Author => "Axwabo";
     public override Version Version => GetType().Assembly.GetName().Version;
-    public override Version RequiredApiVersion { get; } = new(1, 0, 0);
+    public override Version RequiredApiVersion { get; } = new(1, 1, 1);
 
     /// <summary>Gets the plugin's config directory.</summary>
     public static string PluginDirectory { get; private set; }
