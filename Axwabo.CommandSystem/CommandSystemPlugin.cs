@@ -18,6 +18,7 @@ public sealed class CommandSystemPlugin : Plugin<CommandSystemConfig>
     public override string Author => "Axwabo";
     public override Version Version => GetType().Assembly.GetName().Version;
     public override Version RequiredApiVersion { get; } = new(1, 1, 1);
+    public override bool IsTransparent => true;
 
     /// <summary>Gets the plugin's config directory.</summary>
     public static string PluginDirectory { get; private set; }
