@@ -46,6 +46,7 @@ public sealed class CommandSystemPlugin : Plugin<CommandSystemConfig>
         OptionPreferencesContainer.LoadState();
         Shutdown.OnQuit += OptionPreferencesContainer.SaveState;
         ServerEvents.CommandExecuted += DeveloperMode.OnCommandExecuted;
+        PlayerEvents.RequestingRaPlayerList += RemoteAdminOptionManager.AppendAllOptions;
         Log.Info("Axwabo.CommandSystem has been enabled!");
     }
 
@@ -59,6 +60,7 @@ public sealed class CommandSystemPlugin : Plugin<CommandSystemConfig>
         OptionPreferencesContainer.SaveState();
         Shutdown.OnQuit -= OptionPreferencesContainer.SaveState;
         ServerEvents.CommandExecuted -= DeveloperMode.OnCommandExecuted;
+        PlayerEvents.RequestingRaPlayerList -= RemoteAdminOptionManager.AppendAllOptions;
         Log.Info("Axwabo.CommandSystem has been disabled!");
     }
 

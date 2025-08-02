@@ -3,6 +3,7 @@ using Axwabo.CommandSystem.Attributes.RaExt;
 using Axwabo.CommandSystem.Commands;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Commands;
 using Axwabo.CommandSystem.RemoteAdminExtensions.Interfaces;
+using LabApi.Events.Arguments.PlayerEvents;
 using RemoteAdmin.Interfaces;
 
 namespace Axwabo.CommandSystem.RemoteAdminExtensions;
@@ -140,6 +141,9 @@ public static class RemoteAdminOptionManager
 
         return success;
     }
+
+    internal static void AppendAllOptions(PlayerRequestingRaPlayerListEventArgs ev)
+        => AppendAllOptions(ev.Player.ReferenceHub.queryProcessor._sender, ev.ListBuilder);
 
     private static bool NonDigit(char arg) => arg != '-' && !char.IsDigit(arg);
 
