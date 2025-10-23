@@ -15,21 +15,21 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="Assembly-CSharp"/>
-        <Reference Include="Assembly-CSharp-firstpass"/>
-        <Reference Include="Axwabo.Helpers"/>
-        <Reference Include="CommandSystem.Core"/>
-        <Reference Include="Mirror"/>
-        <Reference Include="Pooling"/>
-        <Reference Include="UnityEngine.CoreModule"/>
+        <Reference Include="Assembly-CSharp" />
+        <Reference Include="Assembly-CSharp-firstpass" />
+        <Reference Include="Axwabo.Helpers" />
+        <Reference Include="CommandSystem.Core" />
+        <Reference Include="Mirror" />
+        <Reference Include="Pooling" />
+        <Reference Include="UnityEngine.CoreModule" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Northwood.LabAPI" Version="1.1.1" />
+        <PackageReference Include="Northwood.LabAPI" Version="1.1.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Axwabo.CommandSystem\Axwabo.CommandSystem.csproj"/>
+        <ProjectReference Include="..\Axwabo.CommandSystem\Axwabo.CommandSystem.csproj" />
     </ItemGroup>
 
 </Project>

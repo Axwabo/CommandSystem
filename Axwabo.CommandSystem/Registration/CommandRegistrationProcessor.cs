@@ -54,7 +54,7 @@ public sealed class CommandRegistrationProcessor
     public static void UnregisterAll(Assembly assembly)
     {
         UnregisterFromHandler(assembly, CommandProcessor.RemoteAdminCommandHandler);
-        UnregisterFromHandler(assembly, Console.singleton.ConsoleCommandHandler);
+        UnregisterFromHandler(assembly, Console.ConsoleCommandHandler);
         UnregisterFromHandler(assembly, QueryProcessor.DotCommandHandler);
         RemoteAdminOptionManager.UnregisterAll(assembly);
     }
@@ -92,7 +92,7 @@ public sealed class CommandRegistrationProcessor
 
     /// <summary>Registers a command to the <see cref="GameConsoleCommandHandler"/>.</summary>
     /// <param name="command">The command to register.</param>
-    public static void RegisterServerConsoleCommand(ICommand command) => Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+    public static void RegisterServerConsoleCommand(ICommand command) => Console.ConsoleCommandHandler.RegisterCommand(command);
 
     /// <summary>Registers a command to the <see cref="ClientCommandHandler"/>.</summary>
     /// <param name="command">The command to register.</param>

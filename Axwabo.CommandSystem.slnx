@@ -1,0 +1,4 @@
+<Solution>
+    <Project Path="Axwabo.CommandSystem.Example/Axwabo.CommandSystem.Example.csproj" />
+    <Project Path="Axwabo.CommandSystem/Axwabo.CommandSystem.csproj" />
+</Solution>

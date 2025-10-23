@@ -197,7 +197,7 @@ public sealed class PlayerSelectionStack : MonoBehaviour, IEnumerable<HubCollect
     public static PlayerSelectionStack Get(CommandSender sender) => sender switch
     {
         PlayerCommandSender player => Get(player.ReferenceHub),
-        ServerConsoleSender => Get(Console.singleton),
+        ServerConsoleSender => Get(Console.Singleton),
         _ => null
     };
 
