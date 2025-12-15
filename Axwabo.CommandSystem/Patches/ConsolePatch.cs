@@ -10,9 +10,10 @@ namespace Axwabo.CommandSystem.Patches;
 internal static class ConsolePatch
 {
 
-    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
         var list = new List<CodeInstruction>(instructions);
+        var array = generator.Local<string[]>();
         var setSender = list.FindCall("get_Sender") + 1;
 
         list.InsertRange(setSender, [
@@ -20,12 +21,18 @@ internal static class ConsolePatch
             Stfld(typeof(PlayerSelectionManager), nameof(CurrentSender))
         ]);
 
+        var split = list.FindCall(nameof(string.Split));
+        list.InsertRange(split + 2, [
+            Duplicate,
+            array.Set()
+        ]);
+
         var failedIndex = list.FindIndex(i => i.operand is CommandExecutionFailedError);
         var failEnd = list.FindCode(OpCodes.Stloc_S, start: failedIndex);
         list.RemoveRange(failedIndex, failEnd - failedIndex);
         list.InsertRange(failedIndex, [
             Ldarg(2),
-            Ldloc(1),
+            array.Load(),
             Ldloc(13),
             Call<DeveloperMode>(nameof(DeveloperMode.OnExceptionThrown)),
             Ldloc(13),
